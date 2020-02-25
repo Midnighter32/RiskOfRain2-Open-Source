@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x02000056 RID: 86
+// Token: 0x02000052 RID: 82
 public class ShrinePlaceTotem : MonoBehaviour
 {
-	// Token: 0x06000169 RID: 361 RVA: 0x000081B8 File Offset: 0x000063B8
+	// Token: 0x0600014E RID: 334 RVA: 0x000080CC File Offset: 0x000062CC
 	private void Awake()
 	{
 		int num = 0;
@@ -29,7 +29,7 @@ public class ShrinePlaceTotem : MonoBehaviour
 		}
 	}
 
-	// Token: 0x0600016A RID: 362 RVA: 0x00004507 File Offset: 0x00002707
+	// Token: 0x0600014F RID: 335 RVA: 0x0000409B File Offset: 0x0000229B
 	private void Update()
 	{
 	}

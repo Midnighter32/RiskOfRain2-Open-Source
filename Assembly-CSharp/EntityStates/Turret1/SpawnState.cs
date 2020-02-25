@@ -2,10 +2,10 @@
 
 namespace EntityStates.Turret1
 {
-	// Token: 0x02000192 RID: 402
+	// Token: 0x02000895 RID: 2197
 	public class SpawnState : BaseState
 	{
-		// Token: 0x060007BC RID: 1980 RVA: 0x00026586 File Offset: 0x00024786
+		// Token: 0x0600314D RID: 12621 RVA: 0x000D4429 File Offset: 0x000D2629
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -15,7 +15,7 @@ namespace EntityStates.Turret1
 			}
 		}
 
-		// Token: 0x060007BD RID: 1981 RVA: 0x000265B5 File Offset: 0x000247B5
+		// Token: 0x0600314E RID: 12622 RVA: 0x000D4458 File Offset: 0x000D2658
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -26,13 +26,13 @@ namespace EntityStates.Turret1
 			}
 		}
 
-		// Token: 0x060007BE RID: 1982 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x0600314F RID: 12623 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Death;
 		}
 
-		// Token: 0x04000A09 RID: 2569
+		// Token: 0x04002FA5 RID: 12197
 		public static float duration = 4f;
 	}
 }

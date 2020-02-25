@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000342 RID: 834
+	// Token: 0x02000266 RID: 614
 	[ExecuteInEditMode]
 	[DisallowMultipleComponent]
 	public class ItemDisplayRuleComponent : MonoBehaviour
 	{
-		// Token: 0x1700017F RID: 383
-		// (get) Token: 0x0600113B RID: 4411 RVA: 0x00055C15 File Offset: 0x00053E15
-		// (set) Token: 0x0600113C RID: 4412 RVA: 0x00055C1D File Offset: 0x00053E1D
+		// Token: 0x170001BC RID: 444
+		// (get) Token: 0x06000D94 RID: 3476 RVA: 0x0003CFA5 File Offset: 0x0003B1A5
+		// (set) Token: 0x06000D95 RID: 3477 RVA: 0x0003CFAD File Offset: 0x0003B1AD
 		public ItemDisplayRuleType ruleType
 		{
 			get
@@ -27,9 +27,9 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000180 RID: 384
-		// (get) Token: 0x0600113D RID: 4413 RVA: 0x00055C35 File Offset: 0x00053E35
-		// (set) Token: 0x0600113E RID: 4414 RVA: 0x00055C3D File Offset: 0x00053E3D
+		// Token: 0x170001BD RID: 445
+		// (get) Token: 0x06000D96 RID: 3478 RVA: 0x0003CFC5 File Offset: 0x0003B1C5
+		// (set) Token: 0x06000D97 RID: 3479 RVA: 0x0003CFCD File Offset: 0x0003B1CD
 		public GameObject prefab
 		{
 			get
@@ -46,13 +46,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600113F RID: 4415 RVA: 0x00055C67 File Offset: 0x00053E67
+		// Token: 0x06000D98 RID: 3480 RVA: 0x0003CFF7 File Offset: 0x0003B1F7
 		private void Start()
 		{
 			this.BuildPreview();
 		}
 
-		// Token: 0x06001140 RID: 4416 RVA: 0x00055C6F File Offset: 0x00053E6F
+		// Token: 0x06000D99 RID: 3481 RVA: 0x0003CFFF File Offset: 0x0003B1FF
 		private void DestroyPreview()
 		{
 			if (this.prefabInstance)
@@ -62,7 +62,7 @@ namespace RoR2
 			this.prefabInstance = null;
 		}
 
-		// Token: 0x06001141 RID: 4417 RVA: 0x00055C90 File Offset: 0x00053E90
+		// Token: 0x06000D9A RID: 3482 RVA: 0x0003D020 File Offset: 0x0003B220
 		private void BuildPreview()
 		{
 			this.DestroyPreview();
@@ -78,7 +78,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001142 RID: 4418 RVA: 0x00055D3C File Offset: 0x00053F3C
+		// Token: 0x06000D9B RID: 3483 RVA: 0x0003D0CC File Offset: 0x0003B2CC
 		private static void SetPreviewFlags(Transform transform)
 		{
 			transform.gameObject.hideFlags = (HideFlags.DontSaveInEditor | HideFlags.NotEditable | HideFlags.DontSaveInBuild | HideFlags.DontUnloadUnusedAsset);
@@ -88,35 +88,35 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001143 RID: 4419 RVA: 0x00055D9C File Offset: 0x00053F9C
+		// Token: 0x06000D9C RID: 3484 RVA: 0x0003D12C File Offset: 0x0003B32C
 		private void OnDestroy()
 		{
 			this.DestroyPreview();
 		}
 
-		// Token: 0x0400154B RID: 5451
+		// Token: 0x04000D9A RID: 3482
 		public ItemIndex itemIndex = ItemIndex.None;
 
-		// Token: 0x0400154C RID: 5452
+		// Token: 0x04000D9B RID: 3483
 		public EquipmentIndex equipmentIndex = EquipmentIndex.None;
 
-		// Token: 0x0400154D RID: 5453
+		// Token: 0x04000D9C RID: 3484
 		public LimbFlags limbMask;
 
-		// Token: 0x0400154E RID: 5454
+		// Token: 0x04000D9D RID: 3485
 		[SerializeField]
 		[HideInInspector]
 		private ItemDisplayRuleType _ruleType;
 
-		// Token: 0x0400154F RID: 5455
+		// Token: 0x04000D9E RID: 3486
 		public string nameInLocator;
 
-		// Token: 0x04001550 RID: 5456
+		// Token: 0x04000D9F RID: 3487
 		[SerializeField]
 		[HideInInspector]
 		private GameObject _prefab;
 
-		// Token: 0x04001551 RID: 5457
+		// Token: 0x04000DA0 RID: 3488
 		private GameObject prefabInstance;
 	}
 }

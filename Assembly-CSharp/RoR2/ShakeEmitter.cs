@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003D9 RID: 985
+	// Token: 0x0200032A RID: 810
 	public class ShakeEmitter : MonoBehaviour
 	{
-		// Token: 0x06001552 RID: 5458 RVA: 0x0006640C File Offset: 0x0006460C
+		// Token: 0x06001316 RID: 4886 RVA: 0x00051BFC File Offset: 0x0004FDFC
 		public void StartShake()
 		{
 			this.stopwatch = 0f;
@@ -15,7 +15,7 @@ namespace RoR2
 			this.halfPeriodTimer = this.wave.period * 0.5f;
 		}
 
-		// Token: 0x06001553 RID: 5459 RVA: 0x0006643B File Offset: 0x0006463B
+		// Token: 0x06001317 RID: 4887 RVA: 0x00051C2B File Offset: 0x0004FE2B
 		private void Start()
 		{
 			if (this.scaleShakeRadiusWithLocalScale)
@@ -28,19 +28,19 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001554 RID: 5460 RVA: 0x00066470 File Offset: 0x00064670
+		// Token: 0x06001318 RID: 4888 RVA: 0x00051C60 File Offset: 0x0004FE60
 		private void OnEnable()
 		{
 			ShakeEmitter.instances.Add(this);
 		}
 
-		// Token: 0x06001555 RID: 5461 RVA: 0x0006647D File Offset: 0x0006467D
+		// Token: 0x06001319 RID: 4889 RVA: 0x00051C6D File Offset: 0x0004FE6D
 		private void OnDisable()
 		{
 			ShakeEmitter.instances.Remove(this);
 		}
 
-		// Token: 0x06001556 RID: 5462 RVA: 0x0006648B File Offset: 0x0006468B
+		// Token: 0x0600131A RID: 4890 RVA: 0x00051C7B File Offset: 0x0004FE7B
 		private void OnValidate()
 		{
 			if (this.wave.frequency == 0f)
@@ -50,14 +50,14 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001557 RID: 5463 RVA: 0x000664B9 File Offset: 0x000646B9
+		// Token: 0x0600131B RID: 4891 RVA: 0x00051CA9 File Offset: 0x0004FEA9
 		[RuntimeInitializeOnLoadMethod]
 		private static void Init()
 		{
 			RoR2Application.onUpdate += ShakeEmitter.UpdateAll;
 		}
 
-		// Token: 0x06001558 RID: 5464 RVA: 0x000664CC File Offset: 0x000646CC
+		// Token: 0x0600131C RID: 4892 RVA: 0x00051CBC File Offset: 0x0004FEBC
 		public static void UpdateAll()
 		{
 			float deltaTime = Time.deltaTime;
@@ -71,7 +71,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001559 RID: 5465 RVA: 0x0006650E File Offset: 0x0006470E
+		// Token: 0x0600131D RID: 4893 RVA: 0x00051CFE File Offset: 0x0004FEFE
 		public float CurrentShakeFade()
 		{
 			if (!this.amplitudeTimeDecay)
@@ -81,7 +81,7 @@ namespace RoR2
 			return 1f - this.stopwatch / this.duration;
 		}
 
-		// Token: 0x0600155A RID: 5466 RVA: 0x00066534 File Offset: 0x00064734
+		// Token: 0x0600131E RID: 4894 RVA: 0x00051D24 File Offset: 0x0004FF24
 		public void ManualUpdate(float deltaTime)
 		{
 			this.stopwatch += deltaTime;
@@ -100,7 +100,7 @@ namespace RoR2
 			this.currentOffset = Vector3.zero;
 		}
 
-		// Token: 0x0600155B RID: 5467 RVA: 0x000665F4 File Offset: 0x000647F4
+		// Token: 0x0600131F RID: 4895 RVA: 0x00051DE4 File Offset: 0x0004FFE4
 		public static void ApplySpacialRumble(LocalUser localUser, Transform cameraTransform)
 		{
 			Vector3 right = cameraTransform.right;
@@ -130,16 +130,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600155C RID: 5468 RVA: 0x000666FC File Offset: 0x000648FC
-		public static void ApplyDeepQuickRumble(LocalUser localUser, Vector3 bonusPosition)
-		{
-			float magnitude = bonusPosition.magnitude;
-			float gamepadVibrationScale = localUser.userProfile.gamepadVibrationScale;
-			localUser.inputPlayer.SetVibration(0, magnitude * gamepadVibrationScale / 5f);
-			localUser.inputPlayer.SetVibration(1, magnitude * gamepadVibrationScale);
-		}
-
-		// Token: 0x0600155D RID: 5469 RVA: 0x00066744 File Offset: 0x00064944
+		// Token: 0x06001320 RID: 4896 RVA: 0x00051EEC File Offset: 0x000500EC
 		public static Vector3 ComputeTotalShakeAtPoint(Vector3 position)
 		{
 			Vector3 vector = Vector3.zero;
@@ -160,7 +151,7 @@ namespace RoR2
 			return vector;
 		}
 
-		// Token: 0x0600155E RID: 5470 RVA: 0x000667D0 File Offset: 0x000649D0
+		// Token: 0x06001321 RID: 4897 RVA: 0x00051F78 File Offset: 0x00050178
 		public static ShakeEmitter CreateSimpleShakeEmitter(Vector3 position, Wave wave, float duration, float radius, bool amplitudeTimeDecay)
 		{
 			if (wave.frequency == 0f)
@@ -184,14 +175,14 @@ namespace RoR2
 			return component;
 		}
 
-		// Token: 0x040018A7 RID: 6311
+		// Token: 0x040011E3 RID: 4579
 		private static readonly List<ShakeEmitter> instances = new List<ShakeEmitter>();
 
-		// Token: 0x040018A8 RID: 6312
+		// Token: 0x040011E4 RID: 4580
 		[Tooltip("Whether or not to begin shaking as soon as this instance becomes active.")]
 		public bool shakeOnStart = true;
 
-		// Token: 0x040018A9 RID: 6313
+		// Token: 0x040011E5 RID: 4581
 		[Tooltip("The wave description of this motion.")]
 		public Wave wave = new Wave
 		{
@@ -200,44 +191,44 @@ namespace RoR2
 			cycleOffset = 0f
 		};
 
-		// Token: 0x040018AA RID: 6314
+		// Token: 0x040011E6 RID: 4582
 		[Tooltip("How long the shake lasts, in seconds.")]
 		public float duration = 1f;
 
-		// Token: 0x040018AB RID: 6315
+		// Token: 0x040011E7 RID: 4583
 		[Tooltip("How far the wave reaches.")]
 		public float radius = 10f;
 
-		// Token: 0x040018AC RID: 6316
+		// Token: 0x040011E8 RID: 4584
 		[Tooltip("Whether or not the radius should be multiplied with local scale.")]
 		public bool scaleShakeRadiusWithLocalScale;
 
-		// Token: 0x040018AD RID: 6317
+		// Token: 0x040011E9 RID: 4585
 		[Tooltip("Whether or not the ampitude should decay with time.")]
 		public bool amplitudeTimeDecay = true;
 
-		// Token: 0x040018AE RID: 6318
+		// Token: 0x040011EA RID: 4586
 		private float stopwatch = float.PositiveInfinity;
 
-		// Token: 0x040018AF RID: 6319
+		// Token: 0x040011EB RID: 4587
 		private float halfPeriodTimer;
 
-		// Token: 0x040018B0 RID: 6320
+		// Token: 0x040011EC RID: 4588
 		private Vector3 halfPeriodVector;
 
-		// Token: 0x040018B1 RID: 6321
+		// Token: 0x040011ED RID: 4589
 		private Vector3 currentOffset;
 
-		// Token: 0x040018B2 RID: 6322
+		// Token: 0x040011EE RID: 4590
 		private const float deepRumbleFactor = 5f;
 
-		// Token: 0x020003DA RID: 986
+		// Token: 0x0200032B RID: 811
 		public struct MotorBias
 		{
-			// Token: 0x040018B3 RID: 6323
+			// Token: 0x040011EF RID: 4591
 			public float deepLeftBias;
 
-			// Token: 0x040018B4 RID: 6324
+			// Token: 0x040011F0 RID: 4592
 			public float quickRightBias;
 		}
 	}

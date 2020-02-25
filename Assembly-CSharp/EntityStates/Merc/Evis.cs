@@ -2,13 +2,14 @@
 using System.Linq;
 using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace EntityStates.Merc
 {
-	// Token: 0x02000105 RID: 261
+	// Token: 0x020007C2 RID: 1986
 	public class Evis : BaseState
 	{
-		// Token: 0x0600050E RID: 1294 RVA: 0x00015A04 File Offset: 0x00013C04
+		// Token: 0x06002D5E RID: 11614 RVA: 0x000BF9CC File Offset: 0x000BDBCC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -20,25 +21,22 @@ namespace EntityStates.Merc
 			{
 				this.animator = this.modelTransform.GetComponent<Animator>();
 				this.characterModel = this.modelTransform.GetComponent<CharacterModel>();
-				this.hurtboxGroup = this.modelTransform.GetComponent<HurtBoxGroup>();
 			}
 			if (this.characterModel)
 			{
 				this.characterModel.invisibilityCount++;
 			}
-			if (this.hurtboxGroup)
-			{
-				HurtBoxGroup hurtBoxGroup = this.hurtboxGroup;
-				int hurtBoxesDeactivatorCounter = hurtBoxGroup.hurtBoxesDeactivatorCounter + 1;
-				hurtBoxGroup.hurtBoxesDeactivatorCounter = hurtBoxesDeactivatorCounter;
-			}
 			if (base.cameraTargetParams)
 			{
 				base.cameraTargetParams.aimMode = CameraTargetParams.AimType.Aura;
 			}
+			if (NetworkServer.active)
+			{
+				base.characterBody.AddBuff(BuffIndex.HiddenInvincibility);
+			}
 		}
 
-		// Token: 0x0600050F RID: 1295 RVA: 0x00015B04 File Offset: 0x00013D04
+		// Token: 0x06002D5F RID: 11615 RVA: 0x000BFAAC File Offset: 0x000BDCAC
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -70,7 +68,7 @@ namespace EntityStates.Merc
 						Vector3 position = hurtBox2.transform.position;
 						Vector2 normalized = UnityEngine.Random.insideUnitCircle.normalized;
 						Vector3 normal = new Vector3(normalized.x, 0f, normalized.y);
-						EffectManager.instance.SimpleImpactEffect(Evis.hitEffectPrefab, position, normal, false);
+						EffectManager.SimpleImpactEffect(Evis.hitEffectPrefab, position, normal, false);
 						Transform transform = hurtBox.hurtBoxGroup.transform;
 						TemporaryOverlay temporaryOverlay = transform.gameObject.AddComponent<TemporaryOverlay>();
 						temporaryOverlay.duration = num;
@@ -96,7 +94,7 @@ namespace EntityStates.Merc
 			}
 		}
 
-		// Token: 0x06000510 RID: 1296 RVA: 0x00015D7C File Offset: 0x00013F7C
+		// Token: 0x06002D60 RID: 11616 RVA: 0x000BFD20 File Offset: 0x000BDF20
 		private HurtBox SearchForTarget()
 		{
 			BullseyeSearch bullseyeSearch = new BullseyeSearch();
@@ -110,16 +108,16 @@ namespace EntityStates.Merc
 			return bullseyeSearch.GetResults().FirstOrDefault<HurtBox>();
 		}
 
-		// Token: 0x06000511 RID: 1297 RVA: 0x00015DF0 File Offset: 0x00013FF0
+		// Token: 0x06002D61 RID: 11617 RVA: 0x000BFD94 File Offset: 0x000BDF94
 		private void CreateBlinkEffect(Vector3 origin)
 		{
 			EffectData effectData = new EffectData();
 			effectData.rotation = Util.QuaternionSafeLookRotation(Vector3.up);
 			effectData.origin = origin;
-			EffectManager.instance.SpawnEffect(Evis.blinkPrefab, effectData, false);
+			EffectManager.SpawnEffect(Evis.blinkPrefab, effectData, false);
 		}
 
-		// Token: 0x06000512 RID: 1298 RVA: 0x00015E2C File Offset: 0x0001402C
+		// Token: 0x06002D62 RID: 11618 RVA: 0x000BFDCC File Offset: 0x000BDFCC
 		public override void OnExit()
 		{
 			Util.PlaySound(Evis.endSoundString, base.gameObject);
@@ -146,85 +144,84 @@ namespace EntityStates.Merc
 			{
 				this.characterModel.invisibilityCount--;
 			}
-			if (this.hurtboxGroup)
-			{
-				HurtBoxGroup hurtBoxGroup = this.hurtboxGroup;
-				int hurtBoxesDeactivatorCounter = hurtBoxGroup.hurtBoxesDeactivatorCounter - 1;
-				hurtBoxGroup.hurtBoxesDeactivatorCounter = hurtBoxesDeactivatorCounter;
-			}
 			if (base.cameraTargetParams)
 			{
 				base.cameraTargetParams.aimMode = CameraTargetParams.AimType.Standard;
+			}
+			if (NetworkServer.active)
+			{
+				base.characterBody.RemoveBuff(BuffIndex.HiddenInvincibility);
+				base.characterBody.AddTimedBuff(BuffIndex.HiddenInvincibility, Evis.lingeringInvincibilityDuration);
 			}
 			Util.PlaySound(Evis.endSoundString, base.gameObject);
 			base.SmallHop(base.characterMotor, Evis.smallHopVelocity);
 			base.OnExit();
 		}
 
-		// Token: 0x040004FF RID: 1279
+		// Token: 0x040029A3 RID: 10659
 		private Transform modelTransform;
 
-		// Token: 0x04000500 RID: 1280
+		// Token: 0x040029A4 RID: 10660
 		public static GameObject blinkPrefab;
 
-		// Token: 0x04000501 RID: 1281
+		// Token: 0x040029A5 RID: 10661
 		public static float duration = 2f;
 
-		// Token: 0x04000502 RID: 1282
+		// Token: 0x040029A6 RID: 10662
 		public static float damageCoefficient;
 
-		// Token: 0x04000503 RID: 1283
+		// Token: 0x040029A7 RID: 10663
 		public static float damageFrequency;
 
-		// Token: 0x04000504 RID: 1284
+		// Token: 0x040029A8 RID: 10664
 		public static float procCoefficient;
 
-		// Token: 0x04000505 RID: 1285
+		// Token: 0x040029A9 RID: 10665
 		public static string beginSoundString;
 
-		// Token: 0x04000506 RID: 1286
+		// Token: 0x040029AA RID: 10666
 		public static string endSoundString;
 
-		// Token: 0x04000507 RID: 1287
+		// Token: 0x040029AB RID: 10667
 		public static float maxRadius;
 
-		// Token: 0x04000508 RID: 1288
+		// Token: 0x040029AC RID: 10668
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000509 RID: 1289
+		// Token: 0x040029AD RID: 10669
 		public static string slashSoundString;
 
-		// Token: 0x0400050A RID: 1290
+		// Token: 0x040029AE RID: 10670
 		public static string impactSoundString;
 
-		// Token: 0x0400050B RID: 1291
+		// Token: 0x040029AF RID: 10671
 		public static string dashSoundString;
 
-		// Token: 0x0400050C RID: 1292
+		// Token: 0x040029B0 RID: 10672
 		public static float slashPitch;
 
-		// Token: 0x0400050D RID: 1293
+		// Token: 0x040029B1 RID: 10673
 		public static float smallHopVelocity;
 
-		// Token: 0x0400050E RID: 1294
+		// Token: 0x040029B2 RID: 10674
+		public static float lingeringInvincibilityDuration;
+
+		// Token: 0x040029B3 RID: 10675
 		private Animator animator;
 
-		// Token: 0x0400050F RID: 1295
+		// Token: 0x040029B4 RID: 10676
 		private CharacterModel characterModel;
 
-		// Token: 0x04000510 RID: 1296
-		private HurtBoxGroup hurtboxGroup;
-
-		// Token: 0x04000511 RID: 1297
+		// Token: 0x040029B5 RID: 10677
 		private float stopwatch;
 
-		// Token: 0x04000512 RID: 1298
+		// Token: 0x040029B6 RID: 10678
 		private float attackStopwatch;
 
-		// Token: 0x04000513 RID: 1299
+		// Token: 0x040029B7 RID: 10679
 		private bool crit;
 
-		// Token: 0x04000514 RID: 1300
+		// Token: 0x040029B8 RID: 10680
 		private static float minimumDuration = 0.5f;
 	}
 }

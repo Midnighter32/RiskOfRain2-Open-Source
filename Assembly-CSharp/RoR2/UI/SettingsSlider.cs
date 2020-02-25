@@ -7,10 +7,10 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000637 RID: 1591
+	// Token: 0x0200062A RID: 1578
 	public class SettingsSlider : BaseSettingsControl
 	{
-		// Token: 0x060023AD RID: 9133 RVA: 0x000A7BE0 File Offset: 0x000A5DE0
+		// Token: 0x06002547 RID: 9543 RVA: 0x000A2468 File Offset: 0x000A0668
 		protected new void Awake()
 		{
 			base.Awake();
@@ -26,7 +26,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060023AE RID: 9134 RVA: 0x000A7C67 File Offset: 0x000A5E67
+		// Token: 0x06002548 RID: 9544 RVA: 0x000A24EF File Offset: 0x000A06EF
 		private void OnSliderValueChanged(float newValue)
 		{
 			if (base.inUpdateControls)
@@ -36,7 +36,7 @@ namespace RoR2.UI
 			base.SubmitSetting(TextSerialization.ToStringInvariant(newValue));
 		}
 
-		// Token: 0x060023AF RID: 9135 RVA: 0x000A7C80 File Offset: 0x000A5E80
+		// Token: 0x06002549 RID: 9545 RVA: 0x000A2508 File Offset: 0x000A0708
 		private void OnInputFieldSubmit(string newString)
 		{
 			if (base.inUpdateControls)
@@ -50,14 +50,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060023B0 RID: 9136 RVA: 0x000A7CAC File Offset: 0x000A5EAC
-		protected new void OnEnable()
-		{
-			base.OnEnable();
-			base.UpdateControls();
-		}
-
-		// Token: 0x060023B1 RID: 9137 RVA: 0x000A7CBC File Offset: 0x000A5EBC
+		// Token: 0x0600254A RID: 9546 RVA: 0x000A2534 File Offset: 0x000A0734
 		protected override void OnUpdateControls()
 		{
 			base.OnUpdateControls();
@@ -76,19 +69,19 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0400269D RID: 9885
+		// Token: 0x040022FA RID: 8954
 		public Slider slider;
 
-		// Token: 0x0400269E RID: 9886
+		// Token: 0x040022FB RID: 8955
 		public TMP_InputField inputField;
 
-		// Token: 0x0400269F RID: 9887
+		// Token: 0x040022FC RID: 8956
 		public float minValue;
 
-		// Token: 0x040026A0 RID: 9888
+		// Token: 0x040022FD RID: 8957
 		public float maxValue;
 
-		// Token: 0x040026A1 RID: 9889
+		// Token: 0x040022FE RID: 8958
 		public string formatString = "{0:0.00}";
 	}
 }

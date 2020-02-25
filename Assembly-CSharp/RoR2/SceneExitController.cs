@@ -5,10 +5,15 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020003CC RID: 972
+	// Token: 0x0200031A RID: 794
 	public class SceneExitController : MonoBehaviour
 	{
-		// Token: 0x0600151A RID: 5402 RVA: 0x000656E9 File Offset: 0x000638E9
+		// Token: 0x17000244 RID: 580
+		// (get) Token: 0x060012A7 RID: 4775 RVA: 0x000504C1 File Offset: 0x0004E6C1
+		// (set) Token: 0x060012A8 RID: 4776 RVA: 0x000504C8 File Offset: 0x0004E6C8
+		public static bool isRunning { get; private set; }
+
+		// Token: 0x060012A9 RID: 4777 RVA: 0x000504D0 File Offset: 0x0004E6D0
 		public void Begin()
 		{
 			if (!NetworkServer.active)
@@ -21,7 +26,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600151B RID: 5403 RVA: 0x00065718 File Offset: 0x00063918
+		// Token: 0x060012AA RID: 4778 RVA: 0x00050500 File Offset: 0x0004E700
 		public void SetState(SceneExitController.ExitState newState)
 		{
 			if (newState == this.exitState)
@@ -34,6 +39,7 @@ namespace RoR2
 			case SceneExitController.ExitState.Idle:
 				break;
 			case SceneExitController.ExitState.ExtractExp:
+				SceneExitController.isRunning = true;
 				this.experienceCollector = base.gameObject.AddComponent<ConvertPlayerMoneyToExperience>();
 				return;
 			case SceneExitController.ExitState.TeleportOut:
@@ -78,7 +84,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600151C RID: 5404 RVA: 0x0006584E File Offset: 0x00063A4E
+		// Token: 0x060012AB RID: 4779 RVA: 0x00050632 File Offset: 0x0004E832
 		private void FixedUpdate()
 		{
 			if (NetworkServer.active)
@@ -87,7 +93,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600151D RID: 5405 RVA: 0x00065860 File Offset: 0x00063A60
+		// Token: 0x060012AC RID: 4780 RVA: 0x00050644 File Offset: 0x0004E844
 		private void UpdateServer()
 		{
 			switch (this.exitState)
@@ -115,34 +121,52 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001863 RID: 6243
+		// Token: 0x060012AD RID: 4781 RVA: 0x000506B2 File Offset: 0x0004E8B2
+		private void OnDestroy()
+		{
+			SceneExitController.isRunning = false;
+		}
+
+		// Token: 0x060012AE RID: 4782 RVA: 0x000506BA File Offset: 0x0004E8BA
+		private void OnEnable()
+		{
+			InstanceTracker.Add<SceneExitController>(this);
+		}
+
+		// Token: 0x060012AF RID: 4783 RVA: 0x000506C2 File Offset: 0x0004E8C2
+		private void OnDisable()
+		{
+			InstanceTracker.Remove<SceneExitController>(this);
+		}
+
+		// Token: 0x04001184 RID: 4484
 		public bool useRunNextStageScene;
 
-		// Token: 0x04001864 RID: 6244
-		public SceneField destinationScene;
+		// Token: 0x04001185 RID: 4485
+		public SceneDef destinationScene;
 
-		// Token: 0x04001865 RID: 6245
+		// Token: 0x04001186 RID: 4486
 		private const float teleportOutDuration = 4f;
 
-		// Token: 0x04001866 RID: 6246
+		// Token: 0x04001187 RID: 4487
 		private float teleportOutTimer;
 
-		// Token: 0x04001867 RID: 6247
+		// Token: 0x04001188 RID: 4488
 		private SceneExitController.ExitState exitState;
 
-		// Token: 0x04001868 RID: 6248
+		// Token: 0x04001189 RID: 4489
 		private ConvertPlayerMoneyToExperience experienceCollector;
 
-		// Token: 0x020003CD RID: 973
+		// Token: 0x0200031B RID: 795
 		public enum ExitState
 		{
-			// Token: 0x0400186A RID: 6250
+			// Token: 0x0400118B RID: 4491
 			Idle,
-			// Token: 0x0400186B RID: 6251
+			// Token: 0x0400118C RID: 4492
 			ExtractExp,
-			// Token: 0x0400186C RID: 6252
+			// Token: 0x0400118D RID: 4493
 			TeleportOut,
-			// Token: 0x0400186D RID: 6253
+			// Token: 0x0400118E RID: 4494
 			Finished
 		}
 	}

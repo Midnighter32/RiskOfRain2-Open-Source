@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2.Orbs
 {
-	// Token: 0x0200050F RID: 1295
+	// Token: 0x020004C7 RID: 1223
 	public class DamageOrb : Orb
 	{
-		// Token: 0x06001D3B RID: 7483 RVA: 0x000882DC File Offset: 0x000864DC
+		// Token: 0x06001D69 RID: 7529 RVA: 0x0007D4C0 File Offset: 0x0007B6C0
 		public override void Begin()
 		{
 			GameObject effectPrefab = null;
@@ -23,10 +23,10 @@ namespace RoR2.Orbs
 				genericFloat = base.duration
 			};
 			effectData.SetHurtBoxReference(this.target);
-			EffectManager.instance.SpawnEffect(effectPrefab, effectData, true);
+			EffectManager.SpawnEffect(effectPrefab, effectData, true);
 		}
 
-		// Token: 0x06001D3C RID: 7484 RVA: 0x00088360 File Offset: 0x00086560
+		// Token: 0x06001D6A RID: 7530 RVA: 0x0007D540 File Offset: 0x0007B740
 		public override void OnArrival()
 		{
 			if (this.target)
@@ -61,40 +61,40 @@ namespace RoR2.Orbs
 			}
 		}
 
-		// Token: 0x04001F63 RID: 8035
+		// Token: 0x04001A70 RID: 6768
 		private float speed = 60f;
 
-		// Token: 0x04001F64 RID: 8036
+		// Token: 0x04001A71 RID: 6769
 		public float damageValue;
 
-		// Token: 0x04001F65 RID: 8037
+		// Token: 0x04001A72 RID: 6770
 		public GameObject attacker;
 
-		// Token: 0x04001F66 RID: 8038
+		// Token: 0x04001A73 RID: 6771
 		public TeamIndex teamIndex;
 
-		// Token: 0x04001F67 RID: 8039
+		// Token: 0x04001A74 RID: 6772
 		public bool isCrit;
 
-		// Token: 0x04001F68 RID: 8040
+		// Token: 0x04001A75 RID: 6773
 		public ProcChainMask procChainMask;
 
-		// Token: 0x04001F69 RID: 8041
+		// Token: 0x04001A76 RID: 6774
 		public float procCoefficient = 0.2f;
 
-		// Token: 0x04001F6A RID: 8042
+		// Token: 0x04001A77 RID: 6775
 		public DamageColorIndex damageColorIndex;
 
-		// Token: 0x04001F6B RID: 8043
+		// Token: 0x04001A78 RID: 6776
 		public DamageOrb.DamageOrbType damageOrbType;
 
-		// Token: 0x04001F6C RID: 8044
+		// Token: 0x04001A79 RID: 6777
 		private DamageType orbDamageType;
 
-		// Token: 0x02000510 RID: 1296
+		// Token: 0x020004C8 RID: 1224
 		public enum DamageOrbType
 		{
-			// Token: 0x04001F6E RID: 8046
+			// Token: 0x04001A7B RID: 6779
 			ClayGooOrb
 		}
 	}

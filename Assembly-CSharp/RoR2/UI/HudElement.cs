@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005EA RID: 1514
+	// Token: 0x020005CE RID: 1486
 	[DisallowMultipleComponent]
 	public class HudElement : MonoBehaviour
 	{
-		// Token: 0x170002F7 RID: 759
-		// (get) Token: 0x060021EC RID: 8684 RVA: 0x000A09DC File Offset: 0x0009EBDC
-		// (set) Token: 0x060021ED RID: 8685 RVA: 0x000A09E4 File Offset: 0x0009EBE4
+		// Token: 0x170003AB RID: 939
+		// (get) Token: 0x06002329 RID: 9001 RVA: 0x00099CF3 File Offset: 0x00097EF3
+		// (set) Token: 0x0600232A RID: 9002 RVA: 0x00099CFB File Offset: 0x00097EFB
 		public HUD hud
 		{
 			get
@@ -28,9 +28,9 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x170002F8 RID: 760
-		// (get) Token: 0x060021EE RID: 8686 RVA: 0x000A0A13 File Offset: 0x0009EC13
-		// (set) Token: 0x060021EF RID: 8687 RVA: 0x000A0A1B File Offset: 0x0009EC1B
+		// Token: 0x170003AC RID: 940
+		// (get) Token: 0x0600232B RID: 9003 RVA: 0x00099D2A File Offset: 0x00097F2A
+		// (set) Token: 0x0600232C RID: 9004 RVA: 0x00099D32 File Offset: 0x00097F32
 		public GameObject targetBodyObject
 		{
 			get
@@ -47,9 +47,9 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x170002F9 RID: 761
-		// (get) Token: 0x060021F0 RID: 8688 RVA: 0x000A0A42 File Offset: 0x0009EC42
-		// (set) Token: 0x060021F1 RID: 8689 RVA: 0x000A0A4A File Offset: 0x0009EC4A
+		// Token: 0x170003AD RID: 941
+		// (get) Token: 0x0600232D RID: 9005 RVA: 0x00099D59 File Offset: 0x00097F59
+		// (set) Token: 0x0600232E RID: 9006 RVA: 0x00099D61 File Offset: 0x00097F61
 		public CharacterBody targetCharacterBody
 		{
 			get
@@ -66,13 +66,13 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x040024F8 RID: 9464
+		// Token: 0x04002115 RID: 8469
 		private HUD _hud;
 
-		// Token: 0x040024F9 RID: 9465
+		// Token: 0x04002116 RID: 8470
 		private GameObject _targetBodyObject;
 
-		// Token: 0x040024FA RID: 9466
+		// Token: 0x04002117 RID: 8471
 		private CharacterBody _targetCharacterBody;
 	}
 }

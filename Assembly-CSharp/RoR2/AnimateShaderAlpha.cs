@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000257 RID: 599
+	// Token: 0x02000148 RID: 328
 	public class AnimateShaderAlpha : MonoBehaviour
 	{
-		// Token: 0x06000B27 RID: 2855 RVA: 0x000375A8 File Offset: 0x000357A8
+		// Token: 0x060005CF RID: 1487 RVA: 0x000180CC File Offset: 0x000162CC
 		private void Start()
 		{
 			this.targetRenderer = base.GetComponent<Renderer>();
@@ -21,7 +21,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000B28 RID: 2856 RVA: 0x00037600 File Offset: 0x00035800
+		// Token: 0x060005D0 RID: 1488 RVA: 0x00018124 File Offset: 0x00016324
 		private void Update()
 		{
 			this.time = Mathf.Min(this.timeMax, this.time + Time.deltaTime);
@@ -53,36 +53,36 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04000F32 RID: 3890
+		// Token: 0x0400064F RID: 1615
 		public AnimationCurve alphaCurve;
 
-		// Token: 0x04000F33 RID: 3891
+		// Token: 0x04000650 RID: 1616
 		private Renderer targetRenderer;
 
-		// Token: 0x04000F34 RID: 3892
+		// Token: 0x04000651 RID: 1617
 		private MaterialPropertyBlock _propBlock;
 
-		// Token: 0x04000F35 RID: 3893
+		// Token: 0x04000652 RID: 1618
 		private Material[] materials;
 
-		// Token: 0x04000F36 RID: 3894
+		// Token: 0x04000653 RID: 1619
 		public float timeMax = 5f;
 
-		// Token: 0x04000F37 RID: 3895
+		// Token: 0x04000654 RID: 1620
 		[Tooltip("Optional field if you want to animate Decal 'Fade' rather than renderer _ExternalAlpha.")]
 		public Decal decal;
 
-		// Token: 0x04000F38 RID: 3896
+		// Token: 0x04000655 RID: 1621
 		public bool destroyOnEnd;
 
-		// Token: 0x04000F39 RID: 3897
+		// Token: 0x04000656 RID: 1622
 		public bool disableOnEnd;
 
-		// Token: 0x04000F3A RID: 3898
+		// Token: 0x04000657 RID: 1623
 		[HideInInspector]
 		public float time;
 
-		// Token: 0x04000F3B RID: 3899
+		// Token: 0x04000658 RID: 1624
 		private float initialFade;
 	}
 }

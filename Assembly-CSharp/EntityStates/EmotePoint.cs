@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace EntityStates
 {
-	// Token: 0x020000AB RID: 171
+	// Token: 0x02000702 RID: 1794
 	public class EmotePoint : BaseState
 	{
-		// Token: 0x06000338 RID: 824 RVA: 0x0000D53C File Offset: 0x0000B73C
+		// Token: 0x060029B2 RID: 10674 RVA: 0x000AFA74 File Offset: 0x000ADC74
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -21,7 +21,7 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x06000339 RID: 825 RVA: 0x0000D5A9 File Offset: 0x0000B7A9
+		// Token: 0x060029B3 RID: 10675 RVA: 0x000AFAE1 File Offset: 0x000ADCE1
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -32,7 +32,7 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x0400031F RID: 799
+		// Token: 0x040025B0 RID: 9648
 		public static float duration = 0.5f;
 	}
 }

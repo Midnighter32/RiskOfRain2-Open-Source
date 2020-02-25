@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.TitanMonster
 {
-	// Token: 0x02000174 RID: 372
-	internal class RechargeRocks : BaseState
+	// Token: 0x0200085A RID: 2138
+	public class RechargeRocks : BaseState
 	{
-		// Token: 0x0600072B RID: 1835 RVA: 0x00022E9C File Offset: 0x0002109C
+		// Token: 0x06003046 RID: 12358 RVA: 0x000CFC9C File Offset: 0x000CDE9C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -43,7 +43,7 @@ namespace EntityStates.TitanMonster
 			}
 		}
 
-		// Token: 0x0600072C RID: 1836 RVA: 0x00022FAF File Offset: 0x000211AF
+		// Token: 0x06003047 RID: 12359 RVA: 0x000CFDAF File Offset: 0x000CDFAF
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -53,7 +53,7 @@ namespace EntityStates.TitanMonster
 			}
 		}
 
-		// Token: 0x0600072D RID: 1837 RVA: 0x00022FCF File Offset: 0x000211CF
+		// Token: 0x06003048 RID: 12360 RVA: 0x000CFDCF File Offset: 0x000CDFCF
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -65,40 +65,40 @@ namespace EntityStates.TitanMonster
 			}
 		}
 
-		// Token: 0x0600072E RID: 1838 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06003049 RID: 12361 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x040008FF RID: 2303
+		// Token: 0x04002E6C RID: 11884
 		public static float baseDuration = 3f;
 
-		// Token: 0x04000900 RID: 2304
+		// Token: 0x04002E6D RID: 11885
 		public static float baseRechargeDuration = 2f;
 
-		// Token: 0x04000901 RID: 2305
+		// Token: 0x04002E6E RID: 11886
 		public static GameObject effectPrefab;
 
-		// Token: 0x04000902 RID: 2306
+		// Token: 0x04002E6F RID: 11887
 		public static string attackSoundString;
 
-		// Token: 0x04000903 RID: 2307
+		// Token: 0x04002E70 RID: 11888
 		public static GameObject rockControllerPrefab;
 
-		// Token: 0x04000904 RID: 2308
+		// Token: 0x04002E71 RID: 11889
 		private int rocksFired;
 
-		// Token: 0x04000905 RID: 2309
+		// Token: 0x04002E72 RID: 11890
 		private float duration;
 
-		// Token: 0x04000906 RID: 2310
+		// Token: 0x04002E73 RID: 11891
 		private float stopwatch;
 
-		// Token: 0x04000907 RID: 2311
+		// Token: 0x04002E74 RID: 11892
 		private float rechargeStopwatch;
 
-		// Token: 0x04000908 RID: 2312
+		// Token: 0x04002E75 RID: 11893
 		private GameObject chargeEffect;
 	}
 }

@@ -4,28 +4,31 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005B6 RID: 1462
+	// Token: 0x02000590 RID: 1424
 	[RequireComponent(typeof(RectTransform))]
 	public class BuffDisplay : MonoBehaviour
 	{
-		// Token: 0x060020C0 RID: 8384 RVA: 0x00099E29 File Offset: 0x00098029
+		// Token: 0x060021E2 RID: 8674 RVA: 0x00092605 File Offset: 0x00090805
 		private void Awake()
 		{
 			this.rectTranform = base.GetComponent<RectTransform>();
 		}
 
-		// Token: 0x060020C1 RID: 8385 RVA: 0x00099E38 File Offset: 0x00098038
+		// Token: 0x060021E3 RID: 8675 RVA: 0x00092614 File Offset: 0x00090814
 		private void AllocateIcons()
 		{
 			int num = 0;
 			if (this.source)
 			{
-				for (BuffIndex buffIndex = BuffIndex.Slow50; buffIndex < BuffIndex.Count; buffIndex++)
+				BuffIndex buffIndex = BuffIndex.Slow50;
+				BuffIndex buffCount = (BuffIndex)BuffCatalog.buffCount;
+				while (buffIndex < buffCount)
 				{
 					if (this.source.HasBuff(buffIndex))
 					{
 						num++;
 					}
+					buffIndex++;
 				}
 			}
 			if (num != this.buffIcons.Count)
@@ -44,7 +47,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060020C2 RID: 8386 RVA: 0x00099F08 File Offset: 0x00098108
+		// Token: 0x060021E4 RID: 8676 RVA: 0x000926E8 File Offset: 0x000908E8
 		private void UpdateLayout()
 		{
 			this.AllocateIcons();
@@ -53,7 +56,9 @@ namespace RoR2.UI
 			{
 				Vector2 zero = Vector2.zero;
 				int num = 0;
-				for (BuffIndex buffIndex = BuffIndex.Slow50; buffIndex < BuffIndex.Count; buffIndex++)
+				BuffIndex buffIndex = BuffIndex.Slow50;
+				BuffIndex buffCount = (BuffIndex)BuffCatalog.buffCount;
+				while (buffIndex < buffCount)
 				{
 					if (this.source.HasBuff(buffIndex))
 					{
@@ -65,31 +70,32 @@ namespace RoR2.UI
 						buffIcon.UpdateIcon();
 						num++;
 					}
+					buffIndex++;
 				}
 			}
 		}
 
-		// Token: 0x060020C3 RID: 8387 RVA: 0x00099FAA File Offset: 0x000981AA
+		// Token: 0x060021E5 RID: 8677 RVA: 0x00092791 File Offset: 0x00090991
 		private void Update()
 		{
 			this.UpdateLayout();
 		}
 
-		// Token: 0x04002346 RID: 9030
+		// Token: 0x04001F3C RID: 7996
 		private RectTransform rectTranform;
 
-		// Token: 0x04002347 RID: 9031
+		// Token: 0x04001F3D RID: 7997
 		public CharacterBody source;
 
-		// Token: 0x04002348 RID: 9032
+		// Token: 0x04001F3E RID: 7998
 		public GameObject buffIconPrefab;
 
-		// Token: 0x04002349 RID: 9033
+		// Token: 0x04001F3F RID: 7999
 		public float iconWidth = 24f;
 
-		// Token: 0x0400234A RID: 9034
-		[SerializeField]
+		// Token: 0x04001F40 RID: 8000
 		[HideInInspector]
+		[SerializeField]
 		private List<BuffIcon> buffIcons;
 	}
 }

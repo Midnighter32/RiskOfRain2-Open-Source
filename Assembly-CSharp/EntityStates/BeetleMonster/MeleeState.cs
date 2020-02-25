@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.BeetleMonster
 {
-	// Token: 0x020001CC RID: 460
+	// Token: 0x020008E7 RID: 2279
 	public class MeleeState : EntityState
 	{
-		// Token: 0x060008FC RID: 2300 RVA: 0x0002D494 File Offset: 0x0002B694
+		// Token: 0x060032FC RID: 13052 RVA: 0x000DD104 File Offset: 0x000DB304
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -25,11 +25,11 @@ namespace EntityStates.BeetleMonster
 			base.PlayCrossfade("Body", "Melee1", "Melee1.playbackRate", MeleeState.duration, 0.1f);
 		}
 
-		// Token: 0x060008FD RID: 2301 RVA: 0x0002D570 File Offset: 0x0002B770
+		// Token: 0x060032FD RID: 13053 RVA: 0x000DD1E0 File Offset: 0x000DB3E0
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
-			if (base.hasAuthority)
+			if (base.isAuthority)
 			{
 				this.attack.forceVector = (base.characterDirection ? (base.characterDirection.forward * MeleeState.forceMagnitude) : Vector3.zero);
 				if (this.modelAnimator && this.modelAnimator.GetFloat("Melee1.hitBoxActive") > 0.5f)
@@ -37,32 +37,32 @@ namespace EntityStates.BeetleMonster
 					this.attack.Fire(null);
 				}
 			}
-			if (base.fixedAge >= MeleeState.duration && base.hasAuthority)
+			if (base.fixedAge >= MeleeState.duration && base.isAuthority)
 			{
 				this.outer.SetNextStateToMain();
 				return;
 			}
 		}
 
-		// Token: 0x060008FE RID: 2302 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x060032FE RID: 13054 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000C33 RID: 3123
+		// Token: 0x0400325B RID: 12891
 		public static float duration = 3.5f;
 
-		// Token: 0x04000C34 RID: 3124
+		// Token: 0x0400325C RID: 12892
 		public static float damage = 10f;
 
-		// Token: 0x04000C35 RID: 3125
+		// Token: 0x0400325D RID: 12893
 		public static float forceMagnitude = 10f;
 
-		// Token: 0x04000C36 RID: 3126
+		// Token: 0x0400325E RID: 12894
 		private OverlapAttack attack;
 
-		// Token: 0x04000C37 RID: 3127
+		// Token: 0x0400325F RID: 12895
 		private Animator modelAnimator;
 	}
 }

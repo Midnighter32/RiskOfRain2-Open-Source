@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200035C RID: 860
+	// Token: 0x02000288 RID: 648
 	[RequireComponent(typeof(Camera))]
 	public class ModelCamera : MonoBehaviour
 	{
-		// Token: 0x17000186 RID: 390
-		// (get) Token: 0x060011A9 RID: 4521 RVA: 0x00057927 File Offset: 0x00055B27
-		// (set) Token: 0x060011AA RID: 4522 RVA: 0x0005792E File Offset: 0x00055B2E
+		// Token: 0x170001CD RID: 461
+		// (get) Token: 0x06000E67 RID: 3687 RVA: 0x000401AF File Offset: 0x0003E3AF
+		// (set) Token: 0x06000E68 RID: 3688 RVA: 0x000401B6 File Offset: 0x0003E3B6
 		public static ModelCamera instance { get; private set; }
 
-		// Token: 0x060011AB RID: 4523 RVA: 0x00057936 File Offset: 0x00055B36
+		// Token: 0x06000E69 RID: 3689 RVA: 0x000401BE File Offset: 0x0003E3BE
 		private void OnEnable()
 		{
 			if (ModelCamera.instance && ModelCamera.instance != this)
@@ -27,7 +27,7 @@ namespace RoR2
 			ModelCamera.instance = this;
 		}
 
-		// Token: 0x060011AC RID: 4524 RVA: 0x00057976 File Offset: 0x00055B76
+		// Token: 0x06000E6A RID: 3690 RVA: 0x000401FE File Offset: 0x0003E3FE
 		private void OnDisable()
 		{
 			if (ModelCamera.instance == this)
@@ -36,12 +36,12 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000187 RID: 391
-		// (get) Token: 0x060011AD RID: 4525 RVA: 0x0005798B File Offset: 0x00055B8B
-		// (set) Token: 0x060011AE RID: 4526 RVA: 0x00057993 File Offset: 0x00055B93
+		// Token: 0x170001CE RID: 462
+		// (get) Token: 0x06000E6B RID: 3691 RVA: 0x00040213 File Offset: 0x0003E413
+		// (set) Token: 0x06000E6C RID: 3692 RVA: 0x0004021B File Offset: 0x0003E41B
 		public Camera attachedCamera { get; private set; }
 
-		// Token: 0x060011AF RID: 4527 RVA: 0x0005799C File Offset: 0x00055B9C
+		// Token: 0x06000E6D RID: 3693 RVA: 0x00040224 File Offset: 0x0003E424
 		private void Awake()
 		{
 			this.attachedCamera = base.GetComponent<Camera>();
@@ -50,7 +50,7 @@ namespace RoR2
 			UnityEngine.Object.Destroy(base.GetComponent<AkAudioListener>());
 		}
 
-		// Token: 0x060011B0 RID: 4528 RVA: 0x000579EC File Offset: 0x00055BEC
+		// Token: 0x06000E6E RID: 3694 RVA: 0x00040274 File Offset: 0x0003E474
 		private static void PrepareObjectForRendering(Transform objTransform, List<ModelCamera.ObjectRestoreInfo> objectRestorationList)
 		{
 			GameObject gameObject = objTransform.gameObject;
@@ -67,7 +67,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060011B1 RID: 4529 RVA: 0x00057A54 File Offset: 0x00055C54
+		// Token: 0x06000E6F RID: 3695 RVA: 0x000402DC File Offset: 0x0003E4DC
 		public void RenderItem(GameObject obj, RenderTexture targetTexture)
 		{
 			for (int i = 0; i < this.lights.Count; i++)
@@ -94,35 +94,35 @@ namespace RoR2
 			renderSettingsState.Apply();
 		}
 
-		// Token: 0x060011B2 RID: 4530 RVA: 0x00057B44 File Offset: 0x00055D44
+		// Token: 0x06000E70 RID: 3696 RVA: 0x000403CC File Offset: 0x0003E5CC
 		public void AddLight(Light light)
 		{
 			this.lights.Add(light);
 		}
 
-		// Token: 0x060011B3 RID: 4531 RVA: 0x00057B52 File Offset: 0x00055D52
+		// Token: 0x06000E71 RID: 3697 RVA: 0x000403DA File Offset: 0x0003E5DA
 		public void RemoveLight(Light light)
 		{
 			this.lights.Remove(light);
 		}
 
-		// Token: 0x040015C6 RID: 5574
+		// Token: 0x04000E4E RID: 3662
 		[NonSerialized]
 		public RenderSettingsState renderSettings;
 
-		// Token: 0x040015C8 RID: 5576
+		// Token: 0x04000E50 RID: 3664
 		public Color ambientLight;
 
-		// Token: 0x040015CA RID: 5578
+		// Token: 0x04000E52 RID: 3666
 		private readonly List<Light> lights = new List<Light>();
 
-		// Token: 0x0200035D RID: 861
+		// Token: 0x02000289 RID: 649
 		private struct ObjectRestoreInfo
 		{
-			// Token: 0x040015CB RID: 5579
+			// Token: 0x04000E53 RID: 3667
 			public GameObject obj;
 
-			// Token: 0x040015CC RID: 5580
+			// Token: 0x04000E54 RID: 3668
 			public int layer;
 		}
 	}

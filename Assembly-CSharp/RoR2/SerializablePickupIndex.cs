@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000468 RID: 1128
+	// Token: 0x020003E3 RID: 995
 	[Serializable]
 	public struct SerializablePickupIndex
 	{
-		// Token: 0x06001946 RID: 6470 RVA: 0x0007921B File Offset: 0x0007741B
+		// Token: 0x0600183F RID: 6207 RVA: 0x00068FB2 File Offset: 0x000671B2
 		public static explicit operator PickupIndex(SerializablePickupIndex serializablePickupIndex)
 		{
-			return PickupIndex.Find(serializablePickupIndex.pickupName);
+			return PickupCatalog.FindPickupIndex(serializablePickupIndex.pickupName);
 		}
 
-		// Token: 0x04001CBA RID: 7354
+		// Token: 0x040016CE RID: 5838
 		[SerializeField]
 		public string pickupName;
 	}

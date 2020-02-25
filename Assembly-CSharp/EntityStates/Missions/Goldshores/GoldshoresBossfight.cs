@@ -6,142 +6,182 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Missions.Goldshores
 {
-	// Token: 0x02000103 RID: 259
+	// Token: 0x020007BA RID: 1978
 	public class GoldshoresBossfight : EntityState
 	{
-		// Token: 0x060004FF RID: 1279 RVA: 0x000150C3 File Offset: 0x000132C3
+		// Token: 0x06002D2F RID: 11567 RVA: 0x000BEC86 File Offset: 0x000BCE86
 		public override void OnEnter()
 		{
 			base.OnEnter();
+			this.missionController = base.GetComponent<GoldshoresMissionController>();
+			this.bossInvulnerabilityStartTime = Run.FixedTimeStamp.negativeInfinity;
 		}
 
-		// Token: 0x06000500 RID: 1280 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002D30 RID: 11568 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000501 RID: 1281 RVA: 0x000150CB File Offset: 0x000132CB
-		private void AddImmunityBuff()
-		{
-			if (this.bossInstanceBody)
-			{
-				this.bossInstanceBody.AddBuff(BuffIndex.Immune);
-			}
-		}
-
-		// Token: 0x06000502 RID: 1282 RVA: 0x000150E7 File Offset: 0x000132E7
-		private void RemoveImmunityBuff()
-		{
-			if (this.bossInstanceBody)
-			{
-				this.bossInstanceBody.RemoveBuff(BuffIndex.Immune);
-			}
-		}
-
-		// Token: 0x06000503 RID: 1283 RVA: 0x00015104 File Offset: 0x00013304
+		// Token: 0x06002D31 RID: 11569 RVA: 0x000BECA5 File Offset: 0x000BCEA5
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
-			this.stopwatch += Time.fixedDeltaTime;
-			this.shieldRemovalAge += Time.fixedDeltaTime;
 			if (NetworkServer.active)
 			{
-				if (GoldshoresMissionController.instance.beaconsActive == GoldshoresMissionController.instance.beaconsToSpawnOnMap && !this.shieldIsOff)
+				this.ServerFixedUpdate();
+			}
+		}
+
+		// Token: 0x1700042C RID: 1068
+		// (get) Token: 0x06002D32 RID: 11570 RVA: 0x000BECBA File Offset: 0x000BCEBA
+		private bool bossShouldBeInvulnerable
+		{
+			get
+			{
+				return this.missionController.beaconsActive < this.missionController.beaconsToSpawnOnMap;
+			}
+		}
+
+		// Token: 0x06002D33 RID: 11571 RVA: 0x000BECD4 File Offset: 0x000BCED4
+		private void SetBossImmunity(bool newBossImmunity)
+		{
+			if (!this.bossInstanceBody)
+			{
+				return;
+			}
+			if (newBossImmunity == this.bossImmunity)
+			{
+				return;
+			}
+			this.bossImmunity = newBossImmunity;
+			if (this.bossImmunity)
+			{
+				this.bossInstanceBody.AddBuff(BuffIndex.Immune);
+				return;
+			}
+			EffectManager.SpawnEffect(GoldshoresBossfight.shieldRemovalEffectPrefab, new EffectData
+			{
+				origin = this.bossInstanceBody.coreTransform.position
+			}, true);
+			this.bossInstanceBody.RemoveBuff(BuffIndex.Immune);
+		}
+
+		// Token: 0x06002D34 RID: 11572 RVA: 0x000BED4C File Offset: 0x000BCF4C
+		private void ExtinguishBeacons()
+		{
+			foreach (GameObject gameObject in this.missionController.beaconInstanceList)
+			{
+				gameObject.GetComponent<EntityStateMachine>().SetNextState(new NotReady());
+			}
+		}
+
+		// Token: 0x06002D35 RID: 11573 RVA: 0x000BEDAC File Offset: 0x000BCFAC
+		private void ServerFixedUpdate()
+		{
+			if (base.fixedAge >= GoldshoresBossfight.transitionDuration)
+			{
+				this.missionController.ExitTransitionIntoBossfight();
+				if (!this.hasSpawnedBoss)
 				{
-					EffectManager.instance.SpawnEffect(GoldshoresBossfight.shieldRemovalEffectPrefab, new EffectData
-					{
-						origin = this.bossInstanceBody.coreTransform.position
-					}, true);
-					this.RemoveImmunityBuff();
-					this.shieldRemovalAge = 0f;
-					this.shieldIsOff = true;
+					this.SpawnBoss();
 				}
-				if (this.shieldRemovalAge >= GoldshoresBossfight.shieldRemovalDuration && this.shieldIsOff)
+				else if (this.scriptedCombatEncounter.combatSquad.readOnlyMembersList.Count == 0)
 				{
-					this.shieldIsOff = false;
-					foreach (GameObject gameObject in GoldshoresMissionController.instance.beaconInstanceList)
+					this.outer.SetNextState(new Exit());
+					if (this.serverCycleCount < 1)
 					{
-						gameObject.GetComponent<EntityStateMachine>().SetNextState(new NotReady());
-					}
-					this.AddImmunityBuff();
-				}
-				if (this.stopwatch >= GoldshoresBossfight.transitionDuration)
-				{
-					GoldshoresMissionController.instance.ExitTransitionIntoBossfight();
-					if (!this.hasSpawnedBoss)
-					{
-						Vector3 zero = Vector3.zero;
-						this.hasSpawnedBoss = true;
-						DirectorPlacementRule placementRule = new DirectorPlacementRule
+						Action action = GoldshoresBossfight.onOneCycleGoldTitanKill;
+						if (action == null)
 						{
-							placementMode = DirectorPlacementRule.PlacementMode.NearestNode,
-							minDistance = 0f,
-							maxDistance = 1000f,
-							position = zero
-						};
-						GameObject gameObject2 = DirectorCore.instance.TrySpawnObject(Resources.Load<SpawnCard>("SpawnCards/CharacterSpawnCards/cscTitanGold"), placementRule, GoldshoresMissionController.instance.rng);
-						if (gameObject2)
-						{
-							float num = 1f;
-							float num2 = 1f;
-							CharacterMaster component = gameObject2.GetComponent<CharacterMaster>();
-							this.bossInstanceBody = component.GetBody();
-							if (!this.bossGroup)
-							{
-								GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkedObjects/BossGroup"));
-								NetworkServer.Spawn(gameObject3);
-								this.bossGroup = gameObject3.GetComponent<BossGroup>();
-								this.bossGroup.dropPosition = GoldshoresMissionController.instance.bossSpawnPosition;
-							}
-							this.AddImmunityBuff();
-							num2 += Run.instance.difficultyCoefficient / 8f;
-							num += Run.instance.difficultyCoefficient / 2f;
-							int livingPlayerCount = Run.instance.livingPlayerCount;
-							num *= Mathf.Pow((float)livingPlayerCount, 0.5f);
-							component.inventory.GiveItem(ItemIndex.BoostHp, Mathf.RoundToInt((num - 1f) * 10f));
-							component.inventory.GiveItem(ItemIndex.BoostDamage, Mathf.RoundToInt((num2 - 1f) * 10f));
-							this.bossGroup.bossDropChance = 1f;
-							this.bossGroup.AddMember(component);
 							return;
 						}
+						action();
 					}
-					else if (this.bossGroup.readOnlyMembersList.Count == 0)
+					return;
+				}
+			}
+			if (this.bossInstanceBody)
+			{
+				if (!this.bossImmunity)
+				{
+					if (this.bossInvulnerabilityStartTime.hasPassed)
 					{
-						this.outer.SetNextState(new Exit());
+						this.ExtinguishBeacons();
+						this.SetBossImmunity(true);
+						this.serverCycleCount++;
+						return;
 					}
+				}
+				else if (this.missionController.beaconsActive >= this.missionController.beaconsToSpawnOnMap)
+				{
+					this.SetBossImmunity(false);
+					this.bossInvulnerabilityStartTime = Run.FixedTimeStamp.now + GoldshoresBossfight.shieldRemovalDuration;
 				}
 			}
 		}
 
-		// Token: 0x040004DB RID: 1243
+		// Token: 0x06002D36 RID: 11574 RVA: 0x000BEE98 File Offset: 0x000BD098
+		private void SpawnBoss()
+		{
+			if (this.hasSpawnedBoss)
+			{
+				return;
+			}
+			if (!this.scriptedCombatEncounter)
+			{
+				this.scriptedCombatEncounter = UnityEngine.Object.Instantiate<GameObject>(GoldshoresBossfight.combatEncounterPrefab).GetComponent<ScriptedCombatEncounter>();
+				this.scriptedCombatEncounter.GetComponent<BossGroup>().dropPosition = this.missionController.bossSpawnPosition;
+				NetworkServer.Spawn(this.scriptedCombatEncounter.gameObject);
+			}
+			this.scriptedCombatEncounter.BeginEncounter();
+			this.hasSpawnedBoss = this.scriptedCombatEncounter.hasSpawnedServer;
+			if (this.hasSpawnedBoss)
+			{
+				this.bossInstanceBody = this.scriptedCombatEncounter.combatSquad.readOnlyMembersList[0].GetBody();
+				this.SetBossImmunity(true);
+			}
+		}
+
+		// Token: 0x1400008D RID: 141
+		// (add) Token: 0x06002D37 RID: 11575 RVA: 0x000BEF48 File Offset: 0x000BD148
+		// (remove) Token: 0x06002D38 RID: 11576 RVA: 0x000BEF7C File Offset: 0x000BD17C
+		public static event Action onOneCycleGoldTitanKill;
+
+		// Token: 0x0400296E RID: 10606
+		private GoldshoresMissionController missionController;
+
+		// Token: 0x0400296F RID: 10607
 		public static float shieldRemovalDuration;
 
-		// Token: 0x040004DC RID: 1244
+		// Token: 0x04002970 RID: 10608
 		public static GameObject shieldRemovalEffectPrefab;
 
-		// Token: 0x040004DD RID: 1245
+		// Token: 0x04002971 RID: 10609
 		public static GameObject shieldRegenerationEffectPrefab;
 
-		// Token: 0x040004DE RID: 1246
+		// Token: 0x04002972 RID: 10610
+		public static GameObject combatEncounterPrefab;
+
+		// Token: 0x04002973 RID: 10611
 		private static float transitionDuration = 3f;
 
-		// Token: 0x040004DF RID: 1247
-		private float stopwatch;
-
-		// Token: 0x040004E0 RID: 1248
+		// Token: 0x04002974 RID: 10612
 		private bool hasSpawnedBoss;
 
-		// Token: 0x040004E1 RID: 1249
-		private BossGroup bossGroup;
-
-		// Token: 0x040004E2 RID: 1250
+		// Token: 0x04002975 RID: 10613
 		private CharacterBody bossInstanceBody;
 
-		// Token: 0x040004E3 RID: 1251
-		private float shieldRemovalAge;
+		// Token: 0x04002976 RID: 10614
+		private int serverCycleCount;
 
-		// Token: 0x040004E4 RID: 1252
-		private bool shieldIsOff;
+		// Token: 0x04002977 RID: 10615
+		private Run.FixedTimeStamp bossInvulnerabilityStartTime;
+
+		// Token: 0x04002978 RID: 10616
+		private ScriptedCombatEncounter scriptedCombatEncounter;
+
+		// Token: 0x04002979 RID: 10617
+		private bool bossImmunity;
 	}
 }

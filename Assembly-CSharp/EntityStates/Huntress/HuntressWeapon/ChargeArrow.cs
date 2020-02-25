@@ -4,13 +4,14 @@ using System.Linq;
 using RoR2;
 using RoR2.Orbs;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace EntityStates.Huntress.HuntressWeapon
 {
-	// Token: 0x02000151 RID: 337
-	internal class ChargeArrow : BaseState
+	// Token: 0x02000833 RID: 2099
+	public class ChargeArrow : BaseState
 	{
-		// Token: 0x0600067D RID: 1661 RVA: 0x0001EACC File Offset: 0x0001CCCC
+		// Token: 0x06002F7E RID: 12158 RVA: 0x000CB1A0 File Offset: 0x000C93A0
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -31,7 +32,7 @@ namespace EntityStates.Huntress.HuntressWeapon
 			}
 		}
 
-		// Token: 0x0600067E RID: 1662 RVA: 0x0001EB7C File Offset: 0x0001CD7C
+		// Token: 0x06002F7F RID: 12159 RVA: 0x000CB250 File Offset: 0x000C9450
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -43,10 +44,10 @@ namespace EntityStates.Huntress.HuntressWeapon
 			}
 		}
 
-		// Token: 0x0600067F RID: 1663 RVA: 0x0001EBC8 File Offset: 0x0001CDC8
+		// Token: 0x06002F80 RID: 12160 RVA: 0x000CB29C File Offset: 0x000C949C
 		private void FireOrbArrow()
 		{
-			if (!base.isServer)
+			if (!NetworkServer.active)
 			{
 				return;
 			}
@@ -72,7 +73,7 @@ namespace EntityStates.Huntress.HuntressWeapon
 			if (hurtBox)
 			{
 				Transform transform = this.childLocator.FindChild(this.muzzleString).transform;
-				EffectManager.instance.SimpleMuzzleFlash(ChargeArrow.muzzleflashEffectPrefab, base.gameObject, this.muzzleString, true);
+				EffectManager.SimpleMuzzleFlash(ChargeArrow.muzzleflashEffectPrefab, base.gameObject, this.muzzleString, true);
 				arrowOrb.origin = transform.position;
 				arrowOrb.target = hurtBox;
 				base.PlayAnimation("Gesture, Override", "FireSeekingArrow");
@@ -81,7 +82,7 @@ namespace EntityStates.Huntress.HuntressWeapon
 			}
 		}
 
-		// Token: 0x06000680 RID: 1664 RVA: 0x0001ED58 File Offset: 0x0001CF58
+		// Token: 0x06002F81 RID: 12161 RVA: 0x000CB424 File Offset: 0x000C9624
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -99,7 +100,7 @@ namespace EntityStates.Huntress.HuntressWeapon
 				float damageCoefficient = Mathf.Lerp(ChargeArrow.minArrowDamageCoefficient, ChargeArrow.maxArrowDamageCoefficient, (float)this.charge);
 				if (this.lastCharge < this.charge && this.charge == ChargeArrow.maxCharges)
 				{
-					EffectManager.instance.SimpleMuzzleFlash(ChargeArrow.chargeEffectPrefab, base.gameObject, this.muzzleString, false);
+					EffectManager.SimpleMuzzleFlash(ChargeArrow.chargeEffectPrefab, base.gameObject, this.muzzleString, false);
 				}
 				if ((this.stopwatch >= this.totalDuration || !base.inputBank || !base.inputBank.skill1.down) && base.isAuthority)
 				{
@@ -125,97 +126,97 @@ namespace EntityStates.Huntress.HuntressWeapon
 			}
 		}
 
-		// Token: 0x06000681 RID: 1665 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002F82 RID: 12162 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x040007CC RID: 1996
+		// Token: 0x04002D12 RID: 11538
 		public static float baseTotalDuration;
 
-		// Token: 0x040007CD RID: 1997
+		// Token: 0x04002D13 RID: 11539
 		public static float baseMaxChargeTime;
 
-		// Token: 0x040007CE RID: 1998
+		// Token: 0x04002D14 RID: 11540
 		public static int maxCharges;
 
-		// Token: 0x040007CF RID: 1999
+		// Token: 0x04002D15 RID: 11541
 		public static GameObject chargeEffectPrefab;
 
-		// Token: 0x040007D0 RID: 2000
+		// Token: 0x04002D16 RID: 11542
 		public static GameObject muzzleflashEffectPrefab;
 
-		// Token: 0x040007D1 RID: 2001
+		// Token: 0x04002D17 RID: 11543
 		public static string chargeStockSoundString;
 
-		// Token: 0x040007D2 RID: 2002
+		// Token: 0x04002D18 RID: 11544
 		public static string chargeLoopStartSoundString;
 
-		// Token: 0x040007D3 RID: 2003
+		// Token: 0x04002D19 RID: 11545
 		public static string chargeLoopStopSoundString;
 
-		// Token: 0x040007D4 RID: 2004
+		// Token: 0x04002D1A RID: 11546
 		public static float minBonusBloom;
 
-		// Token: 0x040007D5 RID: 2005
+		// Token: 0x04002D1B RID: 11547
 		public static float maxBonusBloom;
 
-		// Token: 0x040007D6 RID: 2006
+		// Token: 0x04002D1C RID: 11548
 		public static float minArrowDamageCoefficient;
 
-		// Token: 0x040007D7 RID: 2007
+		// Token: 0x04002D1D RID: 11549
 		public static float maxArrowDamageCoefficient;
 
-		// Token: 0x040007D8 RID: 2008
+		// Token: 0x04002D1E RID: 11550
 		public static float orbDamageCoefficient;
 
-		// Token: 0x040007D9 RID: 2009
+		// Token: 0x04002D1F RID: 11551
 		public static float orbRange;
 
-		// Token: 0x040007DA RID: 2010
+		// Token: 0x04002D20 RID: 11552
 		public static float orbFrequency;
 
-		// Token: 0x040007DB RID: 2011
+		// Token: 0x04002D21 RID: 11553
 		public static float orbProcCoefficient;
 
-		// Token: 0x040007DC RID: 2012
+		// Token: 0x04002D22 RID: 11554
 		private float stopwatch;
 
-		// Token: 0x040007DD RID: 2013
+		// Token: 0x04002D23 RID: 11555
 		private GameObject chargeLeftInstance;
 
-		// Token: 0x040007DE RID: 2014
+		// Token: 0x04002D24 RID: 11556
 		private GameObject chargeRightInstance;
 
-		// Token: 0x040007DF RID: 2015
+		// Token: 0x04002D25 RID: 11557
 		private Animator animator;
 
-		// Token: 0x040007E0 RID: 2016
+		// Token: 0x04002D26 RID: 11558
 		private int charge;
 
-		// Token: 0x040007E1 RID: 2017
+		// Token: 0x04002D27 RID: 11559
 		private int lastCharge;
 
-		// Token: 0x040007E2 RID: 2018
+		// Token: 0x04002D28 RID: 11560
 		private ChildLocator childLocator;
 
-		// Token: 0x040007E3 RID: 2019
+		// Token: 0x04002D29 RID: 11561
 		private float totalDuration;
 
-		// Token: 0x040007E4 RID: 2020
+		// Token: 0x04002D2A RID: 11562
 		private float maxChargeTime;
 
-		// Token: 0x040007E5 RID: 2021
+		// Token: 0x04002D2B RID: 11563
 		private bool cachedSprinting;
 
-		// Token: 0x040007E6 RID: 2022
+		// Token: 0x04002D2C RID: 11564
 		private float originalMinYaw;
 
-		// Token: 0x040007E7 RID: 2023
+		// Token: 0x04002D2D RID: 11565
 		private float originalMaxYaw;
 
-		// Token: 0x040007E8 RID: 2024
+		// Token: 0x04002D2E RID: 11566
 		private string muzzleString;
 	}
 }

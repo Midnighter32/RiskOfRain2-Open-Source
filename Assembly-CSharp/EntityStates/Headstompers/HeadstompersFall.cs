@@ -5,13 +5,14 @@ using UnityEngine;
 
 namespace EntityStates.Headstompers
 {
-	// Token: 0x02000160 RID: 352
+	// Token: 0x02000842 RID: 2114
 	public class HeadstompersFall : BaseHeadstompersState
 	{
-		// Token: 0x060006D2 RID: 1746 RVA: 0x00020868 File Offset: 0x0001EA68
+		// Token: 0x06002FD7 RID: 12247 RVA: 0x000CCF68 File Offset: 0x000CB168
 		public override void OnEnter()
 		{
 			base.OnEnter();
+			this.highestFallSpeed = 0f;
 			if (base.isAuthority)
 			{
 				if (this.body)
@@ -50,7 +51,7 @@ namespace EntityStates.Headstompers
 			}
 		}
 
-		// Token: 0x060006D3 RID: 1747 RVA: 0x0002095C File Offset: 0x0001EB5C
+		// Token: 0x06002FD8 RID: 12248 RVA: 0x000CD064 File Offset: 0x000CB264
 		private void SetOnHitGroundProvider(CharacterMotor newOnHitGroundProvider)
 		{
 			if (this.onHitGroundProvider != null)
@@ -64,20 +65,21 @@ namespace EntityStates.Headstompers
 			}
 		}
 
-		// Token: 0x060006D4 RID: 1748 RVA: 0x000209AE File Offset: 0x0001EBAE
+		// Token: 0x06002FD9 RID: 12249 RVA: 0x000CD0B6 File Offset: 0x000CB2B6
 		public override void OnExit()
 		{
 			this.SetOnHitGroundProvider(null);
 			base.OnExit();
 		}
 
-		// Token: 0x060006D5 RID: 1749 RVA: 0x000209BD File Offset: 0x0001EBBD
+		// Token: 0x06002FDA RID: 12250 RVA: 0x000CD0C5 File Offset: 0x000CB2C5
 		private void OnMotorHitGround(ref CharacterMotor.HitGroundInfo hitGroundInfo)
 		{
-			this.OnHitGround(-hitGroundInfo.velocity.y, hitGroundInfo.position);
+			this.highestFallSpeed = Mathf.Max(this.highestFallSpeed, -hitGroundInfo.velocity.y);
+			this.OnHitGround(this.highestFallSpeed, hitGroundInfo.position);
 		}
 
-		// Token: 0x060006D6 RID: 1750 RVA: 0x000209D7 File Offset: 0x0001EBD7
+		// Token: 0x06002FDB RID: 12251 RVA: 0x000CD0F6 File Offset: 0x000CB2F6
 		private void OnHitGround(float impactSpeed, Vector3 position)
 		{
 			this.outer.SetNextState(new HeadstompersCooldown
@@ -88,17 +90,17 @@ namespace EntityStates.Headstompers
 			this.SetOnHitGroundProvider(null);
 		}
 
-		// Token: 0x060006D7 RID: 1751 RVA: 0x00020A00 File Offset: 0x0001EC00
+		// Token: 0x06002FDC RID: 12252 RVA: 0x000CD120 File Offset: 0x000CB320
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
 			if (base.isAuthority)
 			{
+				this.highestFallSpeed = Mathf.Max(this.highestFallSpeed, this.bodyMotor ? (-this.bodyMotor.velocity.y) : 0f);
 				this.stopwatch += Time.deltaTime;
 				if (base.isGrounded)
 				{
-					float impactSpeed = this.bodyMotor ? (-this.bodyMotor.velocity.y) : 0f;
-					this.OnHitGround(impactSpeed, this.body ? this.body.footPosition : base.gameObject.transform.position);
+					this.OnHitGround(this.highestFallSpeed, this.body ? this.body.footPosition : base.gameObject.transform.position);
 					return;
 				}
 				if (this.stopwatch >= HeadstompersFall.maxFallDuration)
@@ -139,34 +141,37 @@ namespace EntityStates.Headstompers
 			}
 		}
 
-		// Token: 0x04000862 RID: 2146
+		// Token: 0x04002DA8 RID: 11688
 		private float stopwatch;
 
-		// Token: 0x04000863 RID: 2147
+		// Token: 0x04002DA9 RID: 11689
 		public static float maxFallDuration = 0f;
 
-		// Token: 0x04000864 RID: 2148
+		// Token: 0x04002DAA RID: 11690
 		public static float fallSpeed = 30f;
 
-		// Token: 0x04000865 RID: 2149
+		// Token: 0x04002DAB RID: 11691
 		public static float accelerationY = 40f;
 
-		// Token: 0x04000866 RID: 2150
+		// Token: 0x04002DAC RID: 11692
 		public static float seekCone = 20f;
 
-		// Token: 0x04000867 RID: 2151
+		// Token: 0x04002DAD RID: 11693
 		public static float springboardSpeed = 30f;
 
-		// Token: 0x04000868 RID: 2152
+		// Token: 0x04002DAE RID: 11694
 		private Transform seekTransform;
 
-		// Token: 0x04000869 RID: 2153
+		// Token: 0x04002DAF RID: 11695
 		private GameObject seekBodyObject;
 
-		// Token: 0x0400086A RID: 2154
+		// Token: 0x04002DB0 RID: 11696
 		private bool seekLost;
 
-		// Token: 0x0400086B RID: 2155
+		// Token: 0x04002DB1 RID: 11697
 		private CharacterMotor onHitGroundProvider;
+
+		// Token: 0x04002DB2 RID: 11698
+		private float highestFallSpeed;
 	}
 }

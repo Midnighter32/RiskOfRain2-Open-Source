@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000348 RID: 840
+	// Token: 0x0200026E RID: 622
 	internal class LaserPointerController : MonoBehaviour
 	{
-		// Token: 0x0600116D RID: 4461 RVA: 0x00056968 File Offset: 0x00054B68
+		// Token: 0x06000DCD RID: 3533 RVA: 0x0003DFAC File Offset: 0x0003C1AC
 		private void LateUpdate()
 		{
 			bool enabled = false;
@@ -32,16 +32,16 @@ namespace RoR2
 			this.beam.enabled = enabled;
 		}
 
-		// Token: 0x04001575 RID: 5493
+		// Token: 0x04000DD1 RID: 3537
 		public InputBankTest source;
 
-		// Token: 0x04001576 RID: 5494
+		// Token: 0x04000DD2 RID: 3538
 		public GameObject dotObject;
 
-		// Token: 0x04001577 RID: 5495
+		// Token: 0x04000DD3 RID: 3539
 		public LineRenderer beam;
 
-		// Token: 0x04001578 RID: 5496
+		// Token: 0x04000DD4 RID: 3540
 		public float minDistanceFromStart = 4f;
 	}
 }

@@ -1,31 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
 using RoR2.Stats;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x0200039D RID: 925
+	// Token: 0x020002DA RID: 730
 	[RequireComponent(typeof(Highlight))]
-	public class PurchaseInteraction : NetworkBehaviour, IInteractable, IHologramContentProvider, IDisplayNameProvider
+	public sealed class PurchaseInteraction : NetworkBehaviour, IInteractable, IHologramContentProvider, IDisplayNameProvider
 	{
-		// Token: 0x06001381 RID: 4993 RVA: 0x0005F3DC File Offset: 0x0005D5DC
+		// Token: 0x060010A6 RID: 4262 RVA: 0x00049090 File Offset: 0x00047290
 		private void Awake()
 		{
-			if (this.automaticallyScaleCostWithDifficulty)
-			{
-				this.Networkcost = Run.instance.GetDifficultyScaledCost(this.cost);
-			}
 			if (NetworkServer.active)
 			{
+				if (this.automaticallyScaleCostWithDifficulty)
+				{
+					this.Networkcost = Run.instance.GetDifficultyScaledCost(this.cost);
+				}
 				this.rng = new Xoroshiro128Plus(Run.instance.treasureRng.nextUlong);
 			}
 		}
 
-		// Token: 0x06001382 RID: 4994 RVA: 0x0005F428 File Offset: 0x0005D628
+		// Token: 0x060010A7 RID: 4263 RVA: 0x000490DC File Offset: 0x000472DC
 		[Server]
 		public void SetAvailable(bool newAvailable)
 		{
@@ -37,7 +38,7 @@ namespace RoR2
 			this.Networkavailable = newAvailable;
 		}
 
-		// Token: 0x06001383 RID: 4995 RVA: 0x0005F446 File Offset: 0x0005D646
+		// Token: 0x060010A8 RID: 4264 RVA: 0x000490FA File Offset: 0x000472FA
 		[Server]
 		public void SetUnavailableTemporarily(float time)
 		{
@@ -50,43 +51,19 @@ namespace RoR2
 			base.Invoke("SetAvailableTrue", time);
 		}
 
-		// Token: 0x06001384 RID: 4996 RVA: 0x0005F470 File Offset: 0x0005D670
+		// Token: 0x060010A9 RID: 4265 RVA: 0x00049124 File Offset: 0x00047324
 		private void SetAvailableTrue()
 		{
 			this.Networkavailable = true;
 		}
 
-		// Token: 0x06001385 RID: 4997 RVA: 0x0005F479 File Offset: 0x0005D679
+		// Token: 0x060010AA RID: 4266 RVA: 0x0004912D File Offset: 0x0004732D
 		public string GetDisplayName()
 		{
 			return Language.GetString(this.displayNameToken);
 		}
 
-		// Token: 0x06001386 RID: 4998 RVA: 0x0005F488 File Offset: 0x0005D688
-		private string GetCostString()
-		{
-			switch (this.costType)
-			{
-			case CostType.None:
-				return "";
-			case CostType.Money:
-				return string.Format(" (<nobr><style=cShrine>${0}</style></nobr>)", this.cost);
-			case CostType.PercentHealth:
-				return string.Format(" (<nobr><style=cDeath>{0}% HP</style></nobr>)", this.cost);
-			case CostType.Lunar:
-				return string.Format(" (<nobr><color=#{1}>{0}</color></nobr>)", this.cost, ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.LunarCoin));
-			case CostType.WhiteItem:
-				return string.Format(" <nobr>(<nobr><color=#{1}>{0} Items</color></nobr>)", this.cost, ColorCatalog.GetColorHexString(PurchaseInteraction.CostTypeToColorIndex(this.costType)));
-			case CostType.GreenItem:
-				return string.Format(" <nobr>(<nobr><color=#{1}>{0} Items</color></nobr>)", this.cost, ColorCatalog.GetColorHexString(PurchaseInteraction.CostTypeToColorIndex(this.costType)));
-			case CostType.RedItem:
-				return string.Format(" <nobr>(<nobr><color=#{1}>{0} Items</color></nobr>)", this.cost, ColorCatalog.GetColorHexString(PurchaseInteraction.CostTypeToColorIndex(this.costType)));
-			default:
-				return "";
-			}
-		}
-
-		// Token: 0x06001387 RID: 4999 RVA: 0x0005F58C File Offset: 0x0005D78C
+		// Token: 0x060010AB RID: 4267 RVA: 0x0004913C File Offset: 0x0004733C
 		private static bool ActivatorHasUnlockable(Interactor activator, string unlockableName)
 		{
 			NetworkUser networkUser = Util.LookUpBodyNetworkUser(activator.gameObject);
@@ -101,13 +78,21 @@ namespace RoR2
 			return true;
 		}
 
-		// Token: 0x06001388 RID: 5000 RVA: 0x0005F5C5 File Offset: 0x0005D7C5
+		// Token: 0x060010AC RID: 4268 RVA: 0x00049178 File Offset: 0x00047378
 		public string GetContextString(Interactor activator)
 		{
-			return Language.GetString(this.contextToken) + this.GetCostString();
+			PurchaseInteraction.sharedStringBuilder.Clear();
+			PurchaseInteraction.sharedStringBuilder.Append(Language.GetString(this.contextToken));
+			if (this.costType != CostTypeIndex.None)
+			{
+				PurchaseInteraction.sharedStringBuilder.Append(" <nobr>(");
+				CostTypeCatalog.GetCostTypeDef(this.costType).BuildCostStringStyled(this.cost, PurchaseInteraction.sharedStringBuilder, false, true);
+				PurchaseInteraction.sharedStringBuilder.Append(")</nobr>");
+			}
+			return PurchaseInteraction.sharedStringBuilder.ToString();
 		}
 
-		// Token: 0x06001389 RID: 5001 RVA: 0x0005F5E0 File Offset: 0x0005D7E0
+		// Token: 0x060010AD RID: 4269 RVA: 0x000491F8 File Offset: 0x000473F8
 		public Interactability GetInteractability(Interactor activator)
 		{
 			if (!string.IsNullOrEmpty(this.requiredUnlockable) && !PurchaseInteraction.ActivatorHasUnlockable(activator, this.requiredUnlockable))
@@ -125,95 +110,23 @@ namespace RoR2
 			return Interactability.Available;
 		}
 
-		// Token: 0x0600138A RID: 5002 RVA: 0x0005F62D File Offset: 0x0005D82D
-		public static ItemTier CostTypeToItemTier(CostType costType)
-		{
-			switch (costType)
-			{
-			case CostType.WhiteItem:
-				return ItemTier.Tier1;
-			case CostType.GreenItem:
-				return ItemTier.Tier2;
-			case CostType.RedItem:
-				return ItemTier.Tier3;
-			default:
-				return ItemTier.NoTier;
-			}
-		}
-
-		// Token: 0x0600138B RID: 5003 RVA: 0x0005F64C File Offset: 0x0005D84C
-		public static ColorCatalog.ColorIndex CostTypeToColorIndex(CostType costType)
-		{
-			switch (costType)
-			{
-			case CostType.WhiteItem:
-				return ColorCatalog.ColorIndex.Tier1Item;
-			case CostType.GreenItem:
-				return ColorCatalog.ColorIndex.Tier2Item;
-			case CostType.RedItem:
-				return ColorCatalog.ColorIndex.Tier3Item;
-			default:
-				return ColorCatalog.ColorIndex.Error;
-			}
-		}
-
-		// Token: 0x0600138C RID: 5004 RVA: 0x0005F66C File Offset: 0x0005D86C
+		// Token: 0x060010AE RID: 4270 RVA: 0x00049245 File Offset: 0x00047445
 		public bool CanBeAffordedByInteractor(Interactor activator)
 		{
-			switch (this.costType)
-			{
-			case CostType.None:
-				return true;
-			case CostType.Money:
-			{
-				CharacterBody component = activator.GetComponent<CharacterBody>();
-				if (component)
-				{
-					CharacterMaster master = component.master;
-					if (master)
-					{
-						return (ulong)master.money >= (ulong)((long)this.cost);
-					}
-				}
-				return false;
-			}
-			case CostType.PercentHealth:
-			{
-				HealthComponent component2 = activator.GetComponent<HealthComponent>();
-				return component2 && component2.health / component2.fullHealth * 100f >= (float)this.cost;
-			}
-			case CostType.Lunar:
-			{
-				NetworkUser networkUser = Util.LookUpBodyNetworkUser(activator.gameObject);
-				return networkUser && (ulong)networkUser.lunarCoins >= (ulong)((long)this.cost);
-			}
-			case CostType.WhiteItem:
-			case CostType.GreenItem:
-			case CostType.RedItem:
-			{
-				ItemTier itemTier = PurchaseInteraction.CostTypeToItemTier(this.costType);
-				CharacterBody component3 = activator.gameObject.GetComponent<CharacterBody>();
-				if (component3)
-				{
-					Inventory inventory = component3.inventory;
-					if (inventory)
-					{
-						return inventory.HasAtLeastXTotalItemsOfTier(itemTier, this.cost);
-					}
-				}
-				return false;
-			}
-			default:
-				return false;
-			}
+			return CostTypeCatalog.GetCostTypeDef(this.costType).IsAffordable(this.cost, activator);
 		}
 
-		// Token: 0x1400001D RID: 29
-		// (add) Token: 0x0600138D RID: 5005 RVA: 0x0005F784 File Offset: 0x0005D984
-		// (remove) Token: 0x0600138E RID: 5006 RVA: 0x0005F7B8 File Offset: 0x0005D9B8
+		// Token: 0x1400002E RID: 46
+		// (add) Token: 0x060010AF RID: 4271 RVA: 0x00049260 File Offset: 0x00047460
+		// (remove) Token: 0x060010B0 RID: 4272 RVA: 0x00049294 File Offset: 0x00047494
 		public static event Action<PurchaseInteraction, Interactor> onItemSpentOnPurchase;
 
-		// Token: 0x0600138F RID: 5007 RVA: 0x0005F7EC File Offset: 0x0005D9EC
+		// Token: 0x1400002F RID: 47
+		// (add) Token: 0x060010B1 RID: 4273 RVA: 0x000492C8 File Offset: 0x000474C8
+		// (remove) Token: 0x060010B2 RID: 4274 RVA: 0x000492FC File Offset: 0x000474FC
+		public static event Action<PurchaseInteraction, Interactor, EquipmentIndex> onEquipmentSpentOnPurchase;
+
+		// Token: 0x060010B3 RID: 4275 RVA: 0x00049330 File Offset: 0x00047530
 		public void OnInteractionBegin(Interactor activator)
 		{
 			if (!this.CanBeAffordedByInteractor(activator))
@@ -221,117 +134,33 @@ namespace RoR2
 				return;
 			}
 			CharacterBody component = activator.GetComponent<CharacterBody>();
-			switch (this.costType)
+			CostTypeDef costTypeDef = CostTypeCatalog.GetCostTypeDef(this.costType);
+			ItemIndex itemIndex = ItemIndex.None;
+			ShopTerminalBehavior component2 = base.GetComponent<ShopTerminalBehavior>();
+			if (component2)
 			{
-			case CostType.Money:
-				if (component)
+				itemIndex = component2.CurrentPickupIndex().itemIndex;
+			}
+			CostTypeDef.PayCostResults payCostResults = costTypeDef.PayCost(this.cost, activator, base.gameObject, this.rng, itemIndex);
+			foreach (ItemIndex itemIndex2 in payCostResults.itemsTaken)
+			{
+				PurchaseInteraction.CreateItemTakenOrb(component.corePosition, base.gameObject, itemIndex2);
+				if (itemIndex2 != itemIndex)
 				{
-					CharacterMaster master = component.master;
-					if (master)
+					Action<PurchaseInteraction, Interactor> action = PurchaseInteraction.onItemSpentOnPurchase;
+					if (action != null)
 					{
-						master.money -= (uint)this.cost;
+						action(this, activator);
 					}
 				}
-				break;
-			case CostType.PercentHealth:
-			{
-				HealthComponent component2 = activator.GetComponent<HealthComponent>();
-				if (component2)
-				{
-					float health = component2.health;
-					float num = component2.fullHealth * (float)this.cost / 100f;
-					if (health > num)
-					{
-						component2.TakeDamage(new DamageInfo
-						{
-							damage = num,
-							attacker = base.gameObject,
-							position = base.transform.position,
-							damageType = DamageType.BypassArmor
-						});
-					}
-				}
-				break;
 			}
-			case CostType.Lunar:
+			foreach (EquipmentIndex arg in payCostResults.equipmentTaken)
 			{
-				NetworkUser networkUser = Util.LookUpBodyNetworkUser(activator.gameObject);
-				if (networkUser)
+				Action<PurchaseInteraction, Interactor, EquipmentIndex> action2 = PurchaseInteraction.onEquipmentSpentOnPurchase;
+				if (action2 != null)
 				{
-					networkUser.DeductLunarCoins((uint)this.cost);
+					action2(this, activator, arg);
 				}
-				break;
-			}
-			case CostType.WhiteItem:
-			case CostType.GreenItem:
-			case CostType.RedItem:
-			{
-				ItemTier itemTier = PurchaseInteraction.CostTypeToItemTier(this.costType);
-				if (component)
-				{
-					Inventory inventory = component.inventory;
-					if (inventory)
-					{
-						ItemIndex itemIndex = ItemIndex.None;
-						ShopTerminalBehavior component3 = base.GetComponent<ShopTerminalBehavior>();
-						if (component3)
-						{
-							itemIndex = component3.CurrentPickupIndex().itemIndex;
-						}
-						WeightedSelection<ItemIndex> weightedSelection = new WeightedSelection<ItemIndex>(8);
-						foreach (ItemIndex itemIndex2 in ItemCatalog.allItems)
-						{
-							if (itemIndex2 != itemIndex)
-							{
-								int itemCount = inventory.GetItemCount(itemIndex2);
-								if (itemCount > 0 && ItemCatalog.GetItemDef(itemIndex2).tier == itemTier)
-								{
-									weightedSelection.AddChoice(itemIndex2, (float)itemCount);
-								}
-							}
-						}
-						List<ItemIndex> list = new List<ItemIndex>();
-						int num2 = 0;
-						while (weightedSelection.Count > 0 && num2 < this.cost)
-						{
-							int num3 = weightedSelection.EvaluteToChoiceIndex(this.rng.nextNormalizedFloat);
-							WeightedSelection<ItemIndex>.ChoiceInfo choice = weightedSelection.GetChoice(num3);
-							ItemIndex value = choice.value;
-							int num4 = (int)choice.weight;
-							num4--;
-							if (num4 <= 0)
-							{
-								weightedSelection.RemoveChoice(num3);
-							}
-							else
-							{
-								weightedSelection.ModifyChoiceWeight(num3, (float)num4);
-							}
-							list.Add(value);
-							num2++;
-						}
-						for (int i = num2; i < this.cost; i++)
-						{
-							list.Add(itemIndex);
-						}
-						for (int j = 0; j < list.Count; j++)
-						{
-							ItemIndex itemIndex3 = list[j];
-							PurchaseInteraction.CreateItemTakenOrb(component.corePosition, base.gameObject, itemIndex3);
-							inventory.RemoveItem(itemIndex3, 1);
-							if (itemIndex3 != itemIndex)
-							{
-								Action<PurchaseInteraction, Interactor> action = PurchaseInteraction.onItemSpentOnPurchase;
-								if (action != null)
-								{
-									action(this, activator);
-								}
-							}
-						}
-					}
-				}
-				break;
-			}
 			}
 			IEnumerable<StatDef> statDefsToIncrement = this.purchaseStatNames.Select(new Func<string, StatDef>(StatDef.Find));
 			StatManager.OnPurchase<IEnumerable<StatDef>>(component, this.costType, statDefsToIncrement);
@@ -339,9 +168,9 @@ namespace RoR2
 			this.lastActivator = activator;
 		}
 
-		// Token: 0x06001390 RID: 5008 RVA: 0x0005FB0C File Offset: 0x0005DD0C
+		// Token: 0x060010B4 RID: 4276 RVA: 0x0004948C File Offset: 0x0004768C
 		[Server]
-		private static void CreateItemTakenOrb(Vector3 effectOrigin, GameObject targetObject, ItemIndex itemIndex)
+		public static void CreateItemTakenOrb(Vector3 effectOrigin, GameObject targetObject, ItemIndex itemIndex)
 		{
 			if (!NetworkServer.active)
 			{
@@ -356,22 +185,22 @@ namespace RoR2
 				genericUInt = (uint)(itemIndex + 1)
 			};
 			effectData.SetNetworkedObjectReference(targetObject);
-			EffectManager.instance.SpawnEffect(effectPrefab, effectData, true);
+			EffectManager.SpawnEffect(effectPrefab, effectData, true);
 		}
 
-		// Token: 0x06001391 RID: 5009 RVA: 0x0005FB6E File Offset: 0x0005DD6E
+		// Token: 0x060010B5 RID: 4277 RVA: 0x000494E7 File Offset: 0x000476E7
 		public bool ShouldDisplayHologram(GameObject viewer)
 		{
 			return this.available;
 		}
 
-		// Token: 0x06001392 RID: 5010 RVA: 0x0003863B File Offset: 0x0003683B
+		// Token: 0x060010B6 RID: 4278 RVA: 0x0001A32B File Offset: 0x0001852B
 		public GameObject GetHologramContentPrefab()
 		{
 			return Resources.Load<GameObject>("Prefabs/CostHologramContent");
 		}
 
-		// Token: 0x06001393 RID: 5011 RVA: 0x0005FB78 File Offset: 0x0005DD78
+		// Token: 0x060010B7 RID: 4279 RVA: 0x000494F0 File Offset: 0x000476F0
 		public void UpdateHologramContent(GameObject hologramContentObject)
 		{
 			CostHologramContent component = hologramContentObject.GetComponent<CostHologramContent>();
@@ -382,75 +211,107 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001394 RID: 5012 RVA: 0x0000A1ED File Offset: 0x000083ED
+		// Token: 0x060010B8 RID: 4280 RVA: 0x0000AC89 File Offset: 0x00008E89
 		public bool ShouldIgnoreSpherecastForInteractibility(Interactor activator)
 		{
 			return false;
 		}
 
-		// Token: 0x06001395 RID: 5013 RVA: 0x0005FBAC File Offset: 0x0005DDAC
+		// Token: 0x060010B9 RID: 4281 RVA: 0x000494E7 File Offset: 0x000476E7
+		public bool ShouldShowOnScanner()
+		{
+			return this.available;
+		}
+
+		// Token: 0x060010BA RID: 4282 RVA: 0x00049524 File Offset: 0x00047724
 		private void OnEnable()
 		{
-			PurchaseInteraction.instancesList.Add(this);
+			InstanceTracker.Add<PurchaseInteraction>(this);
 		}
 
-		// Token: 0x06001396 RID: 5014 RVA: 0x0005FBB9 File Offset: 0x0005DDB9
+		// Token: 0x060010BB RID: 4283 RVA: 0x0004952C File Offset: 0x0004772C
 		private void OnDisable()
 		{
-			PurchaseInteraction.instancesList.Remove(this);
+			InstanceTracker.Remove<PurchaseInteraction>(this);
 		}
 
-		// Token: 0x06001399 RID: 5017 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060010BC RID: 4284 RVA: 0x00049534 File Offset: 0x00047734
+		[RuntimeInitializeOnLoadMethod]
+		private static void Init()
+		{
+			TeleporterInteraction.onTeleporterBeginChargingGlobal += PurchaseInteraction.OnTeleporterBeginCharging;
+		}
+
+		// Token: 0x060010BD RID: 4285 RVA: 0x00049548 File Offset: 0x00047748
+		private static void OnTeleporterBeginCharging(TeleporterInteraction teleporterInteraction)
+		{
+			if (NetworkServer.active)
+			{
+				foreach (PurchaseInteraction purchaseInteraction in InstanceTracker.GetInstancesList<PurchaseInteraction>())
+				{
+					if (purchaseInteraction.setUnavailableOnTeleporterActivated)
+					{
+						purchaseInteraction.SetAvailable(false);
+						purchaseInteraction.CancelInvoke("SetUnavailableTemporarily");
+					}
+				}
+			}
+		}
+
+		// Token: 0x060010C0 RID: 4288 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x170001B6 RID: 438
-		// (get) Token: 0x0600139A RID: 5018 RVA: 0x0005FBFC File Offset: 0x0005DDFC
-		// (set) Token: 0x0600139B RID: 5019 RVA: 0x0005FC0F File Offset: 0x0005DE0F
+		// Token: 0x1700020B RID: 523
+		// (get) Token: 0x060010C1 RID: 4289 RVA: 0x000495DC File Offset: 0x000477DC
+		// (set) Token: 0x060010C2 RID: 4290 RVA: 0x000495EF File Offset: 0x000477EF
 		public bool Networkavailable
 		{
 			get
 			{
 				return this.available;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<bool>(value, ref this.available, 1u);
+				base.SetSyncVar<bool>(value, ref this.available, 1U);
 			}
 		}
 
-		// Token: 0x170001B7 RID: 439
-		// (get) Token: 0x0600139C RID: 5020 RVA: 0x0005FC24 File Offset: 0x0005DE24
-		// (set) Token: 0x0600139D RID: 5021 RVA: 0x0005FC37 File Offset: 0x0005DE37
+		// Token: 0x1700020C RID: 524
+		// (get) Token: 0x060010C3 RID: 4291 RVA: 0x00049604 File Offset: 0x00047804
+		// (set) Token: 0x060010C4 RID: 4292 RVA: 0x00049617 File Offset: 0x00047817
 		public int Networkcost
 		{
 			get
 			{
 				return this.cost;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<int>(value, ref this.cost, 2u);
+				base.SetSyncVar<int>(value, ref this.cost, 2U);
 			}
 		}
 
-		// Token: 0x170001B8 RID: 440
-		// (get) Token: 0x0600139E RID: 5022 RVA: 0x0005FC4C File Offset: 0x0005DE4C
-		// (set) Token: 0x0600139F RID: 5023 RVA: 0x0005FC5F File Offset: 0x0005DE5F
+		// Token: 0x1700020D RID: 525
+		// (get) Token: 0x060010C5 RID: 4293 RVA: 0x0004962C File Offset: 0x0004782C
+		// (set) Token: 0x060010C6 RID: 4294 RVA: 0x0004963F File Offset: 0x0004783F
 		public GameObject NetworklockGameObject
 		{
 			get
 			{
 				return this.lockGameObject;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVarGameObject(value, ref this.lockGameObject, 4u, ref this.___lockGameObjectNetId);
+				base.SetSyncVarGameObject(value, ref this.lockGameObject, 4U, ref this.___lockGameObjectNetId);
 			}
 		}
 
-		// Token: 0x060013A0 RID: 5024 RVA: 0x0005FC7C File Offset: 0x0005DE7C
+		// Token: 0x060010C7 RID: 4295 RVA: 0x0004965C File Offset: 0x0004785C
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -461,7 +322,7 @@ namespace RoR2
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -470,7 +331,7 @@ namespace RoR2
 				}
 				writer.Write(this.available);
 			}
-			if ((base.syncVarDirtyBits & 2u) != 0u)
+			if ((base.syncVarDirtyBits & 2U) != 0U)
 			{
 				if (!flag)
 				{
@@ -479,7 +340,7 @@ namespace RoR2
 				}
 				writer.WritePackedUInt32((uint)this.cost);
 			}
-			if ((base.syncVarDirtyBits & 4u) != 0u)
+			if ((base.syncVarDirtyBits & 4U) != 0U)
 			{
 				if (!flag)
 				{
@@ -495,7 +356,7 @@ namespace RoR2
 			return flag;
 		}
 
-		// Token: 0x060013A1 RID: 5025 RVA: 0x0005FD68 File Offset: 0x0005DF68
+		// Token: 0x060010C8 RID: 4296 RVA: 0x00049748 File Offset: 0x00047948
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -520,7 +381,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060013A2 RID: 5026 RVA: 0x0005FDF3 File Offset: 0x0005DFF3
+		// Token: 0x060010C9 RID: 4297 RVA: 0x000497D3 File Offset: 0x000479D3
 		public override void PreStartClient()
 		{
 			if (!this.___lockGameObjectNetId.IsEmpty())
@@ -529,57 +390,57 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0400173A RID: 5946
-		private static readonly List<PurchaseInteraction> instancesList = new List<PurchaseInteraction>();
-
-		// Token: 0x0400173B RID: 5947
-		public static readonly ReadOnlyCollection<PurchaseInteraction> readOnlyInstancesList = PurchaseInteraction.instancesList.AsReadOnly();
-
-		// Token: 0x0400173C RID: 5948
+		// Token: 0x04001008 RID: 4104
 		public string displayNameToken;
 
-		// Token: 0x0400173D RID: 5949
+		// Token: 0x04001009 RID: 4105
 		public string contextToken;
 
-		// Token: 0x0400173E RID: 5950
-		public CostType costType;
+		// Token: 0x0400100A RID: 4106
+		public CostTypeIndex costType;
 
-		// Token: 0x0400173F RID: 5951
+		// Token: 0x0400100B RID: 4107
 		[SyncVar]
 		public bool available = true;
 
-		// Token: 0x04001740 RID: 5952
+		// Token: 0x0400100C RID: 4108
 		[SyncVar]
 		public int cost;
 
-		// Token: 0x04001741 RID: 5953
+		// Token: 0x0400100D RID: 4109
 		public bool automaticallyScaleCostWithDifficulty;
 
-		// Token: 0x04001742 RID: 5954
+		// Token: 0x0400100E RID: 4110
 		[Tooltip("The unlockable that a player must have to be able to interact with this terminal.")]
 		public string requiredUnlockable = "";
 
-		// Token: 0x04001743 RID: 5955
+		// Token: 0x0400100F RID: 4111
 		public bool ignoreSpherecastForInteractability;
 
-		// Token: 0x04001744 RID: 5956
+		// Token: 0x04001010 RID: 4112
 		public string[] purchaseStatNames;
 
-		// Token: 0x04001745 RID: 5957
+		// Token: 0x04001011 RID: 4113
+		public bool setUnavailableOnTeleporterActivated;
+
+		// Token: 0x04001012 RID: 4114
 		[HideInInspector]
 		public Interactor lastActivator;
 
-		// Token: 0x04001746 RID: 5958
+		// Token: 0x04001013 RID: 4115
 		[SyncVar]
 		public GameObject lockGameObject;
 
-		// Token: 0x04001747 RID: 5959
+		// Token: 0x04001014 RID: 4116
 		private Xoroshiro128Plus rng;
 
-		// Token: 0x04001749 RID: 5961
+		// Token: 0x04001015 RID: 4117
+		private static readonly StringBuilder sharedStringBuilder = new StringBuilder();
+
+		// Token: 0x04001018 RID: 4120
 		public PurchaseEvent onPurchase;
 
-		// Token: 0x0400174A RID: 5962
+		// Token: 0x04001019 RID: 4121
 		private NetworkInstanceId ___lockGameObjectNetId;
 	}
 }

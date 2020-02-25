@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000354 RID: 852
+	// Token: 0x0200027E RID: 638
 	[RequireComponent(typeof(CharacterMaster))]
 	public class MasterDropDroplet : MonoBehaviour
 	{
-		// Token: 0x0600118F RID: 4495 RVA: 0x00057180 File Offset: 0x00055380
+		// Token: 0x06000E2A RID: 3626 RVA: 0x0003F2BA File Offset: 0x0003D4BA
 		private void Start()
 		{
 			this.characterMaster = base.GetComponent<CharacterMaster>();
 		}
 
-		// Token: 0x06001190 RID: 4496 RVA: 0x00057190 File Offset: 0x00055390
+		// Token: 0x06000E2B RID: 3627 RVA: 0x0003F2C8 File Offset: 0x0003D4C8
 		public void DropItems()
 		{
 			CharacterBody body = this.characterMaster.GetBody();
@@ -27,10 +27,10 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0400159A RID: 5530
+		// Token: 0x04000E17 RID: 3607
 		private CharacterMaster characterMaster;
 
-		// Token: 0x0400159B RID: 5531
+		// Token: 0x04000E18 RID: 3608
 		public SerializablePickupIndex[] pickupsToDrop;
 	}
 }

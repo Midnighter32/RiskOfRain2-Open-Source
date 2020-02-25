@@ -2,8 +2,8 @@
 
 namespace EntityStates
 {
-	// Token: 0x020000BB RID: 187
-	internal class Idle : EntityState
+	// Token: 0x02000715 RID: 1813
+	public class Idle : EntityState
 	{
 	}
 }

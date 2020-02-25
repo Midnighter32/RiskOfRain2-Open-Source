@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005A7 RID: 1447
+	// Token: 0x0200057A RID: 1402
 	public class FPS : MonoBehaviour
 	{
-		// Token: 0x06002065 RID: 8293 RVA: 0x00098D04 File Offset: 0x00096F04
+		// Token: 0x06002155 RID: 8533 RVA: 0x000908BC File Offset: 0x0008EABC
 		private void Update()
 		{
 			this.stopwatch += Time.unscaledDeltaTime;
@@ -22,16 +22,16 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x040022FD RID: 8957
+		// Token: 0x04001ED0 RID: 7888
 		public TextMeshProUGUI targetText;
 
-		// Token: 0x040022FE RID: 8958
+		// Token: 0x04001ED1 RID: 7889
 		private float deltaTime;
 
-		// Token: 0x040022FF RID: 8959
+		// Token: 0x04001ED2 RID: 7890
 		private float stopwatch;
 
-		// Token: 0x04002300 RID: 8960
+		// Token: 0x04001ED3 RID: 7891
 		private const float updateTime = 1f;
 	}
 }

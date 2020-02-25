@@ -3,18 +3,14 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003F2 RID: 1010
+	// Token: 0x02000349 RID: 841
 	[RequireComponent(typeof(ItemFollower))]
 	public class TalismanAnimator : MonoBehaviour
 	{
-		// Token: 0x06001617 RID: 5655 RVA: 0x00069B5C File Offset: 0x00067D5C
+		// Token: 0x0600140C RID: 5132 RVA: 0x00055A94 File Offset: 0x00053C94
 		private void Start()
 		{
 			this.itemFollower = base.GetComponent<ItemFollower>();
-			if (this.itemFollower.followerInstance)
-			{
-				this.killEffects = this.itemFollower.followerInstance.GetComponentsInChildren<ParticleSystem>();
-			}
 			CharacterModel componentInParent = base.GetComponentInParent<CharacterModel>();
 			if (componentInParent)
 			{
@@ -26,14 +22,18 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001618 RID: 5656 RVA: 0x00069BC8 File Offset: 0x00067DC8
+		// Token: 0x0600140D RID: 5133 RVA: 0x00055AD8 File Offset: 0x00053CD8
 		private void FixedUpdate()
 		{
 			if (this.equipmentSlot)
 			{
 				float cooldownTimer = this.equipmentSlot.cooldownTimer;
-				if (this.lastCooldownTimer - cooldownTimer >= 0.5f)
+				if (this.lastCooldownTimer - cooldownTimer >= 0.5f && this.itemFollower.followerInstance)
 				{
+					if (this.killEffects == null || this.killEffects.Length == 0 || this.killEffects[0] == null)
+					{
+						this.killEffects = this.itemFollower.followerInstance.GetComponentsInChildren<ParticleSystem>();
+					}
 					ParticleSystem[] array = this.killEffects;
 					for (int i = 0; i < array.Length; i++)
 					{
@@ -44,16 +44,16 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001975 RID: 6517
+		// Token: 0x040012D3 RID: 4819
 		private float lastCooldownTimer;
 
-		// Token: 0x04001976 RID: 6518
+		// Token: 0x040012D4 RID: 4820
 		private EquipmentSlot equipmentSlot;
 
-		// Token: 0x04001977 RID: 6519
+		// Token: 0x040012D5 RID: 4821
 		private ItemFollower itemFollower;
 
-		// Token: 0x04001978 RID: 6520
+		// Token: 0x040012D6 RID: 4822
 		private ParticleSystem[] killEffects;
 	}
 }

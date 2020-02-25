@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x02000066 RID: 102
+// Token: 0x02000067 RID: 103
 public struct NetworkLerpedFloatNew
 {
-	// Token: 0x06000194 RID: 404 RVA: 0x00008C58 File Offset: 0x00006E58
+	// Token: 0x060001B5 RID: 437 RVA: 0x0000937C File Offset: 0x0000757C
 	public void SetValueImmediate(float value)
 	{
 		this.newestInterpPoint.time = Time.time;
@@ -14,7 +14,7 @@ public struct NetworkLerpedFloatNew
 		this.inverseLowHighTimespan = 0f;
 	}
 
-	// Token: 0x06000195 RID: 405 RVA: 0x00008CA4 File Offset: 0x00006EA4
+	// Token: 0x060001B6 RID: 438 RVA: 0x000093C8 File Offset: 0x000075C8
 	public float GetCurrentValue(bool hasAuthority)
 	{
 		if (hasAuthority)
@@ -33,13 +33,13 @@ public struct NetworkLerpedFloatNew
 		return Mathf.Lerp(this.lowInterpPoint.value, this.highInterpPoint.value, t);
 	}
 
-	// Token: 0x06000196 RID: 406 RVA: 0x00008D55 File Offset: 0x00006F55
+	// Token: 0x060001B7 RID: 439 RVA: 0x00009479 File Offset: 0x00007679
 	public float GetAuthoritativeValue()
 	{
 		return this.newestInterpPoint.value;
 	}
 
-	// Token: 0x06000197 RID: 407 RVA: 0x00008D62 File Offset: 0x00006F62
+	// Token: 0x060001B8 RID: 440 RVA: 0x00009486 File Offset: 0x00007686
 	public void PushValue(float value)
 	{
 		if (this.newestInterpPoint.value != value)
@@ -49,28 +49,28 @@ public struct NetworkLerpedFloatNew
 		}
 	}
 
-	// Token: 0x040001BC RID: 444
+	// Token: 0x040001C1 RID: 449
 	private const float interpDelay = 0.1f;
 
-	// Token: 0x040001BD RID: 445
+	// Token: 0x040001C2 RID: 450
 	private NetworkLerpedFloatNew.InterpPoint lowInterpPoint;
 
-	// Token: 0x040001BE RID: 446
+	// Token: 0x040001C3 RID: 451
 	private NetworkLerpedFloatNew.InterpPoint highInterpPoint;
 
-	// Token: 0x040001BF RID: 447
+	// Token: 0x040001C4 RID: 452
 	private NetworkLerpedFloatNew.InterpPoint newestInterpPoint;
 
-	// Token: 0x040001C0 RID: 448
+	// Token: 0x040001C5 RID: 453
 	private float inverseLowHighTimespan;
 
-	// Token: 0x02000067 RID: 103
+	// Token: 0x02000068 RID: 104
 	private struct InterpPoint
 	{
-		// Token: 0x040001C1 RID: 449
+		// Token: 0x040001C6 RID: 454
 		public float time;
 
-		// Token: 0x040001C2 RID: 450
+		// Token: 0x040001C7 RID: 455
 		public float value;
 	}
 }

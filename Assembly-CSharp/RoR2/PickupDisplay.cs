@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000384 RID: 900
+	// Token: 0x020002BC RID: 700
 	public class PickupDisplay : MonoBehaviour
 	{
-		// Token: 0x060012BC RID: 4796 RVA: 0x0005BDF5 File Offset: 0x00059FF5
+		// Token: 0x06000FC8 RID: 4040 RVA: 0x00045463 File Offset: 0x00043663
 		public void SetPickupIndex(PickupIndex newPickupIndex, bool newHidden = false)
 		{
 			if (this.pickupIndex == newPickupIndex && this.hidden == newHidden)
@@ -18,7 +18,7 @@ namespace RoR2
 			this.RebuildModel();
 		}
 
-		// Token: 0x060012BD RID: 4797 RVA: 0x0005BE23 File Offset: 0x0005A023
+		// Token: 0x06000FC9 RID: 4041 RVA: 0x00045491 File Offset: 0x00043691
 		private void DestroyModel()
 		{
 			if (this.modelObject)
@@ -29,7 +29,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060012BE RID: 4798 RVA: 0x0005BE4C File Offset: 0x0005A04C
+		// Token: 0x06000FCA RID: 4042 RVA: 0x000454BC File Offset: 0x000436BC
 		private void RebuildModel()
 		{
 			GameObject y = this.hidden ? this.pickupIndex.GetHiddenPickupDisplayPrefab() : this.pickupIndex.GetPickupDisplayPrefab();
@@ -48,8 +48,13 @@ namespace RoR2
 				{
 					this.modelObject.transform.rotation = Quaternion.identity;
 					Vector3 size = this.modelRenderer.bounds.size;
-					float f = size.x * size.y * size.z;
-					this.modelScale *= Mathf.Pow(PickupDisplay.idealVolume, 0.33333334f) / Mathf.Pow(f, 0.33333334f);
+					float num = size.x * size.y * size.z;
+					if (num <= 1E-45f)
+					{
+						Debug.LogError("PickupDisplay bounds are zero! This is not allowed!");
+						num = 1f;
+					}
+					this.modelScale *= Mathf.Pow(PickupDisplay.idealVolume, 0.33333334f) / Mathf.Pow(num, 0.33333334f);
 					if (this.highlight)
 					{
 						this.highlight.targetRenderer = this.modelRenderer;
@@ -61,6 +66,26 @@ namespace RoR2
 				this.modelObject.transform.localPosition = this.localModelPivotPosition;
 				this.modelObject.transform.localRotation = Quaternion.identity;
 				this.modelObject.transform.localScale = new Vector3(this.modelScale, this.modelScale, this.modelScale);
+			}
+			if (this.tier1ParticleEffect)
+			{
+				this.tier1ParticleEffect.SetActive(false);
+			}
+			if (this.tier2ParticleEffect)
+			{
+				this.tier2ParticleEffect.SetActive(false);
+			}
+			if (this.tier3ParticleEffect)
+			{
+				this.tier3ParticleEffect.SetActive(false);
+			}
+			if (this.equipmentParticleEffect)
+			{
+				this.equipmentParticleEffect.SetActive(false);
+			}
+			if (this.lunarParticleEffect)
+			{
+				this.lunarParticleEffect.SetActive(false);
 			}
 			if (this.pickupIndex.itemIndex != ItemIndex.None)
 			{
@@ -105,13 +130,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x170001A0 RID: 416
-		// (get) Token: 0x060012BF RID: 4799 RVA: 0x0005C145 File Offset: 0x0005A345
-		// (set) Token: 0x060012C0 RID: 4800 RVA: 0x0005C14D File Offset: 0x0005A34D
+		// Token: 0x170001F2 RID: 498
+		// (get) Token: 0x06000FCB RID: 4043 RVA: 0x0004584A File Offset: 0x00043A4A
+		// (set) Token: 0x06000FCC RID: 4044 RVA: 0x00045852 File Offset: 0x00043A52
 		public Renderer modelRenderer { get; private set; }
 
-		// Token: 0x170001A1 RID: 417
-		// (get) Token: 0x060012C1 RID: 4801 RVA: 0x0005C156 File Offset: 0x0005A356
+		// Token: 0x170001F3 RID: 499
+		// (get) Token: 0x06000FCD RID: 4045 RVA: 0x0004585B File Offset: 0x00043A5B
 		private Vector3 localModelPivotPosition
 		{
 			get
@@ -120,13 +145,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060012C2 RID: 4802 RVA: 0x0005C173 File Offset: 0x0005A373
+		// Token: 0x06000FCE RID: 4046 RVA: 0x00045878 File Offset: 0x00043A78
 		private void Start()
 		{
 			this.localTime = 0f;
 		}
 
-		// Token: 0x060012C3 RID: 4803 RVA: 0x0005C180 File Offset: 0x0005A380
+		// Token: 0x06000FCF RID: 4047 RVA: 0x00045888 File Offset: 0x00043A88
 		private void Update()
 		{
 			this.localTime += Time.deltaTime;
@@ -140,7 +165,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060012C4 RID: 4804 RVA: 0x0005C1E4 File Offset: 0x0005A3E4
+		// Token: 0x06000FD0 RID: 4048 RVA: 0x000458EC File Offset: 0x00043AEC
 		private void OnDrawGizmos()
 		{
 			Gizmos.color = Color.yellow;
@@ -150,61 +175,61 @@ namespace RoR2
 			Gizmos.matrix = matrix;
 		}
 
-		// Token: 0x0400168B RID: 5771
+		// Token: 0x04000F48 RID: 3912
 		[Tooltip("The vertical motion of the display model.")]
 		public Wave verticalWave;
 
-		// Token: 0x0400168C RID: 5772
+		// Token: 0x04000F49 RID: 3913
 		[Tooltip("The speed in degrees/second at which the display model rotates about the y axis.")]
 		public float spinSpeed = 75f;
 
-		// Token: 0x0400168D RID: 5773
+		// Token: 0x04000F4A RID: 3914
 		public GameObject tier1ParticleEffect;
 
-		// Token: 0x0400168E RID: 5774
+		// Token: 0x04000F4B RID: 3915
 		public GameObject tier2ParticleEffect;
 
-		// Token: 0x0400168F RID: 5775
+		// Token: 0x04000F4C RID: 3916
 		public GameObject tier3ParticleEffect;
 
-		// Token: 0x04001690 RID: 5776
+		// Token: 0x04000F4D RID: 3917
 		public GameObject equipmentParticleEffect;
 
-		// Token: 0x04001691 RID: 5777
+		// Token: 0x04000F4E RID: 3918
 		public GameObject lunarParticleEffect;
 
-		// Token: 0x04001692 RID: 5778
+		// Token: 0x04000F4F RID: 3919
 		public GameObject bossParticleEffect;
 
-		// Token: 0x04001693 RID: 5779
+		// Token: 0x04000F50 RID: 3920
 		[Tooltip("The particle system to tint.")]
 		public ParticleSystem[] coloredParticleSystems;
 
-		// Token: 0x04001694 RID: 5780
+		// Token: 0x04000F51 RID: 3921
 		private PickupIndex pickupIndex = PickupIndex.none;
 
-		// Token: 0x04001695 RID: 5781
+		// Token: 0x04000F52 RID: 3922
 		private bool hidden;
 
-		// Token: 0x04001696 RID: 5782
+		// Token: 0x04000F53 RID: 3923
 		public Highlight highlight;
 
-		// Token: 0x04001697 RID: 5783
+		// Token: 0x04000F54 RID: 3924
 		private static readonly Vector3 idealModelBox = Vector3.one;
 
-		// Token: 0x04001698 RID: 5784
+		// Token: 0x04000F55 RID: 3925
 		private static readonly float idealVolume = PickupDisplay.idealModelBox.x * PickupDisplay.idealModelBox.y * PickupDisplay.idealModelBox.z;
 
-		// Token: 0x04001699 RID: 5785
+		// Token: 0x04000F56 RID: 3926
 		private GameObject modelObject;
 
-		// Token: 0x0400169B RID: 5787
+		// Token: 0x04000F58 RID: 3928
 		private GameObject modelPrefab;
 
-		// Token: 0x0400169C RID: 5788
+		// Token: 0x04000F59 RID: 3929
 		private float modelScale;
 
-		// Token: 0x0400169D RID: 5789
+		// Token: 0x04000F5A RID: 3930
 		private float localTime;
 	}
 }

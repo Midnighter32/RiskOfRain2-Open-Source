@@ -6,21 +6,22 @@ using UnityEngine.Networking;
 
 namespace RoR2.Networking
 {
-	// Token: 0x02000593 RID: 1427
+	// Token: 0x02000564 RID: 1380
 	public class SteamNetworkConnection : NetworkConnection
 	{
-		// Token: 0x06002028 RID: 8232 RVA: 0x00096F3D File Offset: 0x0009513D
+		// Token: 0x060020F2 RID: 8434 RVA: 0x0008E501 File Offset: 0x0008C701
 		public SteamNetworkConnection()
 		{
 		}
 
-		// Token: 0x06002029 RID: 8233 RVA: 0x00096F45 File Offset: 0x00095145
+		// Token: 0x060020F3 RID: 8435 RVA: 0x0008E509 File Offset: 0x0008C709
 		public SteamNetworkConnection(CSteamID steamId)
 		{
 			this.steamId = steamId;
+			Client.Instance.Networking.CloseSession(steamId.value);
 		}
 
-		// Token: 0x0600202A RID: 8234 RVA: 0x00096F54 File Offset: 0x00095154
+		// Token: 0x060020F4 RID: 8436 RVA: 0x0008E530 File Offset: 0x0008C730
 		public override bool TransportSend(byte[] bytes, int numBytes, int channelId, out byte error)
 		{
 			if (this.ignore)
@@ -79,7 +80,7 @@ namespace RoR2.Networking
 			return false;
 		}
 
-		// Token: 0x0600202B RID: 8235 RVA: 0x000970BE File Offset: 0x000952BE
+		// Token: 0x060020F5 RID: 8437 RVA: 0x0008E69A File Offset: 0x0008C89A
 		public override void TransportReceive(byte[] bytes, int numBytes, int channelId)
 		{
 			if (this.ignore)
@@ -90,7 +91,7 @@ namespace RoR2.Networking
 			base.TransportReceive(bytes, numBytes, channelId);
 		}
 
-		// Token: 0x0600202C RID: 8236 RVA: 0x000970E4 File Offset: 0x000952E4
+		// Token: 0x060020F6 RID: 8438 RVA: 0x0008E6C0 File Offset: 0x0008C8C0
 		protected override void Dispose(bool disposing)
 		{
 			if (Client.Instance != null && this.steamId.value != 0UL)
@@ -101,19 +102,19 @@ namespace RoR2.Networking
 			base.Dispose(disposing);
 		}
 
-		// Token: 0x04002246 RID: 8774
+		// Token: 0x04001DFD RID: 7677
 		public CSteamID steamId;
 
-		// Token: 0x04002247 RID: 8775
+		// Token: 0x04001DFE RID: 7678
 		public bool ignore;
 
-		// Token: 0x04002248 RID: 8776
+		// Token: 0x04001DFF RID: 7679
 		public uint rtt;
 
-		// Token: 0x04002249 RID: 8777
+		// Token: 0x04001E00 RID: 7680
 		public static BoolConVar cvNetP2PDebugTransport = new BoolConVar("net_p2p_debug_transport", ConVarFlags.None, "0", "Allows p2p transport information to print to the console.");
 
-		// Token: 0x0400224A RID: 8778
+		// Token: 0x04001E01 RID: 7681
 		private static BoolConVar cvNetP2PLogMessages = new BoolConVar("net_p2p_log_messages", ConVarFlags.None, "0", "Enables logging of network messages.");
 	}
 }

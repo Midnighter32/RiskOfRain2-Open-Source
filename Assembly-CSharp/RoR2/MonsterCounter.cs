@@ -3,28 +3,28 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200035F RID: 863
+	// Token: 0x0200028D RID: 653
 	public class MonsterCounter : MonoBehaviour
 	{
-		// Token: 0x060011BD RID: 4541 RVA: 0x00057D31 File Offset: 0x00055F31
+		// Token: 0x06000E86 RID: 3718 RVA: 0x000407BB File Offset: 0x0003E9BB
 		private int CountEnemies()
 		{
 			return TeamComponent.GetTeamMembers(TeamIndex.Monster).Count;
 		}
 
-		// Token: 0x060011BE RID: 4542 RVA: 0x00057D3E File Offset: 0x00055F3E
+		// Token: 0x06000E87 RID: 3719 RVA: 0x000407C8 File Offset: 0x0003E9C8
 		private void Update()
 		{
 			this.enemyList = this.CountEnemies();
 		}
 
-		// Token: 0x060011BF RID: 4543 RVA: 0x00057D4C File Offset: 0x00055F4C
+		// Token: 0x06000E88 RID: 3720 RVA: 0x000407D6 File Offset: 0x0003E9D6
 		private void OnGUI()
 		{
 			GUI.Label(new Rect(12f, 160f, 200f, 25f), "Living Monsters: " + this.enemyList);
 		}
 
-		// Token: 0x040015DB RID: 5595
+		// Token: 0x04000E6D RID: 3693
 		private int enemyList;
 	}
 }

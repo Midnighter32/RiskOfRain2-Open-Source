@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.Paladin.PaladinWeapon
 {
-	// Token: 0x020000FE RID: 254
-	internal class FireRocket : BaseState
+	// Token: 0x020007AF RID: 1967
+	public class FireRocket : BaseState
 	{
-		// Token: 0x060004E7 RID: 1255 RVA: 0x00014C14 File Offset: 0x00012E14
+		// Token: 0x06002CFB RID: 11515 RVA: 0x000BDE4C File Offset: 0x000BC04C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -20,7 +20,7 @@ namespace EntityStates.Paladin.PaladinWeapon
 			string muzzleName = "MuzzleCenter";
 			if (FireRocket.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireRocket.effectPrefab, base.gameObject, muzzleName, false);
+				EffectManager.SimpleMuzzleFlash(FireRocket.effectPrefab, base.gameObject, muzzleName, false);
 			}
 			if (base.isAuthority)
 			{
@@ -28,13 +28,13 @@ namespace EntityStates.Paladin.PaladinWeapon
 			}
 		}
 
-		// Token: 0x060004E8 RID: 1256 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002CFC RID: 11516 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x060004E9 RID: 1257 RVA: 0x00014CF5 File Offset: 0x00012EF5
+		// Token: 0x06002CFD RID: 11517 RVA: 0x000BDF28 File Offset: 0x000BC128
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -45,34 +45,34 @@ namespace EntityStates.Paladin.PaladinWeapon
 			}
 		}
 
-		// Token: 0x060004EA RID: 1258 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002CFE RID: 11518 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x040004C7 RID: 1223
+		// Token: 0x04002930 RID: 10544
 		public static GameObject projectilePrefab;
 
-		// Token: 0x040004C8 RID: 1224
+		// Token: 0x04002931 RID: 10545
 		public static GameObject effectPrefab;
 
-		// Token: 0x040004C9 RID: 1225
+		// Token: 0x04002932 RID: 10546
 		public static string soundEffectString;
 
-		// Token: 0x040004CA RID: 1226
+		// Token: 0x04002933 RID: 10547
 		public static float damageCoefficient;
 
-		// Token: 0x040004CB RID: 1227
+		// Token: 0x04002934 RID: 10548
 		public static float force;
 
-		// Token: 0x040004CC RID: 1228
+		// Token: 0x04002935 RID: 10549
 		public static float baseDuration = 2f;
 
-		// Token: 0x040004CD RID: 1229
+		// Token: 0x04002936 RID: 10550
 		private float duration;
 
-		// Token: 0x040004CE RID: 1230
+		// Token: 0x04002937 RID: 10551
 		public int bulletCountCurrent = 1;
 	}
 }

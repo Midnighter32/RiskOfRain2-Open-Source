@@ -8,11 +8,11 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000645 RID: 1605
+	// Token: 0x0200063A RID: 1594
 	public class SteamworksLobbyUserList : MonoBehaviour
 	{
-		// Token: 0x1700031F RID: 799
-		// (get) Token: 0x060023E6 RID: 9190 RVA: 0x000A88E7 File Offset: 0x000A6AE7
+		// Token: 0x170003DE RID: 990
+		// (get) Token: 0x06002585 RID: 9605 RVA: 0x000A32F7 File Offset: 0x000A14F7
 		private bool ValidLobbyExists
 		{
 			get
@@ -21,7 +21,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060023E7 RID: 9191 RVA: 0x000A8900 File Offset: 0x000A6B00
+		// Token: 0x06002586 RID: 9606 RVA: 0x000A3310 File Offset: 0x000A1510
 		private void Update()
 		{
 			Client instance = Client.Instance;
@@ -36,7 +36,7 @@ namespace RoR2.UI
 			this.UpdateLobbyString();
 		}
 
-		// Token: 0x060023E8 RID: 9192 RVA: 0x000A8940 File Offset: 0x000A6B40
+		// Token: 0x06002587 RID: 9607 RVA: 0x000A3350 File Offset: 0x000A1550
 		private void Rebuild()
 		{
 			Client instance = Client.Instance;
@@ -85,7 +85,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060023E9 RID: 9193 RVA: 0x000A8AB4 File Offset: 0x000A6CB4
+		// Token: 0x06002588 RID: 9608 RVA: 0x000A34C4 File Offset: 0x000A16C4
 		private void UpdateLobbyString()
 		{
 			if (this.lobbyStateText)
@@ -113,7 +113,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060023EA RID: 9194 RVA: 0x000A8B48 File Offset: 0x000A6D48
+		// Token: 0x06002589 RID: 9609 RVA: 0x000A3558 File Offset: 0x000A1758
 		private void UpdateUser(ulong userId)
 		{
 			for (int i = 0; i < this.elements.Count; i++)
@@ -125,7 +125,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060023EB RID: 9195 RVA: 0x000A8B90 File Offset: 0x000A6D90
+		// Token: 0x0600258A RID: 9610 RVA: 0x000A35A0 File Offset: 0x000A17A0
 		private void OnEnable()
 		{
 			SteamworksLobbyManager.onLobbyDataUpdated += this.Rebuild;
@@ -135,7 +135,7 @@ namespace RoR2.UI
 			this.Rebuild();
 		}
 
-		// Token: 0x060023EC RID: 9196 RVA: 0x000A8BE8 File Offset: 0x000A6DE8
+		// Token: 0x0600258B RID: 9611 RVA: 0x000A35F8 File Offset: 0x000A17F8
 		private void OnDisable()
 		{
 			SteamworksLobbyManager.onLobbyDataUpdated -= this.Rebuild;
@@ -144,31 +144,31 @@ namespace RoR2.UI
 			SteamworksLobbyManager.onPlayerCountUpdated -= this.Rebuild;
 		}
 
-		// Token: 0x060023ED RID: 9197 RVA: 0x000A8C39 File Offset: 0x000A6E39
+		// Token: 0x0600258C RID: 9612 RVA: 0x000A3649 File Offset: 0x000A1849
 		private void OnLobbyStateChanged(Lobby.MemberStateChange memberStateChange, ulong initiatorUserId, ulong affectedUserId)
 		{
 			this.Rebuild();
 		}
 
-		// Token: 0x060023EE RID: 9198 RVA: 0x000A8C41 File Offset: 0x000A6E41
+		// Token: 0x0600258D RID: 9613 RVA: 0x000A3651 File Offset: 0x000A1851
 		private void OnLobbyMemberDataUpdated(ulong steamId)
 		{
 			this.UpdateUser(steamId);
 		}
 
-		// Token: 0x040026D6 RID: 9942
+		// Token: 0x04002339 RID: 9017
 		public TextMeshProUGUI lobbyStateText;
 
-		// Token: 0x040026D7 RID: 9943
+		// Token: 0x0400233A RID: 9018
 		public GameObject copyLobbyIDToClipboardButton;
 
-		// Token: 0x040026D8 RID: 9944
+		// Token: 0x0400233B RID: 9019
 		private List<SteamworksLobbyUserList.Element> elements = new List<SteamworksLobbyUserList.Element>();
 
-		// Token: 0x02000646 RID: 1606
+		// Token: 0x0200063B RID: 1595
 		private class Element
 		{
-			// Token: 0x060023F0 RID: 9200 RVA: 0x000A8C5D File Offset: 0x000A6E5D
+			// Token: 0x0600258F RID: 9615 RVA: 0x000A366D File Offset: 0x000A186D
 			public void SetUser(ulong steamId, int subPlayerIndex)
 			{
 				this.steamId = steamId;
@@ -178,7 +178,7 @@ namespace RoR2.UI
 				this.Refresh();
 			}
 
-			// Token: 0x060023F1 RID: 9201 RVA: 0x000A8C90 File Offset: 0x000A6E90
+			// Token: 0x06002590 RID: 9616 RVA: 0x000A36A0 File Offset: 0x000A18A0
 			public void Refresh()
 			{
 				if (this.steamId == 0UL)
@@ -196,7 +196,7 @@ namespace RoR2.UI
 				this.RefreshCrownAndPromoteButton();
 			}
 
-			// Token: 0x060023F2 RID: 9202 RVA: 0x000A8D30 File Offset: 0x000A6F30
+			// Token: 0x06002591 RID: 9617 RVA: 0x000A3740 File Offset: 0x000A1940
 			private void RefreshCrownAndPromoteButton()
 			{
 				if (Client.Instance == null)
@@ -239,22 +239,22 @@ namespace RoR2.UI
 				}
 			}
 
-			// Token: 0x040026D9 RID: 9945
+			// Token: 0x0400233C RID: 9020
 			public ulong steamId;
 
-			// Token: 0x040026DA RID: 9946
+			// Token: 0x0400233D RID: 9021
 			public GameObject gameObject;
 
-			// Token: 0x040026DB RID: 9947
+			// Token: 0x0400233E RID: 9022
 			public SocialUserIcon userIcon;
 
-			// Token: 0x040026DC RID: 9948
+			// Token: 0x0400233F RID: 9023
 			public SteamUsernameLabel usernameLabel;
 
-			// Token: 0x040026DD RID: 9949
+			// Token: 0x04002340 RID: 9024
 			public GameObject lobbyLeaderCrown;
 
-			// Token: 0x040026DE RID: 9950
+			// Token: 0x04002341 RID: 9025
 			public ChildLocator elementChildLocator;
 		}
 	}

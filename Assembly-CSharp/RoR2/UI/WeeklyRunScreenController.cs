@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x0200065B RID: 1627
+	// Token: 0x02000650 RID: 1616
 	public class WeeklyRunScreenController : MonoBehaviour
 	{
-		// Token: 0x0600245D RID: 9309 RVA: 0x000AA9B7 File Offset: 0x000A8BB7
+		// Token: 0x06002601 RID: 9729 RVA: 0x000A54F3 File Offset: 0x000A36F3
 		private void OnEnable()
 		{
 			this.currentCycle = WeeklyRun.GetCurrentSeedCycle();
 			this.UpdateLeaderboard();
 		}
 
-		// Token: 0x0600245E RID: 9310 RVA: 0x000AA9CA File Offset: 0x000A8BCA
+		// Token: 0x06002602 RID: 9730 RVA: 0x000A5506 File Offset: 0x000A3706
 		private void UpdateLeaderboard()
 		{
 			if (this.leaderboard)
@@ -23,14 +23,14 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600245F RID: 9311 RVA: 0x000AAA06 File Offset: 0x000A8C06
+		// Token: 0x06002603 RID: 9731 RVA: 0x000A5542 File Offset: 0x000A3742
 		public void SetCurrentLeaderboard(GameObject leaderboardGameObject)
 		{
 			this.leaderboard = leaderboardGameObject.GetComponent<LeaderboardController>();
 			this.UpdateLeaderboard();
 		}
 
-		// Token: 0x06002460 RID: 9312 RVA: 0x000AAA1C File Offset: 0x000A8C1C
+		// Token: 0x06002604 RID: 9732 RVA: 0x000A5558 File Offset: 0x000A3758
 		private void Update()
 		{
 			uint currentSeedCycle = WeeklyRun.GetCurrentSeedCycle();
@@ -39,7 +39,7 @@ namespace RoR2.UI
 				this.currentCycle = currentSeedCycle;
 				this.UpdateLeaderboard();
 			}
-			TimeSpan t = WeeklyRun.GetSeedCycleStartDateTime(this.currentCycle + 1u) - WeeklyRun.now;
+			TimeSpan t = WeeklyRun.GetSeedCycleStartDateTime(this.currentCycle + 1U) - WeeklyRun.now;
 			string @string = Language.GetString("WEEKLY_RUN_NEXT_CYCLE_COUNTDOWN_FORMAT");
 			this.countdownLabel.text = string.Format(@string, t.Hours + t.Days * 24, t.Minutes, t.Seconds);
 			if (t != this.lastCountdown)
@@ -57,19 +57,19 @@ namespace RoR2.UI
 			this.countdownLabel.color = white;
 		}
 
-		// Token: 0x0400275C RID: 10076
+		// Token: 0x040023C3 RID: 9155
 		public LeaderboardController leaderboard;
 
-		// Token: 0x0400275D RID: 10077
+		// Token: 0x040023C4 RID: 9156
 		public TextMeshProUGUI countdownLabel;
 
-		// Token: 0x0400275E RID: 10078
+		// Token: 0x040023C5 RID: 9157
 		private uint currentCycle;
 
-		// Token: 0x0400275F RID: 10079
+		// Token: 0x040023C6 RID: 9158
 		private TimeSpan lastCountdown;
 
-		// Token: 0x04002760 RID: 10080
+		// Token: 0x040023C7 RID: 9159
 		private float labelFadeValue;
 	}
 }

@@ -2,11 +2,11 @@
 
 namespace RoR2.Achievements
 {
-	// Token: 0x02000693 RID: 1683
+	// Token: 0x02000699 RID: 1689
 	[RegisterAchievement("CompleteTeleporterWithoutInjury", "Items.SecondarySkillMagazine", null, null)]
 	public class CompleteTeleporterWithoutInjuryAchievement : BaseAchievement
 	{
-		// Token: 0x06002585 RID: 9605 RVA: 0x000AF463 File Offset: 0x000AD663
+		// Token: 0x06002788 RID: 10120 RVA: 0x000AAC3B File Offset: 0x000A8E3B
 		public override void OnInstall()
 		{
 			base.OnInstall();
@@ -15,7 +15,7 @@ namespace RoR2.Achievements
 			GlobalEventManager.onClientDamageNotified += this.OnClientDamageNotified;
 		}
 
-		// Token: 0x06002586 RID: 9606 RVA: 0x000AF49E File Offset: 0x000AD69E
+		// Token: 0x06002789 RID: 10121 RVA: 0x000AAC76 File Offset: 0x000A8E76
 		public override void OnUninstall()
 		{
 			TeleporterInteraction.onTeleporterBeginChargingGlobal -= this.OnTeleporterBeginCharging;
@@ -24,37 +24,37 @@ namespace RoR2.Achievements
 			base.OnUninstall();
 		}
 
-		// Token: 0x06002587 RID: 9607 RVA: 0x000AF4D9 File Offset: 0x000AD6D9
+		// Token: 0x0600278A RID: 10122 RVA: 0x000AACB1 File Offset: 0x000A8EB1
 		private void OnTeleporterBeginCharging(TeleporterInteraction teleporterInteraction)
 		{
 			this.hasBeenHit = false;
 		}
 
-		// Token: 0x06002588 RID: 9608 RVA: 0x000AF4E2 File Offset: 0x000AD6E2
+		// Token: 0x0600278B RID: 10123 RVA: 0x000AACBA File Offset: 0x000A8EBA
 		private void OnTeleporterCharged(TeleporterInteraction teleporterInteraction)
 		{
 			this.Check();
 		}
 
-		// Token: 0x06002589 RID: 9609 RVA: 0x000AF4EA File Offset: 0x000AD6EA
+		// Token: 0x0600278C RID: 10124 RVA: 0x000AACC2 File Offset: 0x000A8EC2
 		private void OnClientDamageNotified(DamageDealtMessage damageDealtMessage)
 		{
-			if (!this.hasBeenHit && damageDealtMessage.victim && damageDealtMessage.victim == this.localUser.cachedBodyObject)
+			if (!this.hasBeenHit && damageDealtMessage.victim && damageDealtMessage.victim == base.localUser.cachedBodyObject)
 			{
 				this.hasBeenHit = true;
 			}
 		}
 
-		// Token: 0x0600258A RID: 9610 RVA: 0x000AF520 File Offset: 0x000AD720
+		// Token: 0x0600278D RID: 10125 RVA: 0x000AACF8 File Offset: 0x000A8EF8
 		private void Check()
 		{
-			if (this.localUser.cachedBody && this.localUser.cachedBody.healthComponent && this.localUser.cachedBody.healthComponent.alive && !this.hasBeenHit)
+			if (base.localUser.cachedBody && base.localUser.cachedBody.healthComponent && base.localUser.cachedBody.healthComponent.alive && !this.hasBeenHit)
 			{
 				base.Grant();
 			}
 		}
 
-		// Token: 0x04002868 RID: 10344
+		// Token: 0x040024F4 RID: 9460
 		private bool hasBeenHit;
 	}
 }

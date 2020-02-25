@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Toolbot
 {
-	// Token: 0x020000DC RID: 220
+	// Token: 0x02000760 RID: 1888
 	public class ChargeSpear : BaseState
 	{
-		// Token: 0x0600044E RID: 1102 RVA: 0x00011D04 File Offset: 0x0000FF04
+		// Token: 0x06002B9D RID: 11165 RVA: 0x000B8150 File Offset: 0x000B6350
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -30,7 +30,7 @@ namespace EntityStates.Toolbot
 			}
 		}
 
-		// Token: 0x0600044F RID: 1103 RVA: 0x00011DC0 File Offset: 0x0000FFC0
+		// Token: 0x06002B9E RID: 11166 RVA: 0x000B820C File Offset: 0x000B640C
 		public override void OnExit()
 		{
 			if (this.chargeupVfxGameObject)
@@ -46,14 +46,14 @@ namespace EntityStates.Toolbot
 			base.OnExit();
 		}
 
-		// Token: 0x06000450 RID: 1104 RVA: 0x00011E11 File Offset: 0x00010011
+		// Token: 0x06002B9F RID: 11167 RVA: 0x000B825D File Offset: 0x000B645D
 		public override void Update()
 		{
 			base.Update();
 			base.characterBody.SetSpreadBloom(base.age / this.chargeDuration, true);
 		}
 
-		// Token: 0x06000451 RID: 1105 RVA: 0x00011E34 File Offset: 0x00010034
+		// Token: 0x06002BA0 RID: 11168 RVA: 0x000B8280 File Offset: 0x000B6480
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -91,46 +91,46 @@ namespace EntityStates.Toolbot
 			}
 		}
 
-		// Token: 0x06000452 RID: 1106 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002BA1 RID: 11169 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x0400040B RID: 1035
+		// Token: 0x040027B1 RID: 10161
 		public static float baseMinChargeDuration;
 
-		// Token: 0x0400040C RID: 1036
+		// Token: 0x040027B2 RID: 10162
 		public static float baseChargeDuration;
 
-		// Token: 0x0400040D RID: 1037
+		// Token: 0x040027B3 RID: 10163
 		public static float perfectChargeWindow;
 
-		// Token: 0x0400040E RID: 1038
+		// Token: 0x040027B4 RID: 10164
 		public static string muzzleName;
 
-		// Token: 0x0400040F RID: 1039
+		// Token: 0x040027B5 RID: 10165
 		public static GameObject chargeupVfxPrefab;
 
-		// Token: 0x04000410 RID: 1040
+		// Token: 0x040027B6 RID: 10166
 		public static GameObject holdChargeVfxPrefab;
 
-		// Token: 0x04000411 RID: 1041
+		// Token: 0x040027B7 RID: 10167
 		private float minChargeDuration;
 
-		// Token: 0x04000412 RID: 1042
+		// Token: 0x040027B8 RID: 10168
 		private float chargeDuration;
 
-		// Token: 0x04000413 RID: 1043
+		// Token: 0x040027B9 RID: 10169
 		private bool released;
 
-		// Token: 0x04000414 RID: 1044
+		// Token: 0x040027BA RID: 10170
 		private GameObject chargeupVfxGameObject;
 
-		// Token: 0x04000415 RID: 1045
+		// Token: 0x040027BB RID: 10171
 		private GameObject holdChargeVfxGameObject;
 
-		// Token: 0x04000416 RID: 1046
+		// Token: 0x040027BC RID: 10172
 		private Transform muzzleTransform;
 	}
 }

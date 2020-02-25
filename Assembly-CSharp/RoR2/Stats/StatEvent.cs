@@ -2,32 +2,32 @@
 
 namespace RoR2.Stats
 {
-	// Token: 0x020004FC RID: 1276
+	// Token: 0x020004A0 RID: 1184
 	public struct StatEvent
 	{
-		// Token: 0x04001F1C RID: 7964
+		// Token: 0x040019E9 RID: 6633
 		public string stringValue;
 
-		// Token: 0x04001F1D RID: 7965
+		// Token: 0x040019EA RID: 6634
 		public double doubleValue;
 
-		// Token: 0x04001F1E RID: 7966
+		// Token: 0x040019EB RID: 6635
 		public ulong ulongValue;
 
-		// Token: 0x020004FD RID: 1277
+		// Token: 0x020004A1 RID: 1185
 		public enum Type
 		{
-			// Token: 0x04001F20 RID: 7968
+			// Token: 0x040019ED RID: 6637
 			Damage,
-			// Token: 0x04001F21 RID: 7969
+			// Token: 0x040019EE RID: 6638
 			Kill,
-			// Token: 0x04001F22 RID: 7970
+			// Token: 0x040019EF RID: 6639
 			Walk,
-			// Token: 0x04001F23 RID: 7971
+			// Token: 0x040019F0 RID: 6640
 			Die,
-			// Token: 0x04001F24 RID: 7972
+			// Token: 0x040019F1 RID: 6641
 			Lose,
-			// Token: 0x04001F25 RID: 7973
+			// Token: 0x040019F2 RID: 6642
 			Win
 		}
 	}

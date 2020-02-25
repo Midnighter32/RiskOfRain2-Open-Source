@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000306 RID: 774
+	// Token: 0x0200021F RID: 543
 	[RequireComponent(typeof(TeamFilter))]
 	public class HealingWard : NetworkBehaviour
 	{
-		// Token: 0x06000FEB RID: 4075 RVA: 0x0004FA66 File Offset: 0x0004DC66
+		// Token: 0x06000C14 RID: 3092 RVA: 0x00035DC9 File Offset: 0x00033FC9
 		private void Awake()
 		{
 			this.teamFilter = base.GetComponent<TeamFilter>();
 		}
 
-		// Token: 0x06000FEC RID: 4076 RVA: 0x0004FA74 File Offset: 0x0004DC74
+		// Token: 0x06000C15 RID: 3093 RVA: 0x00035DD8 File Offset: 0x00033FD8
 		private void Start()
 		{
 			RaycastHit raycastHit;
@@ -26,7 +27,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000FED RID: 4077 RVA: 0x0004FAE0 File Offset: 0x0004DCE0
+		// Token: 0x06000C16 RID: 3094 RVA: 0x00035E44 File Offset: 0x00034044
 		private void Update()
 		{
 			if (this.rangeIndicator)
@@ -36,7 +37,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000FEE RID: 4078 RVA: 0x0004FB34 File Offset: 0x0004DD34
+		// Token: 0x06000C17 RID: 3095 RVA: 0x00035E98 File Offset: 0x00034098
 		private void FixedUpdate()
 		{
 			this.healTimer -= Time.fixedDeltaTime;
@@ -47,7 +48,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000FEF RID: 4079 RVA: 0x0004FB70 File Offset: 0x0004DD70
+		// Token: 0x06000C18 RID: 3096 RVA: 0x00035ED4 File Offset: 0x000340D4
 		private void HealOccupants()
 		{
 			ReadOnlyCollection<TeamComponent> teamMembers = TeamComponent.GetTeamMembers(this.teamFilter.teamIndex);
@@ -70,27 +71,28 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000FF1 RID: 4081 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000C1A RID: 3098 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x17000154 RID: 340
-		// (get) Token: 0x06000FF2 RID: 4082 RVA: 0x0004FC3C File Offset: 0x0004DE3C
-		// (set) Token: 0x06000FF3 RID: 4083 RVA: 0x0004FC4F File Offset: 0x0004DE4F
+		// Token: 0x17000185 RID: 389
+		// (get) Token: 0x06000C1B RID: 3099 RVA: 0x00035FA0 File Offset: 0x000341A0
+		// (set) Token: 0x06000C1C RID: 3100 RVA: 0x00035FB3 File Offset: 0x000341B3
 		public float Networkradius
 		{
 			get
 			{
 				return this.radius;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<float>(value, ref this.radius, 1u);
+				base.SetSyncVar<float>(value, ref this.radius, 1U);
 			}
 		}
 
-		// Token: 0x06000FF4 RID: 4084 RVA: 0x0004FC64 File Offset: 0x0004DE64
+		// Token: 0x06000C1D RID: 3101 RVA: 0x00035FC8 File Offset: 0x000341C8
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -99,7 +101,7 @@ namespace RoR2
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -115,7 +117,7 @@ namespace RoR2
 			return flag;
 		}
 
-		// Token: 0x06000FF5 RID: 4085 RVA: 0x0004FCD0 File Offset: 0x0004DED0
+		// Token: 0x06000C1E RID: 3102 RVA: 0x00036034 File Offset: 0x00034234
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -130,38 +132,38 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x040013EF RID: 5103
-		[SyncVar]
+		// Token: 0x04000C16 RID: 3094
 		[Tooltip("The area of effect.")]
+		[SyncVar]
 		public float radius;
 
-		// Token: 0x040013F0 RID: 5104
+		// Token: 0x04000C17 RID: 3095
 		[Tooltip("How long between heal pulses in the area of effect.")]
 		public float interval = 1f;
 
-		// Token: 0x040013F1 RID: 5105
+		// Token: 0x04000C18 RID: 3096
 		[Tooltip("How many hit points to restore each pulse.")]
 		public float healPoints;
 
-		// Token: 0x040013F2 RID: 5106
+		// Token: 0x04000C19 RID: 3097
 		[Tooltip("What fraction of the healee max health to restore each pulse.")]
 		public float healFraction;
 
-		// Token: 0x040013F3 RID: 5107
+		// Token: 0x04000C1A RID: 3098
 		[Tooltip("The child range indicator object. Will be scaled to the radius.")]
 		public Transform rangeIndicator;
 
-		// Token: 0x040013F4 RID: 5108
+		// Token: 0x04000C1B RID: 3099
 		[Tooltip("Should the ward be floored on start")]
 		public bool floorWard;
 
-		// Token: 0x040013F5 RID: 5109
+		// Token: 0x04000C1C RID: 3100
 		private TeamFilter teamFilter;
 
-		// Token: 0x040013F6 RID: 5110
+		// Token: 0x04000C1D RID: 3101
 		private float healTimer;
 
-		// Token: 0x040013F7 RID: 5111
+		// Token: 0x04000C1E RID: 3102
 		private float rangeIndicatorScaleVelocity;
 	}
 }

@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.ClaymanMonster
 {
-	// Token: 0x020001B5 RID: 437
+	// Token: 0x020008CF RID: 2255
 	public class SwipeForward : BaseState
 	{
-		// Token: 0x0600088E RID: 2190 RVA: 0x0002ADE8 File Offset: 0x00028FE8
+		// Token: 0x06003289 RID: 12937 RVA: 0x000DA91C File Offset: 0x000D8B1C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -38,7 +38,7 @@ namespace EntityStates.ClaymanMonster
 			}
 		}
 
-		// Token: 0x0600088F RID: 2191 RVA: 0x0002AF60 File Offset: 0x00029160
+		// Token: 0x0600328A RID: 12938 RVA: 0x000DAA94 File Offset: 0x000D8C94
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -46,12 +46,12 @@ namespace EntityStates.ClaymanMonster
 			{
 				if (!this.hasSlashed)
 				{
-					EffectManager.instance.SimpleMuzzleFlash(SwipeForward.swingEffectPrefab, base.gameObject, "SwingCenter", true);
+					EffectManager.SimpleMuzzleFlash(SwipeForward.swingEffectPrefab, base.gameObject, "SwingCenter", true);
 					HealthComponent healthComponent = base.characterBody.healthComponent;
 					CharacterDirection component = base.characterBody.GetComponent<CharacterDirection>();
 					if (healthComponent)
 					{
-						healthComponent.TakeDamageForce(SwipeForward.selfForceMagnitude * component.forward, true);
+						healthComponent.TakeDamageForce(SwipeForward.selfForceMagnitude * component.forward, true, false);
 					}
 					this.hasSlashed = true;
 				}
@@ -65,46 +65,46 @@ namespace EntityStates.ClaymanMonster
 			}
 		}
 
-		// Token: 0x06000890 RID: 2192 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x0600328B RID: 12939 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000B6C RID: 2924
+		// Token: 0x0400318D RID: 12685
 		public static float baseDuration = 3.5f;
 
-		// Token: 0x04000B6D RID: 2925
+		// Token: 0x0400318E RID: 12686
 		public static float damageCoefficient = 4f;
 
-		// Token: 0x04000B6E RID: 2926
+		// Token: 0x0400318F RID: 12687
 		public static float forceMagnitude = 16f;
 
-		// Token: 0x04000B6F RID: 2927
+		// Token: 0x04003190 RID: 12688
 		public static float selfForceMagnitude;
 
-		// Token: 0x04000B70 RID: 2928
+		// Token: 0x04003191 RID: 12689
 		public static float radius = 3f;
 
-		// Token: 0x04000B71 RID: 2929
+		// Token: 0x04003192 RID: 12690
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000B72 RID: 2930
+		// Token: 0x04003193 RID: 12691
 		public static GameObject swingEffectPrefab;
 
-		// Token: 0x04000B73 RID: 2931
+		// Token: 0x04003194 RID: 12692
 		public static string attackString;
 
-		// Token: 0x04000B74 RID: 2932
+		// Token: 0x04003195 RID: 12693
 		private OverlapAttack attack;
 
-		// Token: 0x04000B75 RID: 2933
+		// Token: 0x04003196 RID: 12694
 		private Animator modelAnimator;
 
-		// Token: 0x04000B76 RID: 2934
+		// Token: 0x04003197 RID: 12695
 		private float duration;
 
-		// Token: 0x04000B77 RID: 2935
+		// Token: 0x04003198 RID: 12696
 		private bool hasSlashed;
 	}
 }

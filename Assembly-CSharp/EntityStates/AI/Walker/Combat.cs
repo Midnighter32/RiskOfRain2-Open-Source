@@ -1,15 +1,14 @@
 ﻿using System;
 using RoR2;
 using RoR2.CharacterAI;
-using RoR2.Navigation;
 using UnityEngine;
 
 namespace EntityStates.AI.Walker
 {
-	// Token: 0x020001E4 RID: 484
+	// Token: 0x020008FF RID: 2303
 	public class Combat : BaseAIState
 	{
-		// Token: 0x06000972 RID: 2418 RVA: 0x0002F2D9 File Offset: 0x0002D4D9
+		// Token: 0x06003372 RID: 13170 RVA: 0x000DEEDD File Offset: 0x000DD0DD
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -17,13 +16,13 @@ namespace EntityStates.AI.Walker
 			this.activeSoundTimer = UnityEngine.Random.Range(3f, 8f);
 		}
 
-		// Token: 0x06000973 RID: 2419 RVA: 0x0002F301 File Offset: 0x0002D501
+		// Token: 0x06003373 RID: 13171 RVA: 0x000DEF05 File Offset: 0x000DD105
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000974 RID: 2420 RVA: 0x0002F30C File Offset: 0x0002D50C
+		// Token: 0x06003374 RID: 13172 RVA: 0x000DEF10 File Offset: 0x000DD110
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -81,7 +80,7 @@ namespace EntityStates.AI.Walker
 							flag2 = true;
 						}
 					}
-					Vector3 normalized2 = (((this.dominantSkillDriver && this.dominantSkillDriver.ignoreNodeGraph) ? ((base.ai.nodegraphType == MapNodeGroup.GraphType.Ground) ? vector2 : vector) : base.ai.pathFollower.GetNextPosition()) - footPosition).normalized;
+					Vector3 normalized2 = (((this.dominantSkillDriver && this.dominantSkillDriver.ignoreNodeGraph) ? ((!base.body.isFlying) ? vector2 : vector) : base.ai.pathFollower.GetNextPosition()) - footPosition).normalized;
 					Vector3 vector3 = Vector3.Cross(Vector3.up, normalized2);
 					Vector3 vector4 = position;
 					if (movementType == AISkillDriver.MovementType.ChaseMoveTarget)
@@ -194,37 +193,37 @@ namespace EntityStates.AI.Walker
 			}
 		}
 
-		// Token: 0x04000CC0 RID: 3264
+		// Token: 0x040032E9 RID: 13033
 		private float pathUpdateTimer;
 
-		// Token: 0x04000CC1 RID: 3265
+		// Token: 0x040032EA RID: 13034
 		private float pathUpdateInterval = 1f;
 
-		// Token: 0x04000CC2 RID: 3266
+		// Token: 0x040032EB RID: 13035
 		private float strafeDirection;
 
-		// Token: 0x04000CC3 RID: 3267
+		// Token: 0x040032EC RID: 13036
 		private const float strafeDuration = 0.25f;
 
-		// Token: 0x04000CC4 RID: 3268
+		// Token: 0x040032ED RID: 13037
 		private float strafeTimer;
 
-		// Token: 0x04000CC5 RID: 3269
+		// Token: 0x040032EE RID: 13038
 		private float activeSoundTimer;
 
-		// Token: 0x04000CC6 RID: 3270
+		// Token: 0x040032EF RID: 13039
 		private float updateTimer;
 
-		// Token: 0x04000CC7 RID: 3271
+		// Token: 0x040032F0 RID: 13040
 		private const float minUpdateInterval = 0.16666667f;
 
-		// Token: 0x04000CC8 RID: 3272
+		// Token: 0x040032F1 RID: 13041
 		private const float maxUpdateInterval = 0.2f;
 
-		// Token: 0x04000CC9 RID: 3273
+		// Token: 0x040032F2 RID: 13042
 		private AISkillDriver dominantSkillDriver;
 
-		// Token: 0x04000CCA RID: 3274
+		// Token: 0x040032F3 RID: 13043
 		public bool moveTargetPositionFound;
 	}
 }

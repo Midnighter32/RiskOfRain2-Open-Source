@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates
 {
-	// Token: 0x020000B1 RID: 177
-	internal class FlyState : BaseState
+	// Token: 0x02000708 RID: 1800
+	public class FlyState : BaseState
 	{
-		// Token: 0x0600037E RID: 894 RVA: 0x0000DD40 File Offset: 0x0000BF40
+		// Token: 0x060029F8 RID: 10744 RVA: 0x000B0268 File Offset: 0x000AE468
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -21,13 +21,13 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x0600037F RID: 895 RVA: 0x0000DDD0 File Offset: 0x0000BFD0
+		// Token: 0x060029F9 RID: 10745 RVA: 0x000B02F8 File Offset: 0x000AE4F8
 		public override void Update()
 		{
 			base.Update();
 		}
 
-		// Token: 0x06000380 RID: 896 RVA: 0x0000DDD8 File Offset: 0x0000BFD8
+		// Token: 0x060029FA RID: 10746 RVA: 0x000B0300 File Offset: 0x000AE500
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -95,40 +95,40 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x0400032E RID: 814
+		// Token: 0x040025C1 RID: 9665
 		private Animator modelAnimator;
 
-		// Token: 0x0400032F RID: 815
+		// Token: 0x040025C2 RID: 9666
 		private bool skill1InputReceived;
 
-		// Token: 0x04000330 RID: 816
+		// Token: 0x040025C3 RID: 9667
 		private bool skill2InputReceived;
 
-		// Token: 0x04000331 RID: 817
+		// Token: 0x040025C4 RID: 9668
 		private bool skill3InputReceived;
 
-		// Token: 0x04000332 RID: 818
+		// Token: 0x040025C5 RID: 9669
 		private bool skill4InputReceived;
 
-		// Token: 0x04000333 RID: 819
+		// Token: 0x040025C6 RID: 9670
 		private bool hasPivotPitchLayer;
 
-		// Token: 0x04000334 RID: 820
+		// Token: 0x040025C7 RID: 9671
 		private bool hasPivotYawLayer;
 
-		// Token: 0x04000335 RID: 821
+		// Token: 0x040025C8 RID: 9672
 		private bool hasPivotRollLayer;
 
-		// Token: 0x04000336 RID: 822
+		// Token: 0x040025C9 RID: 9673
 		private static readonly int pivotPitchCycle = Animator.StringToHash("pivotPitchCycle");
 
-		// Token: 0x04000337 RID: 823
+		// Token: 0x040025CA RID: 9674
 		private static readonly int pivotYawCycle = Animator.StringToHash("pivotYawCycle");
 
-		// Token: 0x04000338 RID: 824
+		// Token: 0x040025CB RID: 9675
 		private static readonly int pivotRollCycle = Animator.StringToHash("pivotRollCycle");
 
-		// Token: 0x04000339 RID: 825
+		// Token: 0x040025CC RID: 9676
 		private static readonly int flyRate = Animator.StringToHash("fly.rate");
 	}
 }

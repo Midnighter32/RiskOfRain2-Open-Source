@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using RoR2.Networking;
 using Unity;
 using UnityEngine;
@@ -9,10 +10,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000418 RID: 1048
+	// Token: 0x02000374 RID: 884
 	public class VoteController : NetworkBehaviour
 	{
-		// Token: 0x06001746 RID: 5958 RVA: 0x0006E89F File Offset: 0x0006CA9F
+		// Token: 0x0600157E RID: 5502 RVA: 0x0005BB77 File Offset: 0x00059D77
 		[Server]
 		private void StartTimer()
 		{
@@ -29,7 +30,7 @@ namespace RoR2
 			this.Networktimer = this.timeoutDuration;
 		}
 
-		// Token: 0x06001747 RID: 5959 RVA: 0x0006E8D2 File Offset: 0x0006CAD2
+		// Token: 0x0600157F RID: 5503 RVA: 0x0005BBAA File Offset: 0x00059DAA
 		[Server]
 		private void StopTimer()
 		{
@@ -42,7 +43,7 @@ namespace RoR2
 			this.Networktimer = this.timeoutDuration;
 		}
 
-		// Token: 0x06001748 RID: 5960 RVA: 0x0006E8FC File Offset: 0x0006CAFC
+		// Token: 0x06001580 RID: 5504 RVA: 0x0005BBD4 File Offset: 0x00059DD4
 		[Server]
 		private void InitializeVoters()
 		{
@@ -71,7 +72,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001749 RID: 5961 RVA: 0x0006E9E0 File Offset: 0x0006CBE0
+		// Token: 0x06001581 RID: 5505 RVA: 0x0005BCB8 File Offset: 0x00059EB8
 		[Server]
 		private void AddUserToVoters(NetworkUser networkUser)
 		{
@@ -95,7 +96,7 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x0600174A RID: 5962 RVA: 0x0006EA70 File Offset: 0x0006CC70
+		// Token: 0x06001582 RID: 5506 RVA: 0x0005BD48 File Offset: 0x00059F48
 		private void Awake()
 		{
 			if (NetworkServer.active)
@@ -114,7 +115,7 @@ namespace RoR2
 			this.votes.InitializeBehaviour(this, VoteController.kListvotes);
 		}
 
-		// Token: 0x0600174B RID: 5963 RVA: 0x0006EADE File Offset: 0x0006CCDE
+		// Token: 0x06001583 RID: 5507 RVA: 0x0005BDB6 File Offset: 0x00059FB6
 		private void OnServerConnectGlobal(NetworkConnection conn)
 		{
 			if (this.resetOnConnectionsChanged)
@@ -123,7 +124,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600174C RID: 5964 RVA: 0x0006EADE File Offset: 0x0006CCDE
+		// Token: 0x06001584 RID: 5508 RVA: 0x0005BDB6 File Offset: 0x00059FB6
 		private void OnServerDisconnectGlobal(NetworkConnection conn)
 		{
 			if (this.resetOnConnectionsChanged)
@@ -132,7 +133,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600174D RID: 5965 RVA: 0x0006EAEE File Offset: 0x0006CCEE
+		// Token: 0x06001585 RID: 5509 RVA: 0x0005BDC6 File Offset: 0x00059FC6
 		private void OnDestroy()
 		{
 			NetworkUser.OnPostNetworkUserStart -= this.AddUserToVoters;
@@ -140,14 +141,14 @@ namespace RoR2
 			GameNetworkManager.onServerDisconnectGlobal -= this.OnServerDisconnectGlobal;
 		}
 
-		// Token: 0x0600174E RID: 5966 RVA: 0x0006EB23 File Offset: 0x0006CD23
+		// Token: 0x06001586 RID: 5510 RVA: 0x0005BDFB File Offset: 0x00059FFB
 		public override void OnStartServer()
 		{
 			base.OnStartServer();
 			this.InitializeVoters();
 		}
 
-		// Token: 0x0600174F RID: 5967 RVA: 0x0006EB34 File Offset: 0x0006CD34
+		// Token: 0x06001587 RID: 5511 RVA: 0x0005BE0C File Offset: 0x0005A00C
 		[Server]
 		public void ReceiveUserVote(NetworkUser networkUser, int voteChoiceIndex)
 		{
@@ -156,9 +157,18 @@ namespace RoR2
 				Debug.LogWarning("[Server] function 'System.Void RoR2.VoteController::ReceiveUserVote(RoR2.NetworkUser,System.Int32)' called on client");
 				return;
 			}
-			if (this.resetOnConnectionsChanged && GameNetworkManager.singleton.GetConnectingClientCount() > 0)
+			if (this.resetOnConnectionsChanged)
 			{
-				return;
+				int connectingClientCount = GameNetworkManager.singleton.GetConnectingClientCount();
+				if (connectingClientCount > 0)
+				{
+					Debug.LogFormat("Vote from user \"{0}\" rejected: {1} clients are currently still in the process of connecting.", new object[]
+					{
+						networkUser.userName,
+						connectingClientCount
+					});
+					return;
+				}
 			}
 			if (voteChoiceIndex < 0 && !this.canRevokeVote)
 			{
@@ -173,7 +183,7 @@ namespace RoR2
 			{
 				if (gameObject == this.votes[i].networkUserObject)
 				{
-					if (!this.canChangeVote && this.votes[i].receivedVote)
+					if (this.votes[i].receivedVote && !this.canChangeVote)
 					{
 						return;
 					}
@@ -186,7 +196,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001750 RID: 5968 RVA: 0x0006EBFF File Offset: 0x0006CDFF
+		// Token: 0x06001588 RID: 5512 RVA: 0x0005BEFB File Offset: 0x0005A0FB
 		private void Update()
 		{
 			if (NetworkServer.active)
@@ -195,7 +205,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001751 RID: 5969 RVA: 0x0006EC10 File Offset: 0x0006CE10
+		// Token: 0x06001589 RID: 5513 RVA: 0x0005BF0C File Offset: 0x0005A10C
 		[Server]
 		private void ServerUpdate()
 		{
@@ -262,7 +272,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001752 RID: 5970 RVA: 0x0006ED80 File Offset: 0x0006CF80
+		// Token: 0x0600158A RID: 5514 RVA: 0x0005C07C File Offset: 0x0005A27C
 		[Server]
 		private void FinishVote()
 		{
@@ -294,54 +304,56 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001753 RID: 5971 RVA: 0x0006EE82 File Offset: 0x0006D082
+		// Token: 0x0600158B RID: 5515 RVA: 0x0005C17E File Offset: 0x0005A37E
 		public int GetVoteCount()
 		{
 			return (int)this.votes.Count;
 		}
 
-		// Token: 0x06001754 RID: 5972 RVA: 0x0006EE8F File Offset: 0x0006D08F
+		// Token: 0x0600158C RID: 5516 RVA: 0x0005C18B File Offset: 0x0005A38B
 		public VoteController.UserVote GetVote(int i)
 		{
 			return this.votes[i];
 		}
 
-		// Token: 0x06001756 RID: 5974 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x0600158E RID: 5518 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x17000223 RID: 547
-		// (get) Token: 0x06001757 RID: 5975 RVA: 0x0006EED4 File Offset: 0x0006D0D4
-		// (set) Token: 0x06001758 RID: 5976 RVA: 0x0006EEE7 File Offset: 0x0006D0E7
+		// Token: 0x1700028E RID: 654
+		// (get) Token: 0x0600158F RID: 5519 RVA: 0x0005C1D0 File Offset: 0x0005A3D0
+		// (set) Token: 0x06001590 RID: 5520 RVA: 0x0005C1E3 File Offset: 0x0005A3E3
 		public bool NetworktimerIsActive
 		{
 			get
 			{
 				return this.timerIsActive;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<bool>(value, ref this.timerIsActive, 2u);
+				base.SetSyncVar<bool>(value, ref this.timerIsActive, 2U);
 			}
 		}
 
-		// Token: 0x17000224 RID: 548
-		// (get) Token: 0x06001759 RID: 5977 RVA: 0x0006EEFC File Offset: 0x0006D0FC
-		// (set) Token: 0x0600175A RID: 5978 RVA: 0x0006EF0F File Offset: 0x0006D10F
+		// Token: 0x1700028F RID: 655
+		// (get) Token: 0x06001591 RID: 5521 RVA: 0x0005C1F8 File Offset: 0x0005A3F8
+		// (set) Token: 0x06001592 RID: 5522 RVA: 0x0005C20B File Offset: 0x0005A40B
 		public float Networktimer
 		{
 			get
 			{
 				return this.timer;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<float>(value, ref this.timer, 4u);
+				base.SetSyncVar<float>(value, ref this.timer, 4U);
 			}
 		}
 
-		// Token: 0x0600175B RID: 5979 RVA: 0x0006EF23 File Offset: 0x0006D123
+		// Token: 0x06001593 RID: 5523 RVA: 0x0005C21F File Offset: 0x0005A41F
 		protected static void InvokeSyncListvotes(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkClient.active)
@@ -352,14 +364,14 @@ namespace RoR2
 			((VoteController)obj).votes.HandleMsg(reader);
 		}
 
-		// Token: 0x0600175C RID: 5980 RVA: 0x0006EF4C File Offset: 0x0006D14C
+		// Token: 0x06001594 RID: 5524 RVA: 0x0005C248 File Offset: 0x0005A448
 		static VoteController()
 		{
 			NetworkBehaviour.RegisterSyncListDelegate(typeof(VoteController), VoteController.kListvotes, new NetworkBehaviour.CmdDelegate(VoteController.InvokeSyncListvotes));
 			NetworkCRC.RegisterBehaviour("VoteController", 0);
 		}
 
-		// Token: 0x0600175D RID: 5981 RVA: 0x0006EF88 File Offset: 0x0006D188
+		// Token: 0x06001595 RID: 5525 RVA: 0x0005C284 File Offset: 0x0005A484
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -370,7 +382,7 @@ namespace RoR2
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -379,7 +391,7 @@ namespace RoR2
 				}
 				GeneratedNetworkCode._WriteStructSyncListUserVote_VoteController(writer, this.votes);
 			}
-			if ((base.syncVarDirtyBits & 2u) != 0u)
+			if ((base.syncVarDirtyBits & 2U) != 0U)
 			{
 				if (!flag)
 				{
@@ -388,7 +400,7 @@ namespace RoR2
 				}
 				writer.Write(this.timerIsActive);
 			}
-			if ((base.syncVarDirtyBits & 4u) != 0u)
+			if ((base.syncVarDirtyBits & 4U) != 0U)
 			{
 				if (!flag)
 				{
@@ -404,7 +416,7 @@ namespace RoR2
 			return flag;
 		}
 
-		// Token: 0x0600175E RID: 5982 RVA: 0x0006F074 File Offset: 0x0006D274
+		// Token: 0x06001596 RID: 5526 RVA: 0x0005C370 File Offset: 0x0005A570
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -429,89 +441,89 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001A7E RID: 6782
+		// Token: 0x04001414 RID: 5140
 		[Tooltip("Whether or not users must be participating in the run to be allowed to vote.")]
 		public bool onlyAllowParticipatingPlayers = true;
 
-		// Token: 0x04001A7F RID: 6783
+		// Token: 0x04001415 RID: 5141
 		[Tooltip("Whether or not to add new players to the voting pool when they connect.")]
 		public bool addNewPlayers;
 
-		// Token: 0x04001A80 RID: 6784
+		// Token: 0x04001416 RID: 5142
 		[Tooltip("Whether or not users are allowed to change their choice after submitting it.")]
 		public bool canChangeVote;
 
-		// Token: 0x04001A81 RID: 6785
+		// Token: 0x04001417 RID: 5143
 		[Tooltip("Whether or not users are allowed to revoke their vote entirely after submitting it.")]
 		public bool canRevokeVote;
 
-		// Token: 0x04001A82 RID: 6786
+		// Token: 0x04001418 RID: 5144
 		[Tooltip("If set, the vote cannot be completed early by all users submitting, and the timeout must occur.")]
 		public bool mustTimeOut;
 
-		// Token: 0x04001A83 RID: 6787
+		// Token: 0x04001419 RID: 5145
 		[Tooltip("Whether or not this vote must reset and be unvotable while someone is connecting or disconnecting.")]
 		public bool resetOnConnectionsChanged;
 
-		// Token: 0x04001A84 RID: 6788
+		// Token: 0x0400141A RID: 5146
 		[Tooltip("How long it takes for the vote to forcibly complete once the timer begins.")]
 		public float timeoutDuration = 15f;
 
-		// Token: 0x04001A85 RID: 6789
+		// Token: 0x0400141B RID: 5147
 		[Tooltip("How long it takes for action to be taken after the vote is complete.")]
 		public float minimumTimeBeforeProcessing = 3f;
 
-		// Token: 0x04001A86 RID: 6790
+		// Token: 0x0400141C RID: 5148
 		[Tooltip("What causes the timer to start counting down.")]
 		public VoteController.TimerStartCondition timerStartCondition;
 
-		// Token: 0x04001A87 RID: 6791
+		// Token: 0x0400141D RID: 5149
 		[Tooltip("An array of functions to be called based on the user vote.")]
 		public UnityEvent[] choices;
 
-		// Token: 0x04001A88 RID: 6792
+		// Token: 0x0400141E RID: 5150
 		[Tooltip("The choice to use when nobody votes or everybody who can vote quits.")]
 		public int defaultChoiceIndex;
 
-		// Token: 0x04001A89 RID: 6793
+		// Token: 0x0400141F RID: 5151
 		[Tooltip("Whether or not to destroy the attached GameObject when the vote completes.")]
 		public bool destroyGameObjectOnComplete = true;
 
-		// Token: 0x04001A8A RID: 6794
+		// Token: 0x04001420 RID: 5152
 		private VoteController.SyncListUserVote votes = new VoteController.SyncListUserVote();
 
-		// Token: 0x04001A8B RID: 6795
+		// Token: 0x04001421 RID: 5153
 		[SyncVar]
 		public bool timerIsActive;
 
-		// Token: 0x04001A8C RID: 6796
+		// Token: 0x04001422 RID: 5154
 		[SyncVar]
 		public float timer;
 
-		// Token: 0x04001A8D RID: 6797
+		// Token: 0x04001423 RID: 5155
 		private static int kListvotes = 458257089;
 
-		// Token: 0x02000419 RID: 1049
+		// Token: 0x02000375 RID: 885
 		public enum TimerStartCondition
 		{
-			// Token: 0x04001A8F RID: 6799
+			// Token: 0x04001425 RID: 5157
 			Immediate,
-			// Token: 0x04001A90 RID: 6800
+			// Token: 0x04001426 RID: 5158
 			OnAnyVoteReceived,
-			// Token: 0x04001A91 RID: 6801
+			// Token: 0x04001427 RID: 5159
 			WhileAnyVoteReceived,
-			// Token: 0x04001A92 RID: 6802
+			// Token: 0x04001428 RID: 5160
 			WhileAllVotesReceived,
-			// Token: 0x04001A93 RID: 6803
+			// Token: 0x04001429 RID: 5161
 			Never
 		}
 
-		// Token: 0x0200041A RID: 1050
+		// Token: 0x02000376 RID: 886
 		[Serializable]
 		public struct UserVote
 		{
-			// Token: 0x17000225 RID: 549
-			// (get) Token: 0x0600175F RID: 5983 RVA: 0x0006F0FF File Offset: 0x0006D2FF
+			// Token: 0x17000290 RID: 656
+			// (get) Token: 0x06001597 RID: 5527 RVA: 0x0005C3FB File Offset: 0x0005A5FB
 			public bool receivedVote
 			{
 				get
@@ -520,24 +532,24 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x04001A94 RID: 6804
+			// Token: 0x0400142A RID: 5162
 			public GameObject networkUserObject;
 
-			// Token: 0x04001A95 RID: 6805
+			// Token: 0x0400142B RID: 5163
 			public int voteChoiceIndex;
 		}
 
-		// Token: 0x0200041B RID: 1051
+		// Token: 0x02000377 RID: 887
 		public class SyncListUserVote : SyncListStruct<VoteController.UserVote>
 		{
-			// Token: 0x06001761 RID: 5985 RVA: 0x0006F115 File Offset: 0x0006D315
+			// Token: 0x06001599 RID: 5529 RVA: 0x0005C411 File Offset: 0x0005A611
 			public override void SerializeItem(NetworkWriter writer, VoteController.UserVote item)
 			{
 				writer.Write(item.networkUserObject);
 				writer.WritePackedUInt32((uint)item.voteChoiceIndex);
 			}
 
-			// Token: 0x06001762 RID: 5986 RVA: 0x0006F130 File Offset: 0x0006D330
+			// Token: 0x0600159A RID: 5530 RVA: 0x0005C42C File Offset: 0x0005A62C
 			public override VoteController.UserVote DeserializeItem(NetworkReader reader)
 			{
 				return new VoteController.UserVote

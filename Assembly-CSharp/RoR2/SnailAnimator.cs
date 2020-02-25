@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003E8 RID: 1000
+	// Token: 0x0200033C RID: 828
 	public class SnailAnimator : MonoBehaviour
 	{
-		// Token: 0x060015C8 RID: 5576 RVA: 0x00068763 File Offset: 0x00066963
+		// Token: 0x060013B6 RID: 5046 RVA: 0x00054563 File Offset: 0x00052763
 		private void Start()
 		{
 			this.animator = base.GetComponent<Animator>();
 			this.characterModel = base.GetComponentInParent<CharacterModel>();
 		}
 
-		// Token: 0x060015C9 RID: 5577 RVA: 0x00068780 File Offset: 0x00066980
+		// Token: 0x060013B7 RID: 5047 RVA: 0x00054580 File Offset: 0x00052780
 		private void FixedUpdate()
 		{
 			if (this.characterModel)
@@ -42,16 +42,16 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001931 RID: 6449
+		// Token: 0x04001287 RID: 4743
 		public ParticleSystem healEffectSystem;
 
-		// Token: 0x04001932 RID: 6450
+		// Token: 0x04001288 RID: 4744
 		private bool lastOutOfDanger;
 
-		// Token: 0x04001933 RID: 6451
+		// Token: 0x04001289 RID: 4745
 		private Animator animator;
 
-		// Token: 0x04001934 RID: 6452
+		// Token: 0x0400128A RID: 4746
 		private CharacterModel characterModel;
 	}
 }

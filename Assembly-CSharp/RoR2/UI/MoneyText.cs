@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000604 RID: 1540
+	// Token: 0x020005F3 RID: 1523
 	[RequireComponent(typeof(RectTransform))]
 	public class MoneyText : MonoBehaviour
 	{
-		// Token: 0x06002294 RID: 8852 RVA: 0x000A3AE0 File Offset: 0x000A1CE0
+		// Token: 0x06002404 RID: 9220 RVA: 0x0009DC50 File Offset: 0x0009BE50
 		public void Update()
 		{
 			this.coinSoundCooldown -= Time.deltaTime;
@@ -40,32 +40,32 @@ namespace RoR2.UI
 						this.displayAmount += num;
 					}
 					float num3 = Mathf.Min(0.5f / (float)num, 0.25f);
-					this.targetText.text = this.displayAmount.ToString();
+					this.targetText.text = TextSerialization.ToStringNumeric((double)this.displayAmount);
 					this.updateTimer = num3;
 				}
 				this.updateTimer -= Time.deltaTime;
 			}
 		}
 
-		// Token: 0x040025B5 RID: 9653
+		// Token: 0x040021F9 RID: 8697
 		public TextMeshProUGUI targetText;
 
-		// Token: 0x040025B6 RID: 9654
+		// Token: 0x040021FA RID: 8698
 		public FlashPanel flashPanel;
 
-		// Token: 0x040025B7 RID: 9655
+		// Token: 0x040021FB RID: 8699
 		private int displayAmount;
 
-		// Token: 0x040025B8 RID: 9656
+		// Token: 0x040021FC RID: 8700
 		private float updateTimer;
 
-		// Token: 0x040025B9 RID: 9657
+		// Token: 0x040021FD RID: 8701
 		private float coinSoundCooldown;
 
-		// Token: 0x040025BA RID: 9658
+		// Token: 0x040021FE RID: 8702
 		public int targetValue;
 
-		// Token: 0x040025BB RID: 9659
+		// Token: 0x040021FF RID: 8703
 		public string sound = "Play_UI_coin";
 	}
 }

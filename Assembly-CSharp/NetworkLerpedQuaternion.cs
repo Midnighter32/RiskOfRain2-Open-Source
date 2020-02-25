@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x0200006A RID: 106
+// Token: 0x0200006B RID: 107
 public struct NetworkLerpedQuaternion
 {
-	// Token: 0x0600019C RID: 412 RVA: 0x00008ECC File Offset: 0x000070CC
+	// Token: 0x060001BD RID: 445 RVA: 0x000095F0 File Offset: 0x000077F0
 	public void SetValueImmediate(Quaternion value)
 	{
 		this.newestInterpPoint.time = Time.time;
@@ -14,7 +14,7 @@ public struct NetworkLerpedQuaternion
 		this.inverseLowHighTimespan = 0f;
 	}
 
-	// Token: 0x0600019D RID: 413 RVA: 0x00008F18 File Offset: 0x00007118
+	// Token: 0x060001BE RID: 446 RVA: 0x0000963C File Offset: 0x0000783C
 	public Quaternion GetCurrentValue(bool hasAuthority)
 	{
 		if (hasAuthority)
@@ -33,13 +33,13 @@ public struct NetworkLerpedQuaternion
 		return Quaternion.Slerp(this.lowInterpPoint.value, this.highInterpPoint.value, t);
 	}
 
-	// Token: 0x0600019E RID: 414 RVA: 0x00008FC9 File Offset: 0x000071C9
+	// Token: 0x060001BF RID: 447 RVA: 0x000096ED File Offset: 0x000078ED
 	public Quaternion GetAuthoritativeValue()
 	{
 		return this.newestInterpPoint.value;
 	}
 
-	// Token: 0x0600019F RID: 415 RVA: 0x00008FD6 File Offset: 0x000071D6
+	// Token: 0x060001C0 RID: 448 RVA: 0x000096FA File Offset: 0x000078FA
 	public void PushValue(Quaternion value)
 	{
 		if (this.newestInterpPoint.value != value)
@@ -49,28 +49,28 @@ public struct NetworkLerpedQuaternion
 		}
 	}
 
-	// Token: 0x040001CA RID: 458
+	// Token: 0x040001CF RID: 463
 	private const float interpDelay = 0.1f;
 
-	// Token: 0x040001CB RID: 459
+	// Token: 0x040001D0 RID: 464
 	private NetworkLerpedQuaternion.InterpPoint lowInterpPoint;
 
-	// Token: 0x040001CC RID: 460
+	// Token: 0x040001D1 RID: 465
 	private NetworkLerpedQuaternion.InterpPoint highInterpPoint;
 
-	// Token: 0x040001CD RID: 461
+	// Token: 0x040001D2 RID: 466
 	private NetworkLerpedQuaternion.InterpPoint newestInterpPoint;
 
-	// Token: 0x040001CE RID: 462
+	// Token: 0x040001D3 RID: 467
 	private float inverseLowHighTimespan;
 
-	// Token: 0x0200006B RID: 107
+	// Token: 0x0200006C RID: 108
 	private struct InterpPoint
 	{
-		// Token: 0x040001CF RID: 463
+		// Token: 0x040001D4 RID: 468
 		public float time;
 
-		// Token: 0x040001D0 RID: 464
+		// Token: 0x040001D5 RID: 469
 		public Quaternion value;
 	}
 }

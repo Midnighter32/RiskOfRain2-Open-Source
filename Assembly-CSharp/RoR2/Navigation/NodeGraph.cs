@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace RoR2.Navigation
 {
-	// Token: 0x0200052B RID: 1323
+	// Token: 0x020004E5 RID: 1253
 	[CreateAssetMenu]
 	public class NodeGraph : ScriptableObject
 	{
-		// Token: 0x06001DA5 RID: 7589 RVA: 0x0008A89E File Offset: 0x00088A9E
+		// Token: 0x06001DD8 RID: 7640 RVA: 0x0007FBDA File Offset: 0x0007DDDA
 		public void Clear()
 		{
 			this.nodes = Array.Empty<NodeGraph.Node>();
@@ -20,7 +20,7 @@ namespace RoR2.Navigation
 			};
 		}
 
-		// Token: 0x06001DA6 RID: 7590 RVA: 0x0008A8CC File Offset: 0x00088ACC
+		// Token: 0x06001DD9 RID: 7641 RVA: 0x0007FC08 File Offset: 0x0007DE08
 		public void SetNodes(ReadOnlyCollection<MapNode> mapNodes, ReadOnlyCollection<SerializableBitArray> lineOfSightMasks)
 		{
 			this.Clear();
@@ -30,10 +30,7 @@ namespace RoR2.Navigation
 			for (int i = 0; i < mapNodes.Count; i++)
 			{
 				MapNode key = mapNodes[i];
-				dictionary[key] = new NodeGraph.NodeIndex
-				{
-					nodeIndex = i
-				};
+				dictionary[key] = new NodeGraph.NodeIndex(i);
 			}
 			for (int j = 0; j < mapNodes.Count; j++)
 			{
@@ -99,13 +96,13 @@ namespace RoR2.Navigation
 			this.links = list2.ToArray();
 		}
 
-		// Token: 0x06001DA7 RID: 7591 RVA: 0x0008AB50 File Offset: 0x00088D50
+		// Token: 0x06001DDA RID: 7642 RVA: 0x0007FE80 File Offset: 0x0007E080
 		public Vector3 GetQuadraticCoordinates(float t, Vector3 startPos, Vector3 apexPos, Vector3 endPos)
 		{
 			return Mathf.Pow(1f - t, 2f) * startPos + 2f * t * (1f - t) * apexPos + Mathf.Pow(t, 2f) * endPos;
 		}
 
-		// Token: 0x06001DA8 RID: 7592 RVA: 0x0008ABA8 File Offset: 0x00088DA8
+		// Token: 0x06001DDB RID: 7643 RVA: 0x0007FED8 File Offset: 0x0007E0D8
 		public Mesh GenerateLinkDebugMesh(HullClassification hull)
 		{
 			Mesh result;
@@ -151,7 +148,7 @@ namespace RoR2.Navigation
 			return result;
 		}
 
-		// Token: 0x06001DA9 RID: 7593 RVA: 0x0008AD24 File Offset: 0x00088F24
+		// Token: 0x06001DDC RID: 7644 RVA: 0x00080054 File Offset: 0x0007E254
 		public void DebugDrawLinks(HullClassification hull)
 		{
 			int num = 1 << (int)hull;
@@ -192,7 +189,7 @@ namespace RoR2.Navigation
 			}
 		}
 
-		// Token: 0x06001DAA RID: 7594 RVA: 0x0008AE78 File Offset: 0x00089078
+		// Token: 0x06001DDD RID: 7645 RVA: 0x000801A8 File Offset: 0x0007E3A8
 		public void DebugDrawPath(Vector3 startPos, Vector3 endPos)
 		{
 			Path path = new Path(this);
@@ -212,25 +209,25 @@ namespace RoR2.Navigation
 			}
 		}
 
-		// Token: 0x06001DAB RID: 7595 RVA: 0x0008AF24 File Offset: 0x00089124
+		// Token: 0x06001DDE RID: 7646 RVA: 0x00080254 File Offset: 0x0007E454
 		public void DebugHighlightNodesWithNoLinks()
 		{
 			foreach (NodeGraph.Node node in this.nodes)
 			{
-				if (node.linkListIndex.size <= 0u)
+				if (node.linkListIndex.size <= 0U)
 				{
 					Debug.DrawRay(node.position, Vector3.up * 100f, Color.cyan, 60f);
 				}
 			}
 		}
 
-		// Token: 0x06001DAC RID: 7596 RVA: 0x0008AF80 File Offset: 0x00089180
+		// Token: 0x06001DDF RID: 7647 RVA: 0x000802B0 File Offset: 0x0007E4B0
 		public int GetNodeCount()
 		{
 			return this.nodes.Length;
 		}
 
-		// Token: 0x06001DAD RID: 7597 RVA: 0x0008AF8C File Offset: 0x0008918C
+		// Token: 0x06001DE0 RID: 7648 RVA: 0x000802BC File Offset: 0x0007E4BC
 		public List<NodeGraph.NodeIndex> GetActiveNodesForHullMask(HullMask hullMask)
 		{
 			List<NodeGraph.NodeIndex> list = new List<NodeGraph.NodeIndex>(this.nodes.Length);
@@ -238,16 +235,13 @@ namespace RoR2.Navigation
 			{
 				if ((this.nodes[i].forbiddenHulls & hullMask) == HullMask.None && (this.nodes[i].gateIndex == 0 || this.openGates[(int)this.nodes[i].gateIndex]))
 				{
-					list.Add(new NodeGraph.NodeIndex
-					{
-						nodeIndex = i
-					});
+					list.Add(new NodeGraph.NodeIndex(i));
 				}
 			}
 			return list;
 		}
 
-		// Token: 0x06001DAE RID: 7598 RVA: 0x0008B014 File Offset: 0x00089214
+		// Token: 0x06001DE1 RID: 7649 RVA: 0x0008033C File Offset: 0x0007E53C
 		public List<NodeGraph.NodeIndex> GetActiveNodesForHullMaskWithFlagConditions(HullMask hullMask, NodeFlags requiredFlags, NodeFlags forbiddenFlags)
 		{
 			List<NodeGraph.NodeIndex> list = new List<NodeGraph.NodeIndex>(this.nodes.Length);
@@ -256,16 +250,13 @@ namespace RoR2.Navigation
 				NodeFlags flags = this.nodes[i].flags;
 				if ((flags & forbiddenFlags) == NodeFlags.None && (flags & requiredFlags) == requiredFlags && (this.nodes[i].forbiddenHulls & hullMask) == HullMask.None && (this.nodes[i].gateIndex == 0 || this.openGates[(int)this.nodes[i].gateIndex]))
 				{
-					list.Add(new NodeGraph.NodeIndex
-					{
-						nodeIndex = i
-					});
+					list.Add(new NodeGraph.NodeIndex(i));
 				}
 			}
 			return list;
 		}
 
-		// Token: 0x06001DAF RID: 7599 RVA: 0x0008B0C4 File Offset: 0x000892C4
+		// Token: 0x06001DE2 RID: 7650 RVA: 0x000803DC File Offset: 0x0007E5DC
 		public List<NodeGraph.NodeIndex> FindNodesInRange(Vector3 position, float minRange, float maxRange, HullMask hullMask)
 		{
 			float num = minRange * minRange;
@@ -278,17 +269,14 @@ namespace RoR2.Navigation
 					float sqrMagnitude = (this.nodes[i].position - position).sqrMagnitude;
 					if (sqrMagnitude >= num && sqrMagnitude <= num2)
 					{
-						list.Add(new NodeGraph.NodeIndex
-						{
-							nodeIndex = i
-						});
+						list.Add(new NodeGraph.NodeIndex(i));
 					}
 				}
 			}
 			return list;
 		}
 
-		// Token: 0x06001DB0 RID: 7600 RVA: 0x0008B180 File Offset: 0x00089380
+		// Token: 0x06001DE3 RID: 7651 RVA: 0x0008048C File Offset: 0x0007E68C
 		public List<NodeGraph.NodeIndex> FindNodesInRangeWithFlagConditions(Vector3 position, float minRange, float maxRange, HullMask hullMask, NodeFlags requiredFlags, NodeFlags forbiddenFlags, bool preventOverhead)
 		{
 			float num = minRange * minRange;
@@ -303,17 +291,14 @@ namespace RoR2.Navigation
 					float sqrMagnitude = a.sqrMagnitude;
 					if (sqrMagnitude >= num && sqrMagnitude <= num2 && (!preventOverhead || Vector3.Dot(a / Mathf.Sqrt(sqrMagnitude), Vector3.up) <= 0.70710677f))
 					{
-						list.Add(new NodeGraph.NodeIndex
-						{
-							nodeIndex = i
-						});
+						list.Add(new NodeGraph.NodeIndex(i));
 					}
 				}
 			}
 			return list;
 		}
 
-		// Token: 0x06001DB1 RID: 7601 RVA: 0x0008B290 File Offset: 0x00089490
+		// Token: 0x06001DE4 RID: 7652 RVA: 0x00080590 File Offset: 0x0007E790
 		public bool GetNodePosition(NodeGraph.NodeIndex nodeIndex, out Vector3 position)
 		{
 			if (nodeIndex != NodeGraph.NodeIndex.invalid && nodeIndex.nodeIndex < this.nodes.Length)
@@ -325,7 +310,7 @@ namespace RoR2.Navigation
 			return false;
 		}
 
-		// Token: 0x06001DB2 RID: 7602 RVA: 0x0008B2E4 File Offset: 0x000894E4
+		// Token: 0x06001DE5 RID: 7653 RVA: 0x000805E4 File Offset: 0x0007E7E4
 		public bool GetNodeFlags(NodeGraph.NodeIndex nodeIndex, out NodeFlags flags)
 		{
 			if (nodeIndex != NodeGraph.NodeIndex.invalid && nodeIndex.nodeIndex < this.nodes.Length)
@@ -337,7 +322,7 @@ namespace RoR2.Navigation
 			return false;
 		}
 
-		// Token: 0x06001DB3 RID: 7603 RVA: 0x0008B324 File Offset: 0x00089524
+		// Token: 0x06001DE6 RID: 7654 RVA: 0x00080624 File Offset: 0x0007E824
 		public NodeGraph.LinkIndex[] GetActiveNodeLinks(NodeGraph.NodeIndex nodeIndex)
 		{
 			if (nodeIndex != NodeGraph.NodeIndex.invalid && nodeIndex.nodeIndex < this.nodes.Length)
@@ -359,13 +344,13 @@ namespace RoR2.Navigation
 			return null;
 		}
 
-		// Token: 0x06001DB4 RID: 7604 RVA: 0x0008B3AC File Offset: 0x000895AC
+		// Token: 0x06001DE7 RID: 7655 RVA: 0x000806AC File Offset: 0x0007E8AC
 		public bool TestNodeLineOfSight(NodeGraph.NodeIndex nodeIndexA, NodeGraph.NodeIndex nodeIndexB)
 		{
 			return nodeIndexA != NodeGraph.NodeIndex.invalid && nodeIndexA.nodeIndex < this.nodes.Length && nodeIndexB != NodeGraph.NodeIndex.invalid && nodeIndexB.nodeIndex < this.nodes.Length && this.nodes[nodeIndexA.nodeIndex].lineOfSightMask[nodeIndexB.nodeIndex];
 		}
 
-		// Token: 0x06001DB5 RID: 7605 RVA: 0x0008B418 File Offset: 0x00089618
+		// Token: 0x06001DE8 RID: 7656 RVA: 0x00080718 File Offset: 0x0007E918
 		public bool GetPositionAlongLink(NodeGraph.LinkIndex linkIndex, float t, out Vector3 position)
 		{
 			if (linkIndex != NodeGraph.LinkIndex.invalid && linkIndex.linkIndex < this.links.Length)
@@ -377,19 +362,19 @@ namespace RoR2.Navigation
 			return false;
 		}
 
-		// Token: 0x06001DB6 RID: 7606 RVA: 0x0008B4B4 File Offset: 0x000896B4
+		// Token: 0x06001DE9 RID: 7657 RVA: 0x000807B4 File Offset: 0x0007E9B4
 		public bool IsLinkSuitableForHull(NodeGraph.LinkIndex linkIndex, HullClassification hullClassification)
 		{
 			return linkIndex != NodeGraph.LinkIndex.invalid && linkIndex.linkIndex < this.links.Length && (this.links[linkIndex.linkIndex].hullMask & 1 << (int)hullClassification) != 0 && (this.links[linkIndex.linkIndex].gateIndex == 0 || this.openGates[(int)this.links[linkIndex.linkIndex].gateIndex]);
 		}
 
-		// Token: 0x06001DB7 RID: 7607 RVA: 0x0008B538 File Offset: 0x00089738
+		// Token: 0x06001DEA RID: 7658 RVA: 0x00080838 File Offset: 0x0007EA38
 		public bool IsLinkSuitableForHull(NodeGraph.LinkIndex linkIndex, HullMask hullMask)
 		{
 			return linkIndex != NodeGraph.LinkIndex.invalid && linkIndex.linkIndex < this.links.Length && (this.links[linkIndex.linkIndex].hullMask & (int)hullMask) != 0 && (this.links[linkIndex.linkIndex].gateIndex == 0 || this.openGates[(int)this.links[linkIndex.linkIndex].gateIndex]);
 		}
 
-		// Token: 0x06001DB8 RID: 7608 RVA: 0x0008B5B7 File Offset: 0x000897B7
+		// Token: 0x06001DEB RID: 7659 RVA: 0x000808B7 File Offset: 0x0007EAB7
 		public NodeGraph.NodeIndex GetLinkStartNode(NodeGraph.LinkIndex linkIndex)
 		{
 			if (linkIndex != NodeGraph.LinkIndex.invalid && linkIndex.linkIndex < this.links.Length)
@@ -399,7 +384,7 @@ namespace RoR2.Navigation
 			return NodeGraph.NodeIndex.invalid;
 		}
 
-		// Token: 0x06001DB9 RID: 7609 RVA: 0x0008B5F2 File Offset: 0x000897F2
+		// Token: 0x06001DEC RID: 7660 RVA: 0x000808F2 File Offset: 0x0007EAF2
 		public NodeGraph.NodeIndex GetLinkEndNode(NodeGraph.LinkIndex linkIndex)
 		{
 			if (linkIndex != NodeGraph.LinkIndex.invalid && linkIndex.linkIndex < this.links.Length)
@@ -409,7 +394,7 @@ namespace RoR2.Navigation
 			return NodeGraph.NodeIndex.invalid;
 		}
 
-		// Token: 0x06001DBA RID: 7610 RVA: 0x0008B630 File Offset: 0x00089830
+		// Token: 0x06001DED RID: 7661 RVA: 0x00080930 File Offset: 0x0007EB30
 		public NodeGraph.NodeIndex FindClosestNode(Vector3 position, HullClassification hullClassification)
 		{
 			float num = float.PositiveInfinity;
@@ -424,14 +409,14 @@ namespace RoR2.Navigation
 					if (sqrMagnitude < num)
 					{
 						num = sqrMagnitude;
-						invalid.nodeIndex = i;
+						invalid = new NodeGraph.NodeIndex(i);
 					}
 				}
 			}
 			return invalid;
 		}
 
-		// Token: 0x06001DBB RID: 7611 RVA: 0x0008B6C0 File Offset: 0x000898C0
+		// Token: 0x06001DEE RID: 7662 RVA: 0x000809C0 File Offset: 0x0007EBC0
 		public NodeGraph.NodeIndex FindClosestNodeWithFlagConditions(Vector3 position, HullClassification hullClassification, NodeFlags requiredFlags, NodeFlags forbiddenFlags, bool preventOverhead)
 		{
 			float num = float.PositiveInfinity;
@@ -447,20 +432,20 @@ namespace RoR2.Navigation
 					if (sqrMagnitude < num && (!preventOverhead || Vector3.Dot(a / Mathf.Sqrt(sqrMagnitude), Vector3.up) <= 0.70710677f))
 					{
 						num = sqrMagnitude;
-						invalid.nodeIndex = i;
+						invalid = new NodeGraph.NodeIndex(i);
 					}
 				}
 			}
 			return invalid;
 		}
 
-		// Token: 0x06001DBC RID: 7612 RVA: 0x0008B7BD File Offset: 0x000899BD
+		// Token: 0x06001DEF RID: 7663 RVA: 0x00080ABD File Offset: 0x0007ECBD
 		private float HeuristicCostEstimate(Vector3 startPos, Vector3 endPos)
 		{
 			return Vector3.Distance(startPos, endPos);
 		}
 
-		// Token: 0x06001DBD RID: 7613 RVA: 0x00078729 File Offset: 0x00076929
+		// Token: 0x06001DF0 RID: 7664 RVA: 0x00068305 File Offset: 0x00066505
 		private static float DistanceXZ(Vector3 a, Vector3 b)
 		{
 			a.y = 0f;
@@ -468,7 +453,7 @@ namespace RoR2.Navigation
 			return Vector3.Distance(a, b);
 		}
 
-		// Token: 0x06001DBE RID: 7614 RVA: 0x0008B7C8 File Offset: 0x000899C8
+		// Token: 0x06001DF1 RID: 7665 RVA: 0x00080AC8 File Offset: 0x0007ECC8
 		private static void ArrayRemoveNodeIndex(NodeGraph.NodeIndex[] array, NodeGraph.NodeIndex value, int count)
 		{
 			for (int i = 0; i < count; i++)
@@ -481,7 +466,7 @@ namespace RoR2.Navigation
 			}
 		}
 
-		// Token: 0x06001DBF RID: 7615 RVA: 0x0008B804 File Offset: 0x00089A04
+		// Token: 0x06001DF2 RID: 7666 RVA: 0x00080B04 File Offset: 0x0007ED04
 		public PathTask ComputePath(NodeGraph.PathRequest pathRequest)
 		{
 			PathTask pathTask = new PathTask(pathRequest.path);
@@ -528,7 +513,7 @@ namespace RoR2.Navigation
 					if (array6[nodeIndex3] <= num2)
 					{
 						num2 = array6[nodeIndex3];
-						invalid.nodeIndex = nodeIndex3;
+						invalid = new NodeGraph.NodeIndex(nodeIndex3);
 					}
 				}
 				if (invalid.nodeIndex == nodeIndex2.nodeIndex)
@@ -592,7 +577,7 @@ namespace RoR2.Navigation
 			return pathTask;
 		}
 
-		// Token: 0x06001DC0 RID: 7616 RVA: 0x0008BC68 File Offset: 0x00089E68
+		// Token: 0x06001DF3 RID: 7667 RVA: 0x00080F68 File Offset: 0x0007F168
 		private NodeGraph.LinkIndex Resolve(NodeGraph.LinkIndex[] cameFrom, NodeGraph.LinkIndex current)
 		{
 			if (current.linkIndex < 0 || current.linkIndex > this.links.Length)
@@ -607,7 +592,7 @@ namespace RoR2.Navigation
 			return cameFrom[nodeIndexA.nodeIndex];
 		}
 
-		// Token: 0x06001DC1 RID: 7617 RVA: 0x0008BCE0 File Offset: 0x00089EE0
+		// Token: 0x06001DF4 RID: 7668 RVA: 0x00080FE0 File Offset: 0x0007F1E0
 		private void ReconstructPath(Path path, NodeGraph.LinkIndex[] cameFrom, NodeGraph.LinkIndex current, NodeGraph.PathRequest pathRequest)
 		{
 			int num = 1 << (int)pathRequest.hullClassification;
@@ -636,7 +621,7 @@ namespace RoR2.Navigation
 			path.status = PathStatus.Valid;
 		}
 
-		// Token: 0x06001DC2 RID: 7618 RVA: 0x0008BEA8 File Offset: 0x0008A0A8
+		// Token: 0x06001DF5 RID: 7669 RVA: 0x000811A8 File Offset: 0x0007F3A8
 		private byte RegisterGateName(string gateName)
 		{
 			if (string.IsNullOrEmpty(gateName))
@@ -664,14 +649,14 @@ namespace RoR2.Navigation
 			return (byte)num;
 		}
 
-		// Token: 0x06001DC3 RID: 7619 RVA: 0x0008BF10 File Offset: 0x0008A110
+		// Token: 0x06001DF6 RID: 7670 RVA: 0x00081210 File Offset: 0x0007F410
 		public bool IsGateOpen(string gateName)
 		{
 			int num = this.gateNames.IndexOf(gateName);
 			return num != -1 && this.openGates[num];
 		}
 
-		// Token: 0x06001DC4 RID: 7620 RVA: 0x0008BF38 File Offset: 0x0008A138
+		// Token: 0x06001DF7 RID: 7671 RVA: 0x00081238 File Offset: 0x0007F438
 		public void SetGateState(string gateName, bool open)
 		{
 			int num = this.gateNames.IndexOf(gateName);
@@ -682,188 +667,197 @@ namespace RoR2.Navigation
 			this.openGates[num] = open;
 		}
 
-		// Token: 0x04001FF6 RID: 8182
+		// Token: 0x04001B0F RID: 6927
 		[SerializeField]
 		private NodeGraph.Node[] nodes = Array.Empty<NodeGraph.Node>();
 
-		// Token: 0x04001FF7 RID: 8183
+		// Token: 0x04001B10 RID: 6928
 		[SerializeField]
 		private NodeGraph.Link[] links = Array.Empty<NodeGraph.Link>();
 
-		// Token: 0x04001FF8 RID: 8184
+		// Token: 0x04001B11 RID: 6929
 		[SerializeField]
 		private List<string> gateNames = new List<string>
 		{
 			""
 		};
 
-		// Token: 0x04001FF9 RID: 8185
+		// Token: 0x04001B12 RID: 6930
 		private bool[] openGates = new bool[256];
 
-		// Token: 0x04001FFA RID: 8186
+		// Token: 0x04001B13 RID: 6931
 		private const float overheadDotLimit = 0.70710677f;
 
-		// Token: 0x0200052C RID: 1324
+		// Token: 0x020004E6 RID: 1254
 		[Serializable]
-		public struct NodeIndex
+		public struct NodeIndex : IEquatable<NodeGraph.NodeIndex>
 		{
-			// Token: 0x06001DC6 RID: 7622 RVA: 0x0008BFAF File Offset: 0x0008A1AF
+			// Token: 0x06001DF9 RID: 7673 RVA: 0x000812AF File Offset: 0x0007F4AF
+			public NodeIndex(int nodeIndex)
+			{
+				this.nodeIndex = nodeIndex;
+			}
+
+			// Token: 0x06001DFA RID: 7674 RVA: 0x000812B8 File Offset: 0x0007F4B8
 			public static bool operator ==(NodeGraph.NodeIndex lhs, NodeGraph.NodeIndex rhs)
 			{
 				return lhs.nodeIndex == rhs.nodeIndex;
 			}
 
-			// Token: 0x06001DC7 RID: 7623 RVA: 0x0008BFBF File Offset: 0x0008A1BF
+			// Token: 0x06001DFB RID: 7675 RVA: 0x000812C8 File Offset: 0x0007F4C8
 			public static bool operator !=(NodeGraph.NodeIndex lhs, NodeGraph.NodeIndex rhs)
 			{
 				return lhs.nodeIndex != rhs.nodeIndex;
 			}
 
-			// Token: 0x06001DC8 RID: 7624 RVA: 0x0008BFD2 File Offset: 0x0008A1D2
+			// Token: 0x06001DFC RID: 7676 RVA: 0x000812DB File Offset: 0x0007F4DB
 			public override bool Equals(object other)
 			{
 				return other is NodeGraph.NodeIndex && ((NodeGraph.NodeIndex)other).nodeIndex == this.nodeIndex;
 			}
 
-			// Token: 0x06001DC9 RID: 7625 RVA: 0x0008BFF1 File Offset: 0x0008A1F1
+			// Token: 0x06001DFD RID: 7677 RVA: 0x000812FA File Offset: 0x0007F4FA
 			public override int GetHashCode()
 			{
 				return this.nodeIndex;
 			}
 
-			// Token: 0x04001FFB RID: 8187
+			// Token: 0x06001DFE RID: 7678 RVA: 0x000812B8 File Offset: 0x0007F4B8
+			public bool Equals(NodeGraph.NodeIndex other)
+			{
+				return this.nodeIndex == other.nodeIndex;
+			}
+
+			// Token: 0x04001B14 RID: 6932
 			public int nodeIndex;
 
-			// Token: 0x04001FFC RID: 8188
-			public static readonly NodeGraph.NodeIndex invalid = new NodeGraph.NodeIndex
-			{
-				nodeIndex = -1
-			};
+			// Token: 0x04001B15 RID: 6933
+			public static readonly NodeGraph.NodeIndex invalid = new NodeGraph.NodeIndex(-1);
 		}
 
-		// Token: 0x0200052D RID: 1325
+		// Token: 0x020004E7 RID: 1255
 		[Serializable]
 		public struct LinkIndex
 		{
-			// Token: 0x06001DCB RID: 7627 RVA: 0x0008C01F File Offset: 0x0008A21F
+			// Token: 0x06001E00 RID: 7680 RVA: 0x0008130F File Offset: 0x0007F50F
 			public static bool operator ==(NodeGraph.LinkIndex lhs, NodeGraph.LinkIndex rhs)
 			{
 				return lhs.linkIndex == rhs.linkIndex;
 			}
 
-			// Token: 0x06001DCC RID: 7628 RVA: 0x0008C02F File Offset: 0x0008A22F
+			// Token: 0x06001E01 RID: 7681 RVA: 0x0008131F File Offset: 0x0007F51F
 			public static bool operator !=(NodeGraph.LinkIndex lhs, NodeGraph.LinkIndex rhs)
 			{
 				return lhs.linkIndex != rhs.linkIndex;
 			}
 
-			// Token: 0x06001DCD RID: 7629 RVA: 0x0008C042 File Offset: 0x0008A242
+			// Token: 0x06001E02 RID: 7682 RVA: 0x00081332 File Offset: 0x0007F532
 			public override bool Equals(object other)
 			{
 				return other is NodeGraph.LinkIndex && ((NodeGraph.LinkIndex)other).linkIndex == this.linkIndex;
 			}
 
-			// Token: 0x06001DCE RID: 7630 RVA: 0x0008C061 File Offset: 0x0008A261
+			// Token: 0x06001E03 RID: 7683 RVA: 0x00081351 File Offset: 0x0007F551
 			public override int GetHashCode()
 			{
 				return this.linkIndex;
 			}
 
-			// Token: 0x04001FFD RID: 8189
+			// Token: 0x04001B16 RID: 6934
 			public int linkIndex;
 
-			// Token: 0x04001FFE RID: 8190
+			// Token: 0x04001B17 RID: 6935
 			public static readonly NodeGraph.LinkIndex invalid = new NodeGraph.LinkIndex
 			{
 				linkIndex = -1
 			};
 		}
 
-		// Token: 0x0200052E RID: 1326
+		// Token: 0x020004E8 RID: 1256
 		[Serializable]
 		public struct LinkListIndex
 		{
-			// Token: 0x04001FFF RID: 8191
+			// Token: 0x04001B18 RID: 6936
 			public int index;
 
-			// Token: 0x04002000 RID: 8192
+			// Token: 0x04001B19 RID: 6937
 			public uint size;
 		}
 
-		// Token: 0x0200052F RID: 1327
+		// Token: 0x020004E9 RID: 1257
 		[Serializable]
 		public struct Node
 		{
-			// Token: 0x04002001 RID: 8193
+			// Token: 0x04001B1A RID: 6938
 			public Vector3 position;
 
-			// Token: 0x04002002 RID: 8194
+			// Token: 0x04001B1B RID: 6939
 			public NodeGraph.LinkListIndex linkListIndex;
 
-			// Token: 0x04002003 RID: 8195
+			// Token: 0x04001B1C RID: 6940
 			public HullMask forbiddenHulls;
 
-			// Token: 0x04002004 RID: 8196
+			// Token: 0x04001B1D RID: 6941
 			public SerializableBitArray lineOfSightMask;
 
-			// Token: 0x04002005 RID: 8197
+			// Token: 0x04001B1E RID: 6942
 			public byte gateIndex;
 
-			// Token: 0x04002006 RID: 8198
+			// Token: 0x04001B1F RID: 6943
 			public NodeFlags flags;
 		}
 
-		// Token: 0x02000530 RID: 1328
+		// Token: 0x020004EA RID: 1258
 		[Serializable]
 		public struct Link
 		{
-			// Token: 0x04002007 RID: 8199
+			// Token: 0x04001B20 RID: 6944
 			public NodeGraph.NodeIndex nodeIndexA;
 
-			// Token: 0x04002008 RID: 8200
+			// Token: 0x04001B21 RID: 6945
 			public NodeGraph.NodeIndex nodeIndexB;
 
-			// Token: 0x04002009 RID: 8201
+			// Token: 0x04001B22 RID: 6946
 			public float distanceScore;
 
-			// Token: 0x0400200A RID: 8202
+			// Token: 0x04001B23 RID: 6947
 			public float maxSlope;
 
-			// Token: 0x0400200B RID: 8203
+			// Token: 0x04001B24 RID: 6948
 			public float minJumpHeight;
 
-			// Token: 0x0400200C RID: 8204
+			// Token: 0x04001B25 RID: 6949
 			public int hullMask;
 
-			// Token: 0x0400200D RID: 8205
+			// Token: 0x04001B26 RID: 6950
 			public int jumpHullMask;
 
-			// Token: 0x0400200E RID: 8206
+			// Token: 0x04001B27 RID: 6951
 			public byte gateIndex;
 		}
 
-		// Token: 0x02000531 RID: 1329
+		// Token: 0x020004EB RID: 1259
 		public class PathRequest
 		{
-			// Token: 0x0400200F RID: 8207
+			// Token: 0x04001B28 RID: 6952
 			public Path path;
 
-			// Token: 0x04002010 RID: 8208
+			// Token: 0x04001B29 RID: 6953
 			public Vector3 startPos;
 
-			// Token: 0x04002011 RID: 8209
+			// Token: 0x04001B2A RID: 6954
 			public Vector3 endPos;
 
-			// Token: 0x04002012 RID: 8210
+			// Token: 0x04001B2B RID: 6955
 			public HullClassification hullClassification;
 
-			// Token: 0x04002013 RID: 8211
+			// Token: 0x04001B2C RID: 6956
 			public float maxSlope;
 
-			// Token: 0x04002014 RID: 8212
+			// Token: 0x04001B2D RID: 6957
 			public float maxJumpHeight;
 
-			// Token: 0x04002015 RID: 8213
+			// Token: 0x04001B2E RID: 6958
 			public float maxSpeed;
 		}
 	}

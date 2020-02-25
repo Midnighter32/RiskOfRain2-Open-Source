@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Commando.CommandoWeapon
 {
-	// Token: 0x020001B2 RID: 434
+	// Token: 0x020008C7 RID: 2247
 	public class Reload : BaseState
 	{
-		// Token: 0x06000881 RID: 2177 RVA: 0x0002AA4C File Offset: 0x00028C4C
+		// Token: 0x06003263 RID: 12899 RVA: 0x000D9FCC File Offset: 0x000D81CC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -20,7 +20,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x06000882 RID: 2178 RVA: 0x0002AAB8 File Offset: 0x00028CB8
+		// Token: 0x06003264 RID: 12900 RVA: 0x000DA038 File Offset: 0x000D8238
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -45,31 +45,31 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x06000883 RID: 2179 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06003265 RID: 12901 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000B59 RID: 2905
+		// Token: 0x0400315A RID: 12634
 		public static float baseDuration = 1f;
 
-		// Token: 0x04000B5A RID: 2906
+		// Token: 0x0400315B RID: 12635
 		public static float reloadTimeFraction = 0.75f;
 
-		// Token: 0x04000B5B RID: 2907
+		// Token: 0x0400315C RID: 12636
 		public static string soundString = "";
 
-		// Token: 0x04000B5C RID: 2908
+		// Token: 0x0400315D RID: 12637
 		private float duration;
 
-		// Token: 0x04000B5D RID: 2909
+		// Token: 0x0400315E RID: 12638
 		private float reloadTime;
 
-		// Token: 0x04000B5E RID: 2910
+		// Token: 0x0400315F RID: 12639
 		private Animator modelAnimator;
 
-		// Token: 0x04000B5F RID: 2911
+		// Token: 0x04003160 RID: 12640
 		private bool reloaded;
 	}
 }

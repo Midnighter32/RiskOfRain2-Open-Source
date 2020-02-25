@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Engi.EngiWeapon
 {
-	// Token: 0x02000186 RID: 390
-	internal class FireConcussionBlast : BaseState
+	// Token: 0x02000885 RID: 2181
+	public class FireConcussionBlast : BaseState
 	{
-		// Token: 0x06000783 RID: 1923 RVA: 0x00024E78 File Offset: 0x00023078
+		// Token: 0x06003113 RID: 12563 RVA: 0x000D30E0 File Offset: 0x000D12E0
 		private void FireGrenade(string targetMuzzle)
 		{
 			Util.PlaySound(FireConcussionBlast.attackSoundString, base.gameObject);
@@ -27,7 +27,7 @@ namespace EntityStates.Engi.EngiWeapon
 			base.AddRecoil(-1f * FireConcussionBlast.recoilAmplitude, -2f * FireConcussionBlast.recoilAmplitude, -1f * FireConcussionBlast.recoilAmplitude, 1f * FireConcussionBlast.recoilAmplitude);
 			if (FireConcussionBlast.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireConcussionBlast.effectPrefab, base.gameObject, targetMuzzle, false);
+				EffectManager.SimpleMuzzleFlash(FireConcussionBlast.effectPrefab, base.gameObject, targetMuzzle, false);
 			}
 			if (base.isAuthority)
 			{
@@ -52,7 +52,7 @@ namespace EntityStates.Engi.EngiWeapon
 			}
 		}
 
-		// Token: 0x06000784 RID: 1924 RVA: 0x00025018 File Offset: 0x00023218
+		// Token: 0x06003114 RID: 12564 RVA: 0x000D327C File Offset: 0x000D147C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -62,13 +62,13 @@ namespace EntityStates.Engi.EngiWeapon
 			base.StartAimMode(this.aimRay, 2f, false);
 		}
 
-		// Token: 0x06000785 RID: 1925 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06003115 RID: 12565 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000786 RID: 1926 RVA: 0x00025068 File Offset: 0x00023268
+		// Token: 0x06003116 RID: 12566 RVA: 0x000D32CC File Offset: 0x000D14CC
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -99,67 +99,67 @@ namespace EntityStates.Engi.EngiWeapon
 			}
 		}
 
-		// Token: 0x06000787 RID: 1927 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06003117 RID: 12567 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000991 RID: 2449
+		// Token: 0x04002F41 RID: 12097
 		public static GameObject effectPrefab;
 
-		// Token: 0x04000992 RID: 2450
+		// Token: 0x04002F42 RID: 12098
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000993 RID: 2451
+		// Token: 0x04002F43 RID: 12099
 		public static int grenadeCountMax = 3;
 
-		// Token: 0x04000994 RID: 2452
+		// Token: 0x04002F44 RID: 12100
 		public static float damageCoefficient;
 
-		// Token: 0x04000995 RID: 2453
+		// Token: 0x04002F45 RID: 12101
 		public static float fireDuration = 1f;
 
-		// Token: 0x04000996 RID: 2454
+		// Token: 0x04002F46 RID: 12102
 		public static float baseDuration = 2f;
 
-		// Token: 0x04000997 RID: 2455
+		// Token: 0x04002F47 RID: 12103
 		public static float minSpread = 0f;
 
-		// Token: 0x04000998 RID: 2456
+		// Token: 0x04002F48 RID: 12104
 		public static float maxSpread = 5f;
 
-		// Token: 0x04000999 RID: 2457
+		// Token: 0x04002F49 RID: 12105
 		public static float recoilAmplitude = 1f;
 
-		// Token: 0x0400099A RID: 2458
+		// Token: 0x04002F4A RID: 12106
 		public static string attackSoundString;
 
-		// Token: 0x0400099B RID: 2459
+		// Token: 0x04002F4B RID: 12107
 		public static float force;
 
-		// Token: 0x0400099C RID: 2460
+		// Token: 0x04002F4C RID: 12108
 		public static float maxDistance;
 
-		// Token: 0x0400099D RID: 2461
+		// Token: 0x04002F4D RID: 12109
 		public static float radius;
 
-		// Token: 0x0400099E RID: 2462
+		// Token: 0x04002F4E RID: 12110
 		public static GameObject tracerEffectPrefab;
 
-		// Token: 0x0400099F RID: 2463
+		// Token: 0x04002F4F RID: 12111
 		private Ray aimRay;
 
-		// Token: 0x040009A0 RID: 2464
+		// Token: 0x04002F50 RID: 12112
 		private Transform modelTransform;
 
-		// Token: 0x040009A1 RID: 2465
+		// Token: 0x04002F51 RID: 12113
 		private float duration;
 
-		// Token: 0x040009A2 RID: 2466
+		// Token: 0x04002F52 RID: 12114
 		private float fireTimer;
 
-		// Token: 0x040009A3 RID: 2467
+		// Token: 0x04002F53 RID: 12115
 		private int grenadeCount;
 	}
 }

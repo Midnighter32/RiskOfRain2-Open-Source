@@ -5,11 +5,16 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000465 RID: 1125
+	// Token: 0x020003DD RID: 989
 	public class PathFollower
 	{
-		// Token: 0x17000251 RID: 593
-		// (get) Token: 0x06001913 RID: 6419 RVA: 0x0000A1ED File Offset: 0x000083ED
+		// Token: 0x170002C9 RID: 713
+		// (get) Token: 0x060017F2 RID: 6130 RVA: 0x000682A5 File Offset: 0x000664A5
+		// (set) Token: 0x060017F3 RID: 6131 RVA: 0x000682AD File Offset: 0x000664AD
+		public NodeGraph nodeGraph { get; private set; }
+
+		// Token: 0x170002CA RID: 714
+		// (get) Token: 0x060017F4 RID: 6132 RVA: 0x0000AC89 File Offset: 0x00008E89
 		public bool isOnJumpLink
 		{
 			get
@@ -18,8 +23,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000252 RID: 594
-		// (get) Token: 0x06001914 RID: 6420 RVA: 0x000786DC File Offset: 0x000768DC
+		// Token: 0x170002CB RID: 715
+		// (get) Token: 0x060017F5 RID: 6133 RVA: 0x000682B8 File Offset: 0x000664B8
 		public bool nextWaypointNeedsJump
 		{
 			get
@@ -28,7 +33,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001915 RID: 6421 RVA: 0x00078729 File Offset: 0x00076929
+		// Token: 0x060017F6 RID: 6134 RVA: 0x00068305 File Offset: 0x00066505
 		private static float DistanceXZ(Vector3 a, Vector3 b)
 		{
 			a.y = 0f;
@@ -36,7 +41,7 @@ namespace RoR2
 			return Vector3.Distance(a, b);
 		}
 
-		// Token: 0x06001916 RID: 6422 RVA: 0x0007874C File Offset: 0x0007694C
+		// Token: 0x060017F7 RID: 6135 RVA: 0x00068328 File Offset: 0x00066528
 		public float CalculateJumpVelocityNeededToReachNextWaypoint(float moveSpeed)
 		{
 			if (!this.nextWaypointNeedsJump)
@@ -48,7 +53,7 @@ namespace RoR2
 			return Trajectory.CalculateInitialYSpeed(Trajectory.CalculateGroundTravelTime(moveSpeed, PathFollower.DistanceXZ(vector, nextPosition)), nextPosition.y - vector.y);
 		}
 
-		// Token: 0x06001917 RID: 6423 RVA: 0x00078794 File Offset: 0x00076994
+		// Token: 0x060017F8 RID: 6136 RVA: 0x00068370 File Offset: 0x00066570
 		public void UpdatePosition(Vector3 newPosition)
 		{
 			this.currentPosition = newPosition;
@@ -71,7 +76,7 @@ namespace RoR2
 			this.nextNode != NodeGraph.NodeIndex.invalid;
 		}
 
-		// Token: 0x06001918 RID: 6424 RVA: 0x00078850 File Offset: 0x00076A50
+		// Token: 0x060017F9 RID: 6137 RVA: 0x0006842C File Offset: 0x0006662C
 		private void SetWaypoint(int newWaypoint)
 		{
 			this.currentWaypoint = Math.Min(newWaypoint, this.waypoints.Count);
@@ -85,7 +90,7 @@ namespace RoR2
 			this.previousNode = ((this.currentWaypoint > 0) ? this.waypoints[this.currentWaypoint - 1].nodeIndex : NodeGraph.NodeIndex.invalid);
 		}
 
-		// Token: 0x06001919 RID: 6425 RVA: 0x000788E8 File Offset: 0x00076AE8
+		// Token: 0x060017FA RID: 6138 RVA: 0x000684C4 File Offset: 0x000666C4
 		private void Reset()
 		{
 			this.nodeGraph = null;
@@ -95,7 +100,7 @@ namespace RoR2
 			this.currentWaypoint = 0;
 		}
 
-		// Token: 0x0600191A RID: 6426 RVA: 0x0007891C File Offset: 0x00076B1C
+		// Token: 0x060017FB RID: 6139 RVA: 0x000684F8 File Offset: 0x000666F8
 		public void SetPath(Path newPath)
 		{
 			if (this.nodeGraph != newPath.nodeGraph)
@@ -117,7 +122,7 @@ namespace RoR2
 			this.SetWaypoint(this.currentWaypoint);
 		}
 
-		// Token: 0x0600191B RID: 6427 RVA: 0x000789D8 File Offset: 0x00076BD8
+		// Token: 0x060017FC RID: 6140 RVA: 0x000685B4 File Offset: 0x000667B4
 		private bool GetNextNodePosition(out Vector3 nextPosition)
 		{
 			if (this.nodeGraph != null && this.nextNode != NodeGraph.NodeIndex.invalid && this.nodeGraph.GetNodePosition(this.nextNode, out nextPosition))
@@ -128,7 +133,7 @@ namespace RoR2
 			return false;
 		}
 
-		// Token: 0x0600191C RID: 6428 RVA: 0x00078A28 File Offset: 0x00076C28
+		// Token: 0x060017FD RID: 6141 RVA: 0x00068604 File Offset: 0x00066804
 		public Vector3 GetNextPosition()
 		{
 			Vector3 result;
@@ -139,7 +144,7 @@ namespace RoR2
 			return this.targetPosition;
 		}
 
-		// Token: 0x0600191D RID: 6429 RVA: 0x00078A48 File Offset: 0x00076C48
+		// Token: 0x060017FE RID: 6142 RVA: 0x00068624 File Offset: 0x00066824
 		public void DebugDrawPath(Color color, float duration)
 		{
 			for (int i = 1; i < this.waypoints.Count; i++)
@@ -158,31 +163,28 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001C9E RID: 7326
+		// Token: 0x040016AC RID: 5804
 		private Vector3 currentPosition;
 
-		// Token: 0x04001C9F RID: 7327
+		// Token: 0x040016AD RID: 5805
 		public Vector3 targetPosition;
 
-		// Token: 0x04001CA0 RID: 7328
+		// Token: 0x040016AE RID: 5806
 		private const float waypointPassDistance = 2f;
 
-		// Token: 0x04001CA1 RID: 7329
+		// Token: 0x040016AF RID: 5807
 		private const float waypointPassYTolerance = 2f;
 
-		// Token: 0x04001CA2 RID: 7330
-		private NodeGraph nodeGraph;
-
-		// Token: 0x04001CA3 RID: 7331
+		// Token: 0x040016B1 RID: 5809
 		private List<Path.Waypoint> waypoints = new List<Path.Waypoint>();
 
-		// Token: 0x04001CA4 RID: 7332
+		// Token: 0x040016B2 RID: 5810
 		private int currentWaypoint;
 
-		// Token: 0x04001CA5 RID: 7333
+		// Token: 0x040016B3 RID: 5811
 		private NodeGraph.NodeIndex previousNode = NodeGraph.NodeIndex.invalid;
 
-		// Token: 0x04001CA6 RID: 7334
+		// Token: 0x040016B4 RID: 5812
 		private NodeGraph.NodeIndex nextNode = NodeGraph.NodeIndex.invalid;
 	}
 }

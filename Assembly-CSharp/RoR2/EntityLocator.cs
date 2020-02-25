@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020002E5 RID: 741
+	// Token: 0x020001F3 RID: 499
 	[DisallowMultipleComponent]
 	public class EntityLocator : MonoBehaviour
 	{
-		// Token: 0x06000ED1 RID: 3793 RVA: 0x00049108 File Offset: 0x00047308
+		// Token: 0x06000A6A RID: 2666 RVA: 0x0002DB1C File Offset: 0x0002BD1C
 		public static GameObject GetEntity(GameObject gameObject)
 		{
 			if (gameObject == null)
@@ -22,7 +22,7 @@ namespace RoR2
 			return component.entity;
 		}
 
-		// Token: 0x040012F1 RID: 4849
+		// Token: 0x04000ACF RID: 2767
 		[Tooltip("The root gameobject of the entity.")]
 		public GameObject entity;
 	}

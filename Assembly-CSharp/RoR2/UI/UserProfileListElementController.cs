@@ -5,18 +5,18 @@ using UnityEngine.Events;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000654 RID: 1620
+	// Token: 0x02000649 RID: 1609
 	[RequireComponent(typeof(MPButton))]
 	public class UserProfileListElementController : MonoBehaviour
 	{
-		// Token: 0x06002445 RID: 9285 RVA: 0x000AA427 File Offset: 0x000A8627
+		// Token: 0x060025E4 RID: 9700 RVA: 0x000A4EEF File Offset: 0x000A30EF
 		private void Awake()
 		{
 			this.button = base.GetComponent<MPButton>();
 			this.button.onClick.AddListener(new UnityAction(this.InformListControllerOfSelection));
 		}
 
-		// Token: 0x06002446 RID: 9286 RVA: 0x000AA451 File Offset: 0x000A8651
+		// Token: 0x060025E5 RID: 9701 RVA: 0x000A4F19 File Offset: 0x000A3119
 		private void InformListControllerOfSelection()
 		{
 			if (!this.userProfile.isCorrupted)
@@ -25,9 +25,9 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x17000324 RID: 804
-		// (get) Token: 0x06002447 RID: 9287 RVA: 0x000AA471 File Offset: 0x000A8671
-		// (set) Token: 0x06002448 RID: 9288 RVA: 0x000AA47C File Offset: 0x000A867C
+		// Token: 0x170003E3 RID: 995
+		// (get) Token: 0x060025E6 RID: 9702 RVA: 0x000A4F39 File Offset: 0x000A3139
+		// (set) Token: 0x060025E7 RID: 9703 RVA: 0x000A4F44 File Offset: 0x000A3144
 		public UserProfile userProfile
 		{
 			get
@@ -46,20 +46,20 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0400273E RID: 10046
+		// Token: 0x040023A3 RID: 9123
 		public TextMeshProUGUI nameLabel;
 
-		// Token: 0x0400273F RID: 10047
+		// Token: 0x040023A4 RID: 9124
 		private MPButton button;
 
-		// Token: 0x04002740 RID: 10048
+		// Token: 0x040023A5 RID: 9125
 		public TextMeshProUGUI playTimeLabel;
 
-		// Token: 0x04002741 RID: 10049
+		// Token: 0x040023A6 RID: 9126
 		[NonSerialized]
 		public UserProfileListController listController;
 
-		// Token: 0x04002742 RID: 10050
+		// Token: 0x040023A7 RID: 9127
 		private UserProfile _userProfile;
 	}
 }

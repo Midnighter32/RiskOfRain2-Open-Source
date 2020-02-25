@@ -1,20 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x0200032A RID: 810
+	// Token: 0x0200024B RID: 587
 	public class IcicleAuraController : NetworkBehaviour
 	{
-		// Token: 0x060010A5 RID: 4261 RVA: 0x00052F1A File Offset: 0x0005111A
+		// Token: 0x170001AA RID: 426
+		// (get) Token: 0x06000CEF RID: 3311 RVA: 0x00039E04 File Offset: 0x00038004
+		private int maxIcicleCount
+		{
+			get
+			{
+				int num = 1;
+				if (this.cachedOwnerInfo.characterBody.inventory)
+				{
+					num = this.cachedOwnerInfo.characterBody.inventory.GetItemCount(ItemIndex.Icicle);
+				}
+				return this.baseIcicleMax + (num - 1) * this.icicleMaxPerStack;
+			}
+		}
+
+		// Token: 0x06000CF0 RID: 3312 RVA: 0x00039E53 File Offset: 0x00038053
 		private void Awake()
 		{
 			this.transform = base.transform;
 		}
 
-		// Token: 0x060010A6 RID: 4262 RVA: 0x00052F28 File Offset: 0x00051128
+		// Token: 0x06000CF1 RID: 3313 RVA: 0x00039E64 File Offset: 0x00038064
 		private void FixedUpdate()
 		{
 			if (this.cachedOwnerInfo.gameObject != this.owner)
@@ -22,7 +38,6 @@ namespace RoR2
 				this.cachedOwnerInfo = new IcicleAuraController.OwnerInfo(this.owner);
 			}
 			this.UpdateRadius();
-			this.UpdatePosition();
 			if (NetworkServer.active)
 			{
 				if (!this.owner)
@@ -40,7 +55,7 @@ namespace RoR2
 						this.icicleLifetimes.RemoveAt(i);
 					}
 				}
-				this.NetworkfinalIcicleCount = Mathf.Min((this.icicleLifetimes.Count > 0) ? (2 + this.icicleLifetimes.Count) : 0, 5);
+				this.NetworkfinalIcicleCount = Mathf.Min((this.icicleLifetimes.Count > 0) ? (this.icicleCountOnFirstKill + this.icicleLifetimes.Count) : 0, this.maxIcicleCount);
 				this.attackStopwatch += Time.fixedDeltaTime;
 			}
 			if (this.cachedOwnerInfo.characterBody)
@@ -62,55 +77,49 @@ namespace RoR2
 				}
 				this.lastIcicleCount = this.finalIcicleCount;
 			}
-			if (NetworkServer.active && this.cachedOwnerInfo.characterBody && this.finalIcicleCount > 0)
+			if (NetworkServer.active && this.cachedOwnerInfo.characterBody && this.finalIcicleCount > 0 && this.attackStopwatch >= this.baseIcicleAttackInterval)
 			{
-				float num = 0f;
-				if (this.cachedOwnerInfo.characterBody.inventory)
+				this.attackStopwatch = 0f;
+				new BlastAttack
 				{
-					num = 0.5f + 0.5f * (float)this.cachedOwnerInfo.characterBody.inventory.GetItemCount(ItemIndex.Icicle);
-				}
-				if (this.attackStopwatch >= 0.25f)
-				{
-					this.attackStopwatch = 0f;
-					BlastAttack blastAttack = new BlastAttack();
-					blastAttack.attacker = this.owner;
-					blastAttack.inflictor = base.gameObject;
-					blastAttack.teamIndex = TeamComponent.GetObjectTeam(blastAttack.attacker);
-					blastAttack.position = this.transform.position;
-					blastAttack.procCoefficient = 0.05f;
-					blastAttack.radius = this.actualRadius;
-					blastAttack.baseForce = 0f;
-					blastAttack.baseDamage = num * 0.25f * this.cachedOwnerInfo.characterBody.damage * (float)this.finalIcicleCount;
-					blastAttack.bonusForce = Vector3.zero;
-					blastAttack.crit = false;
-					blastAttack.damageType = DamageType.Generic;
-					blastAttack.falloffModel = BlastAttack.FalloffModel.None;
-					blastAttack.damageColorIndex = DamageColorIndex.Item;
-					blastAttack.Fire();
-				}
+					attacker = this.owner,
+					inflictor = base.gameObject,
+					teamIndex = this.cachedOwnerInfo.characterBody.teamComponent.teamIndex,
+					position = this.transform.position,
+					procCoefficient = this.icicleProcCoefficientPerTick,
+					radius = this.actualRadius,
+					baseForce = 0f,
+					baseDamage = this.cachedOwnerInfo.characterBody.damage * (this.icicleDamageCoefficientPerTick + this.icicleDamageCoefficientPerTickPerIcicle * (float)this.finalIcicleCount),
+					bonusForce = Vector3.zero,
+					crit = false,
+					damageType = DamageType.Generic,
+					falloffModel = BlastAttack.FalloffModel.None,
+					damageColorIndex = DamageColorIndex.Item
+				}.Fire();
 			}
 		}
 
-		// Token: 0x060010A7 RID: 4263 RVA: 0x000531B4 File Offset: 0x000513B4
+		// Token: 0x06000CF2 RID: 3314 RVA: 0x0003A0C4 File Offset: 0x000382C4
 		private void UpdateRadius()
 		{
 			if (this.owner)
 			{
-				this.actualRadius = (this.cachedOwnerInfo.characterBody ? (this.cachedOwnerInfo.characterBody.radius + 10f) : 0f);
-				this.transform.localScale = new Vector3(this.actualRadius, this.actualRadius, this.actualRadius);
+				this.actualRadius = (this.cachedOwnerInfo.characterBody ? (this.cachedOwnerInfo.characterBody.radius + this.icicleBaseRadius + this.icicleRadiusPerIcicle * (float)this.finalIcicleCount) : 0f);
 			}
 		}
 
-		// Token: 0x060010A8 RID: 4264 RVA: 0x00053228 File Offset: 0x00051428
-		private void UpdatePosition()
+		// Token: 0x06000CF3 RID: 3315 RVA: 0x0003A124 File Offset: 0x00038324
+		private void UpdateVisuals()
 		{
 			if (this.cachedOwnerInfo.gameObject)
 			{
 				this.transform.position = (this.cachedOwnerInfo.characterBody ? this.cachedOwnerInfo.characterBody.corePosition : this.cachedOwnerInfo.transform.position);
 			}
+			float num = Mathf.SmoothDamp(this.transform.localScale.x, this.actualRadius, ref this.scaleVelocity, 0.5f);
+			this.transform.localScale = new Vector3(num, num, num);
 		}
 
-		// Token: 0x060010A9 RID: 4265 RVA: 0x00053288 File Offset: 0x00051488
+		// Token: 0x06000CF4 RID: 3316 RVA: 0x0003A1BC File Offset: 0x000383BC
 		private void OnIciclesDeactivated()
 		{
 			Util.PlaySound("Stop_item_proc_icicle", base.gameObject);
@@ -125,7 +134,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060010AA RID: 4266 RVA: 0x000532F0 File Offset: 0x000514F0
+		// Token: 0x06000CF5 RID: 3317 RVA: 0x0003A224 File Offset: 0x00038424
 		private void OnIciclesActivated()
 		{
 			Util.PlaySound("Play_item_proc_icicle", base.gameObject);
@@ -140,7 +149,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060010AB RID: 4267 RVA: 0x00053360 File Offset: 0x00051560
+		// Token: 0x06000CF6 RID: 3318 RVA: 0x0003A294 File Offset: 0x00038494
 		private void OnIcicleGained()
 		{
 			ParticleSystem[] array = this.procParticles;
@@ -150,60 +159,62 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060010AC RID: 4268 RVA: 0x0005338A File Offset: 0x0005158A
+		// Token: 0x06000CF7 RID: 3319 RVA: 0x0003A2BE File Offset: 0x000384BE
 		private void LateUpdate()
 		{
-			this.UpdatePosition();
+			this.UpdateVisuals();
 		}
 
-		// Token: 0x060010AD RID: 4269 RVA: 0x00053392 File Offset: 0x00051592
+		// Token: 0x06000CF8 RID: 3320 RVA: 0x0003A2C6 File Offset: 0x000384C6
 		public void OnOwnerKillOther()
 		{
-			this.icicleLifetimes.Add(5f);
+			this.icicleLifetimes.Add(this.icicleDuration);
 		}
 
-		// Token: 0x060010AE RID: 4270 RVA: 0x000533A4 File Offset: 0x000515A4
+		// Token: 0x06000CF9 RID: 3321 RVA: 0x0003A2D9 File Offset: 0x000384D9
 		public void OnDestroy()
 		{
 			this.OnIciclesDeactivated();
 		}
 
-		// Token: 0x060010B0 RID: 4272 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000CFB RID: 3323 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x17000170 RID: 368
-		// (get) Token: 0x060010B1 RID: 4273 RVA: 0x000533C0 File Offset: 0x000515C0
-		// (set) Token: 0x060010B2 RID: 4274 RVA: 0x000533D3 File Offset: 0x000515D3
+		// Token: 0x170001AB RID: 427
+		// (get) Token: 0x06000CFC RID: 3324 RVA: 0x0003A364 File Offset: 0x00038564
+		// (set) Token: 0x06000CFD RID: 3325 RVA: 0x0003A377 File Offset: 0x00038577
 		public int NetworkfinalIcicleCount
 		{
 			get
 			{
 				return this.finalIcicleCount;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<int>(value, ref this.finalIcicleCount, 1u);
+				base.SetSyncVar<int>(value, ref this.finalIcicleCount, 1U);
 			}
 		}
 
-		// Token: 0x17000171 RID: 369
-		// (get) Token: 0x060010B3 RID: 4275 RVA: 0x000533E8 File Offset: 0x000515E8
-		// (set) Token: 0x060010B4 RID: 4276 RVA: 0x000533FB File Offset: 0x000515FB
+		// Token: 0x170001AC RID: 428
+		// (get) Token: 0x06000CFE RID: 3326 RVA: 0x0003A38C File Offset: 0x0003858C
+		// (set) Token: 0x06000CFF RID: 3327 RVA: 0x0003A39F File Offset: 0x0003859F
 		public GameObject Networkowner
 		{
 			get
 			{
 				return this.owner;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVarGameObject(value, ref this.owner, 2u, ref this.___ownerNetId);
+				base.SetSyncVarGameObject(value, ref this.owner, 2U, ref this.___ownerNetId);
 			}
 		}
 
-		// Token: 0x060010B5 RID: 4277 RVA: 0x00053418 File Offset: 0x00051618
+		// Token: 0x06000D00 RID: 3328 RVA: 0x0003A3BC File Offset: 0x000385BC
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -213,7 +224,7 @@ namespace RoR2
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -222,7 +233,7 @@ namespace RoR2
 				}
 				writer.WritePackedUInt32((uint)this.finalIcicleCount);
 			}
-			if ((base.syncVarDirtyBits & 2u) != 0u)
+			if ((base.syncVarDirtyBits & 2U) != 0U)
 			{
 				if (!flag)
 				{
@@ -238,7 +249,7 @@ namespace RoR2
 			return flag;
 		}
 
-		// Token: 0x060010B6 RID: 4278 RVA: 0x000534C4 File Offset: 0x000516C4
+		// Token: 0x06000D01 RID: 3329 RVA: 0x0003A468 File Offset: 0x00038668
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -258,7 +269,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060010B7 RID: 4279 RVA: 0x0005352A File Offset: 0x0005172A
+		// Token: 0x06000D02 RID: 3330 RVA: 0x0003A4CE File Offset: 0x000386CE
 		public override void PreStartClient()
 		{
 			if (!this.___ownerNetId.IsEmpty())
@@ -267,63 +278,78 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x040014BA RID: 5306
-		private const float baseIcicleAttackInterval = 1f;
+		// Token: 0x04000CF8 RID: 3320
+		public float baseIcicleAttackInterval = 0.25f;
 
-		// Token: 0x040014BB RID: 5307
-		private const float icicleAttackRadius = 10f;
+		// Token: 0x04000CF9 RID: 3321
+		public float icicleBaseRadius = 10f;
 
-		// Token: 0x040014BC RID: 5308
-		private const float icicleDamageCoefficient = 0.25f;
+		// Token: 0x04000CFA RID: 3322
+		public float icicleRadiusPerIcicle = 2f;
 
-		// Token: 0x040014BD RID: 5309
-		private const float icicleDuration = 5f;
+		// Token: 0x04000CFB RID: 3323
+		public float icicleDamageCoefficientPerTick = 2f;
 
-		// Token: 0x040014BE RID: 5310
-		private const float icicleProcCoefficient = 0.05f;
+		// Token: 0x04000CFC RID: 3324
+		public float icicleDamageCoefficientPerTickPerIcicle = 1f;
 
-		// Token: 0x040014BF RID: 5311
-		private const int maxIcicleCount = 5;
+		// Token: 0x04000CFD RID: 3325
+		public float icicleDuration = 5f;
 
-		// Token: 0x040014C0 RID: 5312
+		// Token: 0x04000CFE RID: 3326
+		public float icicleProcCoefficientPerTick = 0.2f;
+
+		// Token: 0x04000CFF RID: 3327
+		public int icicleCountOnFirstKill = 2;
+
+		// Token: 0x04000D00 RID: 3328
+		public int baseIcicleMax = 6;
+
+		// Token: 0x04000D01 RID: 3329
+		public int icicleMaxPerStack = 3;
+
+		// Token: 0x04000D02 RID: 3330
 		private List<float> icicleLifetimes = new List<float>();
 
-		// Token: 0x040014C1 RID: 5313
+		// Token: 0x04000D03 RID: 3331
 		private float attackStopwatch;
 
-		// Token: 0x040014C2 RID: 5314
+		// Token: 0x04000D04 RID: 3332
 		private int lastIcicleCount;
 
-		// Token: 0x040014C3 RID: 5315
+		// Token: 0x04000D05 RID: 3333
 		[SyncVar]
 		private int finalIcicleCount;
 
-		// Token: 0x040014C4 RID: 5316
+		// Token: 0x04000D06 RID: 3334
 		[SyncVar]
 		public GameObject owner;
 
-		// Token: 0x040014C5 RID: 5317
+		// Token: 0x04000D07 RID: 3335
 		private IcicleAuraController.OwnerInfo cachedOwnerInfo;
 
-		// Token: 0x040014C6 RID: 5318
+		// Token: 0x04000D08 RID: 3336
 		public ParticleSystem[] auraParticles;
 
-		// Token: 0x040014C7 RID: 5319
+		// Token: 0x04000D09 RID: 3337
 		public ParticleSystem[] procParticles;
 
-		// Token: 0x040014C8 RID: 5320
+		// Token: 0x04000D0A RID: 3338
 		private new Transform transform;
 
-		// Token: 0x040014C9 RID: 5321
+		// Token: 0x04000D0B RID: 3339
 		private float actualRadius;
 
-		// Token: 0x040014CA RID: 5322
+		// Token: 0x04000D0C RID: 3340
+		private float scaleVelocity;
+
+		// Token: 0x04000D0D RID: 3341
 		private NetworkInstanceId ___ownerNetId;
 
-		// Token: 0x0200032B RID: 811
+		// Token: 0x0200024C RID: 588
 		private struct OwnerInfo
 		{
-			// Token: 0x060010B8 RID: 4280 RVA: 0x00053550 File Offset: 0x00051750
+			// Token: 0x06000D03 RID: 3331 RVA: 0x0003A4F4 File Offset: 0x000386F4
 			public OwnerInfo(GameObject gameObject)
 			{
 				this.gameObject = gameObject;
@@ -339,16 +365,16 @@ namespace RoR2
 				this.cameraTargetParams = null;
 			}
 
-			// Token: 0x040014CB RID: 5323
+			// Token: 0x04000D0E RID: 3342
 			public readonly GameObject gameObject;
 
-			// Token: 0x040014CC RID: 5324
+			// Token: 0x04000D0F RID: 3343
 			public readonly Transform transform;
 
-			// Token: 0x040014CD RID: 5325
+			// Token: 0x04000D10 RID: 3344
 			public readonly CharacterBody characterBody;
 
-			// Token: 0x040014CE RID: 5326
+			// Token: 0x04000D11 RID: 3345
 			public readonly CameraTargetParams cameraTargetParams;
 		}
 	}

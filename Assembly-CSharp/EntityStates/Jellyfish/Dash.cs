@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace EntityStates.Jellyfish
 {
-	// Token: 0x02000135 RID: 309
-	internal class Dash : BaseState
+	// Token: 0x0200080B RID: 2059
+	public class Dash : BaseState
 	{
-		// Token: 0x060005F4 RID: 1524 RVA: 0x0001B5B0 File Offset: 0x000197B0
+		// Token: 0x06002ECB RID: 11979 RVA: 0x000C7260 File Offset: 0x000C5460
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -17,7 +17,7 @@ namespace EntityStates.Jellyfish
 			}
 		}
 
-		// Token: 0x060005F5 RID: 1525 RVA: 0x0001B618 File Offset: 0x00019818
+		// Token: 0x06002ECC RID: 11980 RVA: 0x000C72C8 File Offset: 0x000C54C8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -31,13 +31,13 @@ namespace EntityStates.Jellyfish
 			}
 		}
 
-		// Token: 0x040006E6 RID: 1766
+		// Token: 0x04002C0A RID: 11274
 		public static float duration = 1.8f;
 
-		// Token: 0x040006E7 RID: 1767
+		// Token: 0x04002C0B RID: 11275
 		public static float speedCoefficient = 2f;
 
-		// Token: 0x040006E8 RID: 1768
+		// Token: 0x04002C0C RID: 11276
 		private Animator modelAnimator;
 	}
 }

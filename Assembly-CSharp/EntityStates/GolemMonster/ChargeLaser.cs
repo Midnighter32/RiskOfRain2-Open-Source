@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.GolemMonster
 {
-	// Token: 0x02000176 RID: 374
-	internal class ChargeLaser : BaseState
+	// Token: 0x0200085C RID: 2140
+	public class ChargeLaser : BaseState
 	{
-		// Token: 0x06000736 RID: 1846 RVA: 0x000230D0 File Offset: 0x000212D0
+		// Token: 0x06003051 RID: 12369 RVA: 0x000CFED0 File Offset: 0x000CE0D0
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -49,7 +49,7 @@ namespace EntityStates.GolemMonster
 			this.laserOn = true;
 		}
 
-		// Token: 0x06000737 RID: 1847 RVA: 0x00023220 File Offset: 0x00021420
+		// Token: 0x06003052 RID: 12370 RVA: 0x000D0020 File Offset: 0x000CE220
 		public override void OnExit()
 		{
 			AkSoundEngine.StopPlayingID(this.chargePlayID);
@@ -64,7 +64,7 @@ namespace EntityStates.GolemMonster
 			}
 		}
 
-		// Token: 0x06000738 RID: 1848 RVA: 0x00023270 File Offset: 0x00021470
+		// Token: 0x06003053 RID: 12371 RVA: 0x000D0070 File Offset: 0x000CE270
 		public override void Update()
 		{
 			base.Update();
@@ -103,7 +103,7 @@ namespace EntityStates.GolemMonster
 			}
 		}
 
-		// Token: 0x06000739 RID: 1849 RVA: 0x000233CC File Offset: 0x000215CC
+		// Token: 0x06003054 RID: 12372 RVA: 0x000D01CC File Offset: 0x000CE3CC
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -116,52 +116,52 @@ namespace EntityStates.GolemMonster
 			}
 		}
 
-		// Token: 0x0600073A RID: 1850 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06003055 RID: 12373 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x0400090C RID: 2316
+		// Token: 0x04002E79 RID: 11897
 		public static float baseDuration = 3f;
 
-		// Token: 0x0400090D RID: 2317
+		// Token: 0x04002E7A RID: 11898
 		public static float laserMaxWidth = 0.2f;
 
-		// Token: 0x0400090E RID: 2318
+		// Token: 0x04002E7B RID: 11899
 		public static GameObject effectPrefab;
 
-		// Token: 0x0400090F RID: 2319
+		// Token: 0x04002E7C RID: 11900
 		public static GameObject laserPrefab;
 
-		// Token: 0x04000910 RID: 2320
+		// Token: 0x04002E7D RID: 11901
 		public static string attackSoundString;
 
-		// Token: 0x04000911 RID: 2321
+		// Token: 0x04002E7E RID: 11902
 		private float duration;
 
-		// Token: 0x04000912 RID: 2322
+		// Token: 0x04002E7F RID: 11903
 		private uint chargePlayID;
 
-		// Token: 0x04000913 RID: 2323
+		// Token: 0x04002E80 RID: 11904
 		private GameObject chargeEffect;
 
-		// Token: 0x04000914 RID: 2324
+		// Token: 0x04002E81 RID: 11905
 		private GameObject laserEffect;
 
-		// Token: 0x04000915 RID: 2325
+		// Token: 0x04002E82 RID: 11906
 		private LineRenderer laserLineComponent;
 
-		// Token: 0x04000916 RID: 2326
+		// Token: 0x04002E83 RID: 11907
 		private Vector3 laserDirection;
 
-		// Token: 0x04000917 RID: 2327
+		// Token: 0x04002E84 RID: 11908
 		private Vector3 visualEndPosition;
 
-		// Token: 0x04000918 RID: 2328
+		// Token: 0x04002E85 RID: 11909
 		private float flashTimer;
 
-		// Token: 0x04000919 RID: 2329
+		// Token: 0x04002E86 RID: 11910
 		private bool laserOn;
 	}
 }

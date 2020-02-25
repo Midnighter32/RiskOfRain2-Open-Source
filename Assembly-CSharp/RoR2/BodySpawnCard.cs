@@ -4,12 +4,12 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000220 RID: 544
+	// Token: 0x02000100 RID: 256
 	[CreateAssetMenu(menuName = "SpawnCards")]
-	internal class BodySpawnCard : SpawnCard
+	public class BodySpawnCard : SpawnCard
 	{
-		// Token: 0x06000A9E RID: 2718 RVA: 0x00034998 File Offset: 0x00032B98
-		public override GameObject DoSpawn(Vector3 position, Quaternion rotation)
+		// Token: 0x060004E4 RID: 1252 RVA: 0x00013AA4 File Offset: 0x00011CA4
+		public override GameObject DoSpawn(Vector3 position, Quaternion rotation, DirectorSpawnRequest directorSpawnRequest)
 		{
 			Vector3 position2 = position;
 			position2.y += Util.GetBodyPrefabFootOffset(this.prefab);

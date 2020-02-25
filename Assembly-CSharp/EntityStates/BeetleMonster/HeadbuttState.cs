@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.BeetleMonster
 {
-	// Token: 0x020001C9 RID: 457
+	// Token: 0x020008E4 RID: 2276
 	public class HeadbuttState : BaseState
 	{
-		// Token: 0x060008F1 RID: 2289 RVA: 0x0002D1C4 File Offset: 0x0002B3C4
+		// Token: 0x060032F1 RID: 13041 RVA: 0x000DCE34 File Offset: 0x000DB034
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -29,7 +29,7 @@ namespace EntityStates.BeetleMonster
 			base.PlayCrossfade("Body", "Headbutt", "Headbutt.playbackRate", this.duration, 0.1f);
 		}
 
-		// Token: 0x060008F2 RID: 2290 RVA: 0x0002D2E8 File Offset: 0x0002B4E8
+		// Token: 0x060032F2 RID: 13042 RVA: 0x000DCF58 File Offset: 0x000DB158
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -60,37 +60,37 @@ namespace EntityStates.BeetleMonster
 			}
 		}
 
-		// Token: 0x060008F3 RID: 2291 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x060032F3 RID: 13043 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000C27 RID: 3111
+		// Token: 0x0400324F RID: 12879
 		public static float baseDuration = 3.5f;
 
-		// Token: 0x04000C28 RID: 3112
+		// Token: 0x04003250 RID: 12880
 		public static float damageCoefficient;
 
-		// Token: 0x04000C29 RID: 3113
+		// Token: 0x04003251 RID: 12881
 		public static float forceMagnitude = 16f;
 
-		// Token: 0x04000C2A RID: 3114
+		// Token: 0x04003252 RID: 12882
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000C2B RID: 3115
+		// Token: 0x04003253 RID: 12883
 		public static string attackSoundString;
 
-		// Token: 0x04000C2C RID: 3116
+		// Token: 0x04003254 RID: 12884
 		private OverlapAttack attack;
 
-		// Token: 0x04000C2D RID: 3117
+		// Token: 0x04003255 RID: 12885
 		private Animator modelAnimator;
 
-		// Token: 0x04000C2E RID: 3118
+		// Token: 0x04003256 RID: 12886
 		private RootMotionAccumulator rootMotionAccumulator;
 
-		// Token: 0x04000C2F RID: 3119
+		// Token: 0x04003257 RID: 12887
 		private float duration;
 	}
 }

@@ -6,15 +6,15 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020002CF RID: 719
+	// Token: 0x020001E1 RID: 481
 	public class DirectorCore : MonoBehaviour
 	{
-		// Token: 0x17000136 RID: 310
-		// (get) Token: 0x06000E77 RID: 3703 RVA: 0x00047466 File Offset: 0x00045666
-		// (set) Token: 0x06000E78 RID: 3704 RVA: 0x0004746D File Offset: 0x0004566D
+		// Token: 0x17000147 RID: 327
+		// (get) Token: 0x06000A1F RID: 2591 RVA: 0x0002C2CC File Offset: 0x0002A4CC
+		// (set) Token: 0x06000A20 RID: 2592 RVA: 0x0002C2D3 File Offset: 0x0002A4D3
 		public static DirectorCore instance { get; private set; }
 
-		// Token: 0x06000E79 RID: 3705 RVA: 0x00047475 File Offset: 0x00045675
+		// Token: 0x06000A21 RID: 2593 RVA: 0x0002C2DB File Offset: 0x0002A4DB
 		private void OnEnable()
 		{
 			if (!DirectorCore.instance)
@@ -28,7 +28,7 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x06000E7A RID: 3706 RVA: 0x000474A9 File Offset: 0x000456A9
+		// Token: 0x06000A22 RID: 2594 RVA: 0x0002C30F File Offset: 0x0002A50F
 		private void OnDisable()
 		{
 			if (DirectorCore.instance == this)
@@ -37,26 +37,20 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000E7B RID: 3707 RVA: 0x000474C0 File Offset: 0x000456C0
-		private void AddOccupiedNode(NodeGraph nodeGraph, NodeGraph.NodeIndex nodeIndex)
+		// Token: 0x06000A23 RID: 2595 RVA: 0x0002C324 File Offset: 0x0002A524
+		public void AddOccupiedNode(NodeGraph nodeGraph, NodeGraph.NodeIndex nodeIndex)
 		{
 			Array.Resize<DirectorCore.NodeReference>(ref this.occupiedNodes, this.occupiedNodes.Length + 1);
-			this.occupiedNodes[this.occupiedNodes.Length - 1] = new DirectorCore.NodeReference
-			{
-				nodeGraph = nodeGraph,
-				nodeIndex = nodeIndex
-			};
+			this.occupiedNodes[this.occupiedNodes.Length - 1] = new DirectorCore.NodeReference(nodeGraph, nodeIndex);
 		}
 
-		// Token: 0x06000E7C RID: 3708 RVA: 0x00047510 File Offset: 0x00045710
+		// Token: 0x06000A24 RID: 2596 RVA: 0x0002C358 File Offset: 0x0002A558
 		private bool CheckPositionFree(NodeGraph nodeGraph, NodeGraph.NodeIndex nodeIndex, SpawnCard spawnCard)
 		{
-			for (int i = 0; i < this.occupiedNodes.Length; i++)
+			DirectorCore.NodeReference value = new DirectorCore.NodeReference(nodeGraph, nodeIndex);
+			if (Array.IndexOf<DirectorCore.NodeReference>(this.occupiedNodes, value) != -1)
 			{
-				if (this.occupiedNodes[i].nodeGraph == nodeGraph && this.occupiedNodes[i].nodeIndex == nodeIndex)
-				{
-					return false;
-				}
+				return false;
 			}
 			float num = HullDef.Find(spawnCard.hullSize).radius * 0.7f;
 			Vector3 vector;
@@ -68,19 +62,19 @@ namespace RoR2
 			return Physics.OverlapSphere(vector, num, LayerIndex.world.mask | LayerIndex.defaultLayer.mask | LayerIndex.fakeActor.mask).Length == 0;
 		}
 
-		// Token: 0x06000E7D RID: 3709 RVA: 0x000475E8 File Offset: 0x000457E8
-		public GameObject TrySpawnObject(DirectorCard directorCard, DirectorPlacementRule placementRule, [NotNull] Xoroshiro128Plus rng)
+		// Token: 0x06000A25 RID: 2597 RVA: 0x0002C404 File Offset: 0x0002A604
+		public GameObject TrySpawnObject([NotNull] DirectorSpawnRequest directorSpawnRequest)
 		{
-			return this.TrySpawnObject(directorCard.spawnCard, placementRule, rng);
-		}
-
-		// Token: 0x06000E7E RID: 3710 RVA: 0x000475F8 File Offset: 0x000457F8
-		public GameObject TrySpawnObject(SpawnCard spawnCard, DirectorPlacementRule placementRule, [NotNull] Xoroshiro128Plus rng)
-		{
+			SpawnCard spawnCard = directorSpawnRequest.spawnCard;
+			DirectorPlacementRule placementRule = directorSpawnRequest.placementRule;
+			Xoroshiro128Plus rng = directorSpawnRequest.rng;
 			NodeGraph nodeGraph = SceneInfo.instance.GetNodeGraph(spawnCard.nodeGraphType);
 			GameObject result = null;
 			switch (placementRule.placementMode)
 			{
+			case DirectorPlacementRule.PlacementMode.Direct:
+				result = spawnCard.DoSpawn(placementRule.spawnOnTarget ? placementRule.spawnOnTarget.position : directorSpawnRequest.placementRule.position, Quaternion.identity, directorSpawnRequest);
+				break;
 			case DirectorPlacementRule.PlacementMode.Approximate:
 			{
 				List<NodeGraph.NodeIndex> list = nodeGraph.FindNodesInRangeWithFlagConditions(placementRule.targetPosition, placementRule.minDistance, placementRule.maxDistance, (HullMask)(1 << (int)spawnCard.hullSize), spawnCard.requiredFlags, spawnCard.forbiddenFlags, placementRule.preventOverhead);
@@ -92,7 +86,7 @@ namespace RoR2
 					nodeGraph.GetNodePosition(nodeIndex, out position);
 					if (this.CheckPositionFree(nodeGraph, nodeIndex, spawnCard))
 					{
-						result = spawnCard.DoSpawn(position, Quaternion.identity);
+						result = spawnCard.DoSpawn(position, Quaternion.identity, directorSpawnRequest);
 						if (spawnCard.occupyPosition)
 						{
 							this.AddOccupiedNode(nodeGraph, nodeIndex);
@@ -115,7 +109,7 @@ namespace RoR2
 				{
 					if (this.CheckPositionFree(nodeGraph, nodeIndex2, spawnCard))
 					{
-						result = spawnCard.DoSpawn(position2, Quaternion.identity);
+						result = spawnCard.DoSpawn(position2, Quaternion.identity, directorSpawnRequest);
 						if (spawnCard.occupyPosition)
 						{
 							this.AddOccupiedNode(nodeGraph, nodeIndex2);
@@ -138,7 +132,7 @@ namespace RoR2
 				Vector3 position3;
 				if (nodeGraph.GetNodePosition(nodeIndex3, out position3))
 				{
-					result = spawnCard.DoSpawn(position3, Quaternion.identity);
+					result = spawnCard.DoSpawn(position3, Quaternion.identity, directorSpawnRequest);
 					if (spawnCard.occupyPosition)
 					{
 						this.AddOccupiedNode(nodeGraph, nodeIndex3);
@@ -156,7 +150,7 @@ namespace RoR2
 					Vector3 position4;
 					if (nodeGraph.GetNodePosition(nodeIndex4, out position4) && this.CheckPositionFree(nodeGraph, nodeIndex4, spawnCard))
 					{
-						result = spawnCard.DoSpawn(position4, Quaternion.identity);
+						result = spawnCard.DoSpawn(position4, Quaternion.identity, directorSpawnRequest);
 						if (spawnCard.occupyPosition)
 						{
 							this.AddOccupiedNode(nodeGraph, nodeIndex4);
@@ -175,7 +169,7 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x06000E7F RID: 3711 RVA: 0x0004784C File Offset: 0x00045A4C
+		// Token: 0x06000A26 RID: 2598 RVA: 0x0002C6B8 File Offset: 0x0002A8B8
 		public static void GetMonsterSpawnDistance(DirectorCore.MonsterSpawnDistance input, out float minimumDistance, out float maximumDistance)
 		{
 			minimumDistance = 0f;
@@ -199,30 +193,64 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0400127E RID: 4734
+		// Token: 0x04000A74 RID: 2676
 		public const int maxTeamMemberCount = 40;
 
-		// Token: 0x04001280 RID: 4736
+		// Token: 0x04000A76 RID: 2678
 		private DirectorCore.NodeReference[] occupiedNodes = Array.Empty<DirectorCore.NodeReference>();
 
-		// Token: 0x020002D0 RID: 720
-		private struct NodeReference
+		// Token: 0x020001E2 RID: 482
+		private struct NodeReference : IEquatable<DirectorCore.NodeReference>
 		{
-			// Token: 0x04001281 RID: 4737
-			public NodeGraph nodeGraph;
+			// Token: 0x06000A28 RID: 2600 RVA: 0x0002C725 File Offset: 0x0002A925
+			public NodeReference(NodeGraph nodeGraph, NodeGraph.NodeIndex nodeIndex)
+			{
+				this.nodeGraph = nodeGraph;
+				this.nodeIndex = nodeIndex;
+			}
 
-			// Token: 0x04001282 RID: 4738
-			public NodeGraph.NodeIndex nodeIndex;
+			// Token: 0x06000A29 RID: 2601 RVA: 0x0002C738 File Offset: 0x0002A938
+			public bool Equals(DirectorCore.NodeReference other)
+			{
+				return object.Equals(this.nodeGraph, other.nodeGraph) && this.nodeIndex.Equals(other.nodeIndex);
+			}
+
+			// Token: 0x06000A2A RID: 2602 RVA: 0x0002C770 File Offset: 0x0002A970
+			public override bool Equals(object obj)
+			{
+				if (obj == null)
+				{
+					return false;
+				}
+				if (obj is DirectorCore.NodeReference)
+				{
+					DirectorCore.NodeReference other = (DirectorCore.NodeReference)obj;
+					return this.Equals(other);
+				}
+				return false;
+			}
+
+			// Token: 0x06000A2B RID: 2603 RVA: 0x0002C79C File Offset: 0x0002A99C
+			public override int GetHashCode()
+			{
+				return ((this.nodeGraph != null) ? this.nodeGraph.GetHashCode() : 0) * 397 ^ this.nodeIndex.GetHashCode();
+			}
+
+			// Token: 0x04000A77 RID: 2679
+			public readonly NodeGraph nodeGraph;
+
+			// Token: 0x04000A78 RID: 2680
+			public readonly NodeGraph.NodeIndex nodeIndex;
 		}
 
-		// Token: 0x020002D1 RID: 721
+		// Token: 0x020001E3 RID: 483
 		public enum MonsterSpawnDistance
 		{
-			// Token: 0x04001284 RID: 4740
+			// Token: 0x04000A7A RID: 2682
 			Standard,
-			// Token: 0x04001285 RID: 4741
+			// Token: 0x04000A7B RID: 2683
 			Close,
-			// Token: 0x04001286 RID: 4742
+			// Token: 0x04000A7C RID: 2684
 			Far
 		}
 	}

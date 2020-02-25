@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.BeetleQueenMonster
 {
-	// Token: 0x020001CF RID: 463
+	// Token: 0x020008EA RID: 2282
 	public class BeetleWardDeath : BaseState
 	{
-		// Token: 0x06000905 RID: 2309 RVA: 0x0002D650 File Offset: 0x0002B850
+		// Token: 0x06003305 RID: 13061 RVA: 0x000DD2C0 File Offset: 0x000DB4C0
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -26,21 +26,21 @@ namespace EntityStates.BeetleQueenMonster
 			}
 			if (BeetleWardDeath.initialExplosion && NetworkServer.active)
 			{
-				EffectManager.instance.SimpleImpactEffect(BeetleWardDeath.initialExplosion, base.transform.position, Vector3.up, true);
+				EffectManager.SimpleImpactEffect(BeetleWardDeath.initialExplosion, base.transform.position, Vector3.up, true);
 			}
 			EntityState.Destroy(base.gameObject);
 		}
 
-		// Token: 0x06000906 RID: 2310 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x06003306 RID: 13062 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Death;
 		}
 
-		// Token: 0x04000C3A RID: 3130
+		// Token: 0x04003262 RID: 12898
 		public static GameObject initialExplosion;
 
-		// Token: 0x04000C3B RID: 3131
+		// Token: 0x04003263 RID: 12899
 		public static string deathString;
 	}
 }

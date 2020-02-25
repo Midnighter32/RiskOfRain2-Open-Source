@@ -8,28 +8,28 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005AB RID: 1451
+	// Token: 0x0200057E RID: 1406
 	public class AchievementNotificationPanel : MonoBehaviour
 	{
-		// Token: 0x06002088 RID: 8328 RVA: 0x00099479 File Offset: 0x00097679
+		// Token: 0x06002178 RID: 8568 RVA: 0x00091031 File Offset: 0x0008F231
 		private void Awake()
 		{
 			AchievementNotificationPanel.instancesList.Add(this);
 			this.onStart.Invoke();
 		}
 
-		// Token: 0x06002089 RID: 8329 RVA: 0x00099491 File Offset: 0x00097691
+		// Token: 0x06002179 RID: 8569 RVA: 0x00091049 File Offset: 0x0008F249
 		private void OnDestroy()
 		{
 			AchievementNotificationPanel.instancesList.Remove(this);
 		}
 
-		// Token: 0x0600208A RID: 8330 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x0600217A RID: 8570 RVA: 0x0000409B File Offset: 0x0000229B
 		private void Update()
 		{
 		}
 
-		// Token: 0x0600208B RID: 8331 RVA: 0x0009949F File Offset: 0x0009769F
+		// Token: 0x0600217B RID: 8571 RVA: 0x00091057 File Offset: 0x0008F257
 		public void SetAchievementDef(AchievementDef achievementDef)
 		{
 			this.achievementIconImage.sprite = achievementDef.GetAchievedIcon();
@@ -37,7 +37,7 @@ namespace RoR2.UI
 			this.achievementDescription.text = Language.GetString(achievementDef.descriptionToken);
 		}
 
-		// Token: 0x0600208C RID: 8332 RVA: 0x000994DE File Offset: 0x000976DE
+		// Token: 0x0600217C RID: 8572 RVA: 0x00091096 File Offset: 0x0008F296
 		private static Canvas GetUserCanvas(LocalUser localUser)
 		{
 			if (Run.instance)
@@ -47,27 +47,27 @@ namespace RoR2.UI
 			return RoR2Application.instance.mainCanvas;
 		}
 
-		// Token: 0x0600208D RID: 8333 RVA: 0x00099507 File Offset: 0x00097707
+		// Token: 0x0600217D RID: 8573 RVA: 0x000910BF File Offset: 0x0008F2BF
 		private static bool IsAppropriateTimeToDisplayUserAchievementNotification(LocalUser localUser)
 		{
 			return !GameOverController.instance;
 		}
 
-		// Token: 0x0600208E RID: 8334 RVA: 0x00099516 File Offset: 0x00097716
+		// Token: 0x0600217E RID: 8574 RVA: 0x000910CE File Offset: 0x0008F2CE
 		private static void DispatchAchievementNotification(Canvas canvas, AchievementDef achievementDef)
 		{
 			UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/UI/AchievementNotificationPanel"), canvas.transform).GetComponent<AchievementNotificationPanel>().SetAchievementDef(achievementDef);
 			Util.PlaySound(achievementDef.GetAchievementSoundString(), RoR2Application.instance.gameObject);
 		}
 
-		// Token: 0x0600208F RID: 8335 RVA: 0x0009954E File Offset: 0x0009774E
+		// Token: 0x0600217F RID: 8575 RVA: 0x00091106 File Offset: 0x0008F306
 		[RuntimeInitializeOnLoadMethod]
 		private static void Init()
 		{
 			RoR2Application.onFixedUpdate += AchievementNotificationPanel.StaticFixedUpdate;
 		}
 
-		// Token: 0x06002090 RID: 8336 RVA: 0x00099564 File Offset: 0x00097764
+		// Token: 0x06002180 RID: 8576 RVA: 0x0009111C File Offset: 0x0008F31C
 		private static void StaticFixedUpdate()
 		{
 			foreach (LocalUser localUser in LocalUserManager.readOnlyLocalUsersList)
@@ -91,19 +91,19 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x04002318 RID: 8984
+		// Token: 0x04001EEB RID: 7915
 		private static readonly List<AchievementNotificationPanel> instancesList = new List<AchievementNotificationPanel>();
 
-		// Token: 0x04002319 RID: 8985
+		// Token: 0x04001EEC RID: 7916
 		public Image achievementIconImage;
 
-		// Token: 0x0400231A RID: 8986
+		// Token: 0x04001EED RID: 7917
 		public TextMeshProUGUI achievementName;
 
-		// Token: 0x0400231B RID: 8987
+		// Token: 0x04001EEE RID: 7918
 		public TextMeshProUGUI achievementDescription;
 
-		// Token: 0x0400231C RID: 8988
+		// Token: 0x04001EEF RID: 7919
 		public UnityEvent onStart;
 	}
 }

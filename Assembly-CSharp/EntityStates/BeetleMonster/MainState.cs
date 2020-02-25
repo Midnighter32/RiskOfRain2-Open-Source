@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace EntityStates.BeetleMonster
 {
-	// Token: 0x020001CB RID: 459
+	// Token: 0x020008E6 RID: 2278
 	public class MainState : EntityState
 	{
-		// Token: 0x060008F9 RID: 2297 RVA: 0x0002D431 File Offset: 0x0002B631
+		// Token: 0x060032F9 RID: 13049 RVA: 0x000DD0A1 File Offset: 0x000DB2A1
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -17,7 +17,7 @@ namespace EntityStates.BeetleMonster
 			}
 		}
 
-		// Token: 0x060008FA RID: 2298 RVA: 0x0002D467 File Offset: 0x0002B667
+		// Token: 0x060032FA RID: 13050 RVA: 0x000DD0D7 File Offset: 0x000DB2D7
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -27,7 +27,7 @@ namespace EntityStates.BeetleMonster
 			}
 		}
 
-		// Token: 0x04000C32 RID: 3122
+		// Token: 0x0400325A RID: 12890
 		private Animator modelAnimator;
 	}
 }

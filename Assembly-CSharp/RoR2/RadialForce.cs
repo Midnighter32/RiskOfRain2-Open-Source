@@ -5,17 +5,17 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x0200039F RID: 927
+	// Token: 0x020002DC RID: 732
 	public class RadialForce : MonoBehaviour
 	{
-		// Token: 0x060013A4 RID: 5028 RVA: 0x0005FE1F File Offset: 0x0005E01F
+		// Token: 0x060010CB RID: 4299 RVA: 0x000497F7 File Offset: 0x000479F7
 		private void Start()
 		{
 			this._transform = base.GetComponent<Transform>();
 			this.teamFilter = base.GetComponent<TeamFilter>();
 		}
 
-		// Token: 0x060013A5 RID: 5029 RVA: 0x0005FE3C File Offset: 0x0005E03C
+		// Token: 0x060010CC RID: 4300 RVA: 0x00049814 File Offset: 0x00047A14
 		private void AddToList(GameObject affectedObject)
 		{
 			if (this.tetherPrefab && !this.affectedObjects.Contains(affectedObject))
@@ -27,7 +27,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060013A6 RID: 5030 RVA: 0x0005FEA4 File Offset: 0x0005E0A4
+		// Token: 0x060010CD RID: 4301 RVA: 0x0004987C File Offset: 0x00047A7C
 		private void FixedUpdate()
 		{
 			Collider[] array = Physics.OverlapSphere(base.transform.position, this.radius, LayerIndex.defaultLayer.mask);
@@ -65,35 +65,35 @@ namespace RoR2
 								mass = component4.mass;
 							}
 							velocity.y += Physics.gravity.y * Time.fixedDeltaTime;
-							component.TakeDamageForce(a - velocity * (this.damping * mass * num), true);
+							component.TakeDamageForce(a - velocity * (this.damping * mass * num), true, false);
 						}
 					}
 				}
 			}
 		}
 
-		// Token: 0x0400174B RID: 5963
+		// Token: 0x0400101A RID: 4122
 		public GameObject tetherPrefab;
 
-		// Token: 0x0400174C RID: 5964
+		// Token: 0x0400101B RID: 4123
 		public float radius;
 
-		// Token: 0x0400174D RID: 5965
+		// Token: 0x0400101C RID: 4124
 		public float damping = 0.2f;
 
-		// Token: 0x0400174E RID: 5966
+		// Token: 0x0400101D RID: 4125
 		public float forceMagnitude;
 
-		// Token: 0x0400174F RID: 5967
+		// Token: 0x0400101E RID: 4126
 		public float forceCoefficientAtEdge = 0.5f;
 
-		// Token: 0x04001750 RID: 5968
+		// Token: 0x0400101F RID: 4127
 		private Transform _transform;
 
-		// Token: 0x04001751 RID: 5969
+		// Token: 0x04001020 RID: 4128
 		private TeamFilter teamFilter;
 
-		// Token: 0x04001752 RID: 5970
+		// Token: 0x04001021 RID: 4129
 		private List<GameObject> affectedObjects = new List<GameObject>();
 	}
 }

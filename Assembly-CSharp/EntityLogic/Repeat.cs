@@ -4,10 +4,10 @@ using UnityEngine.Events;
 
 namespace EntityLogic
 {
-	// Token: 0x020001E8 RID: 488
+	// Token: 0x020000A9 RID: 169
 	public class Repeat : MonoBehaviour
 	{
-		// Token: 0x06000983 RID: 2435 RVA: 0x0002FF78 File Offset: 0x0002E178
+		// Token: 0x06000343 RID: 835 RVA: 0x0000CCCA File Offset: 0x0000AECA
 		public void CallRepeat(int repeatNumber)
 		{
 			while (repeatNumber > 0)
@@ -21,7 +21,7 @@ namespace EntityLogic
 			}
 		}
 
-		// Token: 0x04000CDE RID: 3294
+		// Token: 0x040002F0 RID: 752
 		public UnityEvent repeatedEvent;
 	}
 }

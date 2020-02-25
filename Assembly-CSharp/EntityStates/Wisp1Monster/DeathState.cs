@@ -1,17 +1,17 @@
 ﻿using System;
 using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace EntityStates.Wisp1Monster
 {
-	// Token: 0x020000C7 RID: 199
-	public class DeathState : BaseState
+	// Token: 0x02000723 RID: 1827
+	public class DeathState : GenericCharacterDeath
 	{
-		// Token: 0x060003E1 RID: 993 RVA: 0x00010048 File Offset: 0x0000E248
+		// Token: 0x06002A87 RID: 10887 RVA: 0x000B3040 File Offset: 0x000B1240
 		public override void OnEnter()
 		{
 			base.OnEnter();
-			Util.PlaySound(DeathState.deathString, base.gameObject);
 			if (base.modelLocator)
 			{
 				if (base.modelLocator.modelBaseTransform)
@@ -23,23 +23,14 @@ namespace EntityStates.Wisp1Monster
 					EntityState.Destroy(base.modelLocator.modelTransform.gameObject);
 				}
 			}
-			if (DeathState.initialExplosion)
+			if (NetworkServer.active)
 			{
-				UnityEngine.Object.Instantiate<GameObject>(DeathState.initialExplosion, base.transform.position, base.transform.rotation);
+				EffectManager.SimpleEffect(DeathState.initialExplosion, base.transform.position, base.transform.rotation, true);
+				EntityState.Destroy(base.gameObject);
 			}
-			EntityState.Destroy(base.gameObject);
 		}
 
-		// Token: 0x060003E2 RID: 994 RVA: 0x0000BBE7 File Offset: 0x00009DE7
-		public override InterruptPriority GetMinimumInterruptPriority()
-		{
-			return InterruptPriority.Death;
-		}
-
-		// Token: 0x040003A1 RID: 929
+		// Token: 0x04002666 RID: 9830
 		public static GameObject initialExplosion;
-
-		// Token: 0x040003A2 RID: 930
-		public static string deathString;
 	}
 }

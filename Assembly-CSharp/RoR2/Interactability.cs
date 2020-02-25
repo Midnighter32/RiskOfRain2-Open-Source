@@ -2,14 +2,14 @@
 
 namespace RoR2
 {
-	// Token: 0x0200032F RID: 815
+	// Token: 0x02000251 RID: 593
 	public enum Interactability
 	{
-		// Token: 0x040014D0 RID: 5328
+		// Token: 0x04000D13 RID: 3347
 		Disabled,
-		// Token: 0x040014D1 RID: 5329
+		// Token: 0x04000D14 RID: 3348
 		ConditionsNotMet,
-		// Token: 0x040014D2 RID: 5330
+		// Token: 0x04000D15 RID: 3349
 		Available
 	}
 }

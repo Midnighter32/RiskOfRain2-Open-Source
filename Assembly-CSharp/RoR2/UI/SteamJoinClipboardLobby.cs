@@ -6,33 +6,33 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000643 RID: 1603
+	// Token: 0x02000638 RID: 1592
 	public class SteamJoinClipboardLobby : MonoBehaviour
 	{
-		// Token: 0x1700031E RID: 798
-		// (get) Token: 0x060023DC RID: 9180 RVA: 0x000A875D File Offset: 0x000A695D
-		// (set) Token: 0x060023DD RID: 9181 RVA: 0x000A8765 File Offset: 0x000A6965
+		// Token: 0x170003DD RID: 989
+		// (get) Token: 0x0600257B RID: 9595 RVA: 0x000A316D File Offset: 0x000A136D
+		// (set) Token: 0x0600257C RID: 9596 RVA: 0x000A3175 File Offset: 0x000A1375
 		public bool validClipboardLobbyID { get; private set; }
 
-		// Token: 0x060023DE RID: 9182 RVA: 0x000A876E File Offset: 0x000A696E
+		// Token: 0x0600257D RID: 9597 RVA: 0x000A317E File Offset: 0x000A137E
 		private void OnEnable()
 		{
 			SingletonHelper.Assign<SteamJoinClipboardLobby>(ref SteamJoinClipboardLobby.instance, this);
 		}
 
-		// Token: 0x060023DF RID: 9183 RVA: 0x000A877B File Offset: 0x000A697B
+		// Token: 0x0600257E RID: 9598 RVA: 0x000A318B File Offset: 0x000A138B
 		private void OnDisable()
 		{
 			SingletonHelper.Unassign<SteamJoinClipboardLobby>(ref SteamJoinClipboardLobby.instance, this);
 		}
 
-		// Token: 0x060023E0 RID: 9184 RVA: 0x000A8788 File Offset: 0x000A6988
+		// Token: 0x0600257F RID: 9599 RVA: 0x000A3198 File Offset: 0x000A1398
 		static SteamJoinClipboardLobby()
 		{
 			SteamworksLobbyManager.onLobbyJoined += SteamJoinClipboardLobby.OnLobbyJoined;
 		}
 
-		// Token: 0x060023E1 RID: 9185 RVA: 0x000A879C File Offset: 0x000A699C
+		// Token: 0x06002580 RID: 9600 RVA: 0x000A31AC File Offset: 0x000A13AC
 		private static void OnLobbyJoined(bool success)
 		{
 			if (SteamJoinClipboardLobby.instance && SteamJoinClipboardLobby.instance.resultTextComponent)
@@ -42,7 +42,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060023E2 RID: 9186 RVA: 0x000A87F8 File Offset: 0x000A69F8
+		// Token: 0x06002581 RID: 9601 RVA: 0x000A3208 File Offset: 0x000A1408
 		private void FixedUpdate()
 		{
 			Client client = Client.Instance;
@@ -62,31 +62,31 @@ namespace RoR2.UI
 			this.resultTextComponent.enabled = false;
 		}
 
-		// Token: 0x060023E3 RID: 9187 RVA: 0x000A88B1 File Offset: 0x000A6AB1
+		// Token: 0x06002582 RID: 9602 RVA: 0x000A32C1 File Offset: 0x000A14C1
 		public void TryToJoinClipboardLobby()
 		{
 			Console.instance.SubmitCmd(null, string.Format(CultureInfo.InvariantCulture, "steam_lobby_join {0}", this.clipboardLobbyID.ToString()), true);
 		}
 
-		// Token: 0x040026CE RID: 9934
+		// Token: 0x04002331 RID: 9009
 		public TextMeshProUGUI buttonText;
 
-		// Token: 0x040026CF RID: 9935
+		// Token: 0x04002332 RID: 9010
 		public TextMeshProUGUI resultTextComponent;
 
-		// Token: 0x040026D0 RID: 9936
+		// Token: 0x04002333 RID: 9011
 		public MPButton mpButton;
 
-		// Token: 0x040026D1 RID: 9937
+		// Token: 0x04002334 RID: 9012
 		private CSteamID clipboardLobbyID;
 
-		// Token: 0x040026D3 RID: 9939
+		// Token: 0x04002336 RID: 9014
 		private const float resultTextDuration = 4f;
 
-		// Token: 0x040026D4 RID: 9940
+		// Token: 0x04002337 RID: 9015
 		protected float resultTextTimer;
 
-		// Token: 0x040026D5 RID: 9941
+		// Token: 0x04002338 RID: 9016
 		private static SteamJoinClipboardLobby instance;
 	}
 }

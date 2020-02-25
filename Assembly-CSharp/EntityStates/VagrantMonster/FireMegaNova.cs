@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace EntityStates.VagrantMonster
 {
-	// Token: 0x0200012D RID: 301
-	internal class FireMegaNova : BaseState
+	// Token: 0x02000803 RID: 2051
+	public class FireMegaNova : BaseState
 	{
-		// Token: 0x060005CB RID: 1483 RVA: 0x0001A794 File Offset: 0x00018994
+		// Token: 0x06002EA2 RID: 11938 RVA: 0x000C64D0 File Offset: 0x000C46D0
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -19,13 +18,13 @@ namespace EntityStates.VagrantMonster
 			this.Detonate();
 		}
 
-		// Token: 0x060005CC RID: 1484 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002EA3 RID: 11939 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x060005CD RID: 1485 RVA: 0x0001A7E5 File Offset: 0x000189E5
+		// Token: 0x06002EA4 RID: 11940 RVA: 0x000C6521 File Offset: 0x000C4721
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -37,14 +36,14 @@ namespace EntityStates.VagrantMonster
 			}
 		}
 
-		// Token: 0x060005CE RID: 1486 RVA: 0x0001A824 File Offset: 0x00018A24
+		// Token: 0x06002EA5 RID: 11941 RVA: 0x000C6560 File Offset: 0x000C4760
 		private void Detonate()
 		{
 			Vector3 position = base.transform.position;
 			Util.PlaySound(FireMegaNova.novaSoundString, base.gameObject);
 			if (FireMegaNova.novaEffectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireMegaNova.novaEffectPrefab, base.gameObject, "NovaCenter", false);
+				EffectManager.SimpleMuzzleFlash(FireMegaNova.novaEffectPrefab, base.gameObject, "NovaCenter", false);
 			}
 			Transform modelTransform = base.GetModelTransform();
 			if (modelTransform)
@@ -57,72 +56,62 @@ namespace EntityStates.VagrantMonster
 				temporaryOverlay.originalMaterial = Resources.Load<Material>("Materials/matVagrantEnergized");
 				temporaryOverlay.AddToCharacerModel(modelTransform.GetComponent<CharacterModel>());
 			}
-			if (base.isAuthority)
+			if (NetworkServer.active)
 			{
-				BullseyeSearch bullseyeSearch = new BullseyeSearch();
-				bullseyeSearch.filterByLoS = true;
-				bullseyeSearch.maxDistanceFilter = this.novaRadius;
-				bullseyeSearch.searchOrigin = position;
-				bullseyeSearch.sortMode = BullseyeSearch.SortMode.Distance;
-				bullseyeSearch.teamMaskFilter = TeamMask.allButNeutral;
-				bullseyeSearch.teamMaskFilter.RemoveTeam(base.teamComponent.teamIndex);
-				bullseyeSearch.RefreshCandidates();
-				bullseyeSearch.queryTriggerInteraction = QueryTriggerInteraction.Collide;
-				List<HurtBox> list = bullseyeSearch.GetResults().ToList<HurtBox>();
-				if (list.Count > 0)
+				new BlastAttack
 				{
-					DamageInfo damageInfo = new DamageInfo();
-					damageInfo.damage = this.damageStat * FireMegaNova.novaDamageCoefficient;
-					damageInfo.attacker = base.gameObject;
-					damageInfo.procCoefficient = 1f;
-					damageInfo.crit = Util.CheckRoll(this.critStat, base.characterBody.master);
-					for (int i = 0; i < list.Count; i++)
-					{
-						HurtBox hurtBox = list[i];
-						HealthComponent healthComponent = hurtBox.healthComponent;
-						if (healthComponent)
-						{
-							damageInfo.force = FireMegaNova.novaForce * (healthComponent.transform.position - position).normalized;
-							damageInfo.position = hurtBox.transform.position;
-							EffectManager.instance.SimpleImpactEffect(FireMegaNova.novaImpactEffectPrefab, hurtBox.transform.position, Vector3.up, true);
-							healthComponent.TakeDamage(damageInfo);
-						}
-					}
-				}
+					attacker = base.gameObject,
+					baseDamage = this.damageStat * FireMegaNova.novaDamageCoefficient,
+					baseForce = FireMegaNova.novaForce,
+					bonusForce = Vector3.zero,
+					canHurtAttacker = false,
+					crit = base.characterBody.RollCrit(),
+					damageColorIndex = DamageColorIndex.Default,
+					damageType = DamageType.Generic,
+					falloffModel = BlastAttack.FalloffModel.None,
+					inflictor = base.gameObject,
+					position = position,
+					procChainMask = default(ProcChainMask),
+					procCoefficient = 3f,
+					radius = this.novaRadius,
+					losType = BlastAttack.LoSType.NearestHit,
+					teamIndex = base.teamComponent.teamIndex,
+					impactEffect = EffectCatalog.FindEffectIndexFromPrefab(FireMegaNova.novaImpactEffectPrefab)
+				}.Fire();
 			}
 		}
 
-		// Token: 0x060005CF RID: 1487 RVA: 0x0000BB2B File Offset: 0x00009D2B
+		// Token: 0x06002EA6 RID: 11942 RVA: 0x0000C5D3 File Offset: 0x0000A7D3
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Pain;
 		}
 
-		// Token: 0x040006A2 RID: 1698
+		// Token: 0x04002BC6 RID: 11206
 		public static float baseDuration = 3f;
 
-		// Token: 0x040006A3 RID: 1699
+		// Token: 0x04002BC7 RID: 11207
 		public static GameObject novaEffectPrefab;
 
-		// Token: 0x040006A4 RID: 1700
+		// Token: 0x04002BC8 RID: 11208
 		public static GameObject novaImpactEffectPrefab;
 
-		// Token: 0x040006A5 RID: 1701
+		// Token: 0x04002BC9 RID: 11209
 		public static string novaSoundString;
 
-		// Token: 0x040006A6 RID: 1702
+		// Token: 0x04002BCA RID: 11210
 		public static float novaDamageCoefficient;
 
-		// Token: 0x040006A7 RID: 1703
+		// Token: 0x04002BCB RID: 11211
 		public static float novaForce;
 
-		// Token: 0x040006A8 RID: 1704
+		// Token: 0x04002BCC RID: 11212
 		public float novaRadius;
 
-		// Token: 0x040006A9 RID: 1705
+		// Token: 0x04002BCD RID: 11213
 		private float duration;
 
-		// Token: 0x040006AA RID: 1706
+		// Token: 0x04002BCE RID: 11214
 		private float stopwatch;
 	}
 }

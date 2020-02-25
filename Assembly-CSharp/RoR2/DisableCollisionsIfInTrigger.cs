@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020002D6 RID: 726
+	// Token: 0x020001E8 RID: 488
 	[RequireComponent(typeof(SphereCollider))]
 	public class DisableCollisionsIfInTrigger : MonoBehaviour
 	{
-		// Token: 0x06000E87 RID: 3719 RVA: 0x000479B5 File Offset: 0x00045BB5
+		// Token: 0x06000A33 RID: 2611 RVA: 0x0002C8E9 File Offset: 0x0002AAE9
 		public void Awake()
 		{
 			this.trigger = base.GetComponent<SphereCollider>();
 		}
 
-		// Token: 0x06000E88 RID: 3720 RVA: 0x000479C4 File Offset: 0x00045BC4
+		// Token: 0x06000A34 RID: 2612 RVA: 0x0002C8F8 File Offset: 0x0002AAF8
 		private void OnTriggerEnter(Collider other)
 		{
 			if (this.trigger)
@@ -28,10 +28,10 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0400129E RID: 4766
+		// Token: 0x04000A93 RID: 2707
 		public Collider colliderToIgnore;
 
-		// Token: 0x0400129F RID: 4767
+		// Token: 0x04000A94 RID: 2708
 		private SphereCollider trigger;
 	}
 }

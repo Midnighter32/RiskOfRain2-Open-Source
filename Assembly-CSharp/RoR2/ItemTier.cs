@@ -2,20 +2,20 @@
 
 namespace RoR2
 {
-	// Token: 0x02000449 RID: 1097
+	// Token: 0x020003AE RID: 942
 	public enum ItemTier
 	{
-		// Token: 0x04001BF4 RID: 7156
+		// Token: 0x040015B8 RID: 5560
 		Tier1,
-		// Token: 0x04001BF5 RID: 7157
+		// Token: 0x040015B9 RID: 5561
 		Tier2,
-		// Token: 0x04001BF6 RID: 7158
+		// Token: 0x040015BA RID: 5562
 		Tier3,
-		// Token: 0x04001BF7 RID: 7159
+		// Token: 0x040015BB RID: 5563
 		Lunar,
-		// Token: 0x04001BF8 RID: 7160
+		// Token: 0x040015BC RID: 5564
 		Boss,
-		// Token: 0x04001BF9 RID: 7161
+		// Token: 0x040015BD RID: 5565
 		NoTier
 	}
 }

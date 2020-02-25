@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.LemurianMonster
 {
-	// Token: 0x02000126 RID: 294
+	// Token: 0x020007F5 RID: 2037
 	public class LeapAttackState : BaseState
 	{
-		// Token: 0x060005AE RID: 1454 RVA: 0x00019F54 File Offset: 0x00018154
+		// Token: 0x06002E54 RID: 11860 RVA: 0x000C5244 File Offset: 0x000C3444
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -27,7 +27,7 @@ namespace EntityStates.LemurianMonster
 			base.PlayCrossfade("Body", "LeapAttack", "LeapAttack.playbackRate", this.duration, 0.1f);
 		}
 
-		// Token: 0x060005AF RID: 1455 RVA: 0x0001A050 File Offset: 0x00018250
+		// Token: 0x06002E55 RID: 11861 RVA: 0x000C5340 File Offset: 0x000C3540
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -54,31 +54,31 @@ namespace EntityStates.LemurianMonster
 			}
 		}
 
-		// Token: 0x060005B0 RID: 1456 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06002E56 RID: 11862 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x0400067B RID: 1659
+		// Token: 0x04002B7C RID: 11132
 		public static float baseDuration = 3.5f;
 
-		// Token: 0x0400067C RID: 1660
+		// Token: 0x04002B7D RID: 11133
 		public static float damage = 10f;
 
-		// Token: 0x0400067D RID: 1661
+		// Token: 0x04002B7E RID: 11134
 		public static float forceMagnitude = 16f;
 
-		// Token: 0x0400067E RID: 1662
+		// Token: 0x04002B7F RID: 11135
 		private OverlapAttack attack;
 
-		// Token: 0x0400067F RID: 1663
+		// Token: 0x04002B80 RID: 11136
 		private Animator modelAnimator;
 
-		// Token: 0x04000680 RID: 1664
+		// Token: 0x04002B81 RID: 11137
 		private RootMotionAccumulator rootMotionAccumulator;
 
-		// Token: 0x04000681 RID: 1665
+		// Token: 0x04002B82 RID: 11138
 		private float duration;
 	}
 }

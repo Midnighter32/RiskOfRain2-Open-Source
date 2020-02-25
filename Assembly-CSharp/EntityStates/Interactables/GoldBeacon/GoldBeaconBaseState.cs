@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.Interactables.GoldBeacon
 {
-	// Token: 0x0200013A RID: 314
+	// Token: 0x02000811 RID: 2065
 	public class GoldBeaconBaseState : BaseState
 	{
-		// Token: 0x06000606 RID: 1542 RVA: 0x0001BC5C File Offset: 0x00019E5C
+		// Token: 0x06002EE1 RID: 12001 RVA: 0x000C79BC File Offset: 0x000C5BBC
 		protected void SetReady(bool ready)
 		{
 			Transform modelTransform = base.GetModelTransform();

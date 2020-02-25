@@ -4,13 +4,14 @@ using System.Linq;
 using RoR2;
 using RoR2.Orbs;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace EntityStates.BeetleQueenMonster
 {
-	// Token: 0x020001D4 RID: 468
+	// Token: 0x020008EF RID: 2287
 	public class SpawnWards : BaseState
 	{
-		// Token: 0x06000920 RID: 2336 RVA: 0x0002DCE0 File Offset: 0x0002BEE0
+		// Token: 0x06003320 RID: 13088 RVA: 0x000DD93C File Offset: 0x000DBB3C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -21,7 +22,7 @@ namespace EntityStates.BeetleQueenMonster
 			base.PlayCrossfade("Gesture", "SpawnWards", "SpawnWards.playbackRate", this.duration, 0.5f);
 		}
 
-		// Token: 0x06000921 RID: 2337 RVA: 0x0002DD5C File Offset: 0x0002BF5C
+		// Token: 0x06003321 RID: 13089 RVA: 0x000DD9B8 File Offset: 0x000DBBB8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -37,10 +38,10 @@ namespace EntityStates.BeetleQueenMonster
 			}
 		}
 
-		// Token: 0x06000922 RID: 2338 RVA: 0x0002DDD0 File Offset: 0x0002BFD0
+		// Token: 0x06003322 RID: 13090 RVA: 0x000DDA2C File Offset: 0x000DBC2C
 		private void FireOrbs()
 		{
-			if (!base.isServer)
+			if (!NetworkServer.active)
 			{
 				return;
 			}
@@ -53,7 +54,7 @@ namespace EntityStates.BeetleQueenMonster
 			bullseyeSearch.teamMaskFilter.RemoveTeam(TeamComponent.GetObjectTeam(base.gameObject));
 			bullseyeSearch.sortMode = BullseyeSearch.SortMode.Distance;
 			bullseyeSearch.RefreshCandidates();
-			EffectManager.instance.SimpleMuzzleFlash(SpawnWards.muzzleflashEffectPrefab, base.gameObject, SpawnWards.muzzleString, true);
+			EffectManager.SimpleMuzzleFlash(SpawnWards.muzzleflashEffectPrefab, base.gameObject, SpawnWards.muzzleString, true);
 			List<HurtBox> list = bullseyeSearch.GetResults().ToList<HurtBox>();
 			for (int i = 0; i < list.Count; i++)
 			{
@@ -66,7 +67,7 @@ namespace EntityStates.BeetleQueenMonster
 			}
 		}
 
-		// Token: 0x06000923 RID: 2339 RVA: 0x0002DEC8 File Offset: 0x0002C0C8
+		// Token: 0x06003323 RID: 13091 RVA: 0x000DDB1C File Offset: 0x000DBD1C
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -82,43 +83,43 @@ namespace EntityStates.BeetleQueenMonster
 			}
 		}
 
-		// Token: 0x04000C57 RID: 3159
+		// Token: 0x0400327F RID: 12927
 		public static string muzzleString;
 
-		// Token: 0x04000C58 RID: 3160
+		// Token: 0x04003280 RID: 12928
 		public static string attackSoundString;
 
-		// Token: 0x04000C59 RID: 3161
+		// Token: 0x04003281 RID: 12929
 		public static GameObject muzzleflashEffectPrefab;
 
-		// Token: 0x04000C5A RID: 3162
+		// Token: 0x04003282 RID: 12930
 		public static float baseDuration = 0.9f;
 
-		// Token: 0x04000C5B RID: 3163
+		// Token: 0x04003283 RID: 12931
 		public static float orbRange;
 
-		// Token: 0x04000C5C RID: 3164
+		// Token: 0x04003284 RID: 12932
 		public static float orbTravelSpeed;
 
-		// Token: 0x04000C5D RID: 3165
+		// Token: 0x04003285 RID: 12933
 		public static int orbCountMax;
 
-		// Token: 0x04000C5E RID: 3166
+		// Token: 0x04003286 RID: 12934
 		private float stopwatch;
 
-		// Token: 0x04000C5F RID: 3167
+		// Token: 0x04003287 RID: 12935
 		private int orbCount;
 
-		// Token: 0x04000C60 RID: 3168
+		// Token: 0x04003288 RID: 12936
 		private float duration;
 
-		// Token: 0x04000C61 RID: 3169
+		// Token: 0x04003289 RID: 12937
 		private bool hasFiredOrbs;
 
-		// Token: 0x04000C62 RID: 3170
+		// Token: 0x0400328A RID: 12938
 		private Animator animator;
 
-		// Token: 0x04000C63 RID: 3171
+		// Token: 0x0400328B RID: 12939
 		private ChildLocator childLocator;
 	}
 }

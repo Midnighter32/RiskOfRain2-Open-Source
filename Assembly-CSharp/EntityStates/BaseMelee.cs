@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace EntityStates
 {
-	// Token: 0x020000BE RID: 190
-	internal class BaseMelee : BaseState
+	// Token: 0x02000718 RID: 1816
+	public class BaseMelee : BaseState
 	{
-		// Token: 0x060003B9 RID: 953 RVA: 0x0000F534 File Offset: 0x0000D734
+		// Token: 0x06002A57 RID: 10839 RVA: 0x000B22D0 File Offset: 0x000B04D0
 		public RootMotionAccumulator InitMeleeRootMotion()
 		{
 			this.rootMotionAccumulator = base.GetModelRootMotionAccumulator();
@@ -25,7 +25,7 @@ namespace EntityStates
 			return this.rootMotionAccumulator;
 		}
 
-		// Token: 0x060003BA RID: 954 RVA: 0x0000F5AC File Offset: 0x0000D7AC
+		// Token: 0x06002A58 RID: 10840 RVA: 0x000B2348 File Offset: 0x000B0548
 		public void UpdateMeleeRootMotion(float scale)
 		{
 			if (this.rootMotionAccumulator)
@@ -38,7 +38,7 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x04000370 RID: 880
+		// Token: 0x0400262A RID: 9770
 		protected RootMotionAccumulator rootMotionAccumulator;
 	}
 }

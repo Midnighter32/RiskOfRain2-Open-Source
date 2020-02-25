@@ -6,17 +6,17 @@ using UnityEngine.EventSystems;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000626 RID: 1574
+	// Token: 0x02000615 RID: 1557
 	public class QuickPlayButtonController : UIBehaviour
 	{
-		// Token: 0x06002354 RID: 9044 RVA: 0x000A65D1 File Offset: 0x000A47D1
+		// Token: 0x060024D3 RID: 9427 RVA: 0x000A09B1 File Offset: 0x0009EBB1
 		protected new void Start()
 		{
 			base.Start();
 			this.Update();
 		}
 
-		// Token: 0x06002355 RID: 9045 RVA: 0x000A65E0 File Offset: 0x000A47E0
+		// Token: 0x060024D4 RID: 9428 RVA: 0x000A09C0 File Offset: 0x0009EBC0
 		protected void Update()
 		{
 			bool running = SteamLobbyFinder.running;
@@ -36,25 +36,25 @@ namespace RoR2.UI
 			this.labelController.token = this.startToken;
 		}
 
-		// Token: 0x06002356 RID: 9046 RVA: 0x000A6699 File Offset: 0x000A4899
+		// Token: 0x060024D5 RID: 9429 RVA: 0x000A0A79 File Offset: 0x0009EC79
 		public void ToggleQuickplay()
 		{
 			Console.instance.SubmitCmd(null, SteamLobbyFinder.running ? "steam_quickplay_stop" : "steam_quickplay_start", false);
 		}
 
-		// Token: 0x04002652 RID: 9810
+		// Token: 0x0400229B RID: 8859
 		public LanguageTextMeshController labelController;
 
-		// Token: 0x04002653 RID: 9811
+		// Token: 0x0400229C RID: 8860
 		public string startToken;
 
-		// Token: 0x04002654 RID: 9812
+		// Token: 0x0400229D RID: 8861
 		public string stopToken;
 
-		// Token: 0x04002655 RID: 9813
+		// Token: 0x0400229E RID: 8862
 		public RectTransform spinnerRectTransform;
 
-		// Token: 0x04002656 RID: 9814
+		// Token: 0x0400229F RID: 8863
 		public TextMeshProUGUI quickplayStateText;
 	}
 }

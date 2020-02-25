@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
@@ -16,28 +19,28 @@ using Zio.FileSystems;
 
 namespace RoR2
 {
-	// Token: 0x020004CC RID: 1228
+	// Token: 0x02000464 RID: 1124
 	public class UserProfile
 	{
-		// Token: 0x1700028A RID: 650
-		// (get) Token: 0x06001B97 RID: 7063 RVA: 0x00081247 File Offset: 0x0007F447
-		// (set) Token: 0x06001B98 RID: 7064 RVA: 0x0008124F File Offset: 0x0007F44F
+		// Token: 0x17000317 RID: 791
+		// (get) Token: 0x06001B34 RID: 6964 RVA: 0x00074046 File Offset: 0x00072246
+		// (set) Token: 0x06001B35 RID: 6965 RVA: 0x0007404E File Offset: 0x0007224E
 		public bool isCorrupted { get; private set; }
 
-		// Token: 0x06001B99 RID: 7065 RVA: 0x00081258 File Offset: 0x0007F458
+		// Token: 0x06001B36 RID: 6966 RVA: 0x00074058 File Offset: 0x00072258
 		public bool HasUnlockable(string unlockableToken)
 		{
 			UnlockableDef unlockableDef = UnlockableCatalog.GetUnlockableDef(unlockableToken);
 			return unlockableDef == null || this.HasUnlockable(unlockableDef);
 		}
 
-		// Token: 0x06001B9A RID: 7066 RVA: 0x00081278 File Offset: 0x0007F478
+		// Token: 0x06001B37 RID: 6967 RVA: 0x00074078 File Offset: 0x00072278
 		public bool HasUnlockable([NotNull] UnlockableDef unlockableDef)
 		{
 			return this.statSheet.HasUnlockable(unlockableDef);
 		}
 
-		// Token: 0x06001B9B RID: 7067 RVA: 0x00081288 File Offset: 0x0007F488
+		// Token: 0x06001B38 RID: 6968 RVA: 0x00074088 File Offset: 0x00072288
 		public void AddUnlockToken(string unlockableToken)
 		{
 			UnlockableDef unlockableDef = UnlockableCatalog.GetUnlockableDef(unlockableToken);
@@ -47,7 +50,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001B9C RID: 7068 RVA: 0x000812A8 File Offset: 0x0007F4A8
+		// Token: 0x06001B39 RID: 6969 RVA: 0x000740A8 File Offset: 0x000722A8
 		public void GrantUnlockable(UnlockableDef unlockableDef)
 		{
 			if (!this.statSheet.HasUnlockable(unlockableDef))
@@ -68,7 +71,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001B9D RID: 7069 RVA: 0x0008130E File Offset: 0x0007F50E
+		// Token: 0x06001B3A RID: 6970 RVA: 0x0007410E File Offset: 0x0007230E
 		public void RevokeUnlockable(UnlockableDef unlockableDef)
 		{
 			if (this.statSheet.HasUnlockable(unlockableDef))
@@ -77,47 +80,53 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001B9E RID: 7070 RVA: 0x00081330 File Offset: 0x0007F530
+		// Token: 0x06001B3B RID: 6971 RVA: 0x00074130 File Offset: 0x00072330
 		public bool HasSurvivorUnlocked(SurvivorIndex survivorIndex)
 		{
 			SurvivorDef survivorDef = SurvivorCatalog.GetSurvivorDef(survivorIndex);
 			return survivorDef != null && (survivorDef.unlockableName == "" || this.HasUnlockable(survivorDef.unlockableName));
 		}
 
-		// Token: 0x06001B9F RID: 7071 RVA: 0x00081369 File Offset: 0x0007F569
+		// Token: 0x06001B3C RID: 6972 RVA: 0x00074169 File Offset: 0x00072369
 		public bool HasDiscoveredPickup(PickupIndex pickupIndex)
 		{
 			return pickupIndex.isValid && this.discoveredPickups[pickupIndex.value];
 		}
 
-		// Token: 0x06001BA0 RID: 7072 RVA: 0x00081383 File Offset: 0x0007F583
+		// Token: 0x06001B3D RID: 6973 RVA: 0x00074184 File Offset: 0x00072384
 		public void DiscoverPickup(PickupIndex pickupIndex)
 		{
 			if (!pickupIndex.isValid)
 			{
 				return;
 			}
-			this.discoveredPickups[pickupIndex.value] = true;
+			bool[] array = this.discoveredPickups;
+			int value = pickupIndex.value;
+			bool flag = !array[value];
+			array[value] = true;
 			Action<PickupIndex> action = this.onPickupDiscovered;
 			if (action != null)
 			{
 				action(pickupIndex);
 			}
-			this.RequestSave(false);
+			if (flag)
+			{
+				this.RequestSave(false);
+			}
 		}
 
-		// Token: 0x14000046 RID: 70
-		// (add) Token: 0x06001BA1 RID: 7073 RVA: 0x000813B8 File Offset: 0x0007F5B8
-		// (remove) Token: 0x06001BA2 RID: 7074 RVA: 0x000813F0 File Offset: 0x0007F5F0
+		// Token: 0x14000066 RID: 102
+		// (add) Token: 0x06001B3E RID: 6974 RVA: 0x000741D0 File Offset: 0x000723D0
+		// (remove) Token: 0x06001B3F RID: 6975 RVA: 0x00074208 File Offset: 0x00072408
 		public event Action<PickupIndex> onPickupDiscovered;
 
-		// Token: 0x06001BA3 RID: 7075 RVA: 0x00081425 File Offset: 0x0007F625
+		// Token: 0x06001B40 RID: 6976 RVA: 0x0007423D File Offset: 0x0007243D
 		public bool HasAchievement(string achievementName)
 		{
 			return this.achievementsList.Contains(achievementName);
 		}
 
-		// Token: 0x06001BA4 RID: 7076 RVA: 0x00081434 File Offset: 0x0007F634
+		// Token: 0x06001B41 RID: 6977 RVA: 0x0007424C File Offset: 0x0007244C
 		public bool CanSeeAchievement(string achievementName)
 		{
 			if (this.HasAchievement(achievementName))
@@ -128,7 +137,7 @@ namespace RoR2
 			return achievementDef != null && (string.IsNullOrEmpty(achievementDef.prerequisiteAchievementIdentifier) || this.HasAchievement(achievementDef.prerequisiteAchievementIdentifier));
 		}
 
-		// Token: 0x06001BA5 RID: 7077 RVA: 0x00081473 File Offset: 0x0007F673
+		// Token: 0x06001B42 RID: 6978 RVA: 0x0007428B File Offset: 0x0007248B
 		public void AddAchievement(string achievementName, bool isExternal)
 		{
 			this.achievementsList.Add(achievementName);
@@ -140,7 +149,7 @@ namespace RoR2
 			this.RequestSave(false);
 		}
 
-		// Token: 0x06001BA6 RID: 7078 RVA: 0x000814A9 File Offset: 0x0007F6A9
+		// Token: 0x06001B43 RID: 6979 RVA: 0x000742C1 File Offset: 0x000724C1
 		public void RevokeAchievement(string achievementName)
 		{
 			this.achievementsList.Remove(achievementName);
@@ -148,8 +157,8 @@ namespace RoR2
 			this.RequestSave(false);
 		}
 
-		// Token: 0x1700028B RID: 651
-		// (get) Token: 0x06001BA7 RID: 7079 RVA: 0x000814CC File Offset: 0x0007F6CC
+		// Token: 0x17000318 RID: 792
+		// (get) Token: 0x06001B44 RID: 6980 RVA: 0x000742E4 File Offset: 0x000724E4
 		public bool hasUnviewedAchievement
 		{
 			get
@@ -158,7 +167,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001BA8 RID: 7080 RVA: 0x000814DC File Offset: 0x0007F6DC
+		// Token: 0x06001B45 RID: 6981 RVA: 0x000742F4 File Offset: 0x000724F4
 		public string PopNextUnviewedAchievementName()
 		{
 			if (this.unviewedAchievementsList.Count == 0)
@@ -170,7 +179,7 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x06001BA9 RID: 7081 RVA: 0x00081508 File Offset: 0x0007F708
+		// Token: 0x06001B46 RID: 6982 RVA: 0x00074320 File Offset: 0x00072520
 		private static void GenerateSaveFieldFunctions()
 		{
 			UserProfile.nameToSaveFieldMap.Clear();
@@ -189,7 +198,7 @@ namespace RoR2
 			select UserProfile.nameToSaveFieldMap[name]).ToArray<UserProfile.SaveFieldAttribute>();
 		}
 
-		// Token: 0x06001BAA RID: 7082 RVA: 0x000815B8 File Offset: 0x0007F7B8
+		// Token: 0x06001B47 RID: 6983 RVA: 0x000743D0 File Offset: 0x000725D0
 		public void SetSaveFieldString([NotNull] string fieldName, [NotNull] string value)
 		{
 			UserProfile.SaveFieldAttribute saveFieldAttribute;
@@ -204,7 +213,7 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x06001BAB RID: 7083 RVA: 0x000815F8 File Offset: 0x0007F7F8
+		// Token: 0x06001B48 RID: 6984 RVA: 0x00074410 File Offset: 0x00072610
 		public string GetSaveFieldString([NotNull] string fieldName)
 		{
 			UserProfile.SaveFieldAttribute saveFieldAttribute;
@@ -219,7 +228,7 @@ namespace RoR2
 			return string.Empty;
 		}
 
-		// Token: 0x06001BAC RID: 7084 RVA: 0x0008163C File Offset: 0x0007F83C
+		// Token: 0x06001B49 RID: 6985 RVA: 0x00074454 File Offset: 0x00072654
 		public void ApplyDeltaStatSheet(StatSheet deltaStatSheet)
 		{
 			int i = 0;
@@ -238,18 +247,18 @@ namespace RoR2
 			action();
 		}
 
-		// Token: 0x14000047 RID: 71
-		// (add) Token: 0x06001BAD RID: 7085 RVA: 0x00081688 File Offset: 0x0007F888
-		// (remove) Token: 0x06001BAE RID: 7086 RVA: 0x000816C0 File Offset: 0x0007F8C0
+		// Token: 0x14000067 RID: 103
+		// (add) Token: 0x06001B4A RID: 6986 RVA: 0x000744A0 File Offset: 0x000726A0
+		// (remove) Token: 0x06001B4B RID: 6987 RVA: 0x000744D8 File Offset: 0x000726D8
 		public event Action onStatsReceived;
 
-		// Token: 0x06001BAF RID: 7087 RVA: 0x000816F5 File Offset: 0x0007F8F5
+		// Token: 0x06001B4C RID: 6988 RVA: 0x0007450D File Offset: 0x0007270D
 		private void ResetShouldShowTutorial(ref UserProfile.TutorialProgression tutorialProgression)
 		{
-			tutorialProgression.shouldShow = (tutorialProgression.showCount < 3u);
+			tutorialProgression.shouldShow = (tutorialProgression.showCount < 3U);
 		}
 
-		// Token: 0x06001BB0 RID: 7088 RVA: 0x00081706 File Offset: 0x0007F906
+		// Token: 0x06001B4D RID: 6989 RVA: 0x0007451E File Offset: 0x0007271E
 		private void RebuildTutorialProgressions()
 		{
 			this.ResetShouldShowTutorial(ref this.tutorialDifficulty);
@@ -257,7 +266,72 @@ namespace RoR2
 			this.ResetShouldShowTutorial(ref this.tutorialEquipment);
 		}
 
-		// Token: 0x06001BB1 RID: 7089 RVA: 0x0008172C File Offset: 0x0007F92C
+		// Token: 0x06001B4E RID: 6990 RVA: 0x00074544 File Offset: 0x00072744
+		private void OnLoadoutChanged()
+		{
+			Action action = this.onLoadoutChanged;
+			if (action != null)
+			{
+				action();
+			}
+			Action<UserProfile> action2 = UserProfile.onLoadoutChangedGlobal;
+			if (action2 != null)
+			{
+				action2(this);
+			}
+			this.RequestSave(false);
+		}
+
+		// Token: 0x06001B4F RID: 6991 RVA: 0x0007456F File Offset: 0x0007276F
+		public void CopyLoadout(Loadout dest)
+		{
+			this.loadout.Copy(dest);
+		}
+
+		// Token: 0x06001B50 RID: 6992 RVA: 0x0007457D File Offset: 0x0007277D
+		public void SetLoadout(Loadout newLoadout)
+		{
+			if (this.loadout.ValueEquals(newLoadout))
+			{
+				return;
+			}
+			newLoadout.Copy(this.loadout);
+			this.OnLoadoutChanged();
+		}
+
+		// Token: 0x14000068 RID: 104
+		// (add) Token: 0x06001B51 RID: 6993 RVA: 0x000745A0 File Offset: 0x000727A0
+		// (remove) Token: 0x06001B52 RID: 6994 RVA: 0x000745D8 File Offset: 0x000727D8
+		public event Action onLoadoutChanged;
+
+		// Token: 0x14000069 RID: 105
+		// (add) Token: 0x06001B53 RID: 6995 RVA: 0x00074610 File Offset: 0x00072810
+		// (remove) Token: 0x06001B54 RID: 6996 RVA: 0x00074644 File Offset: 0x00072844
+		public static event Action<UserProfile> onLoadoutChangedGlobal;
+
+		// Token: 0x06001B55 RID: 6997 RVA: 0x00074678 File Offset: 0x00072878
+		[ConCommand(commandName = "loadout_set_skill_variant", flags = (ConVarFlags.ExecuteOnServer | ConVarFlags.Cheat), helpText = "loadout_set_skill_variant [body_name] [skill_slot_index] [skill_variant_index]\nSets the skill variant for the sender's user profile.")]
+		private static void CCLoadoutSetSkillVariant(ConCommandArgs args)
+		{
+			int bodyIndex = args.GetBodyIndex(0);
+			int argInt = args.GetArgInt(1);
+			int argInt2 = args.GetArgInt(2);
+			UserProfile userProfile = args.GetSenderLocalUser().userProfile;
+			Loadout loadout = new Loadout();
+			userProfile.loadout.Copy(loadout);
+			loadout.bodyLoadoutManager.SetSkillVariant(bodyIndex, argInt, (uint)argInt2);
+			userProfile.SetLoadout(loadout);
+			if (args.senderMaster)
+			{
+				args.senderMaster.SetLoadoutServer(loadout);
+			}
+			if (args.senderBody)
+			{
+				args.senderBody.SetLoadoutServer(loadout);
+			}
+		}
+
+		// Token: 0x06001B56 RID: 6998 RVA: 0x00074707 File Offset: 0x00072907
 		[SystemInitializer(new Type[]
 		{
 
@@ -268,7 +342,7 @@ namespace RoR2
 			RoR2Application.onUpdate += UserProfile.StaticUpdate;
 		}
 
-		// Token: 0x06001BB2 RID: 7090 RVA: 0x00081744 File Offset: 0x0007F944
+		// Token: 0x06001B57 RID: 6999 RVA: 0x00074720 File Offset: 0x00072920
 		private static void StaticUpdate()
 		{
 			UserProfile.secondAccumulator += Time.unscaledDeltaTime;
@@ -277,7 +351,7 @@ namespace RoR2
 				UserProfile.secondAccumulator -= 1f;
 				foreach (UserProfile userProfile in UserProfile.loggedInProfiles)
 				{
-					userProfile.totalLoginSeconds += 1u;
+					userProfile.totalLoginSeconds += 1U;
 				}
 			}
 			foreach (UserProfile userProfile2 in UserProfile.loggedInProfiles)
@@ -287,14 +361,15 @@ namespace RoR2
 					userProfile2.saveRequestPending = false;
 				}
 			}
+			UserProfile.SaveHelper.ProcessFileOutputQueue();
 		}
 
-		// Token: 0x1700028C RID: 652
-		// (get) Token: 0x06001BB3 RID: 7091 RVA: 0x0008181C File Offset: 0x0007FA1C
-		// (set) Token: 0x06001BB4 RID: 7092 RVA: 0x00081824 File Offset: 0x0007FA24
+		// Token: 0x17000319 RID: 793
+		// (get) Token: 0x06001B58 RID: 7000 RVA: 0x000747FC File Offset: 0x000729FC
+		// (set) Token: 0x06001B59 RID: 7001 RVA: 0x00074804 File Offset: 0x00072A04
 		public bool loggedIn { get; private set; }
 
-		// Token: 0x06001BB5 RID: 7093 RVA: 0x00081830 File Offset: 0x0007FA30
+		// Token: 0x06001B5A RID: 7002 RVA: 0x00074810 File Offset: 0x00072A10
 		public void OnLogin()
 		{
 			if (this.loggedIn)
@@ -312,9 +387,10 @@ namespace RoR2
 			{
 				Client.Instance.Achievements.Trigger(identifier, true);
 			}
+			this.loadout.EnforceUnlockables(this);
 		}
 
-		// Token: 0x06001BB6 RID: 7094 RVA: 0x000818C8 File Offset: 0x0007FAC8
+		// Token: 0x06001B5B RID: 7003 RVA: 0x000748B4 File Offset: 0x00072AB4
 		public void OnLogout()
 		{
 			if (!this.loggedIn)
@@ -330,7 +406,7 @@ namespace RoR2
 			this.RequestSave(true);
 		}
 
-		// Token: 0x06001BB7 RID: 7095 RVA: 0x00081908 File Offset: 0x0007FB08
+		// Token: 0x06001B5C RID: 7004 RVA: 0x000748F4 File Offset: 0x00072AF4
 		public static void HandleShutDown()
 		{
 			foreach (UserProfile userProfile in UserProfile.loggedInProfiles)
@@ -339,9 +415,43 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001BB8 RID: 7096 RVA: 0x00081958 File Offset: 0x0007FB58
+		// Token: 0x06001B5D RID: 7005 RVA: 0x00074944 File Offset: 0x00072B44
+		private static void OutputBadFileResults()
+		{
+			if (UserProfile.badFileResults.Count == 0)
+			{
+				return;
+			}
+			try
+			{
+				using (Stream stream = RoR2Application.fileSystem.CreateFile(new UPath("/bad_profiles.log")))
+				{
+					using (TextWriter textWriter = new StreamWriter(stream))
+					{
+						foreach (UserProfile.LoadUserProfileOperationResult loadUserProfileOperationResult in UserProfile.badFileResults)
+						{
+							textWriter.WriteLine("Failed to load file \"{0}\" ({1}B)", loadUserProfileOperationResult.fileName, loadUserProfileOperationResult.fileLength);
+							textWriter.WriteLine("Exception: {0}", loadUserProfileOperationResult.exception);
+							textWriter.Write("Base64 Contents: ");
+							textWriter.WriteLine(loadUserProfileOperationResult.failureContents ?? string.Empty);
+							textWriter.WriteLine(string.Empty);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.LogFormat("Could not write bad UserProfile load log! Reason: {0}", new object[]
+				{
+					ex.Message
+				});
+			}
+		}
+
+		// Token: 0x06001B5E RID: 7006 RVA: 0x00074A70 File Offset: 0x00072C70
 		public static void LoadUserProfiles()
 		{
+			UserProfile.badFileResults.Clear();
 			UserProfile.loadedUserProfiles.Clear();
 			UserProfile.LoadDefaultProfile();
 			FileSystem cloudStorage = RoR2Application.cloudStorage;
@@ -353,16 +463,22 @@ namespace RoR2
 			{
 				if (cloudStorage.FileExists(path) && string.CompareOrdinal(path.GetExtensionWithDot(), ".xml") == 0)
 				{
-					UserProfile userProfile = UserProfile.LoadUserProfileFromDisk(cloudStorage, path);
+					UserProfile.LoadUserProfileOperationResult loadUserProfileOperationResult = UserProfile.LoadUserProfileFromDisk(cloudStorage, path);
+					UserProfile userProfile = loadUserProfileOperationResult.userProfile;
 					if (userProfile != null)
 					{
 						UserProfile.loadedUserProfiles[userProfile.fileName] = userProfile;
 					}
+					if (loadUserProfileOperationResult.exception != null)
+					{
+						UserProfile.badFileResults.Add(loadUserProfileOperationResult);
+					}
 				}
 			}
+			UserProfile.OutputBadFileResults();
 		}
 
-		// Token: 0x06001BB9 RID: 7097 RVA: 0x00081A08 File Offset: 0x0007FC08
+		// Token: 0x06001B5F RID: 7007 RVA: 0x00074B4C File Offset: 0x00072D4C
 		public static List<string> GetAvailableProfileNames()
 		{
 			List<string> list = new List<string>();
@@ -377,10 +493,10 @@ namespace RoR2
 			return list;
 		}
 
-		// Token: 0x06001BBA RID: 7098 RVA: 0x00081A7C File Offset: 0x0007FC7C
+		// Token: 0x06001B60 RID: 7008 RVA: 0x00074BC0 File Offset: 0x00072DC0
 		public static UserProfile GetProfile(string profileName)
 		{
-			profileName = profileName.ToLower();
+			profileName = profileName.ToLower(CultureInfo.InvariantCulture);
 			UserProfile result;
 			if (UserProfile.loadedUserProfiles.TryGetValue(profileName, out result))
 			{
@@ -389,7 +505,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06001BBB RID: 7099 RVA: 0x00081AA3 File Offset: 0x0007FCA3
+		// Token: 0x06001B61 RID: 7009 RVA: 0x00074BEC File Offset: 0x00072DEC
 		public void RequestSave(bool immediate = false)
 		{
 			if (!this.canSave)
@@ -404,94 +520,123 @@ namespace RoR2
 			this.saveRequestPending = true;
 		}
 
-		// Token: 0x06001BBC RID: 7100 RVA: 0x00081AC4 File Offset: 0x0007FCC4
+		// Token: 0x06001B62 RID: 7010 RVA: 0x00074C0C File Offset: 0x00072E0C
 		private bool Save(bool blocking)
 		{
 			bool result;
 			try
 			{
-				UserProfile.<>c__DisplayClass91_0 CS$<>8__locals1 = new UserProfile.<>c__DisplayClass91_0();
-				Debug.LogFormat("Saving profile \"{0}\"...", new object[]
-				{
-					this.fileName
-				});
-				CS$<>8__locals1.stream = this.fileSystem.OpenFile(this.filePath, FileMode.Create, FileAccess.Write, FileShare.None);
-				CS$<>8__locals1.tempCopy = new UserProfile();
-				UserProfile.Copy(this, CS$<>8__locals1.tempCopy);
-				Task task = new Task(new Action(CS$<>8__locals1.<Save>g__WriteAction|0));
-				task.Start(TaskScheduler.Default);
-				if (blocking)
-				{
-					task.Wait();
-				}
+				UserProfile.SaveHelper.StartSave(this, blocking);
 				result = true;
 			}
-			catch (Exception message)
+			catch
 			{
-				Debug.Log(message);
 				result = false;
 			}
 			return result;
 		}
 
-		// Token: 0x06001BBD RID: 7101 RVA: 0x00081B68 File Offset: 0x0007FD68
-		private static UserProfile LoadUserProfileFromDisk(IFileSystem fileSystem, UPath path)
+		// Token: 0x06001B63 RID: 7011 RVA: 0x00074C3C File Offset: 0x00072E3C
+		private static void SkipBOM(Stream stream)
+		{
+			long position = stream.Position;
+			if (stream.Length - position < 3L)
+			{
+				return;
+			}
+			int num = stream.ReadByte();
+			int num2 = stream.ReadByte();
+			if (num == 255 && num2 == 254)
+			{
+				Debug.Log("Skipping UTF-8 BOM");
+				return;
+			}
+			int num3 = stream.ReadByte();
+			if (num == 239 && num2 == 187 && num3 == 191)
+			{
+				Debug.Log("Skipping UTF-16 BOM");
+				return;
+			}
+			stream.Position = position;
+		}
+
+		// Token: 0x06001B64 RID: 7012 RVA: 0x00074CB8 File Offset: 0x00072EB8
+		private static UserProfile.LoadUserProfileOperationResult LoadUserProfileFromDisk(IFileSystem fileSystem, UPath path)
 		{
 			Debug.LogFormat("Attempting to load user profile {0}", new object[]
 			{
 				path
 			});
-			UserProfile result;
+			UserProfile.LoadUserProfileOperationResult loadUserProfileOperationResult = new UserProfile.LoadUserProfileOperationResult
+			{
+				fileName = path.FullName,
+				fileLength = 0L,
+				userProfile = null,
+				exception = null,
+				failureContents = null
+			};
+			UserProfile.LoadUserProfileOperationResult result = loadUserProfileOperationResult;
 			try
 			{
 				using (Stream stream = fileSystem.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					Debug.LogFormat("stream.Length={0}", new object[]
+					UserProfile.SkipBOM(stream);
+					result.fileLength = stream.Length;
+					using (TextReader textReader = new StreamReader(stream, Encoding.UTF8))
 					{
-						stream.Length
-					});
-					UserProfile userProfile = UserProfile.XmlUtility.FromXml(XDocument.Load(stream));
-					userProfile.fileName = path.GetNameWithoutExtension();
-					userProfile.canSave = true;
-					userProfile.fileSystem = fileSystem;
-					userProfile.filePath = path;
-					result = userProfile;
+						Debug.LogFormat("stream.Length={0}", new object[]
+						{
+							stream.Length
+						});
+						try
+						{
+							UserProfile userProfile = UserProfile.XmlUtility.FromXml(XDocument.Load(textReader));
+							userProfile.fileName = path.GetNameWithoutExtension();
+							userProfile.canSave = true;
+							userProfile.fileSystem = fileSystem;
+							userProfile.filePath = path;
+							result.userProfile = userProfile;
+							return result;
+						}
+						catch (XmlException ex)
+						{
+							stream.Position = 0L;
+							byte[] array = new byte[stream.Length];
+							stream.Read(array, 0, (int)stream.Length);
+							result.failureContents = Convert.ToBase64String(array);
+							UserProfile userProfile2 = UserProfile.CreateGuestProfile();
+							userProfile2.fileSystem = fileSystem;
+							userProfile2.filePath = path;
+							userProfile2.fileName = path.GetNameWithoutExtension();
+							userProfile2.name = string.Format("<color=#FF7F7FFF>Corrupted Profile: {0}</color>", userProfile2.fileName);
+							userProfile2.canSave = false;
+							userProfile2.isCorrupted = true;
+							result.userProfile = userProfile2;
+							throw ex;
+						}
+					}
 				}
-			}
-			catch (XmlException ex)
-			{
-				Debug.LogFormat("Failed to load user profile {0}: {1}", new object[]
-				{
-					path,
-					ex.Message
-				});
-				UserProfile userProfile2 = UserProfile.CreateGuestProfile();
-				userProfile2.fileSystem = fileSystem;
-				userProfile2.filePath = path;
-				userProfile2.fileName = path.GetNameWithoutExtension();
-				userProfile2.name = string.Format("<color=#FF7F7FFF>Corrupted Profile: {0}</color>", userProfile2.fileName);
-				userProfile2.canSave = false;
-				userProfile2.isCorrupted = true;
-				result = userProfile2;
 			}
 			catch (Exception ex2)
 			{
-				Debug.LogFormat("Failed to load user profile {0}: {1}", new object[]
+				Debug.LogFormat("Failed to load user profile {0}: {1}\nStack Trace:\n{2}", new object[]
 				{
 					path,
-					ex2.Message
+					ex2.Message,
+					ex2.StackTrace
 				});
-				result = null;
+				result.exception = ex2;
 			}
 			return result;
 		}
 
-		// Token: 0x06001BBE RID: 7102 RVA: 0x00081CB0 File Offset: 0x0007FEB0
+		// Token: 0x06001B65 RID: 7013 RVA: 0x00074EE4 File Offset: 0x000730E4
 		private static void Copy(UserProfile src, UserProfile dest)
 		{
 			dest.fileSystem = src.fileSystem;
 			dest.filePath = src.filePath;
 			StatSheet.Copy(src.statSheet, dest.statSheet);
+			src.loadout.Copy(dest.loadout);
 			dest.tutorialSprint = src.tutorialSprint;
 			dest.tutorialDifficulty = src.tutorialDifficulty;
 			dest.tutorialEquipment = src.tutorialEquipment;
@@ -508,10 +653,10 @@ namespace RoR2
 			dest.loggedIn = false;
 		}
 
-		// Token: 0x06001BBF RID: 7103 RVA: 0x00081D5C File Offset: 0x0007FF5C
+		// Token: 0x06001B66 RID: 7014 RVA: 0x00074FA4 File Offset: 0x000731A4
 		private static void DeleteUserProfile(string fileName)
 		{
-			fileName = fileName.ToLower();
+			fileName = fileName.ToLower(CultureInfo.InvariantCulture);
 			UserProfile profile = UserProfile.GetProfile(fileName);
 			if (UserProfile.loadedUserProfiles.ContainsKey(fileName))
 			{
@@ -529,19 +674,19 @@ namespace RoR2
 			action();
 		}
 
-		// Token: 0x06001BC0 RID: 7104 RVA: 0x00081DBC File Offset: 0x0007FFBC
+		// Token: 0x06001B67 RID: 7015 RVA: 0x00075009 File Offset: 0x00073209
 		public static XDocument ToXml(UserProfile userProfile)
 		{
 			return UserProfile.XmlUtility.ToXml(userProfile);
 		}
 
-		// Token: 0x06001BC1 RID: 7105 RVA: 0x00081DC4 File Offset: 0x0007FFC4
+		// Token: 0x06001B68 RID: 7016 RVA: 0x00075011 File Offset: 0x00073211
 		private static UserProfile FromXml(XDocument doc)
 		{
 			return UserProfile.XmlUtility.FromXml(doc);
 		}
 
-		// Token: 0x06001BC2 RID: 7106 RVA: 0x00081DCC File Offset: 0x0007FFCC
+		// Token: 0x06001B69 RID: 7017 RVA: 0x0007501C File Offset: 0x0007321C
 		public static UserProfile CreateProfile(IFileSystem fileSystem, string name)
 		{
 			UserProfile userProfile = UserProfile.FromXml(UserProfile.ToXml(UserProfile.defaultProfile));
@@ -560,7 +705,7 @@ namespace RoR2
 			return userProfile;
 		}
 
-		// Token: 0x06001BC3 RID: 7107 RVA: 0x00081E68 File Offset: 0x00080068
+		// Token: 0x06001B6A RID: 7018 RVA: 0x000750B8 File Offset: 0x000732B8
 		public static UserProfile CreateGuestProfile()
 		{
 			UserProfile userProfile = new UserProfile();
@@ -569,12 +714,12 @@ namespace RoR2
 			return userProfile;
 		}
 
-		// Token: 0x06001BC4 RID: 7108 RVA: 0x00081E94 File Offset: 0x00080094
+		// Token: 0x06001B6B RID: 7019 RVA: 0x000750E4 File Offset: 0x000732E4
 		[ConCommand(commandName = "user_profile_save", flags = ConVarFlags.None, helpText = "Saves the named profile to disk, if it exists.")]
 		private static void CCUserProfileSave(ConCommandArgs args)
 		{
 			args.CheckArgumentCount(1);
-			string text = args[0].ToLower();
+			string text = args[0].ToLower(CultureInfo.InvariantCulture);
 			if (text == "default")
 			{
 				Debug.Log("Cannot save profile \"default\", it is a reserved profile.");
@@ -592,13 +737,13 @@ namespace RoR2
 			profile.Save(true);
 		}
 
-		// Token: 0x06001BC5 RID: 7109 RVA: 0x00081EF8 File Offset: 0x000800F8
+		// Token: 0x06001B6C RID: 7020 RVA: 0x0007514C File Offset: 0x0007334C
 		[ConCommand(commandName = "user_profile_copy", flags = ConVarFlags.None, helpText = "Copies the profile named by the first argument to a new profile named by the second argument. This does not save the profile.")]
 		private static void CCUserProfileCopy(ConCommandArgs args)
 		{
 			args.CheckArgumentCount(2);
-			string text = args[0].ToLower();
-			string text2 = args[1].ToLower();
+			string text = args[0].ToLower(CultureInfo.InvariantCulture);
+			string text2 = args[1].ToLower(CultureInfo.InvariantCulture);
 			UserProfile profile = UserProfile.GetProfile(text);
 			if (profile == null)
 			{
@@ -631,12 +776,12 @@ namespace RoR2
 			action();
 		}
 
-		// Token: 0x06001BC6 RID: 7110 RVA: 0x00081FD0 File Offset: 0x000801D0
+		// Token: 0x06001B6D RID: 7021 RVA: 0x00075230 File Offset: 0x00073430
 		[ConCommand(commandName = "user_profile_delete", flags = ConVarFlags.None, helpText = "Unloads the named user profile and deletes it from the disk if it exists.")]
 		private static void CCUserProfileDelete(ConCommandArgs args)
 		{
 			args.CheckArgumentCount(1);
-			string a = args[0].ToLower();
+			string a = args[0].ToLower(CultureInfo.InvariantCulture);
 			if (a == "default")
 			{
 				Debug.Log("Cannot delete profile \"default\", it is a reserved profile.");
@@ -645,42 +790,65 @@ namespace RoR2
 			UserProfile.DeleteUserProfile(a);
 		}
 
-		// Token: 0x06001BC7 RID: 7111 RVA: 0x00082014 File Offset: 0x00080214
+		// Token: 0x06001B6E RID: 7022 RVA: 0x00075278 File Offset: 0x00073478
 		[ConCommand(commandName = "create_corrupted_profiles", flags = ConVarFlags.None, helpText = "Creates corrupted user profiles.")]
 		private static void CCCreateCorruptedProfiles(ConCommandArgs args)
 		{
-			UserProfile.<>c__DisplayClass104_0 CS$<>8__locals1;
+			UserProfile.<>c__DisplayClass121_0 CS$<>8__locals1;
 			CS$<>8__locals1.fileSystem = RoR2Application.cloudStorage;
-			UserProfile.<CCCreateCorruptedProfiles>g__WriteFile|104_0("empty", "", ref CS$<>8__locals1);
-			UserProfile.<CCCreateCorruptedProfiles>g__WriteFile|104_0("truncated", "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<UserProfile>\r\n", ref CS$<>8__locals1);
-			UserProfile.<CCCreateCorruptedProfiles>g__WriteFile|104_0("multiroot", "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<UserProfile>\r\n</UserProfile>\r\n<UserProfile>\r\n</UserProfile>", ref CS$<>8__locals1);
-			UserProfile.<CCCreateCorruptedProfiles>g__WriteFile|104_0("outoforder", "<?xml version=\"1.0\" encodi=\"utf-8\"ng?>\r\n<Userrofile>\r\n<UserProfile>\r\n</UserProfileProfile>\r\n</UserP>", ref CS$<>8__locals1);
+			UserProfile.<CCCreateCorruptedProfiles>g__WriteFile|121_0("empty", "", ref CS$<>8__locals1);
+			UserProfile.<CCCreateCorruptedProfiles>g__WriteFile|121_0("truncated", "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<UserProfile>\r\n", ref CS$<>8__locals1);
+			UserProfile.<CCCreateCorruptedProfiles>g__WriteFile|121_0("multiroot", "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<UserProfile>\r\n</UserProfile>\r\n<UserProfile>\r\n</UserProfile>", ref CS$<>8__locals1);
+			UserProfile.<CCCreateCorruptedProfiles>g__WriteFile|121_0("outoforder", "<?xml version=\"1.0\" encodi=\"utf-8\"ng?>\r\n<Userrofile>\r\n<UserProfile>\r\n</UserProfileProfile>\r\n</UserP>", ref CS$<>8__locals1);
 		}
 
-		// Token: 0x14000048 RID: 72
-		// (add) Token: 0x06001BC8 RID: 7112 RVA: 0x00082074 File Offset: 0x00080274
-		// (remove) Token: 0x06001BC9 RID: 7113 RVA: 0x000820A8 File Offset: 0x000802A8
+		// Token: 0x06001B6F RID: 7023 RVA: 0x000752D8 File Offset: 0x000734D8
+		[ConCommand(commandName = "userprofile_test_buffer_overflow", flags = ConVarFlags.None, helpText = "")]
+		private static void CCUserProfileTestBufferOverflow(ConCommandArgs args)
+		{
+			args.CheckArgumentCount(1);
+			int num = 128;
+			FileSystem cloudStorage = RoR2Application.cloudStorage;
+			RemoteFile remoteFile = Client.Instance.RemoteStorage.OpenFile(args[0]);
+			int sizeInBytes = remoteFile.SizeInBytes;
+			FieldInfo field = remoteFile.GetType().GetField("_sizeInBytes", BindingFlags.Instance | BindingFlags.NonPublic);
+			int num2 = (int)field.GetValue(remoteFile);
+			field.SetValue(remoteFile, num2 + num);
+			byte[] array = remoteFile.ReadAllBytes();
+			byte[] array2 = new byte[num];
+			for (int i = 0; i < num; i++)
+			{
+				Debug.Log(array[num2 + i]);
+				array2[i] = array[num2 + i];
+			}
+			GUIUtility.systemCopyBuffer = Encoding.UTF8.GetString(array2);
+			field.SetValue(remoteFile, num2);
+		}
+
+		// Token: 0x1400006A RID: 106
+		// (add) Token: 0x06001B70 RID: 7024 RVA: 0x000753A4 File Offset: 0x000735A4
+		// (remove) Token: 0x06001B71 RID: 7025 RVA: 0x000753D8 File Offset: 0x000735D8
 		public static event Action onAvailableUserProfilesChanged;
 
-		// Token: 0x14000049 RID: 73
-		// (add) Token: 0x06001BCA RID: 7114 RVA: 0x000820DC File Offset: 0x000802DC
-		// (remove) Token: 0x06001BCB RID: 7115 RVA: 0x00082110 File Offset: 0x00080310
+		// Token: 0x1400006B RID: 107
+		// (add) Token: 0x06001B72 RID: 7026 RVA: 0x0007540C File Offset: 0x0007360C
+		// (remove) Token: 0x06001B73 RID: 7027 RVA: 0x00075440 File Offset: 0x00073640
 		public static event Action<UserProfile, string> onUnlockableGranted;
 
-		// Token: 0x06001BCC RID: 7116 RVA: 0x00082143 File Offset: 0x00080343
+		// Token: 0x06001B74 RID: 7028 RVA: 0x00075473 File Offset: 0x00073673
 		private static void LoadDefaultProfile()
 		{
 			UserProfile.defaultProfile = UserProfile.XmlUtility.FromXml(XDocument.Parse("<UserProfile>\r\n  <name>Survivor</name>\r\n  <mouseLookSensitivity>0.2</mouseLookSensitivity>\r\n  <mouseLookScaleX>1</mouseLookScaleX>\r\n  <mouseLookScaleY>1</mouseLookScaleY>\r\n  <stickLookSensitivity>5</stickLookSensitivity>\r\n  <stickLookScaleX>1</stickLookScaleX>\r\n  <stickLookScaleY>1</stickLookScaleY>\r\n</UserProfile>"));
 			UserProfile.defaultProfile.canSave = false;
 		}
 
-		// Token: 0x06001BCD RID: 7117 RVA: 0x00082164 File Offset: 0x00080364
+		// Token: 0x06001B75 RID: 7029 RVA: 0x00075494 File Offset: 0x00073694
 		public bool HasViewedViewable(string viewableName)
 		{
 			return this.viewedViewables.Contains(viewableName);
 		}
 
-		// Token: 0x06001BCE RID: 7118 RVA: 0x00082172 File Offset: 0x00080372
+		// Token: 0x06001B76 RID: 7030 RVA: 0x000754A2 File Offset: 0x000736A2
 		public void MarkViewableAsViewed(string viewableName)
 		{
 			if (this.HasViewedViewable(viewableName))
@@ -696,187 +864,211 @@ namespace RoR2
 			this.RequestSave(false);
 		}
 
-		// Token: 0x1400004A RID: 74
-		// (add) Token: 0x06001BCF RID: 7119 RVA: 0x000821A4 File Offset: 0x000803A4
-		// (remove) Token: 0x06001BD0 RID: 7120 RVA: 0x000821D8 File Offset: 0x000803D8
+		// Token: 0x1400006C RID: 108
+		// (add) Token: 0x06001B77 RID: 7031 RVA: 0x000754D4 File Offset: 0x000736D4
+		// (remove) Token: 0x06001B78 RID: 7032 RVA: 0x00075508 File Offset: 0x00073708
 		public static event Action<UserProfile> onUserProfileViewedViewablesChanged;
 
-		// Token: 0x04001E1E RID: 7710
+		// Token: 0x06001B7B RID: 7035 RVA: 0x0007569C File Offset: 0x0007389C
+		[CompilerGenerated]
+		internal static void <CCCreateCorruptedProfiles>g__WriteFile|121_0(string fileName, string contents, ref UserProfile.<>c__DisplayClass121_0 A_2)
+		{
+			using (Stream stream = A_2.fileSystem.OpenFile(UserProfile.userProfilesFolder / (fileName + ".xml"), FileMode.Create, FileAccess.Write, FileShare.None))
+			{
+				using (TextWriter textWriter = new StreamWriter(stream))
+				{
+					textWriter.Write(contents.ToCharArray());
+					textWriter.Flush();
+				}
+				stream.Flush();
+			}
+		}
+
+		// Token: 0x0400189C RID: 6300
 		public bool isClaimed;
 
-		// Token: 0x04001E1F RID: 7711
+		// Token: 0x0400189D RID: 6301
 		public bool canSave;
 
-		// Token: 0x04001E20 RID: 7712
+		// Token: 0x0400189E RID: 6302
 		public string fileName;
 
-		// Token: 0x04001E21 RID: 7713
+		// Token: 0x0400189F RID: 6303
 		public IFileSystem fileSystem;
 
-		// Token: 0x04001E22 RID: 7714
+		// Token: 0x040018A0 RID: 6304
 		public UPath filePath = UPath.Empty;
 
-		// Token: 0x04001E23 RID: 7715
+		// Token: 0x040018A1 RID: 6305
 		[UserProfile.SaveFieldAttribute]
 		public string name;
 
-		// Token: 0x04001E24 RID: 7716
+		// Token: 0x040018A2 RID: 6306
 		[UserProfile.SaveFieldAttribute]
 		public uint coins;
 
-		// Token: 0x04001E25 RID: 7717
+		// Token: 0x040018A3 RID: 6307
 		[UserProfile.SaveFieldAttribute]
 		public uint totalCollectedCoins;
 
-		// Token: 0x04001E27 RID: 7719
+		// Token: 0x040018A5 RID: 6309
 		[UserProfile.SaveFieldAttribute(explicitSetupMethod = "SetupTokenList")]
 		public List<string> viewedUnlockablesList = new List<string>();
 
-		// Token: 0x04001E28 RID: 7720
+		// Token: 0x040018A6 RID: 6310
 		[UserProfile.SaveFieldAttribute(explicitSetupMethod = "SetupPickupsSet")]
-		private readonly bool[] discoveredPickups = new bool[106];
+		private readonly bool[] discoveredPickups = PickupCatalog.GetPerPickupBuffer<bool>();
 
-		// Token: 0x04001E2A RID: 7722
+		// Token: 0x040018A8 RID: 6312
 		[UserProfile.SaveFieldAttribute(explicitSetupMethod = "SetupTokenList")]
 		private List<string> achievementsList = new List<string>();
 
-		// Token: 0x04001E2B RID: 7723
+		// Token: 0x040018A9 RID: 6313
 		[UserProfile.SaveFieldAttribute(explicitSetupMethod = "SetupTokenList")]
 		private List<string> unviewedAchievementsList = new List<string>();
 
-		// Token: 0x04001E2C RID: 7724
+		// Token: 0x040018AA RID: 6314
 		[UserProfile.SaveFieldAttribute]
 		public string version = "2";
 
-		// Token: 0x04001E2D RID: 7725
+		// Token: 0x040018AB RID: 6315
 		[UserProfile.SaveFieldAttribute]
 		public float screenShakeScale = 1f;
 
-		// Token: 0x04001E2E RID: 7726
+		// Token: 0x040018AC RID: 6316
 		[UserProfile.SaveFieldAttribute(explicitSetupMethod = "SetupKeyboardMap")]
 		public KeyboardMap keyboardMap = new KeyboardMap(DefaultControllerMaps.defaultKeyboardMap);
 
-		// Token: 0x04001E2F RID: 7727
+		// Token: 0x040018AD RID: 6317
 		[UserProfile.SaveFieldAttribute(explicitSetupMethod = "SetupMouseMap")]
 		public MouseMap mouseMap = new MouseMap(DefaultControllerMaps.defaultMouseMap);
 
-		// Token: 0x04001E30 RID: 7728
+		// Token: 0x040018AE RID: 6318
 		[UserProfile.SaveFieldAttribute(explicitSetupMethod = "SetupJoystickMap")]
 		public JoystickMap joystickMap = new JoystickMap(DefaultControllerMaps.defaultJoystickMap);
 
-		// Token: 0x04001E31 RID: 7729
+		// Token: 0x040018AF RID: 6319
 		[UserProfile.SaveFieldAttribute]
 		public float mouseLookSensitivity = 0.25f;
 
-		// Token: 0x04001E32 RID: 7730
+		// Token: 0x040018B0 RID: 6320
 		[UserProfile.SaveFieldAttribute]
 		public float mouseLookScaleX = 1f;
 
-		// Token: 0x04001E33 RID: 7731
+		// Token: 0x040018B1 RID: 6321
 		[UserProfile.SaveFieldAttribute]
 		public float mouseLookScaleY = 1f;
 
-		// Token: 0x04001E34 RID: 7732
+		// Token: 0x040018B2 RID: 6322
 		[UserProfile.SaveFieldAttribute]
 		public bool mouseLookInvertX;
 
-		// Token: 0x04001E35 RID: 7733
+		// Token: 0x040018B3 RID: 6323
 		[UserProfile.SaveFieldAttribute]
 		public bool mouseLookInvertY;
 
-		// Token: 0x04001E36 RID: 7734
+		// Token: 0x040018B4 RID: 6324
 		[UserProfile.SaveFieldAttribute]
 		public float stickLookSensitivity = 4f;
 
-		// Token: 0x04001E37 RID: 7735
+		// Token: 0x040018B5 RID: 6325
 		[UserProfile.SaveFieldAttribute]
 		public float stickLookScaleX = 1f;
 
-		// Token: 0x04001E38 RID: 7736
+		// Token: 0x040018B6 RID: 6326
 		[UserProfile.SaveFieldAttribute]
 		public float stickLookScaleY = 1f;
 
-		// Token: 0x04001E39 RID: 7737
+		// Token: 0x040018B7 RID: 6327
 		[UserProfile.SaveFieldAttribute]
 		public bool stickLookInvertX;
 
-		// Token: 0x04001E3A RID: 7738
+		// Token: 0x040018B8 RID: 6328
 		[UserProfile.SaveFieldAttribute]
 		public bool stickLookInvertY;
 
-		// Token: 0x04001E3B RID: 7739
+		// Token: 0x040018B9 RID: 6329
 		[UserProfile.SaveFieldAttribute]
 		public float gamepadVibrationScale = 1f;
 
-		// Token: 0x04001E3C RID: 7740
+		// Token: 0x040018BA RID: 6330
 		private static string[] saveFieldNames;
 
-		// Token: 0x04001E3D RID: 7741
+		// Token: 0x040018BB RID: 6331
 		private static UserProfile.SaveFieldAttribute[] saveFields;
 
-		// Token: 0x04001E3E RID: 7742
+		// Token: 0x040018BC RID: 6332
 		private static readonly Dictionary<string, UserProfile.SaveFieldAttribute> nameToSaveFieldMap = new Dictionary<string, UserProfile.SaveFieldAttribute>();
 
-		// Token: 0x04001E3F RID: 7743
+		// Token: 0x040018BD RID: 6333
 		public StatSheet statSheet = StatSheet.New();
 
-		// Token: 0x04001E41 RID: 7745
-		private const uint maxShowCount = 3u;
+		// Token: 0x040018BF RID: 6335
+		private const uint maxShowCount = 3U;
 
-		// Token: 0x04001E42 RID: 7746
+		// Token: 0x040018C0 RID: 6336
 		public UserProfile.TutorialProgression tutorialDifficulty;
 
-		// Token: 0x04001E43 RID: 7747
+		// Token: 0x040018C1 RID: 6337
 		public UserProfile.TutorialProgression tutorialSprint;
 
-		// Token: 0x04001E44 RID: 7748
+		// Token: 0x040018C2 RID: 6338
 		public UserProfile.TutorialProgression tutorialEquipment;
 
-		// Token: 0x04001E45 RID: 7749
+		// Token: 0x040018C3 RID: 6339
+		private readonly Loadout loadout = new Loadout();
+
+		// Token: 0x040018C6 RID: 6342
 		[UserProfile.SaveFieldAttribute]
 		public uint totalLoginSeconds;
 
-		// Token: 0x04001E46 RID: 7750
+		// Token: 0x040018C7 RID: 6343
 		[UserProfile.SaveFieldAttribute]
 		public uint totalRunSeconds;
 
-		// Token: 0x04001E47 RID: 7751
+		// Token: 0x040018C8 RID: 6344
 		[UserProfile.SaveFieldAttribute]
 		public uint totalAliveSeconds;
 
-		// Token: 0x04001E48 RID: 7752
+		// Token: 0x040018C9 RID: 6345
 		[UserProfile.SaveFieldAttribute]
 		public uint totalRunCount;
 
-		// Token: 0x04001E49 RID: 7753
+		// Token: 0x040018CA RID: 6346
 		private static float secondAccumulator;
 
-		// Token: 0x04001E4A RID: 7754
+		// Token: 0x040018CB RID: 6347
 		private static readonly List<UserProfile> loggedInProfiles = new List<UserProfile>();
 
-		// Token: 0x04001E4C RID: 7756
+		// Token: 0x040018CD RID: 6349
 		private static UPath userProfilesFolder = "/UserProfiles";
 
-		// Token: 0x04001E4D RID: 7757
+		// Token: 0x040018CE RID: 6350
 		private static readonly Dictionary<string, UserProfile> loadedUserProfiles = new Dictionary<string, UserProfile>();
 
-		// Token: 0x04001E4E RID: 7758
+		// Token: 0x040018CF RID: 6351
+		private static readonly List<UserProfile.LoadUserProfileOperationResult> badFileResults = new List<UserProfile.LoadUserProfileOperationResult>();
+
+		// Token: 0x040018D0 RID: 6352
 		private bool saveRequestPending;
 
-		// Token: 0x04001E4F RID: 7759
+		// Token: 0x040018D1 RID: 6353
+		private static readonly string _byteOrderMarkUtf8 = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
+
+		// Token: 0x040018D2 RID: 6354
 		public static UserProfile defaultProfile;
 
-		// Token: 0x04001E52 RID: 7762
+		// Token: 0x040018D5 RID: 6357
 		private const string defaultProfileContents = "<UserProfile>\r\n  <name>Survivor</name>\r\n  <mouseLookSensitivity>0.2</mouseLookSensitivity>\r\n  <mouseLookScaleX>1</mouseLookScaleX>\r\n  <mouseLookScaleY>1</mouseLookScaleY>\r\n  <stickLookSensitivity>5</stickLookSensitivity>\r\n  <stickLookScaleX>1</stickLookScaleX>\r\n  <stickLookScaleY>1</stickLookScaleY>\r\n</UserProfile>";
 
-		// Token: 0x04001E53 RID: 7763
+		// Token: 0x040018D6 RID: 6358
 		[UserProfile.SaveFieldAttribute(defaultValue = "", explicitSetupMethod = "SetupTokenList", fieldName = "viewedViewables")]
 		private readonly List<string> viewedViewables = new List<string>();
 
-		// Token: 0x020004CD RID: 1229
+		// Token: 0x02000465 RID: 1125
 		public class SaveFieldAttribute : Attribute
 		{
-			// Token: 0x06001BD4 RID: 7124 RVA: 0x000823BC File Offset: 0x000805BC
+			// Token: 0x06001B7C RID: 7036 RVA: 0x00075728 File Offset: 0x00073928
 			public void Setup(FieldInfo fieldInfo)
 			{
 				this.fieldInfo = fieldInfo;
@@ -940,7 +1132,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001BD5 RID: 7125 RVA: 0x000824F8 File Offset: 0x000806F8
+			// Token: 0x06001B7D RID: 7037 RVA: 0x00075864 File Offset: 0x00073A64
 			public void SetupString(FieldInfo fieldInfo)
 			{
 				this.getter = ((UserProfile userProfile) => (string)fieldInfo.GetValue(userProfile));
@@ -954,7 +1146,7 @@ namespace RoR2
 				};
 			}
 
-			// Token: 0x06001BD6 RID: 7126 RVA: 0x00082548 File Offset: 0x00080748
+			// Token: 0x06001B7E RID: 7038 RVA: 0x000758B4 File Offset: 0x00073AB4
 			public void SetupFloat(FieldInfo fieldInfo)
 			{
 				this.getter = ((UserProfile userProfile) => TextSerialization.ToStringInvariant((float)fieldInfo.GetValue(userProfile)));
@@ -972,7 +1164,7 @@ namespace RoR2
 				};
 			}
 
-			// Token: 0x06001BD7 RID: 7127 RVA: 0x00082598 File Offset: 0x00080798
+			// Token: 0x06001B7F RID: 7039 RVA: 0x00075904 File Offset: 0x00073B04
 			public void SetupInt(FieldInfo fieldInfo)
 			{
 				this.getter = ((UserProfile userProfile) => TextSerialization.ToStringInvariant((int)fieldInfo.GetValue(userProfile)));
@@ -990,7 +1182,7 @@ namespace RoR2
 				};
 			}
 
-			// Token: 0x06001BD8 RID: 7128 RVA: 0x000825E8 File Offset: 0x000807E8
+			// Token: 0x06001B80 RID: 7040 RVA: 0x00075954 File Offset: 0x00073B54
 			public void SetupUint(FieldInfo fieldInfo)
 			{
 				this.getter = ((UserProfile userProfile) => TextSerialization.ToStringInvariant((uint)fieldInfo.GetValue(userProfile)));
@@ -1008,7 +1200,7 @@ namespace RoR2
 				};
 			}
 
-			// Token: 0x06001BD9 RID: 7129 RVA: 0x00082638 File Offset: 0x00080838
+			// Token: 0x06001B81 RID: 7041 RVA: 0x000759A4 File Offset: 0x00073BA4
 			public void SetupBool(FieldInfo fieldInfo)
 			{
 				this.getter = delegate(UserProfile userProfile)
@@ -1033,7 +1225,7 @@ namespace RoR2
 				};
 			}
 
-			// Token: 0x06001BDA RID: 7130 RVA: 0x00082688 File Offset: 0x00080888
+			// Token: 0x06001B82 RID: 7042 RVA: 0x000759F4 File Offset: 0x00073BF4
 			public void SetupTokenList(FieldInfo fieldInfo)
 			{
 				this.getter = ((UserProfile userProfile) => string.Join(" ", (List<string>)fieldInfo.GetValue(userProfile)));
@@ -1057,7 +1249,7 @@ namespace RoR2
 				};
 			}
 
-			// Token: 0x06001BDB RID: 7131 RVA: 0x000826D8 File Offset: 0x000808D8
+			// Token: 0x06001B83 RID: 7043 RVA: 0x00075A44 File Offset: 0x00073C44
 			public void SetupPickupsSet(FieldInfo fieldInfo)
 			{
 				this.getter = delegate(UserProfile userProfile)
@@ -1092,25 +1284,25 @@ namespace RoR2
 				};
 			}
 
-			// Token: 0x06001BDC RID: 7132 RVA: 0x00082728 File Offset: 0x00080928
+			// Token: 0x06001B84 RID: 7044 RVA: 0x00075A94 File Offset: 0x00073C94
 			public void SetupKeyboardMap(FieldInfo fieldInfo)
 			{
 				this.SetupControllerMap(fieldInfo, ControllerType.Keyboard);
 			}
 
-			// Token: 0x06001BDD RID: 7133 RVA: 0x00082732 File Offset: 0x00080932
+			// Token: 0x06001B85 RID: 7045 RVA: 0x00075A9E File Offset: 0x00073C9E
 			public void SetupMouseMap(FieldInfo fieldInfo)
 			{
 				this.SetupControllerMap(fieldInfo, ControllerType.Mouse);
 			}
 
-			// Token: 0x06001BDE RID: 7134 RVA: 0x0008273C File Offset: 0x0008093C
+			// Token: 0x06001B86 RID: 7046 RVA: 0x00075AA8 File Offset: 0x00073CA8
 			public void SetupJoystickMap(FieldInfo fieldInfo)
 			{
 				this.SetupControllerMap(fieldInfo, ControllerType.Joystick);
 			}
 
-			// Token: 0x06001BDF RID: 7135 RVA: 0x00082748 File Offset: 0x00080948
+			// Token: 0x06001B87 RID: 7047 RVA: 0x00075AB4 File Offset: 0x00073CB4
 			private void SetupControllerMap(FieldInfo fieldInfo, ControllerType controllerType)
 			{
 				this.getter = delegate(UserProfile userProfile)
@@ -1141,54 +1333,245 @@ namespace RoR2
 				};
 			}
 
-			// Token: 0x04001E55 RID: 7765
+			// Token: 0x040018D8 RID: 6360
 			public Action<UserProfile, string> setter;
 
-			// Token: 0x04001E56 RID: 7766
+			// Token: 0x040018D9 RID: 6361
 			public Func<UserProfile, string> getter;
 
-			// Token: 0x04001E57 RID: 7767
+			// Token: 0x040018DA RID: 6362
 			public Action<UserProfile, UserProfile> copier;
 
-			// Token: 0x04001E58 RID: 7768
+			// Token: 0x040018DB RID: 6363
 			public string defaultValue = string.Empty;
 
-			// Token: 0x04001E59 RID: 7769
+			// Token: 0x040018DC RID: 6364
 			public string fieldName;
 
-			// Token: 0x04001E5A RID: 7770
+			// Token: 0x040018DD RID: 6365
 			public string explicitSetupMethod;
 
-			// Token: 0x04001E5B RID: 7771
+			// Token: 0x040018DE RID: 6366
 			private FieldInfo fieldInfo;
 		}
 
-		// Token: 0x020004D8 RID: 1240
+		// Token: 0x02000470 RID: 1136
 		public struct TutorialProgression
 		{
-			// Token: 0x04001E68 RID: 7784
+			// Token: 0x040018EB RID: 6379
 			public uint showCount;
 
-			// Token: 0x04001E69 RID: 7785
+			// Token: 0x040018EC RID: 6380
 			public bool shouldShow;
 		}
 
-		// Token: 0x020004D9 RID: 1241
+		// Token: 0x02000471 RID: 1137
+		private static class SaveHelper
+		{
+			// Token: 0x06001BAE RID: 7086 RVA: 0x00075F94 File Offset: 0x00074194
+			public static void StartSave(UserProfile userProfile, bool blocking)
+			{
+				UserProfile.SaveHelper.<>c__DisplayClass0_0 CS$<>8__locals1 = new UserProfile.SaveHelper.<>c__DisplayClass0_0();
+				CS$<>8__locals1.tempCopy = new UserProfile();
+				UserProfile.Copy(userProfile, CS$<>8__locals1.tempCopy);
+				CS$<>8__locals1.fileOutput = new UserProfile.SaveHelper.FileOutput
+				{
+					fileReference = new UserProfile.SaveHelper.FileReference
+					{
+						path = CS$<>8__locals1.tempCopy.filePath,
+						fileSystem = CS$<>8__locals1.tempCopy.fileSystem
+					},
+					requestTime = DateTime.UtcNow,
+					contents = Array.Empty<byte>()
+				};
+				CS$<>8__locals1.task = null;
+				CS$<>8__locals1.task = new Task(new Action(CS$<>8__locals1.<StartSave>g__PayloadGeneratorAction|0));
+				UserProfile.SaveHelper.AddActiveTask(CS$<>8__locals1.task);
+				CS$<>8__locals1.task.Start(TaskScheduler.Default);
+				if (blocking)
+				{
+					CS$<>8__locals1.task.Wait();
+					UserProfile.SaveHelper.ProcessFileOutputQueue();
+				}
+			}
+
+			// Token: 0x06001BAF RID: 7087 RVA: 0x00076060 File Offset: 0x00074260
+			public static void WaitAll()
+			{
+				for (;;)
+				{
+					Task task = null;
+					List<Task> obj = UserProfile.SaveHelper.activeTasks;
+					lock (obj)
+					{
+						if (UserProfile.SaveHelper.activeTasks.Count == 0)
+						{
+							break;
+						}
+						task = UserProfile.SaveHelper.activeTasks[0];
+					}
+					if (task != null)
+					{
+						task.Wait();
+					}
+				}
+			}
+
+			// Token: 0x06001BB0 RID: 7088 RVA: 0x000760C0 File Offset: 0x000742C0
+			private static void AddActiveTask(Task task)
+			{
+				List<Task> obj = UserProfile.SaveHelper.activeTasks;
+				lock (obj)
+				{
+					UserProfile.SaveHelper.activeTasks.Add(task);
+				}
+			}
+
+			// Token: 0x06001BB1 RID: 7089 RVA: 0x00076104 File Offset: 0x00074304
+			private static void RemoveActiveTask(Task task)
+			{
+				List<Task> obj = UserProfile.SaveHelper.activeTasks;
+				lock (obj)
+				{
+					UserProfile.SaveHelper.activeTasks.Remove(task);
+				}
+			}
+
+			// Token: 0x06001BB2 RID: 7090 RVA: 0x0007614C File Offset: 0x0007434C
+			private static void EnqueueFileOutput(UserProfile.SaveHelper.FileOutput fileOutput)
+			{
+				Queue<UserProfile.SaveHelper.FileOutput> obj = UserProfile.SaveHelper.pendingOutputQueue;
+				lock (obj)
+				{
+					UserProfile.SaveHelper.pendingOutputQueue.Enqueue(fileOutput);
+				}
+			}
+
+			// Token: 0x06001BB3 RID: 7091 RVA: 0x00076190 File Offset: 0x00074390
+			public static void ProcessFileOutputQueue()
+			{
+				Queue<UserProfile.SaveHelper.FileOutput> obj = UserProfile.SaveHelper.pendingOutputQueue;
+				lock (obj)
+				{
+					while (UserProfile.SaveHelper.pendingOutputQueue.Count > 0)
+					{
+						UserProfile.SaveHelper.FileOutput fileOutput = UserProfile.SaveHelper.pendingOutputQueue.Dequeue();
+						if (UserProfile.SaveHelper.CanWrite(fileOutput))
+						{
+							UserProfile.SaveHelper.WriteToDisk(fileOutput);
+						}
+					}
+				}
+			}
+
+			// Token: 0x06001BB4 RID: 7092 RVA: 0x000761F4 File Offset: 0x000743F4
+			private static bool CanWrite(UserProfile.SaveHelper.FileOutput fileOutput)
+			{
+				if (fileOutput.contents.Length == 0)
+				{
+					Debug.LogErrorFormat("Cannot write UserProfile \"{0}\" with zero-length contents. This would erase the file.", Array.Empty<object>());
+					return false;
+				}
+				DateTime t;
+				return !UserProfile.SaveHelper.latestWrittenRequestTimesByFile.TryGetValue(fileOutput.fileReference, out t) || t < fileOutput.requestTime;
+			}
+
+			// Token: 0x06001BB5 RID: 7093 RVA: 0x00076240 File Offset: 0x00074440
+			private static void WriteToDisk(UserProfile.SaveHelper.FileOutput fileOutput)
+			{
+				RoR2Application.IncrementActiveWriteCount();
+				try
+				{
+					using (Stream stream = fileOutput.fileReference.fileSystem.OpenFile(fileOutput.fileReference.path, FileMode.Create, FileAccess.Write, FileShare.None))
+					{
+						stream.Write(fileOutput.contents, 0, fileOutput.contents.Length);
+						stream.Flush();
+						stream.Close();
+						Debug.LogFormat("Saved file \"{0}\" ({1} bytes)", new object[]
+						{
+							fileOutput.fileReference.path.GetName(),
+							fileOutput.contents.Length
+						});
+					}
+					UserProfile.SaveHelper.latestWrittenRequestTimesByFile[fileOutput.fileReference] = fileOutput.requestTime;
+				}
+				catch (Exception message)
+				{
+					Debug.Log(message);
+				}
+				finally
+				{
+					RoR2Application.DecrementActiveWriteCount();
+				}
+			}
+
+			// Token: 0x040018ED RID: 6381
+			private static readonly List<Task> activeTasks = new List<Task>();
+
+			// Token: 0x040018EE RID: 6382
+			private static readonly Dictionary<UserProfile.SaveHelper.FileReference, DateTime> latestWrittenRequestTimesByFile = new Dictionary<UserProfile.SaveHelper.FileReference, DateTime>();
+
+			// Token: 0x040018EF RID: 6383
+			private static readonly Queue<UserProfile.SaveHelper.FileOutput> pendingOutputQueue = new Queue<UserProfile.SaveHelper.FileOutput>();
+
+			// Token: 0x02000472 RID: 1138
+			private struct FileReference : IEquatable<UserProfile.SaveHelper.FileReference>
+			{
+				// Token: 0x06001BB7 RID: 7095 RVA: 0x00076340 File Offset: 0x00074540
+				public bool Equals(UserProfile.SaveHelper.FileReference other)
+				{
+					return this.fileSystem.Equals(other.fileSystem) && this.path.Equals(other.path);
+				}
+
+				// Token: 0x06001BB8 RID: 7096 RVA: 0x00076368 File Offset: 0x00074568
+				public override bool Equals(object other)
+				{
+					return other is UserProfile.SaveHelper.FileReference && this.Equals((UserProfile.SaveHelper.FileReference)other);
+				}
+
+				// Token: 0x06001BB9 RID: 7097 RVA: 0x00076380 File Offset: 0x00074580
+				public override int GetHashCode()
+				{
+					return (-990633296 * -1521134295 + EqualityComparer<IFileSystem>.Default.GetHashCode(this.fileSystem)) * -1521134295 + EqualityComparer<UPath>.Default.GetHashCode(this.path);
+				}
+
+				// Token: 0x040018F0 RID: 6384
+				public IFileSystem fileSystem;
+
+				// Token: 0x040018F1 RID: 6385
+				public UPath path;
+			}
+
+			// Token: 0x02000473 RID: 1139
+			private class FileOutput
+			{
+				// Token: 0x040018F2 RID: 6386
+				public UserProfile.SaveHelper.FileReference fileReference;
+
+				// Token: 0x040018F3 RID: 6387
+				public DateTime requestTime;
+
+				// Token: 0x040018F4 RID: 6388
+				public byte[] contents;
+			}
+		}
+
+		// Token: 0x02000476 RID: 1142
 		private static class XmlUtility
 		{
-			// Token: 0x06001C06 RID: 7174 RVA: 0x00082C26 File Offset: 0x00080E26
+			// Token: 0x06001BBF RID: 7103 RVA: 0x000764D9 File Offset: 0x000746D9
 			private static XElement CreateStringField(string name, string value)
 			{
-				return new XElement(name, new XText(value));
+				return new XElement(name, value);
 			}
 
-			// Token: 0x06001C07 RID: 7175 RVA: 0x00082C39 File Offset: 0x00080E39
+			// Token: 0x06001BC0 RID: 7104 RVA: 0x000764E7 File Offset: 0x000746E7
 			private static XElement CreateUintField(string name, uint value)
 			{
-				return new XElement(name, new XText(TextSerialization.ToStringInvariant(value)));
+				return new XElement(name, TextSerialization.ToStringInvariant(value));
 			}
 
-			// Token: 0x06001C08 RID: 7176 RVA: 0x00082C54 File Offset: 0x00080E54
+			// Token: 0x06001BC1 RID: 7105 RVA: 0x000764FC File Offset: 0x000746FC
 			private static XElement CreateStatsField(string name, StatSheet statSheet)
 			{
 				XElement xelement = new XElement(name);
@@ -1208,23 +1591,16 @@ namespace RoR2
 				return xelement;
 			}
 
-			// Token: 0x06001C09 RID: 7177 RVA: 0x00082D1C File Offset: 0x00080F1C
-			private static XElement FindElement(XElement parent, string name)
+			// Token: 0x06001BC2 RID: 7106 RVA: 0x000765C3 File Offset: 0x000747C3
+			private static XElement CreateLoadoutField(string name, Loadout loadout)
 			{
-				foreach (XElement xelement in parent.Descendants())
-				{
-					if (xelement.Name == name)
-					{
-						return xelement;
-					}
-				}
-				return null;
+				return loadout.ToXml(name);
 			}
 
-			// Token: 0x06001C0A RID: 7178 RVA: 0x00082D7C File Offset: 0x00080F7C
+			// Token: 0x06001BC3 RID: 7107 RVA: 0x000765CC File Offset: 0x000747CC
 			private static uint GetUintField(XElement container, string fieldName, uint defaultValue)
 			{
-				XElement xelement = UserProfile.XmlUtility.FindElement(container, fieldName);
+				XElement xelement = container.Element(fieldName);
 				if (xelement != null)
 				{
 					XNode firstNode = xelement.FirstNode;
@@ -1241,10 +1617,10 @@ namespace RoR2
 				return defaultValue;
 			}
 
-			// Token: 0x06001C0B RID: 7179 RVA: 0x00082DC0 File Offset: 0x00080FC0
+			// Token: 0x06001BC4 RID: 7108 RVA: 0x00076618 File Offset: 0x00074818
 			private static string GetStringField(XElement container, string fieldName, string defaultValue)
 			{
-				XElement xelement = UserProfile.XmlUtility.FindElement(container, fieldName);
+				XElement xelement = container.Element(fieldName);
 				if (xelement != null)
 				{
 					XNode firstNode = xelement.FirstNode;
@@ -1256,10 +1632,10 @@ namespace RoR2
 				return defaultValue;
 			}
 
-			// Token: 0x06001C0C RID: 7180 RVA: 0x00082DF8 File Offset: 0x00080FF8
+			// Token: 0x06001BC5 RID: 7109 RVA: 0x00076658 File Offset: 0x00074858
 			private static void GetStatsField(XElement container, string fieldName, StatSheet dest)
 			{
-				XElement xelement = container.Elements().FirstOrDefault((XElement element) => element.Name == fieldName);
+				XElement xelement = container.Element(fieldName);
 				if (xelement == null)
 				{
 					return;
@@ -1287,7 +1663,23 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001C0D RID: 7181 RVA: 0x00082FB8 File Offset: 0x000811B8
+			// Token: 0x06001BC6 RID: 7110 RVA: 0x000767FC File Offset: 0x000749FC
+			private static void GetLoadoutField(XElement container, string fieldName, Loadout dest)
+			{
+				XElement xelement = container.Element(fieldName);
+				if (xelement == null)
+				{
+					return;
+				}
+				Loadout loadout = new Loadout();
+				if (!loadout.FromXml(xelement))
+				{
+					return;
+				}
+				loadout.Copy(dest);
+			}
+
+			// Token: 0x06001BC7 RID: 7111 RVA: 0x00076834 File Offset: 0x00074A34
 			public static XDocument ToXml(UserProfile userProfile)
 			{
 				object[] array = new object[UserProfile.saveFields.Length];
@@ -1301,7 +1693,8 @@ namespace RoR2
 					UserProfile.XmlUtility.CreateStatsField("stats", userProfile.statSheet),
 					UserProfile.XmlUtility.CreateUintField("tutorialDifficulty", userProfile.tutorialDifficulty.showCount),
 					UserProfile.XmlUtility.CreateUintField("tutorialEquipment", userProfile.tutorialEquipment.showCount),
-					UserProfile.XmlUtility.CreateUintField("tutorialSprint", userProfile.tutorialSprint.showCount)
+					UserProfile.XmlUtility.CreateUintField("tutorialSprint", userProfile.tutorialSprint.showCount),
+					UserProfile.XmlUtility.CreateLoadoutField("loadout", userProfile.loadout)
 				};
 				return new XDocument(new object[]
 				{
@@ -1309,7 +1702,7 @@ namespace RoR2
 				});
 			}
 
-			// Token: 0x06001C0E RID: 7182 RVA: 0x00083094 File Offset: 0x00081294
+			// Token: 0x06001BC8 RID: 7112 RVA: 0x00076920 File Offset: 0x00074B20
 			public static UserProfile FromXml(XDocument doc)
 			{
 				UserProfile userProfile = new UserProfile();
@@ -1323,11 +1716,31 @@ namespace RoR2
 					}
 				}
 				UserProfile.XmlUtility.GetStatsField(root, "stats", userProfile.statSheet);
+				UserProfile.XmlUtility.GetLoadoutField(root, "loadout", userProfile.loadout);
 				userProfile.tutorialDifficulty.showCount = UserProfile.XmlUtility.GetUintField(root, "tutorialDifficulty", userProfile.tutorialDifficulty.showCount);
 				userProfile.tutorialEquipment.showCount = UserProfile.XmlUtility.GetUintField(root, "tutorialEquipment", userProfile.tutorialEquipment.showCount);
 				userProfile.tutorialSprint.showCount = UserProfile.XmlUtility.GetUintField(root, "tutorialSprint", userProfile.tutorialSprint.showCount);
 				return userProfile;
 			}
+		}
+
+		// Token: 0x02000478 RID: 1144
+		private struct LoadUserProfileOperationResult
+		{
+			// Token: 0x040018FF RID: 6399
+			public string fileName;
+
+			// Token: 0x04001900 RID: 6400
+			public long fileLength;
+
+			// Token: 0x04001901 RID: 6401
+			public UserProfile userProfile;
+
+			// Token: 0x04001902 RID: 6402
+			public Exception exception;
+
+			// Token: 0x04001903 RID: 6403
+			public string failureContents;
 		}
 	}
 }

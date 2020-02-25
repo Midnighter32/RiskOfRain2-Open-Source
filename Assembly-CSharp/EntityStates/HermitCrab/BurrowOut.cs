@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.HermitCrab
 {
-	// Token: 0x0200015A RID: 346
-	internal class BurrowOut : BaseState
+	// Token: 0x0200083C RID: 2108
+	public class BurrowOut : BaseState
 	{
-		// Token: 0x060006B7 RID: 1719 RVA: 0x00020100 File Offset: 0x0001E300
+		// Token: 0x06002FB8 RID: 12216 RVA: 0x000CC790 File Offset: 0x000CA990
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -16,16 +16,16 @@ namespace EntityStates.HermitCrab
 			this.modelTransform = base.GetModelTransform();
 			this.childLocator = this.modelTransform.GetComponent<ChildLocator>();
 			Util.PlaySound(BurrowOut.burrowOutSoundString, base.gameObject);
-			EffectManager.instance.SimpleMuzzleFlash(BurrowOut.burrowPrefab, base.gameObject, "BurrowCenter", false);
+			EffectManager.SimpleMuzzleFlash(BurrowOut.burrowPrefab, base.gameObject, "BurrowCenter", false);
 		}
 
-		// Token: 0x060006B8 RID: 1720 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002FB9 RID: 12217 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x060006B9 RID: 1721 RVA: 0x0002018E File Offset: 0x0001E38E
+		// Token: 0x06002FBA RID: 12218 RVA: 0x000CC819 File Offset: 0x000CAA19
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -37,31 +37,31 @@ namespace EntityStates.HermitCrab
 			}
 		}
 
-		// Token: 0x060006BA RID: 1722 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002FBB RID: 12219 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x0400083D RID: 2109
+		// Token: 0x04002D83 RID: 11651
 		public static GameObject burrowPrefab;
 
-		// Token: 0x0400083E RID: 2110
+		// Token: 0x04002D84 RID: 11652
 		public static float baseDuration;
 
-		// Token: 0x0400083F RID: 2111
+		// Token: 0x04002D85 RID: 11653
 		public static string burrowOutSoundString;
 
-		// Token: 0x04000840 RID: 2112
+		// Token: 0x04002D86 RID: 11654
 		private float stopwatch;
 
-		// Token: 0x04000841 RID: 2113
+		// Token: 0x04002D87 RID: 11655
 		private Transform modelTransform;
 
-		// Token: 0x04000842 RID: 2114
+		// Token: 0x04002D88 RID: 11656
 		private ChildLocator childLocator;
 
-		// Token: 0x04000843 RID: 2115
+		// Token: 0x04002D89 RID: 11657
 		private float duration;
 	}
 }

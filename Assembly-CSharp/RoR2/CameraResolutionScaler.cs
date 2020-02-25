@@ -4,29 +4,29 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000274 RID: 628
-	[DisallowMultipleComponent]
+	// Token: 0x0200016C RID: 364
 	[RequireComponent(typeof(Camera))]
+	[DisallowMultipleComponent]
 	public class CameraResolutionScaler : MonoBehaviour
 	{
-		// Token: 0x170000D1 RID: 209
-		// (get) Token: 0x06000BCF RID: 3023 RVA: 0x00039D0D File Offset: 0x00037F0D
-		// (set) Token: 0x06000BD0 RID: 3024 RVA: 0x00039D15 File Offset: 0x00037F15
+		// Token: 0x170000C8 RID: 200
+		// (get) Token: 0x060006C4 RID: 1732 RVA: 0x0001BBA5 File Offset: 0x00019DA5
+		// (set) Token: 0x060006C5 RID: 1733 RVA: 0x0001BBAD File Offset: 0x00019DAD
 		public Camera camera { get; private set; }
 
-		// Token: 0x06000BD1 RID: 3025 RVA: 0x00039D1E File Offset: 0x00037F1E
+		// Token: 0x060006C6 RID: 1734 RVA: 0x0001BBB6 File Offset: 0x00019DB6
 		private void Awake()
 		{
 			this.camera = base.GetComponent<Camera>();
 		}
 
-		// Token: 0x06000BD2 RID: 3026 RVA: 0x00039D2C File Offset: 0x00037F2C
+		// Token: 0x060006C7 RID: 1735 RVA: 0x0001BBC4 File Offset: 0x00019DC4
 		private void OnPreRender()
 		{
 			this.ApplyScalingRenderTexture();
 		}
 
-		// Token: 0x06000BD3 RID: 3027 RVA: 0x00039D34 File Offset: 0x00037F34
+		// Token: 0x060006C8 RID: 1736 RVA: 0x0001BBCC File Offset: 0x00019DCC
 		private void OnRenderImage(RenderTexture source, RenderTexture destination)
 		{
 			if (!this.scalingRenderTexture)
@@ -39,7 +39,7 @@ namespace RoR2
 			this.oldRenderTexture = null;
 		}
 
-		// Token: 0x06000BD4 RID: 3028 RVA: 0x00039D6F File Offset: 0x00037F6F
+		// Token: 0x060006C9 RID: 1737 RVA: 0x0001BC07 File Offset: 0x00019E07
 		private static void SetResolutionScale(float newResolutionScale)
 		{
 			if (CameraResolutionScaler.resolutionScale == newResolutionScale)
@@ -49,7 +49,7 @@ namespace RoR2
 			CameraResolutionScaler.resolutionScale = newResolutionScale;
 		}
 
-		// Token: 0x06000BD5 RID: 3029 RVA: 0x00039D80 File Offset: 0x00037F80
+		// Token: 0x060006CA RID: 1738 RVA: 0x0001BC18 File Offset: 0x00019E18
 		private void ApplyScalingRenderTexture()
 		{
 			this.oldRenderTexture = this.camera.targetTexture;
@@ -83,7 +83,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000BD6 RID: 3030 RVA: 0x00039E9B File Offset: 0x0003809B
+		// Token: 0x060006CB RID: 1739 RVA: 0x0001BD33 File Offset: 0x00019F33
 		private void OnDestroy()
 		{
 			if (this.scalingRenderTexture)
@@ -93,37 +93,37 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04000FC8 RID: 4040
+		// Token: 0x0400071A RID: 1818
 		private RenderTexture oldRenderTexture;
 
-		// Token: 0x04000FC9 RID: 4041
+		// Token: 0x0400071B RID: 1819
 		private static float resolutionScale = 1f;
 
-		// Token: 0x04000FCA RID: 4042
+		// Token: 0x0400071C RID: 1820
 		private RenderTexture scalingRenderTexture;
 
-		// Token: 0x02000275 RID: 629
+		// Token: 0x0200016D RID: 365
 		private class ResolutionScaleConVar : BaseConVar
 		{
-			// Token: 0x06000BD9 RID: 3033 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x060006CE RID: 1742 RVA: 0x0000972B File Offset: 0x0000792B
 			private ResolutionScaleConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06000BDA RID: 3034 RVA: 0x00039EC8 File Offset: 0x000380C8
+			// Token: 0x060006CF RID: 1743 RVA: 0x0001BD60 File Offset: 0x00019F60
 			public override void SetString(string newValue)
 			{
 				float num;
 				TextSerialization.TryParseInvariant(newValue, out num);
 			}
 
-			// Token: 0x06000BDB RID: 3035 RVA: 0x00039EDE File Offset: 0x000380DE
+			// Token: 0x060006D0 RID: 1744 RVA: 0x0001BD76 File Offset: 0x00019F76
 			public override string GetString()
 			{
 				return TextSerialization.ToStringInvariant(CameraResolutionScaler.resolutionScale);
 			}
 
-			// Token: 0x04000FCB RID: 4043
+			// Token: 0x0400071D RID: 1821
 			private static CameraResolutionScaler.ResolutionScaleConVar instance = new CameraResolutionScaler.ResolutionScaleConVar("resolution_scale", ConVarFlags.Archive, null, "Resolution scale. Currently nonfunctional.");
 		}
 	}

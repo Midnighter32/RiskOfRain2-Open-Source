@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using UnityEngine.Networking;
-using UnityEngine.Serialization;
 
 namespace RoR2
 {
-	// Token: 0x020003F5 RID: 1013
+	// Token: 0x0200034C RID: 844
 	public class TeamFilter : NetworkBehaviour
 	{
-		// Token: 0x17000200 RID: 512
-		// (get) Token: 0x0600163A RID: 5690 RVA: 0x0006A54E File Offset: 0x0006874E
-		// (set) Token: 0x0600163B RID: 5691 RVA: 0x0006A557 File Offset: 0x00068757
+		// Token: 0x17000265 RID: 613
+		// (get) Token: 0x06001431 RID: 5169 RVA: 0x0005642E File Offset: 0x0005462E
+		// (set) Token: 0x06001432 RID: 5170 RVA: 0x00056437 File Offset: 0x00054637
 		public TeamIndex teamIndex
 		{
 			get
@@ -22,27 +22,28 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600163D RID: 5693 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001434 RID: 5172 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x17000201 RID: 513
-		// (get) Token: 0x0600163E RID: 5694 RVA: 0x0006A560 File Offset: 0x00068760
-		// (set) Token: 0x0600163F RID: 5695 RVA: 0x0006A573 File Offset: 0x00068773
+		// Token: 0x17000266 RID: 614
+		// (get) Token: 0x06001435 RID: 5173 RVA: 0x00056440 File Offset: 0x00054640
+		// (set) Token: 0x06001436 RID: 5174 RVA: 0x00056453 File Offset: 0x00054653
 		public int NetworkteamIndexInternal
 		{
 			get
 			{
 				return this.teamIndexInternal;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<int>(value, ref this.teamIndexInternal, 1u);
+				base.SetSyncVar<int>(value, ref this.teamIndexInternal, 1U);
 			}
 		}
 
-		// Token: 0x06001640 RID: 5696 RVA: 0x0006A588 File Offset: 0x00068788
+		// Token: 0x06001437 RID: 5175 RVA: 0x00056468 File Offset: 0x00054668
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -51,7 +52,7 @@ namespace RoR2
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -67,7 +68,7 @@ namespace RoR2
 			return flag;
 		}
 
-		// Token: 0x06001641 RID: 5697 RVA: 0x0006A5F4 File Offset: 0x000687F4
+		// Token: 0x06001438 RID: 5176 RVA: 0x000564D4 File Offset: 0x000546D4
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -82,9 +83,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001994 RID: 6548
+		// Token: 0x040012F3 RID: 4851
 		[SyncVar]
-		[FormerlySerializedAs("teamIndex")]
 		private int teamIndexInternal;
 	}
 }

@@ -1,14 +1,15 @@
 ﻿using System;
 using RoR2;
+using RoR2.Projectile;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace EntityStates
 {
-	// Token: 0x020000AD RID: 173
+	// Token: 0x02000704 RID: 1796
 	public class EntityState
 	{
-		// Token: 0x0600033C RID: 828 RVA: 0x0000D5E0 File Offset: 0x0000B7E0
+		// Token: 0x060029B6 RID: 10678 RVA: 0x000AFB18 File Offset: 0x000ADD18
 		public static EntityState Instantiate(short stateTypeIndex)
 		{
 			Type type = StateIndexTable.IndexToType(stateTypeIndex);
@@ -23,7 +24,7 @@ namespace EntityStates
 			return null;
 		}
 
-		// Token: 0x0600033D RID: 829 RVA: 0x0000D624 File Offset: 0x0000B824
+		// Token: 0x060029B7 RID: 10679 RVA: 0x000AFB5C File Offset: 0x000ADD5C
 		public static EntityState Instantiate(Type stateType)
 		{
 			if (stateType != null && stateType.IsSubclassOf(typeof(EntityState)))
@@ -37,68 +38,68 @@ namespace EntityStates
 			return null;
 		}
 
-		// Token: 0x0600033E RID: 830 RVA: 0x0000D682 File Offset: 0x0000B882
+		// Token: 0x060029B8 RID: 10680 RVA: 0x000AFBBA File Offset: 0x000ADDBA
 		public static EntityState Instantiate(SerializableEntityStateType serializableStateType)
 		{
 			return EntityState.Instantiate(serializableStateType.stateType);
 		}
 
-		// Token: 0x1700007B RID: 123
-		// (get) Token: 0x0600033F RID: 831 RVA: 0x0000D690 File Offset: 0x0000B890
-		// (set) Token: 0x06000340 RID: 832 RVA: 0x0000D698 File Offset: 0x0000B898
-		private protected float age { protected get; private set; }
+		// Token: 0x17000403 RID: 1027
+		// (get) Token: 0x060029B9 RID: 10681 RVA: 0x000AFBC8 File Offset: 0x000ADDC8
+		// (set) Token: 0x060029BA RID: 10682 RVA: 0x000AFBD0 File Offset: 0x000ADDD0
+		protected float age { get; set; }
 
-		// Token: 0x1700007C RID: 124
-		// (get) Token: 0x06000341 RID: 833 RVA: 0x0000D6A1 File Offset: 0x0000B8A1
-		// (set) Token: 0x06000342 RID: 834 RVA: 0x0000D6A9 File Offset: 0x0000B8A9
-		private protected float fixedAge { protected get; private set; }
+		// Token: 0x17000404 RID: 1028
+		// (get) Token: 0x060029BB RID: 10683 RVA: 0x000AFBD9 File Offset: 0x000ADDD9
+		// (set) Token: 0x060029BC RID: 10684 RVA: 0x000AFBE1 File Offset: 0x000ADDE1
+		protected float fixedAge { get; set; }
 
-		// Token: 0x06000343 RID: 835 RVA: 0x0000D6B2 File Offset: 0x0000B8B2
+		// Token: 0x060029BD RID: 10685 RVA: 0x000AFBEA File Offset: 0x000ADDEA
 		public EntityState()
 		{
 			EntityStateManager.InitializeStateFields(this);
 		}
 
-		// Token: 0x06000344 RID: 836 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060029BE RID: 10686 RVA: 0x0000409B File Offset: 0x0000229B
 		public virtual void OnEnter()
 		{
 		}
 
-		// Token: 0x06000345 RID: 837 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060029BF RID: 10687 RVA: 0x0000409B File Offset: 0x0000229B
 		public virtual void OnExit()
 		{
 		}
 
-		// Token: 0x06000346 RID: 838 RVA: 0x0000D6C0 File Offset: 0x0000B8C0
+		// Token: 0x060029C0 RID: 10688 RVA: 0x000AFBF8 File Offset: 0x000ADDF8
 		public virtual void Update()
 		{
 			this.age += Time.deltaTime;
 		}
 
-		// Token: 0x06000347 RID: 839 RVA: 0x0000D6D4 File Offset: 0x0000B8D4
+		// Token: 0x060029C1 RID: 10689 RVA: 0x000AFC0C File Offset: 0x000ADE0C
 		public virtual void FixedUpdate()
 		{
 			this.fixedAge += Time.fixedDeltaTime;
 		}
 
-		// Token: 0x06000348 RID: 840 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060029C2 RID: 10690 RVA: 0x0000409B File Offset: 0x0000229B
 		public virtual void OnSerialize(NetworkWriter writer)
 		{
 		}
 
-		// Token: 0x06000349 RID: 841 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060029C3 RID: 10691 RVA: 0x0000409B File Offset: 0x0000229B
 		public virtual void OnDeserialize(NetworkReader reader)
 		{
 		}
 
-		// Token: 0x0600034A RID: 842 RVA: 0x0000A1ED File Offset: 0x000083ED
+		// Token: 0x060029C4 RID: 10692 RVA: 0x0000AC89 File Offset: 0x00008E89
 		public virtual InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Any;
 		}
 
-		// Token: 0x1700007D RID: 125
-		// (get) Token: 0x0600034B RID: 843 RVA: 0x0000D6E8 File Offset: 0x0000B8E8
+		// Token: 0x17000405 RID: 1029
+		// (get) Token: 0x060029C5 RID: 10693 RVA: 0x000AFC20 File Offset: 0x000ADE20
 		protected GameObject gameObject
 		{
 			get
@@ -107,62 +108,32 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x0600034C RID: 844 RVA: 0x0000D6F5 File Offset: 0x0000B8F5
+		// Token: 0x060029C6 RID: 10694 RVA: 0x000AFC2D File Offset: 0x000ADE2D
 		protected static void Destroy(UnityEngine.Object obj)
 		{
 			UnityEngine.Object.Destroy(obj);
 		}
 
-		// Token: 0x0600034D RID: 845 RVA: 0x0000D6FD File Offset: 0x0000B8FD
+		// Token: 0x060029C7 RID: 10695 RVA: 0x000AFC35 File Offset: 0x000ADE35
 		protected T GetComponent<T>() where T : Component
 		{
 			return this.outer.GetComponent<T>();
 		}
 
-		// Token: 0x0600034E RID: 846 RVA: 0x0000D70A File Offset: 0x0000B90A
+		// Token: 0x060029C8 RID: 10696 RVA: 0x000AFC42 File Offset: 0x000ADE42
 		protected Component GetComponent(Type type)
 		{
 			return this.outer.GetComponent(type);
 		}
 
-		// Token: 0x0600034F RID: 847 RVA: 0x0000D718 File Offset: 0x0000B918
+		// Token: 0x060029C9 RID: 10697 RVA: 0x000AFC50 File Offset: 0x000ADE50
 		protected Component GetComponent(string type)
 		{
 			return this.outer.GetComponent(type);
 		}
 
-		// Token: 0x1700007E RID: 126
-		// (get) Token: 0x06000350 RID: 848 RVA: 0x0000D726 File Offset: 0x0000B926
-		protected bool isServer
-		{
-			get
-			{
-				return this.outer.networker && this.outer.networker.isServer;
-			}
-		}
-
-		// Token: 0x1700007F RID: 127
-		// (get) Token: 0x06000351 RID: 849 RVA: 0x0000D74C File Offset: 0x0000B94C
-		protected bool isClient
-		{
-			get
-			{
-				return this.outer.networker && this.outer.networker.isClient;
-			}
-		}
-
-		// Token: 0x17000080 RID: 128
-		// (get) Token: 0x06000352 RID: 850 RVA: 0x0000D772 File Offset: 0x0000B972
-		protected bool hasAuthority
-		{
-			get
-			{
-				return this.outer.networker && this.outer.networker.hasAuthority;
-			}
-		}
-
-		// Token: 0x17000081 RID: 129
-		// (get) Token: 0x06000353 RID: 851 RVA: 0x0000D798 File Offset: 0x0000B998
+		// Token: 0x17000406 RID: 1030
+		// (get) Token: 0x060029CA RID: 10698 RVA: 0x000AFC5E File Offset: 0x000ADE5E
 		protected bool isLocalPlayer
 		{
 			get
@@ -171,8 +142,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x17000082 RID: 130
-		// (get) Token: 0x06000354 RID: 852 RVA: 0x0000D7BE File Offset: 0x0000B9BE
+		// Token: 0x17000407 RID: 1031
+		// (get) Token: 0x060029CB RID: 10699 RVA: 0x000AFC84 File Offset: 0x000ADE84
 		protected bool localPlayerAuthority
 		{
 			get
@@ -181,8 +152,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x17000083 RID: 131
-		// (get) Token: 0x06000355 RID: 853 RVA: 0x0000D7E4 File Offset: 0x0000B9E4
+		// Token: 0x17000408 RID: 1032
+		// (get) Token: 0x060029CC RID: 10700 RVA: 0x000AFCAA File Offset: 0x000ADEAA
 		protected bool isAuthority
 		{
 			get
@@ -191,8 +162,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x17000084 RID: 132
-		// (get) Token: 0x06000356 RID: 854 RVA: 0x0000D7F6 File Offset: 0x0000B9F6
+		// Token: 0x17000409 RID: 1033
+		// (get) Token: 0x060029CD RID: 10701 RVA: 0x000AFCBC File Offset: 0x000ADEBC
 		protected Transform transform
 		{
 			get
@@ -201,8 +172,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x17000085 RID: 133
-		// (get) Token: 0x06000357 RID: 855 RVA: 0x0000D808 File Offset: 0x0000BA08
+		// Token: 0x1700040A RID: 1034
+		// (get) Token: 0x060029CE RID: 10702 RVA: 0x000AFCCE File Offset: 0x000ADECE
 		protected CharacterBody characterBody
 		{
 			get
@@ -211,8 +182,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x17000086 RID: 134
-		// (get) Token: 0x06000358 RID: 856 RVA: 0x0000D81A File Offset: 0x0000BA1A
+		// Token: 0x1700040B RID: 1035
+		// (get) Token: 0x060029CF RID: 10703 RVA: 0x000AFCE0 File Offset: 0x000ADEE0
 		protected CharacterMotor characterMotor
 		{
 			get
@@ -221,8 +192,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x17000087 RID: 135
-		// (get) Token: 0x06000359 RID: 857 RVA: 0x0000D82C File Offset: 0x0000BA2C
+		// Token: 0x1700040C RID: 1036
+		// (get) Token: 0x060029D0 RID: 10704 RVA: 0x000AFCF2 File Offset: 0x000ADEF2
 		protected CharacterDirection characterDirection
 		{
 			get
@@ -231,8 +202,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x17000088 RID: 136
-		// (get) Token: 0x0600035A RID: 858 RVA: 0x0000D83E File Offset: 0x0000BA3E
+		// Token: 0x1700040D RID: 1037
+		// (get) Token: 0x060029D1 RID: 10705 RVA: 0x000AFD04 File Offset: 0x000ADF04
 		protected Rigidbody rigidbody
 		{
 			get
@@ -241,8 +212,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x17000089 RID: 137
-		// (get) Token: 0x0600035B RID: 859 RVA: 0x0000D850 File Offset: 0x0000BA50
+		// Token: 0x1700040E RID: 1038
+		// (get) Token: 0x060029D2 RID: 10706 RVA: 0x000AFD16 File Offset: 0x000ADF16
 		protected RigidbodyMotor rigidbodyMotor
 		{
 			get
@@ -251,8 +222,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x1700008A RID: 138
-		// (get) Token: 0x0600035C RID: 860 RVA: 0x0000D862 File Offset: 0x0000BA62
+		// Token: 0x1700040F RID: 1039
+		// (get) Token: 0x060029D3 RID: 10707 RVA: 0x000AFD28 File Offset: 0x000ADF28
 		protected RigidbodyDirection rigidbodyDirection
 		{
 			get
@@ -261,8 +232,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x1700008B RID: 139
-		// (get) Token: 0x0600035D RID: 861 RVA: 0x0000D874 File Offset: 0x0000BA74
+		// Token: 0x17000410 RID: 1040
+		// (get) Token: 0x060029D4 RID: 10708 RVA: 0x000AFD3A File Offset: 0x000ADF3A
 		protected RailMotor railMotor
 		{
 			get
@@ -271,8 +242,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x1700008C RID: 140
-		// (get) Token: 0x0600035E RID: 862 RVA: 0x0000D886 File Offset: 0x0000BA86
+		// Token: 0x17000411 RID: 1041
+		// (get) Token: 0x060029D5 RID: 10709 RVA: 0x000AFD4C File Offset: 0x000ADF4C
 		protected ModelLocator modelLocator
 		{
 			get
@@ -281,8 +252,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x1700008D RID: 141
-		// (get) Token: 0x0600035F RID: 863 RVA: 0x0000D898 File Offset: 0x0000BA98
+		// Token: 0x17000412 RID: 1042
+		// (get) Token: 0x060029D6 RID: 10710 RVA: 0x000AFD5E File Offset: 0x000ADF5E
 		protected InputBankTest inputBank
 		{
 			get
@@ -291,8 +262,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x1700008E RID: 142
-		// (get) Token: 0x06000360 RID: 864 RVA: 0x0000D8AA File Offset: 0x0000BAAA
+		// Token: 0x17000413 RID: 1043
+		// (get) Token: 0x060029D7 RID: 10711 RVA: 0x000AFD70 File Offset: 0x000ADF70
 		protected TeamComponent teamComponent
 		{
 			get
@@ -301,8 +272,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x1700008F RID: 143
-		// (get) Token: 0x06000361 RID: 865 RVA: 0x0000D8BC File Offset: 0x0000BABC
+		// Token: 0x17000414 RID: 1044
+		// (get) Token: 0x060029D8 RID: 10712 RVA: 0x000AFD82 File Offset: 0x000ADF82
 		protected HealthComponent healthComponent
 		{
 			get
@@ -311,8 +282,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x17000090 RID: 144
-		// (get) Token: 0x06000362 RID: 866 RVA: 0x0000D8CE File Offset: 0x0000BACE
+		// Token: 0x17000415 RID: 1045
+		// (get) Token: 0x060029D9 RID: 10713 RVA: 0x000AFD94 File Offset: 0x000ADF94
 		protected SkillLocator skillLocator
 		{
 			get
@@ -321,8 +292,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x17000091 RID: 145
-		// (get) Token: 0x06000363 RID: 867 RVA: 0x0000D8E0 File Offset: 0x0000BAE0
+		// Token: 0x17000416 RID: 1046
+		// (get) Token: 0x060029DA RID: 10714 RVA: 0x000AFDA6 File Offset: 0x000ADFA6
 		protected CharacterEmoteDefinitions characterEmoteDefinitions
 		{
 			get
@@ -331,8 +302,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x17000092 RID: 146
-		// (get) Token: 0x06000364 RID: 868 RVA: 0x0000D8F2 File Offset: 0x0000BAF2
+		// Token: 0x17000417 RID: 1047
+		// (get) Token: 0x060029DB RID: 10715 RVA: 0x000AFDB8 File Offset: 0x000ADFB8
 		protected CameraTargetParams cameraTargetParams
 		{
 			get
@@ -341,8 +312,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x17000093 RID: 147
-		// (get) Token: 0x06000365 RID: 869 RVA: 0x0000D904 File Offset: 0x0000BB04
+		// Token: 0x17000418 RID: 1048
+		// (get) Token: 0x060029DC RID: 10716 RVA: 0x000AFDCA File Offset: 0x000ADFCA
 		protected SfxLocator sfxLocator
 		{
 			get
@@ -351,8 +322,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x17000094 RID: 148
-		// (get) Token: 0x06000366 RID: 870 RVA: 0x0000D916 File Offset: 0x0000BB16
+		// Token: 0x17000419 RID: 1049
+		// (get) Token: 0x060029DD RID: 10717 RVA: 0x000AFDDC File Offset: 0x000ADFDC
 		protected BodyAnimatorSmoothingParameters bodyAnimatorSmoothingParameters
 		{
 			get
@@ -361,7 +332,17 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x06000367 RID: 871 RVA: 0x0000D928 File Offset: 0x0000BB28
+		// Token: 0x1700041A RID: 1050
+		// (get) Token: 0x060029DE RID: 10718 RVA: 0x000AFDEE File Offset: 0x000ADFEE
+		protected ProjectileController projectileController
+		{
+			get
+			{
+				return this.outer.commonComponents.projectileController;
+			}
+		}
+
+		// Token: 0x060029DF RID: 10719 RVA: 0x000AFE00 File Offset: 0x000AE000
 		protected Transform GetModelBaseTransform()
 		{
 			if (!this.modelLocator)
@@ -371,7 +352,7 @@ namespace EntityStates
 			return this.modelLocator.modelBaseTransform;
 		}
 
-		// Token: 0x06000368 RID: 872 RVA: 0x0000D944 File Offset: 0x0000BB44
+		// Token: 0x060029E0 RID: 10720 RVA: 0x000AFE1C File Offset: 0x000AE01C
 		protected Transform GetModelTransform()
 		{
 			if (!this.modelLocator)
@@ -381,27 +362,27 @@ namespace EntityStates
 			return this.modelLocator.modelTransform;
 		}
 
-		// Token: 0x06000369 RID: 873 RVA: 0x0000D960 File Offset: 0x0000BB60
+		// Token: 0x060029E1 RID: 10721 RVA: 0x000AFE38 File Offset: 0x000AE038
 		protected Animator GetModelAnimator()
 		{
-			if (!this.modelLocator)
+			if (this.modelLocator && this.modelLocator.modelTransform)
 			{
-				return null;
+				return this.modelLocator.modelTransform.GetComponent<Animator>();
 			}
-			return this.modelLocator.modelTransform.GetComponent<Animator>();
+			return null;
 		}
 
-		// Token: 0x0600036A RID: 874 RVA: 0x0000D981 File Offset: 0x0000BB81
+		// Token: 0x060029E2 RID: 10722 RVA: 0x000AFE6B File Offset: 0x000AE06B
 		protected RootMotionAccumulator GetModelRootMotionAccumulator()
 		{
-			if (!this.modelLocator)
+			if (this.modelLocator && this.modelLocator.modelTransform)
 			{
-				return null;
+				return this.modelLocator.modelTransform.GetComponent<RootMotionAccumulator>();
 			}
-			return this.modelLocator.modelTransform.GetComponent<RootMotionAccumulator>();
+			return null;
 		}
 
-		// Token: 0x0600036B RID: 875 RVA: 0x0000D9A4 File Offset: 0x0000BBA4
+		// Token: 0x060029E3 RID: 10723 RVA: 0x000AFEA0 File Offset: 0x000AE0A0
 		protected void PlayAnimation(string layerName, string animationStateName, string playbackRateParam, float duration)
 		{
 			if (duration <= 0f)
@@ -415,16 +396,22 @@ namespace EntityStates
 			Animator modelAnimator = this.GetModelAnimator();
 			if (modelAnimator)
 			{
-				int layerIndex = modelAnimator.GetLayerIndex(layerName);
-				modelAnimator.SetFloat(playbackRateParam, 1f);
-				modelAnimator.PlayInFixedTime(animationStateName, layerIndex, 0f);
-				modelAnimator.Update(0f);
-				float length = modelAnimator.GetCurrentAnimatorStateInfo(layerIndex).length;
-				modelAnimator.SetFloat(playbackRateParam, length / duration);
+				EntityState.PlayAnimationOnAnimator(modelAnimator, layerName, animationStateName, playbackRateParam, duration);
 			}
 		}
 
-		// Token: 0x0600036C RID: 876 RVA: 0x0000DA30 File Offset: 0x0000BC30
+		// Token: 0x060029E4 RID: 10724 RVA: 0x000AFEF0 File Offset: 0x000AE0F0
+		protected static void PlayAnimationOnAnimator(Animator modelAnimator, string layerName, string animationStateName, string playbackRateParam, float duration)
+		{
+			int layerIndex = modelAnimator.GetLayerIndex(layerName);
+			modelAnimator.SetFloat(playbackRateParam, 1f);
+			modelAnimator.PlayInFixedTime(animationStateName, layerIndex, 0f);
+			modelAnimator.Update(0f);
+			float length = modelAnimator.GetCurrentAnimatorStateInfo(layerIndex).length;
+			modelAnimator.SetFloat(playbackRateParam, length / duration);
+		}
+
+		// Token: 0x060029E5 RID: 10725 RVA: 0x000AFF44 File Offset: 0x000AE144
 		protected void PlayCrossfade(string layerName, string animationStateName, string playbackRateParam, float duration, float crossfadeDuration)
 		{
 			if (duration <= 0f)
@@ -447,7 +434,7 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x0600036D RID: 877 RVA: 0x0000DAB8 File Offset: 0x0000BCB8
+		// Token: 0x060029E6 RID: 10726 RVA: 0x000AFFCC File Offset: 0x000AE1CC
 		protected void PlayCrossfade(string layerName, string animationStateName, float crossfadeDuration)
 		{
 			Animator modelAnimator = this.GetModelAnimator();
@@ -458,18 +445,24 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x0600036E RID: 878 RVA: 0x0000DAE8 File Offset: 0x0000BCE8
+		// Token: 0x060029E7 RID: 10727 RVA: 0x000AFFFC File Offset: 0x000AE1FC
 		protected void PlayAnimation(string layerName, string animationStateName)
 		{
 			Animator modelAnimator = this.GetModelAnimator();
 			if (modelAnimator)
 			{
-				int layerIndex = modelAnimator.GetLayerIndex(layerName);
-				modelAnimator.PlayInFixedTime(animationStateName, layerIndex, 0f);
+				EntityState.PlayAnimationOnAnimator(modelAnimator, layerName, animationStateName);
 			}
 		}
 
-		// Token: 0x0600036F RID: 879 RVA: 0x0000DB19 File Offset: 0x0000BD19
+		// Token: 0x060029E8 RID: 10728 RVA: 0x000B0020 File Offset: 0x000AE220
+		protected static void PlayAnimationOnAnimator(Animator modelAnimator, string layerName, string animationStateName)
+		{
+			int layerIndex = modelAnimator.GetLayerIndex(layerName);
+			modelAnimator.PlayInFixedTime(animationStateName, layerIndex, 0f);
+		}
+
+		// Token: 0x060029E9 RID: 10729 RVA: 0x000B0042 File Offset: 0x000AE242
 		protected void GetBodyAnimatorSmoothingParameters(out BodyAnimatorSmoothingParameters.SmoothingParameters smoothingParameters)
 		{
 			if (this.bodyAnimatorSmoothingParameters)
@@ -480,7 +473,7 @@ namespace EntityStates
 			smoothingParameters = BodyAnimatorSmoothingParameters.defaultParameters;
 		}
 
-		// Token: 0x04000326 RID: 806
+		// Token: 0x040025B9 RID: 9657
 		public EntityStateMachine outer;
 	}
 }

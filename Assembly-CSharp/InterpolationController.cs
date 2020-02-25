@@ -1,11 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x02000044 RID: 68
+// Token: 0x02000040 RID: 64
 public class InterpolationController : MonoBehaviour
 {
-	// Token: 0x17000018 RID: 24
-	// (get) Token: 0x0600012A RID: 298 RVA: 0x0000759F File Offset: 0x0000579F
+	// Token: 0x1700001C RID: 28
+	// (get) Token: 0x0600010E RID: 270 RVA: 0x000074F7 File Offset: 0x000056F7
 	public static float InterpolationFactor
 	{
 		get
@@ -14,21 +14,21 @@ public class InterpolationController : MonoBehaviour
 		}
 	}
 
-	// Token: 0x0600012B RID: 299 RVA: 0x000075A6 File Offset: 0x000057A6
+	// Token: 0x0600010F RID: 271 RVA: 0x000074FE File Offset: 0x000056FE
 	public void Start()
 	{
 		this.m_lastFixedUpdateTimes = new float[2];
 		this.m_newTimeIndex = 0;
 	}
 
-	// Token: 0x0600012C RID: 300 RVA: 0x000075BB File Offset: 0x000057BB
+	// Token: 0x06000110 RID: 272 RVA: 0x00007513 File Offset: 0x00005713
 	public void FixedUpdate()
 	{
 		this.m_newTimeIndex = this.OldTimeIndex();
 		this.m_lastFixedUpdateTimes[this.m_newTimeIndex] = Time.fixedTime;
 	}
 
-	// Token: 0x0600012D RID: 301 RVA: 0x000075DC File Offset: 0x000057DC
+	// Token: 0x06000111 RID: 273 RVA: 0x00007534 File Offset: 0x00005734
 	public void Update()
 	{
 		float num = this.m_lastFixedUpdateTimes[this.m_newTimeIndex];
@@ -41,7 +41,7 @@ public class InterpolationController : MonoBehaviour
 		InterpolationController.m_interpolationFactor = 1f;
 	}
 
-	// Token: 0x0600012E RID: 302 RVA: 0x00007624 File Offset: 0x00005824
+	// Token: 0x06000112 RID: 274 RVA: 0x0000757C File Offset: 0x0000577C
 	private int OldTimeIndex()
 	{
 		if (this.m_newTimeIndex != 0)
@@ -51,12 +51,12 @@ public class InterpolationController : MonoBehaviour
 		return 1;
 	}
 
-	// Token: 0x04000138 RID: 312
+	// Token: 0x0400013D RID: 317
 	private float[] m_lastFixedUpdateTimes;
 
-	// Token: 0x04000139 RID: 313
+	// Token: 0x0400013E RID: 318
 	private int m_newTimeIndex;
 
-	// Token: 0x0400013A RID: 314
+	// Token: 0x0400013F RID: 319
 	private static float m_interpolationFactor;
 }

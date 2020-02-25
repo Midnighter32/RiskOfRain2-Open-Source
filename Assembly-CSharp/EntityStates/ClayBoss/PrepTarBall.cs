@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.ClayBoss
 {
-	// Token: 0x020001B9 RID: 441
-	internal class PrepTarBall : BaseState
+	// Token: 0x020008D4 RID: 2260
+	public class PrepTarBall : BaseState
 	{
-		// Token: 0x060008A3 RID: 2211 RVA: 0x0002B4F0 File Offset: 0x000296F0
+		// Token: 0x060032A2 RID: 12962 RVA: 0x000DB108 File Offset: 0x000D9308
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -24,7 +24,7 @@ namespace EntityStates.ClayBoss
 			}
 		}
 
-		// Token: 0x060008A4 RID: 2212 RVA: 0x0002B57C File Offset: 0x0002977C
+		// Token: 0x060032A3 RID: 12963 RVA: 0x000DB194 File Offset: 0x000D9394
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -36,25 +36,25 @@ namespace EntityStates.ClayBoss
 			}
 		}
 
-		// Token: 0x060008A5 RID: 2213 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x060032A4 RID: 12964 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000B90 RID: 2960
+		// Token: 0x040031B8 RID: 12728
 		public static float baseDuration = 3f;
 
-		// Token: 0x04000B91 RID: 2961
+		// Token: 0x040031B9 RID: 12729
 		public static string prepTarBallSoundString;
 
-		// Token: 0x04000B92 RID: 2962
+		// Token: 0x040031BA RID: 12730
 		private float duration;
 
-		// Token: 0x04000B93 RID: 2963
+		// Token: 0x040031BB RID: 12731
 		private float stopwatch;
 
-		// Token: 0x04000B94 RID: 2964
+		// Token: 0x040031BC RID: 12732
 		private Animator modelAnimator;
 	}
 }

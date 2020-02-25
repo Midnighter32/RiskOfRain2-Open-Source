@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000633 RID: 1587
+	// Token: 0x02000621 RID: 1569
 	[RequireComponent(typeof(MPEventSystemLocator))]
 	[RequireComponent(typeof(ScrollRect))]
 	public class ScrollToSelection : MonoBehaviour
 	{
-		// Token: 0x1700031A RID: 794
-		// (get) Token: 0x0600239C RID: 9116 RVA: 0x000A7862 File Offset: 0x000A5A62
+		// Token: 0x170003D5 RID: 981
+		// (get) Token: 0x06002519 RID: 9497 RVA: 0x000A1BF6 File Offset: 0x0009FDF6
 		private EventSystem eventSystem
 		{
 			get
@@ -20,14 +20,14 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600239D RID: 9117 RVA: 0x000A786F File Offset: 0x000A5A6F
+		// Token: 0x0600251A RID: 9498 RVA: 0x000A1C03 File Offset: 0x0009FE03
 		private void Awake()
 		{
 			this.scrollRect = base.GetComponent<ScrollRect>();
 			this.eventSystemLocator = base.GetComponent<MPEventSystemLocator>();
 		}
 
-		// Token: 0x0600239E RID: 9118 RVA: 0x000A788C File Offset: 0x000A5A8C
+		// Token: 0x0600251B RID: 9499 RVA: 0x000A1C20 File Offset: 0x0009FE20
 		private void Update()
 		{
 			GameObject gameObject = this.eventSystem ? this.eventSystem.currentSelectedGameObject : null;
@@ -41,7 +41,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600239F RID: 9119 RVA: 0x000A78F8 File Offset: 0x000A5AF8
+		// Token: 0x0600251C RID: 9500 RVA: 0x000A1C8C File Offset: 0x0009FE8C
 		private void ScrollToRect(RectTransform targetRectTransform)
 		{
 			targetRectTransform.GetWorldCorners(this.targetWorldCorners);
@@ -84,19 +84,19 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x04002693 RID: 9875
+		// Token: 0x040022DA RID: 8922
 		private ScrollRect scrollRect;
 
-		// Token: 0x04002694 RID: 9876
+		// Token: 0x040022DB RID: 8923
 		private MPEventSystemLocator eventSystemLocator;
 
-		// Token: 0x04002695 RID: 9877
+		// Token: 0x040022DC RID: 8924
 		private Vector3[] targetWorldCorners = new Vector3[4];
 
-		// Token: 0x04002696 RID: 9878
+		// Token: 0x040022DD RID: 8925
 		private Vector3[] viewPortWorldCorners = new Vector3[4];
 
-		// Token: 0x04002697 RID: 9879
+		// Token: 0x040022DE RID: 8926
 		private GameObject lastSelectedObject;
 	}
 }

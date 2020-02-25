@@ -5,17 +5,17 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020002C1 RID: 705
+	// Token: 0x020001D0 RID: 464
 	public class DamageTrail : MonoBehaviour
 	{
-		// Token: 0x06000E53 RID: 3667 RVA: 0x0004686D File Offset: 0x00044A6D
+		// Token: 0x060009F3 RID: 2547 RVA: 0x0002B694 File Offset: 0x00029894
 		private void Awake()
 		{
 			this.pointsList = new List<DamageTrail.TrailPoint>();
 			this.transform = base.transform;
 		}
 
-		// Token: 0x06000E54 RID: 3668 RVA: 0x00046886 File Offset: 0x00044A86
+		// Token: 0x060009F4 RID: 2548 RVA: 0x0002B6AD File Offset: 0x000298AD
 		private void Start()
 		{
 			this.localTime = 0f;
@@ -23,14 +23,14 @@ namespace RoR2
 			this.AddPoint();
 		}
 
-		// Token: 0x06000E55 RID: 3669 RVA: 0x000468A0 File Offset: 0x00044AA0
+		// Token: 0x060009F5 RID: 2549 RVA: 0x0002B6C8 File Offset: 0x000298C8
 		private void FixedUpdate()
 		{
 			this.localTime += Time.fixedDeltaTime;
 			if (this.localTime >= this.nextUpdate)
 			{
 				this.nextUpdate += this.updateInterval;
-				this.UpdateTrail();
+				this.UpdateTrail(this.active);
 			}
 			if (this.pointsList.Count > 0)
 			{
@@ -64,14 +64,17 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000E56 RID: 3670 RVA: 0x00046A9C File Offset: 0x00044C9C
-		private void UpdateTrail()
+		// Token: 0x060009F6 RID: 2550 RVA: 0x0002B8CC File Offset: 0x00029ACC
+		private void UpdateTrail(bool addPoint)
 		{
 			while (this.pointsList.Count > 0 && this.pointsList[0].localEndTime <= this.localTime)
 			{
 				this.RemovePoint(0);
 			}
-			this.AddPoint();
+			if (addPoint)
+			{
+				this.AddPoint();
+			}
 			if (NetworkServer.active)
 			{
 				this.DoDamage();
@@ -82,7 +85,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000E57 RID: 3671 RVA: 0x00046B08 File Offset: 0x00044D08
+		// Token: 0x060009F7 RID: 2551 RVA: 0x0002B938 File Offset: 0x00029B38
 		private void DoDamage()
 		{
 			if (this.pointsList.Count == 0)
@@ -142,7 +145,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000E58 RID: 3672 RVA: 0x00046CF4 File Offset: 0x00044EF4
+		// Token: 0x060009F8 RID: 2552 RVA: 0x0002BB24 File Offset: 0x00029D24
 		private void UpdateLineRenderer(LineRenderer lineRenderer)
 		{
 			lineRenderer.positionCount = this.pointsList.Count;
@@ -152,7 +155,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000E59 RID: 3673 RVA: 0x00046D40 File Offset: 0x00044F40
+		// Token: 0x060009F9 RID: 2553 RVA: 0x0002BB70 File Offset: 0x00029D70
 		private void AddPoint()
 		{
 			DamageTrail.TrailPoint item = new DamageTrail.TrailPoint
@@ -168,7 +171,7 @@ namespace RoR2
 			this.pointsList.Add(item);
 		}
 
-		// Token: 0x06000E5A RID: 3674 RVA: 0x00046DC0 File Offset: 0x00044FC0
+		// Token: 0x060009FA RID: 2554 RVA: 0x0002BBF0 File Offset: 0x00029DF0
 		private void RemovePoint(int pointIndex)
 		{
 			if (this.destroyTrailSegments && this.pointsList[pointIndex].segmentTransform)
@@ -178,60 +181,63 @@ namespace RoR2
 			this.pointsList.RemoveAt(pointIndex);
 		}
 
-		// Token: 0x04001240 RID: 4672
+		// Token: 0x04000A27 RID: 2599
 		[Tooltip("How often to drop a new point onto the trail and do damage.")]
 		public float updateInterval = 0.2f;
 
-		// Token: 0x04001241 RID: 4673
+		// Token: 0x04000A28 RID: 2600
 		[Tooltip("How large the radius of the damage detection should be.")]
 		public float radius = 0.5f;
 
-		// Token: 0x04001242 RID: 4674
+		// Token: 0x04000A29 RID: 2601
 		[Tooltip("How long a point on the trail should last.")]
 		public float pointLifetime = 3f;
 
-		// Token: 0x04001243 RID: 4675
+		// Token: 0x04000A2A RID: 2602
 		[Tooltip("The line renderer to use for display.")]
 		public LineRenderer lineRenderer;
 
-		// Token: 0x04001244 RID: 4676
+		// Token: 0x04000A2B RID: 2603
+		public bool active = true;
+
+		// Token: 0x04000A2C RID: 2604
 		[Tooltip("Prefab to use per segment.")]
 		public GameObject segmentPrefab;
 
-		// Token: 0x04001245 RID: 4677
+		// Token: 0x04000A2D RID: 2605
 		public bool destroyTrailSegments;
 
-		// Token: 0x04001246 RID: 4678
+		// Token: 0x04000A2E RID: 2606
 		public float damagePerSecond;
 
-		// Token: 0x04001247 RID: 4679
+		// Token: 0x04000A2F RID: 2607
 		public GameObject owner;
 
-		// Token: 0x04001248 RID: 4680
+		// Token: 0x04000A30 RID: 2608
 		private new Transform transform;
 
-		// Token: 0x04001249 RID: 4681
+		// Token: 0x04000A31 RID: 2609
 		private List<DamageTrail.TrailPoint> pointsList;
 
-		// Token: 0x0400124A RID: 4682
+		// Token: 0x04000A32 RID: 2610
 		private float localTime;
 
-		// Token: 0x0400124B RID: 4683
+		// Token: 0x04000A33 RID: 2611
 		private float nextUpdate;
 
-		// Token: 0x020002C2 RID: 706
+		// Token: 0x020001D1 RID: 465
 		private struct TrailPoint
 		{
-			// Token: 0x0400124C RID: 4684
+			// Token: 0x04000A34 RID: 2612
 			public Vector3 position;
 
-			// Token: 0x0400124D RID: 4685
+			// Token: 0x04000A35 RID: 2613
 			public float localStartTime;
 
-			// Token: 0x0400124E RID: 4686
+			// Token: 0x04000A36 RID: 2614
 			public float localEndTime;
 
-			// Token: 0x0400124F RID: 4687
+			// Token: 0x04000A37 RID: 2615
 			public Transform segmentTransform;
 		}
 	}

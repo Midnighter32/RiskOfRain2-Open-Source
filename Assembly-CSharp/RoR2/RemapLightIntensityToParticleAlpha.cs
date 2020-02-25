@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000475 RID: 1141
+	// Token: 0x020003F8 RID: 1016
 	public class RemapLightIntensityToParticleAlpha : MonoBehaviour
 	{
-		// Token: 0x0600196B RID: 6507 RVA: 0x0007996C File Offset: 0x00077B6C
+		// Token: 0x0600188D RID: 6285 RVA: 0x00069D08 File Offset: 0x00067F08
 		private void LateUpdate()
 		{
 			ParticleSystem.MainModule main = this.particleSystem.main;
@@ -17,22 +17,22 @@ namespace RoR2
 			main.startColor = startColor;
 		}
 
-		// Token: 0x04001CE7 RID: 7399
+		// Token: 0x04001710 RID: 5904
 		public Light light;
 
-		// Token: 0x04001CE8 RID: 7400
+		// Token: 0x04001711 RID: 5905
 		public ParticleSystem particleSystem;
 
-		// Token: 0x04001CE9 RID: 7401
+		// Token: 0x04001712 RID: 5906
 		public float lowerLightIntensity;
 
-		// Token: 0x04001CEA RID: 7402
+		// Token: 0x04001713 RID: 5907
 		public float upperLightIntensity = 1f;
 
-		// Token: 0x04001CEB RID: 7403
+		// Token: 0x04001714 RID: 5908
 		public float lowerParticleAlpha;
 
-		// Token: 0x04001CEC RID: 7404
+		// Token: 0x04001715 RID: 5909
 		public float upperParticleAlpha = 1f;
 	}
 }

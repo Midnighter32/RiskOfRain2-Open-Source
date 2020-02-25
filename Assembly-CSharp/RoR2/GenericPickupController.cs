@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using RoR2.Networking;
 using RoR2.UI;
 using Unity;
@@ -8,17 +9,17 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020002FD RID: 765
-	public class GenericPickupController : NetworkBehaviour, IInteractable, IDisplayNameProvider
+	// Token: 0x0200020E RID: 526
+	public sealed class GenericPickupController : NetworkBehaviour, IInteractable, IDisplayNameProvider
 	{
-		// Token: 0x06000F80 RID: 3968 RVA: 0x0004C419 File Offset: 0x0004A619
+		// Token: 0x06000B48 RID: 2888 RVA: 0x00031B15 File Offset: 0x0002FD15
 		private void SyncPickupIndex(PickupIndex newPickupIndex)
 		{
 			this.NetworkpickupIndex = newPickupIndex;
 			this.UpdatePickupDisplay();
 		}
 
-		// Token: 0x06000F81 RID: 3969 RVA: 0x0004C428 File Offset: 0x0004A628
+		// Token: 0x06000B49 RID: 2889 RVA: 0x00031B24 File Offset: 0x0002FD24
 		[Server]
 		private static void SendPickupMessage(CharacterMaster master, PickupIndex pickupIndex)
 		{
@@ -27,7 +28,7 @@ namespace RoR2
 				Debug.LogWarning("[Server] function 'System.Void RoR2.GenericPickupController::SendPickupMessage(RoR2.CharacterMaster,RoR2.PickupIndex)' called on client");
 				return;
 			}
-			uint pickupQuantity = 1u;
+			uint pickupQuantity = 1U;
 			if (master.inventory)
 			{
 				ItemIndex itemIndex = pickupIndex.itemIndex;
@@ -45,7 +46,7 @@ namespace RoR2
 			NetworkServer.SendByChannelToAll(57, msg, QosChannelIndex.chat.intVal);
 		}
 
-		// Token: 0x06000F82 RID: 3970 RVA: 0x0004C4A8 File Offset: 0x0004A6A8
+		// Token: 0x06000B4A RID: 2890 RVA: 0x00031BA4 File Offset: 0x0002FDA4
 		[NetworkMessageHandler(msgType = 57, client = true)]
 		private static void HandlePickupMessage(NetworkMessage netMsg)
 		{
@@ -106,20 +107,10 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x1700014D RID: 333
-		// (get) Token: 0x06000F83 RID: 3971 RVA: 0x0004C607 File Offset: 0x0004A807
-		private float stopWatch
-		{
-			get
-			{
-				return Run.instance.fixedTime - this.waitStartTime;
-			}
-		}
-
-		// Token: 0x06000F84 RID: 3972 RVA: 0x0004C61C File Offset: 0x0004A81C
+		// Token: 0x06000B4B RID: 2891 RVA: 0x00031D04 File Offset: 0x0002FF04
 		private void OnTriggerStay(Collider other)
 		{
-			if (NetworkServer.active && this.stopWatch >= this.waitDuration && !this.consumed)
+			if (NetworkServer.active && this.waitStartTime.timeSince >= this.waitDuration && !this.consumed)
 			{
 				CharacterBody component = other.GetComponent<CharacterBody>();
 				if (component)
@@ -141,7 +132,7 @@ namespace RoR2
 							return;
 						}
 					}
-					if (this.pickupIndex.coinIndex != -1)
+					if (this.pickupIndex.coinValue != 0U)
 					{
 						return;
 					}
@@ -153,38 +144,25 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F85 RID: 3973 RVA: 0x0004C6D5 File Offset: 0x0004A8D5
+		// Token: 0x06000B4C RID: 2892 RVA: 0x00031DC1 File Offset: 0x0002FFC1
 		private static bool BodyHasPickupPermission(CharacterBody body)
 		{
 			return (body.masterObject ? body.masterObject.GetComponent<PlayerCharacterMasterController>() : null) && body.inventory;
 		}
 
-		// Token: 0x06000F86 RID: 3974 RVA: 0x0000A1ED File Offset: 0x000083ED
+		// Token: 0x06000B4D RID: 2893 RVA: 0x0000AC89 File Offset: 0x00008E89
 		public bool ShouldIgnoreSpherecastForInteractibility(Interactor activator)
 		{
 			return false;
 		}
 
-		// Token: 0x06000F87 RID: 3975 RVA: 0x0004C708 File Offset: 0x0004A908
+		// Token: 0x06000B4E RID: 2894 RVA: 0x00031DF2 File Offset: 0x0002FFF2
 		public string GetContextString(Interactor activator)
 		{
-			string token = "";
-			if (this.pickupIndex.itemIndex != ItemIndex.None)
-			{
-				token = "ITEM_PICKUP_CONTEXT";
-			}
-			if (this.pickupIndex.equipmentIndex != EquipmentIndex.None)
-			{
-				token = "EQUIPMENT_PICKUP_CONTEXT";
-			}
-			if (this.pickupIndex.coinIndex != -1)
-			{
-				token = "LUNAR_COIN_PICKUP_CONTEXT";
-			}
-			return string.Format(Language.GetString(token), this.GetDisplayName());
+			return string.Format(Language.GetString(this.pickupIndex.GetInteractContextToken()), this.GetDisplayName());
 		}
 
-		// Token: 0x06000F88 RID: 3976 RVA: 0x0004C768 File Offset: 0x0004A968
+		// Token: 0x06000B4F RID: 2895 RVA: 0x00031E10 File Offset: 0x00030010
 		private void UpdatePickupDisplay()
 		{
 			if (!this.pickupDisplay)
@@ -202,7 +180,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F89 RID: 3977 RVA: 0x0004C7C8 File Offset: 0x0004A9C8
+		// Token: 0x06000B50 RID: 2896 RVA: 0x00031E70 File Offset: 0x00030070
 		[Server]
 		private void GrantItem(CharacterBody body, Inventory inventory)
 		{
@@ -216,7 +194,7 @@ namespace RoR2
 			UnityEngine.Object.Destroy(base.gameObject);
 		}
 
-		// Token: 0x06000F8A RID: 3978 RVA: 0x0004C818 File Offset: 0x0004AA18
+		// Token: 0x06000B51 RID: 2897 RVA: 0x00031EC0 File Offset: 0x000300C0
 		[Server]
 		private void GrantEquipment(CharacterBody body, Inventory inventory)
 		{
@@ -225,7 +203,7 @@ namespace RoR2
 				Debug.LogWarning("[Server] function 'System.Void RoR2.GenericPickupController::GrantEquipment(RoR2.CharacterBody,RoR2.Inventory)' called on client");
 				return;
 			}
-			this.waitStartTime = Run.instance.fixedTime;
+			this.waitStartTime = Run.FixedTimeStamp.now;
 			EquipmentIndex currentEquipmentIndex = inventory.currentEquipmentIndex;
 			EquipmentIndex equipmentIndex = this.pickupIndex.equipmentIndex;
 			inventory.SetEquipmentIndex(equipmentIndex);
@@ -244,7 +222,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F8B RID: 3979 RVA: 0x0004C914 File Offset: 0x0004AB14
+		// Token: 0x06000B52 RID: 2898 RVA: 0x00031FB8 File Offset: 0x000301B8
 		[Server]
 		private void GrantLunarCoin(CharacterBody body, uint count)
 		{
@@ -266,7 +244,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F8C RID: 3980 RVA: 0x0004C974 File Offset: 0x0004AB74
+		// Token: 0x06000B53 RID: 2899 RVA: 0x00032018 File Offset: 0x00030218
 		[Server]
 		private void AttemptGrant(CharacterBody body)
 		{
@@ -290,30 +268,42 @@ namespace RoR2
 					{
 						this.GrantEquipment(body, inventory);
 					}
-					if (this.pickupIndex.coinIndex != -1)
+					if (this.pickupIndex.coinValue != 0U)
 					{
-						this.GrantLunarCoin(body, 1u);
+						this.GrantLunarCoin(body, this.pickupIndex.coinValue);
 					}
 				}
 			}
 		}
 
-		// Token: 0x06000F8D RID: 3981 RVA: 0x0004CA06 File Offset: 0x0004AC06
+		// Token: 0x06000B54 RID: 2900 RVA: 0x000320B3 File Offset: 0x000302B3
 		private void Start()
 		{
-			this.waitStartTime = Run.instance.fixedTime;
+			this.waitStartTime = Run.FixedTimeStamp.now;
 			this.consumed = false;
 			this.UpdatePickupDisplay();
 		}
 
-		// Token: 0x06000F8E RID: 3982 RVA: 0x0004CA28 File Offset: 0x0004AC28
+		// Token: 0x06000B55 RID: 2901 RVA: 0x000320CD File Offset: 0x000302CD
+		private void OnEnable()
+		{
+			InstanceTracker.Add<GenericPickupController>(this);
+		}
+
+		// Token: 0x06000B56 RID: 2902 RVA: 0x000320D5 File Offset: 0x000302D5
+		private void OnDisable()
+		{
+			InstanceTracker.Remove<GenericPickupController>(this);
+		}
+
+		// Token: 0x06000B57 RID: 2903 RVA: 0x000320E0 File Offset: 0x000302E0
 		public Interactability GetInteractability(Interactor activator)
 		{
 			if (!base.enabled)
 			{
 				return Interactability.Disabled;
 			}
-			if (this.stopWatch < this.waitDuration || this.consumed)
+			if (this.waitStartTime.timeSince < this.waitDuration || this.consumed)
 			{
 				return Interactability.Disabled;
 			}
@@ -329,19 +319,25 @@ namespace RoR2
 			return Interactability.Available;
 		}
 
-		// Token: 0x06000F8F RID: 3983 RVA: 0x0004CA73 File Offset: 0x0004AC73
+		// Token: 0x06000B58 RID: 2904 RVA: 0x00032130 File Offset: 0x00030330
 		public void OnInteractionBegin(Interactor activator)
 		{
 			this.AttemptGrant(activator.GetComponent<CharacterBody>());
 		}
 
-		// Token: 0x06000F90 RID: 3984 RVA: 0x0004CA81 File Offset: 0x0004AC81
+		// Token: 0x06000B59 RID: 2905 RVA: 0x0000B933 File Offset: 0x00009B33
+		public bool ShouldShowOnScanner()
+		{
+			return true;
+		}
+
+		// Token: 0x06000B5A RID: 2906 RVA: 0x0003213E File Offset: 0x0003033E
 		public string GetDisplayName()
 		{
 			return Language.GetString(this.pickupIndex.GetPickupNameToken());
 		}
 
-		// Token: 0x06000F91 RID: 3985 RVA: 0x0004CA94 File Offset: 0x0004AC94
+		// Token: 0x06000B5B RID: 2907 RVA: 0x00032150 File Offset: 0x00030350
 		public void SetPickupIndexFromString(string pickupString)
 		{
 			if (!NetworkServer.active)
@@ -352,23 +348,24 @@ namespace RoR2
 			this.NetworkpickupIndex = networkpickupIndex;
 		}
 
-		// Token: 0x06000F94 RID: 3988 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000B5E RID: 2910 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x1700014E RID: 334
-		// (get) Token: 0x06000F95 RID: 3989 RVA: 0x0004CAE4 File Offset: 0x0004ACE4
-		// (set) Token: 0x06000F96 RID: 3990 RVA: 0x0004CAF7 File Offset: 0x0004ACF7
+		// Token: 0x17000164 RID: 356
+		// (get) Token: 0x06000B5F RID: 2911 RVA: 0x000321A0 File Offset: 0x000303A0
+		// (set) Token: 0x06000B60 RID: 2912 RVA: 0x000321B3 File Offset: 0x000303B3
 		public PickupIndex NetworkpickupIndex
 		{
 			get
 			{
 				return this.pickupIndex;
 			}
+			[param: In]
 			set
 			{
-				uint dirtyBit = 1u;
+				uint dirtyBit = 1U;
 				if (NetworkServer.localClientActive && !base.syncVarHookGuard)
 				{
 					base.syncVarHookGuard = true;
@@ -379,7 +376,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F97 RID: 3991 RVA: 0x0004CB38 File Offset: 0x0004AD38
+		// Token: 0x06000B61 RID: 2913 RVA: 0x000321F4 File Offset: 0x000303F4
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -388,7 +385,7 @@ namespace RoR2
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -404,7 +401,7 @@ namespace RoR2
 			return flag;
 		}
 
-		// Token: 0x06000F98 RID: 3992 RVA: 0x0004CBA4 File Offset: 0x0004ADA4
+		// Token: 0x06000B62 RID: 2914 RVA: 0x00032260 File Offset: 0x00030460
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -419,46 +416,46 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001395 RID: 5013
+		// Token: 0x04000B9A RID: 2970
 		public PickupDisplay pickupDisplay;
 
-		// Token: 0x04001396 RID: 5014
+		// Token: 0x04000B9B RID: 2971
 		[SyncVar(hook = "SyncPickupIndex")]
 		public PickupIndex pickupIndex = PickupIndex.none;
 
-		// Token: 0x04001397 RID: 5015
+		// Token: 0x04000B9C RID: 2972
 		public bool selfDestructIfPickupIndexIsNotIdeal;
 
-		// Token: 0x04001398 RID: 5016
+		// Token: 0x04000B9D RID: 2973
 		public SerializablePickupIndex idealPickupIndex;
 
-		// Token: 0x04001399 RID: 5017
+		// Token: 0x04000B9E RID: 2974
 		private static readonly GenericPickupController.PickupMessage pickupMessageInstance = new GenericPickupController.PickupMessage();
 
-		// Token: 0x0400139A RID: 5018
+		// Token: 0x04000B9F RID: 2975
 		public float waitDuration = 0.5f;
 
-		// Token: 0x0400139B RID: 5019
-		private float waitStartTime;
+		// Token: 0x04000BA0 RID: 2976
+		private Run.FixedTimeStamp waitStartTime;
 
-		// Token: 0x0400139C RID: 5020
+		// Token: 0x04000BA1 RID: 2977
 		private bool consumed;
 
-		// Token: 0x0400139D RID: 5021
+		// Token: 0x04000BA2 RID: 2978
 		public const string pickupSoundString = "Play_UI_item_pickup";
 
-		// Token: 0x020002FE RID: 766
+		// Token: 0x0200020F RID: 527
 		private class PickupMessage : MessageBase
 		{
-			// Token: 0x06000F99 RID: 3993 RVA: 0x0004CBE5 File Offset: 0x0004ADE5
+			// Token: 0x06000B63 RID: 2915 RVA: 0x000322A1 File Offset: 0x000304A1
 			public void Reset()
 			{
 				this.masterGameObject = null;
 				this.pickupIndex = PickupIndex.none;
-				this.pickupQuantity = 0u;
+				this.pickupQuantity = 0U;
 			}
 
-			// Token: 0x06000F9B RID: 3995 RVA: 0x0004CC00 File Offset: 0x0004AE00
+			// Token: 0x06000B65 RID: 2917 RVA: 0x000322BC File Offset: 0x000304BC
 			public override void Serialize(NetworkWriter writer)
 			{
 				writer.Write(this.masterGameObject);
@@ -466,7 +463,7 @@ namespace RoR2
 				writer.WritePackedUInt32(this.pickupQuantity);
 			}
 
-			// Token: 0x06000F9C RID: 3996 RVA: 0x0004CC26 File Offset: 0x0004AE26
+			// Token: 0x06000B66 RID: 2918 RVA: 0x000322E2 File Offset: 0x000304E2
 			public override void Deserialize(NetworkReader reader)
 			{
 				this.masterGameObject = reader.ReadGameObject();
@@ -474,13 +471,13 @@ namespace RoR2
 				this.pickupQuantity = reader.ReadPackedUInt32();
 			}
 
-			// Token: 0x0400139E RID: 5022
+			// Token: 0x04000BA3 RID: 2979
 			public GameObject masterGameObject;
 
-			// Token: 0x0400139F RID: 5023
+			// Token: 0x04000BA4 RID: 2980
 			public PickupIndex pickupIndex;
 
-			// Token: 0x040013A0 RID: 5024
+			// Token: 0x04000BA5 RID: 2981
 			public uint pickupQuantity;
 		}
 	}

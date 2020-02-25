@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.AncientWispMonster
 {
-	// Token: 0x020000D0 RID: 208
-	internal class ChargeBomb : BaseState
+	// Token: 0x0200072F RID: 1839
+	public class ChargeBomb : BaseState
 	{
-		// Token: 0x06000410 RID: 1040 RVA: 0x00010D0C File Offset: 0x0000EF0C
+		// Token: 0x06002AB9 RID: 10937 RVA: 0x000B3D58 File Offset: 0x000B1F58
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -44,7 +44,7 @@ namespace EntityStates.AncientWispMonster
 			}
 		}
 
-		// Token: 0x06000411 RID: 1041 RVA: 0x00010E54 File Offset: 0x0000F054
+		// Token: 0x06002ABA RID: 10938 RVA: 0x000B3EA0 File Offset: 0x000B20A0
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -52,13 +52,13 @@ namespace EntityStates.AncientWispMonster
 			EntityState.Destroy(this.chargeEffectRight);
 		}
 
-		// Token: 0x06000412 RID: 1042 RVA: 0x0000DDD0 File Offset: 0x0000BFD0
+		// Token: 0x06002ABB RID: 10939 RVA: 0x000B02F8 File Offset: 0x000AE4F8
 		public override void Update()
 		{
 			base.Update();
 		}
 
-		// Token: 0x06000413 RID: 1043 RVA: 0x00010E74 File Offset: 0x0000F074
+		// Token: 0x06002ABC RID: 10940 RVA: 0x000B3EC0 File Offset: 0x000B20C0
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -114,43 +114,43 @@ namespace EntityStates.AncientWispMonster
 			}
 		}
 
-		// Token: 0x06000414 RID: 1044 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002ABD RID: 10941 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x040003D1 RID: 977
+		// Token: 0x04002697 RID: 9879
 		public static float baseDuration = 3f;
 
-		// Token: 0x040003D2 RID: 978
+		// Token: 0x04002698 RID: 9880
 		public static GameObject effectPrefab;
 
-		// Token: 0x040003D3 RID: 979
+		// Token: 0x04002699 RID: 9881
 		public static GameObject delayPrefab;
 
-		// Token: 0x040003D4 RID: 980
+		// Token: 0x0400269A RID: 9882
 		public static float radius = 10f;
 
-		// Token: 0x040003D5 RID: 981
+		// Token: 0x0400269B RID: 9883
 		public static float damageCoefficient = 1f;
 
-		// Token: 0x040003D6 RID: 982
+		// Token: 0x0400269C RID: 9884
 		private float duration;
 
-		// Token: 0x040003D7 RID: 983
+		// Token: 0x0400269D RID: 9885
 		private GameObject chargeEffectLeft;
 
-		// Token: 0x040003D8 RID: 984
+		// Token: 0x0400269E RID: 9886
 		private GameObject chargeEffectRight;
 
-		// Token: 0x040003D9 RID: 985
+		// Token: 0x0400269F RID: 9887
 		private Vector3 startLine = Vector3.zero;
 
-		// Token: 0x040003DA RID: 986
+		// Token: 0x040026A0 RID: 9888
 		private Vector3 endLine = Vector3.zero;
 
-		// Token: 0x040003DB RID: 987
+		// Token: 0x040026A1 RID: 9889
 		private bool hasFired;
 	}
 }

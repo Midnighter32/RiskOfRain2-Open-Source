@@ -6,19 +6,19 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x0200020B RID: 523
+	// Token: 0x020000D4 RID: 212
 	public class BulletAttack
 	{
-		// Token: 0x06000A32 RID: 2610 RVA: 0x00032D30 File Offset: 0x00030F30
+		// Token: 0x06000421 RID: 1057 RVA: 0x00010A44 File Offset: 0x0000EC44
 		public BulletAttack()
 		{
 			this.filterCallback = new BulletAttack.FilterCallback(this.DefaultFilterCallback);
 			this.hitCallback = new BulletAttack.HitCallback(this.DefaultHitCallback);
 		}
 
-		// Token: 0x170000B0 RID: 176
-		// (get) Token: 0x06000A33 RID: 2611 RVA: 0x00032DE6 File Offset: 0x00030FE6
-		// (set) Token: 0x06000A34 RID: 2612 RVA: 0x00032DEE File Offset: 0x00030FEE
+		// Token: 0x1700008C RID: 140
+		// (get) Token: 0x06000422 RID: 1058 RVA: 0x00010AFA File Offset: 0x0000ECFA
+		// (set) Token: 0x06000423 RID: 1059 RVA: 0x00010B02 File Offset: 0x0000ED02
 		public Vector3 aimVector
 		{
 			get
@@ -32,9 +32,9 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x170000B1 RID: 177
-		// (get) Token: 0x06000A35 RID: 2613 RVA: 0x00032E02 File Offset: 0x00031002
-		// (set) Token: 0x06000A36 RID: 2614 RVA: 0x00032E0A File Offset: 0x0003100A
+		// Token: 0x1700008D RID: 141
+		// (get) Token: 0x06000424 RID: 1060 RVA: 0x00010B16 File Offset: 0x0000ED16
+		// (set) Token: 0x06000425 RID: 1061 RVA: 0x00010B1E File Offset: 0x0000ED1E
 		public float maxDistance
 		{
 			get
@@ -55,7 +55,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000A37 RID: 2615 RVA: 0x00032E40 File Offset: 0x00031040
+		// Token: 0x06000426 RID: 1062 RVA: 0x00010B54 File Offset: 0x0000ED54
 		public bool DefaultHitCallback(ref BulletAttack.BulletHit hitInfo)
 		{
 			bool result = false;
@@ -65,26 +65,26 @@ namespace RoR2
 			}
 			if (this.hitEffectPrefab)
 			{
-				EffectManager.instance.SimpleImpactEffect(this.hitEffectPrefab, hitInfo.point, this.HitEffectNormal ? hitInfo.surfaceNormal : (-hitInfo.direction), true);
+				EffectManager.SimpleImpactEffect(this.hitEffectPrefab, hitInfo.point, this.HitEffectNormal ? hitInfo.surfaceNormal : (-hitInfo.direction), true);
 			}
 			if (hitInfo.collider)
 			{
 				SurfaceDef objectSurfaceDef = SurfaceDefProvider.GetObjectSurfaceDef(hitInfo.collider, hitInfo.point);
-				if (objectSurfaceDef)
+				if (objectSurfaceDef && objectSurfaceDef.impactEffectPrefab)
 				{
-					if (objectSurfaceDef.impactEffectPrefab)
+					EffectData effectData = new EffectData
 					{
-						EffectManager.instance.SimpleImpactEffect(objectSurfaceDef.impactEffectPrefab, hitInfo.point, hitInfo.surfaceNormal, objectSurfaceDef.approximateColor, true);
-					}
-					if (objectSurfaceDef.impactSoundString != null && objectSurfaceDef.impactSoundString.Length != 0)
-					{
-						Util.PlaySound(objectSurfaceDef.impactSoundString, hitInfo.collider.gameObject);
-					}
+						origin = hitInfo.point,
+						rotation = Quaternion.LookRotation(hitInfo.surfaceNormal),
+						color = objectSurfaceDef.approximateColor,
+						surfaceDefIndex = objectSurfaceDef.surfaceDefIndex
+					};
+					EffectManager.SpawnEffect(objectSurfaceDef.impactEffectPrefab, effectData, true);
 				}
 			}
 			if (this.isCrit)
 			{
-				EffectManager.instance.SimpleImpactEffect(Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/Critspark"), hitInfo.point, this.HitEffectNormal ? hitInfo.surfaceNormal : (-hitInfo.direction), true);
+				EffectManager.SimpleImpactEffect(Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/Critspark"), hitInfo.point, this.HitEffectNormal ? hitInfo.surfaceNormal : (-hitInfo.direction), true);
 			}
 			GameObject entityObject = hitInfo.entityObject;
 			if (entityObject)
@@ -157,14 +157,14 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x06000A38 RID: 2616 RVA: 0x000331B8 File Offset: 0x000313B8
+		// Token: 0x06000427 RID: 1063 RVA: 0x00010EC8 File Offset: 0x0000F0C8
 		public bool DefaultFilterCallback(ref BulletAttack.BulletHit hitInfo)
 		{
 			HurtBox component = hitInfo.collider.GetComponent<HurtBox>();
 			return (!component || !component.healthComponent || !(component.healthComponent.gameObject == this.weapon)) && hitInfo.entityObject != this.weapon;
 		}
 
-		// Token: 0x06000A39 RID: 2617 RVA: 0x00033214 File Offset: 0x00031414
+		// Token: 0x06000428 RID: 1064 RVA: 0x00010F24 File Offset: 0x0000F124
 		private void InitBulletHitFromOriginHit(ref BulletAttack.BulletHit bulletHit, Vector3 direction, Collider hitCollider)
 		{
 			bulletHit.direction = direction;
@@ -173,11 +173,12 @@ namespace RoR2
 			bulletHit.distance = 0f;
 			bulletHit.collider = hitCollider;
 			HurtBox component = bulletHit.collider.GetComponent<HurtBox>();
+			bulletHit.hitHurtBox = component;
 			bulletHit.entityObject = ((component && component.healthComponent) ? component.healthComponent.gameObject : bulletHit.collider.gameObject);
 			bulletHit.damageModifier = (component ? component.damageModifier : HurtBox.DamageModifier.Normal);
 		}
 
-		// Token: 0x06000A3A RID: 2618 RVA: 0x000332A8 File Offset: 0x000314A8
+		// Token: 0x06000429 RID: 1065 RVA: 0x00010FC0 File Offset: 0x0000F1C0
 		private void InitBulletHitFromRaycastHit(ref BulletAttack.BulletHit bulletHit, Vector3 origin, Vector3 direction, ref RaycastHit raycastHit)
 		{
 			bulletHit.direction = direction;
@@ -187,11 +188,12 @@ namespace RoR2
 			bulletHit.collider = raycastHit.collider;
 			bulletHit.point = ((bulletHit.distance == 0f) ? origin : raycastHit.point);
 			HurtBox component = bulletHit.collider.GetComponent<HurtBox>();
+			bulletHit.hitHurtBox = component;
 			bulletHit.entityObject = ((component && component.healthComponent) ? component.healthComponent.gameObject : bulletHit.collider.gameObject);
 			bulletHit.damageModifier = (component ? component.damageModifier : HurtBox.DamageModifier.Normal);
 		}
 
-		// Token: 0x06000A3B RID: 2619 RVA: 0x00033363 File Offset: 0x00031563
+		// Token: 0x0600042A RID: 1066 RVA: 0x00011082 File Offset: 0x0000F282
 		private bool ProcessHit(ref BulletAttack.BulletHit hitInfo)
 		{
 			if (this.sniper && hitInfo.damageModifier == HurtBox.DamageModifier.SniperTarget)
@@ -201,7 +203,7 @@ namespace RoR2
 			return !this.filterCallback(ref hitInfo) || this.hitCallback(ref hitInfo);
 		}
 
-		// Token: 0x06000A3C RID: 2620 RVA: 0x0003339C File Offset: 0x0003159C
+		// Token: 0x0600042B RID: 1067 RVA: 0x000110B8 File Offset: 0x0000F2B8
 		private GameObject ProcessHitList(List<BulletAttack.BulletHit> hits, ref Vector3 endPosition, List<GameObject> ignoreList)
 		{
 			int count = hits.Count;
@@ -239,7 +241,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06000A3D RID: 2621 RVA: 0x00033478 File Offset: 0x00031678
+		// Token: 0x0600042C RID: 1068 RVA: 0x00011194 File Offset: 0x0000F394
 		private static GameObject LookUpColliderEntityObject(Collider collider)
 		{
 			HurtBox component = collider.GetComponent<HurtBox>();
@@ -250,13 +252,13 @@ namespace RoR2
 			return component.healthComponent.gameObject;
 		}
 
-		// Token: 0x06000A3E RID: 2622 RVA: 0x000334B3 File Offset: 0x000316B3
+		// Token: 0x0600042D RID: 1069 RVA: 0x000111CF File Offset: 0x0000F3CF
 		private static Collider[] PhysicsOverlapPoint(Vector3 point, int layerMask = -1, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
 		{
 			return Physics.OverlapBox(point, Vector3.zero, Quaternion.identity, layerMask, queryTriggerInteraction);
 		}
 
-		// Token: 0x06000A3F RID: 2623 RVA: 0x000334C8 File Offset: 0x000316C8
+		// Token: 0x0600042E RID: 1070 RVA: 0x000111E4 File Offset: 0x0000F3E4
 		public void Fire()
 		{
 			Vector3[] array = new Vector3[this.bulletCount];
@@ -301,7 +303,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000A40 RID: 2624 RVA: 0x00033684 File Offset: 0x00031884
+		// Token: 0x0600042F RID: 1071 RVA: 0x000113A0 File Offset: 0x0000F5A0
 		private void FireSingle(Vector3 normal, int muzzleIndex)
 		{
 			float num = this.maxDistance;
@@ -359,11 +361,11 @@ namespace RoR2
 					start = this.origin
 				};
 				effectData.SetChildLocatorTransformReference(this.weapon, muzzleIndex);
-				EffectManager.instance.SpawnEffect(this.tracerEffectPrefab, effectData, true);
+				EffectManager.SpawnEffect(this.tracerEffectPrefab, effectData, true);
 			}
 		}
 
-		// Token: 0x06000A41 RID: 2625 RVA: 0x00033880 File Offset: 0x00031A80
+		// Token: 0x06000430 RID: 1072 RVA: 0x00011594 File Offset: 0x0000F794
 		[NetworkMessageHandler(msgType = 53, server = true)]
 		private static void HandleBulletDamage(NetworkMessage netMsg)
 		{
@@ -382,146 +384,149 @@ namespace RoR2
 			GlobalEventManager.instance.OnHitAll(damageInfo, gameObject);
 		}
 
-		// Token: 0x04000D92 RID: 3474
+		// Token: 0x040003E5 RID: 997
 		public GameObject owner;
 
-		// Token: 0x04000D93 RID: 3475
+		// Token: 0x040003E6 RID: 998
 		public GameObject weapon;
 
-		// Token: 0x04000D94 RID: 3476
+		// Token: 0x040003E7 RID: 999
 		public float damage = 1f;
 
-		// Token: 0x04000D95 RID: 3477
+		// Token: 0x040003E8 RID: 1000
 		public bool isCrit;
 
-		// Token: 0x04000D96 RID: 3478
+		// Token: 0x040003E9 RID: 1001
 		public float force = 1f;
 
-		// Token: 0x04000D97 RID: 3479
+		// Token: 0x040003EA RID: 1002
 		public ProcChainMask procChainMask;
 
-		// Token: 0x04000D98 RID: 3480
+		// Token: 0x040003EB RID: 1003
 		public float procCoefficient = 1f;
 
-		// Token: 0x04000D99 RID: 3481
+		// Token: 0x040003EC RID: 1004
 		public DamageType damageType;
 
-		// Token: 0x04000D9A RID: 3482
+		// Token: 0x040003ED RID: 1005
 		public DamageColorIndex damageColorIndex;
 
-		// Token: 0x04000D9B RID: 3483
+		// Token: 0x040003EE RID: 1006
 		public bool sniper;
 
-		// Token: 0x04000D9C RID: 3484
+		// Token: 0x040003EF RID: 1007
 		public BulletAttack.FalloffModel falloffModel = BulletAttack.FalloffModel.DefaultBullet;
 
-		// Token: 0x04000D9D RID: 3485
+		// Token: 0x040003F0 RID: 1008
 		public GameObject tracerEffectPrefab;
 
-		// Token: 0x04000D9E RID: 3486
+		// Token: 0x040003F1 RID: 1009
 		public GameObject hitEffectPrefab;
 
-		// Token: 0x04000D9F RID: 3487
+		// Token: 0x040003F2 RID: 1010
 		public string muzzleName = "";
 
-		// Token: 0x04000DA0 RID: 3488
+		// Token: 0x040003F3 RID: 1011
 		public bool HitEffectNormal = true;
 
-		// Token: 0x04000DA1 RID: 3489
+		// Token: 0x040003F4 RID: 1012
 		public Vector3 origin;
 
-		// Token: 0x04000DA2 RID: 3490
+		// Token: 0x040003F5 RID: 1013
 		private Vector3 _aimVector;
 
-		// Token: 0x04000DA3 RID: 3491
+		// Token: 0x040003F6 RID: 1014
 		private float _maxDistance = 200f;
 
-		// Token: 0x04000DA4 RID: 3492
+		// Token: 0x040003F7 RID: 1015
 		public float radius;
 
-		// Token: 0x04000DA5 RID: 3493
-		public uint bulletCount = 1u;
+		// Token: 0x040003F8 RID: 1016
+		public uint bulletCount = 1U;
 
-		// Token: 0x04000DA6 RID: 3494
+		// Token: 0x040003F9 RID: 1017
 		public float minSpread;
 
-		// Token: 0x04000DA7 RID: 3495
+		// Token: 0x040003FA RID: 1018
 		public float maxSpread;
 
-		// Token: 0x04000DA8 RID: 3496
+		// Token: 0x040003FB RID: 1019
 		public float spreadPitchScale = 1f;
 
-		// Token: 0x04000DA9 RID: 3497
+		// Token: 0x040003FC RID: 1020
 		public float spreadYawScale = 1f;
 
-		// Token: 0x04000DAA RID: 3498
+		// Token: 0x040003FD RID: 1021
 		public QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore;
 
-		// Token: 0x04000DAB RID: 3499
+		// Token: 0x040003FE RID: 1022
 		private static readonly LayerMask defaultHitMask = LayerIndex.world.mask | LayerIndex.entityPrecise.mask;
 
-		// Token: 0x04000DAC RID: 3500
+		// Token: 0x040003FF RID: 1023
 		public LayerMask hitMask = BulletAttack.defaultHitMask;
 
-		// Token: 0x04000DAD RID: 3501
+		// Token: 0x04000400 RID: 1024
 		private static readonly LayerMask defaultStopperMask = BulletAttack.defaultHitMask;
 
-		// Token: 0x04000DAE RID: 3502
+		// Token: 0x04000401 RID: 1025
 		public LayerMask stopperMask = BulletAttack.defaultStopperMask;
 
-		// Token: 0x04000DAF RID: 3503
+		// Token: 0x04000402 RID: 1026
 		public bool smartCollision;
 
-		// Token: 0x04000DB0 RID: 3504
+		// Token: 0x04000403 RID: 1027
 		public BulletAttack.HitCallback hitCallback;
 
-		// Token: 0x04000DB1 RID: 3505
+		// Token: 0x04000404 RID: 1028
 		private static NetworkWriter messageWriter = new NetworkWriter();
 
-		// Token: 0x04000DB2 RID: 3506
+		// Token: 0x04000405 RID: 1029
 		public BulletAttack.FilterCallback filterCallback;
 
-		// Token: 0x0200020C RID: 524
+		// Token: 0x020000D5 RID: 213
 		public enum FalloffModel
 		{
-			// Token: 0x04000DB4 RID: 3508
+			// Token: 0x04000407 RID: 1031
 			None,
-			// Token: 0x04000DB5 RID: 3509
+			// Token: 0x04000408 RID: 1032
 			DefaultBullet,
-			// Token: 0x04000DB6 RID: 3510
+			// Token: 0x04000409 RID: 1033
 			Buckshot
 		}
 
-		// Token: 0x0200020D RID: 525
-		// (Invoke) Token: 0x06000A44 RID: 2628
+		// Token: 0x020000D6 RID: 214
+		// (Invoke) Token: 0x06000433 RID: 1075
 		public delegate bool HitCallback(ref BulletAttack.BulletHit hitInfo);
 
-		// Token: 0x0200020E RID: 526
-		// (Invoke) Token: 0x06000A48 RID: 2632
+		// Token: 0x020000D7 RID: 215
+		// (Invoke) Token: 0x06000437 RID: 1079
 		public delegate bool FilterCallback(ref BulletAttack.BulletHit hitInfo);
 
-		// Token: 0x0200020F RID: 527
+		// Token: 0x020000D8 RID: 216
 		public struct BulletHit
 		{
-			// Token: 0x04000DB7 RID: 3511
+			// Token: 0x0400040A RID: 1034
 			public Vector3 direction;
 
-			// Token: 0x04000DB8 RID: 3512
+			// Token: 0x0400040B RID: 1035
 			public Vector3 point;
 
-			// Token: 0x04000DB9 RID: 3513
+			// Token: 0x0400040C RID: 1036
 			public Vector3 surfaceNormal;
 
-			// Token: 0x04000DBA RID: 3514
+			// Token: 0x0400040D RID: 1037
 			public float distance;
 
-			// Token: 0x04000DBB RID: 3515
+			// Token: 0x0400040E RID: 1038
 			public Collider collider;
 
-			// Token: 0x04000DBC RID: 3516
+			// Token: 0x0400040F RID: 1039
+			public HurtBox hitHurtBox;
+
+			// Token: 0x04000410 RID: 1040
 			public GameObject entityObject;
 
-			// Token: 0x04000DBD RID: 3517
+			// Token: 0x04000411 RID: 1041
 			public HurtBox.DamageModifier damageModifier;
 		}
 	}

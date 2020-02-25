@@ -157,8 +157,8 @@ public class NGSS_Directional : MonoBehaviour
 	}
 
 	// Token: 0x0400002C RID: 44
-	[Tooltip("If disabled, NGSS Directional shadows replacement will be removed from Graphics settings when OnDisable is called in this component.")]
 	[Header("MAIN SETTINGS")]
+	[Tooltip("If disabled, NGSS Directional shadows replacement will be removed from Graphics settings when OnDisable is called in this component.")]
 	public bool NGSS_KEEP_ONDISABLE = true;
 
 	// Token: 0x0400002D RID: 45
@@ -182,34 +182,34 @@ public class NGSS_Directional : MonoBehaviour
 	public int NGSS_SAMPLING_FILTER = 48;
 
 	// Token: 0x04000031 RID: 49
-	[Tooltip("Overall softness for all shadows.")]
 	[Header("SOFTNESS")]
+	[Tooltip("Overall softness for all shadows.")]
 	[Range(0f, 2f)]
 	public float NGSS_GLOBAL_SOFTNESS = 1f;
 
 	// Token: 0x04000032 RID: 50
-	[Tooltip("PCSS Requires inline sampling and SM3.5.\nProvides Area Light soft-shadows.\nDisable it if you are looking for PCF filtering (uniform soft-shadows) which runs with SM3.0.")]
 	[Header("PCSS")]
+	[Tooltip("PCSS Requires inline sampling and SM3.5.\nProvides Area Light soft-shadows.\nDisable it if you are looking for PCF filtering (uniform soft-shadows) which runs with SM3.0.")]
 	public bool NGSS_PCSS_ENABLED;
 
 	// Token: 0x04000033 RID: 51
-	[Range(0f, 2f)]
 	[Tooltip("How soft shadows are when close to caster.")]
+	[Range(0f, 2f)]
 	public float NGSS_PCSS_SOFTNESS_MIN = 1f;
 
 	// Token: 0x04000034 RID: 52
-	[Tooltip("How soft shadows are when far from caster.")]
 	[Range(0f, 2f)]
+	[Tooltip("How soft shadows are when far from caster.")]
 	public float NGSS_PCSS_SOFTNESS_MAX = 1f;
 
 	// Token: 0x04000035 RID: 53
-	[Header("NOISE")]
 	[Tooltip("Improve noise randomnes by aligning samplers in a screen space grid. If disabled, noise will be randomly distributed.\nRecommended when using low sampling count (less than 16 spp)")]
+	[Header("NOISE")]
 	public bool NGSS_SHADOWS_DITHERING = true;
 
 	// Token: 0x04000036 RID: 54
-	[Range(0f, 1f)]
 	[Tooltip("If zero = no noise.\nIf one = 100% noise.\nUseful when fighting banding.")]
+	[Range(0f, 1f)]
 	public float NGSS_NOISE_SCALE = 1f;
 
 	// Token: 0x04000037 RID: 55
@@ -235,8 +235,8 @@ public class NGSS_Directional : MonoBehaviour
 	public bool GLOBAL_CASCADED_SHADOWS = true;
 
 	// Token: 0x0400003C RID: 60
-	[Tooltip("Number of cascades the shadowmap will have. This option affects your cascade counts in Quality Settings.\nYou should entierly disable Cascaded Shadows (Graphics Menu) if you are targeting low-end devices.")]
 	[Range(1f, 4f)]
+	[Tooltip("Number of cascades the shadowmap will have. This option affects your cascade counts in Quality Settings.\nYou should entierly disable Cascaded Shadows (Graphics Menu) if you are targeting low-end devices.")]
 	public int GLOBAL_CASCADES_COUNT = 4;
 
 	// Token: 0x0400003D RID: 61
@@ -255,8 +255,8 @@ public class NGSS_Directional : MonoBehaviour
 	public float NGSS_CASCADES_BLENDING_VALUE = 1f;
 
 	// Token: 0x04000040 RID: 64
-	[Tooltip("If one, softness across cascades will be matched using splits distribution, resulting in realistic soft-ness over distance.\nIf zero the softness distribution will be based on cascade index, resulting in blurrier shadows over distance thus less realistic.")]
 	[Range(0f, 1f)]
+	[Tooltip("If one, softness across cascades will be matched using splits distribution, resulting in realistic soft-ness over distance.\nIf zero the softness distribution will be based on cascade index, resulting in blurrier shadows over distance thus less realistic.")]
 	public float NGSS_CASCADES_SOFTNESS_NORMALIZATION = 1f;
 
 	// Token: 0x04000041 RID: 65

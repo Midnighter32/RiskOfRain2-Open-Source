@@ -3,17 +3,16 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020002F6 RID: 758
+	// Token: 0x02000205 RID: 517
 	[RequireComponent(typeof(ChildLocator))]
 	public class FootstepHandler : MonoBehaviour
 	{
-		// Token: 0x06000F4E RID: 3918 RVA: 0x0004B9AC File Offset: 0x00049BAC
+		// Token: 0x06000B05 RID: 2821 RVA: 0x00030DCC File Offset: 0x0002EFCC
 		private void Start()
 		{
 			this.childLocator = base.GetComponent<ChildLocator>();
 			this.body = base.GetComponent<CharacterModel>().body;
-			CharacterMaster master = this.body.master;
-			this.bodyInventory = ((master != null) ? master.inventory : null);
+			this.bodyInventory = (this.body ? this.body.inventory : null);
 			this.animator = base.GetComponent<Animator>();
 			if (this.enableFootstepDust)
 			{
@@ -23,7 +22,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F4F RID: 3919 RVA: 0x0004BA48 File Offset: 0x00049C48
+		// Token: 0x06000B06 RID: 2822 RVA: 0x00030E6C File Offset: 0x0002F06C
 		public void Footstep(AnimationEvent animationEvent)
 		{
 			if ((double)animationEvent.animatorClipInfo.weight > 0.5)
@@ -32,9 +31,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F50 RID: 3920 RVA: 0x0004BA88 File Offset: 0x00049C88
+		// Token: 0x06000B07 RID: 2823 RVA: 0x00030EAC File Offset: 0x0002F0AC
 		public void Footstep(string childName, GameObject footstepEffect)
 		{
+			if (!this.body)
+			{
+				return;
+			}
 			Transform transform = this.childLocator.FindChild(childName);
 			if (transform)
 			{
@@ -47,11 +50,11 @@ namespace RoR2
 				{
 					if (this.bodyInventory && this.bodyInventory.GetItemCount(ItemIndex.Hoof) > 0 && childName == "FootR")
 					{
-						Util.PlaySound("Play_item_proc_hoof", transform.gameObject);
+						Util.PlaySound("Play_item_proc_hoof", this.body.gameObject);
 					}
 					if (footstepEffect)
 					{
-						EffectManager.instance.SimpleImpactEffect(footstepEffect, raycastHit.point, raycastHit.normal, false);
+						EffectManager.SimpleImpactEffect(footstepEffect, raycastHit.point, raycastHit.normal, false);
 					}
 					SurfaceDef objectSurfaceDef = SurfaceDefProvider.GetObjectSurfaceDef(raycastHit.collider, raycastHit.point);
 					bool flag = false;
@@ -60,7 +63,7 @@ namespace RoR2
 						color = objectSurfaceDef.approximateColor;
 						if (objectSurfaceDef.footstepEffectPrefab)
 						{
-							EffectManager.instance.SpawnEffect(objectSurfaceDef.footstepEffectPrefab, new EffectData
+							EffectManager.SpawnEffect(objectSurfaceDef.footstepEffectPrefab, new EffectData
 							{
 								origin = raycastHit.point,
 								scale = this.body.radius
@@ -69,7 +72,7 @@ namespace RoR2
 						}
 						if (!string.IsNullOrEmpty(objectSurfaceDef.materialSwitchString))
 						{
-							AkSoundEngine.SetSwitch("material", objectSurfaceDef.materialSwitchString, transform.gameObject);
+							AkSoundEngine.SetSwitch("material", objectSurfaceDef.materialSwitchString, this.body.gameObject);
 						}
 					}
 					else
@@ -90,7 +93,7 @@ namespace RoR2
 						}
 					}
 				}
-				Util.PlaySound(this.baseFootstepString, transform.gameObject);
+				Util.PlaySound((!string.IsNullOrEmpty(this.sprintFootstepOverrideString) && this.body.isSprinting) ? this.sprintFootstepOverrideString : this.baseFootstepString, this.body.gameObject);
 				return;
 			}
 			Debug.LogWarningFormat("Object {0} lacks ChildLocator entry \"{1}\" to handle Footstep event!", new object[]
@@ -100,34 +103,37 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x04001376 RID: 4982
+		// Token: 0x04000B75 RID: 2933
 		public string baseFootstepString;
 
-		// Token: 0x04001377 RID: 4983
+		// Token: 0x04000B76 RID: 2934
+		public string sprintFootstepOverrideString;
+
+		// Token: 0x04000B77 RID: 2935
 		public bool enableFootstepDust;
 
-		// Token: 0x04001378 RID: 4984
+		// Token: 0x04000B78 RID: 2936
 		public GameObject footstepDustPrefab;
 
-		// Token: 0x04001379 RID: 4985
+		// Token: 0x04000B79 RID: 2937
 		private ChildLocator childLocator;
 
-		// Token: 0x0400137A RID: 4986
+		// Token: 0x04000B7A RID: 2938
 		private Inventory bodyInventory;
 
-		// Token: 0x0400137B RID: 4987
+		// Token: 0x04000B7B RID: 2939
 		private Animator animator;
 
-		// Token: 0x0400137C RID: 4988
+		// Token: 0x04000B7C RID: 2940
 		private Transform footstepDustInstanceTransform;
 
-		// Token: 0x0400137D RID: 4989
+		// Token: 0x04000B7D RID: 2941
 		private ParticleSystem footstepDustInstanceParticleSystem;
 
-		// Token: 0x0400137E RID: 4990
+		// Token: 0x04000B7E RID: 2942
 		private ShakeEmitter footstepDustInstanceShakeEmitter;
 
-		// Token: 0x0400137F RID: 4991
+		// Token: 0x04000B7F RID: 2943
 		private CharacterBody body;
 	}
 }

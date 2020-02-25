@@ -1,15 +1,15 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x02000052 RID: 82
+// Token: 0x0200004E RID: 78
 public class ScaledCamera : MonoBehaviour
 {
-	// Token: 0x0600015C RID: 348 RVA: 0x00004507 File Offset: 0x00002707
+	// Token: 0x06000141 RID: 321 RVA: 0x0000409B File Offset: 0x0000229B
 	private void Start()
 	{
 	}
 
-	// Token: 0x0600015D RID: 349 RVA: 0x00007FF0 File Offset: 0x000061F0
+	// Token: 0x06000142 RID: 322 RVA: 0x00007F04 File Offset: 0x00006104
 	private void LateUpdate()
 	{
 		Camera main = Camera.main;

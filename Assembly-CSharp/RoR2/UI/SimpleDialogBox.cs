@@ -7,25 +7,25 @@ using UnityEngine.EventSystems;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000638 RID: 1592
+	// Token: 0x0200062B RID: 1579
 	[RequireComponent(typeof(MPEventSystemLocator))]
 	public class SimpleDialogBox : UIBehaviour
 	{
-		// Token: 0x060023B3 RID: 9139 RVA: 0x000A7D4B File Offset: 0x000A5F4B
+		// Token: 0x0600254C RID: 9548 RVA: 0x000A25C3 File Offset: 0x000A07C3
 		protected override void OnEnable()
 		{
 			base.OnEnable();
 			SimpleDialogBox.instancesList.Add(this);
 		}
 
-		// Token: 0x060023B4 RID: 9140 RVA: 0x000A7D5E File Offset: 0x000A5F5E
+		// Token: 0x0600254D RID: 9549 RVA: 0x000A25D6 File Offset: 0x000A07D6
 		protected override void OnDisable()
 		{
 			SimpleDialogBox.instancesList.Remove(this);
 			base.OnDisable();
 		}
 
-		// Token: 0x060023B5 RID: 9141 RVA: 0x000A7D74 File Offset: 0x000A5F74
+		// Token: 0x0600254E RID: 9550 RVA: 0x000A25EC File Offset: 0x000A07EC
 		private static string GetString(SimpleDialogBox.TokenParamsPair pair)
 		{
 			string text = Language.GetString(pair.token);
@@ -36,8 +36,8 @@ namespace RoR2.UI
 			return text;
 		}
 
-		// Token: 0x1700031B RID: 795
-		// (set) Token: 0x060023B6 RID: 9142 RVA: 0x000A7DAC File Offset: 0x000A5FAC
+		// Token: 0x170003DA RID: 986
+		// (set) Token: 0x0600254F RID: 9551 RVA: 0x000A2624 File Offset: 0x000A0824
 		public SimpleDialogBox.TokenParamsPair headerToken
 		{
 			set
@@ -46,8 +46,8 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x1700031C RID: 796
-		// (set) Token: 0x060023B7 RID: 9143 RVA: 0x000A7DBF File Offset: 0x000A5FBF
+		// Token: 0x170003DB RID: 987
+		// (set) Token: 0x06002550 RID: 9552 RVA: 0x000A2637 File Offset: 0x000A0837
 		public SimpleDialogBox.TokenParamsPair descriptionToken
 		{
 			set
@@ -56,7 +56,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060023B8 RID: 9144 RVA: 0x000A7DD4 File Offset: 0x000A5FD4
+		// Token: 0x06002551 RID: 9553 RVA: 0x000A264C File Offset: 0x000A084C
 		private MPButton AddButton(UnityAction callback, string displayToken, params object[] formatParams)
 		{
 			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.buttonPrefab, this.buttonContainer);
@@ -76,7 +76,7 @@ namespace RoR2.UI
 			return component;
 		}
 
-		// Token: 0x060023B9 RID: 9145 RVA: 0x000A7E44 File Offset: 0x000A6044
+		// Token: 0x06002552 RID: 9554 RVA: 0x000A26BC File Offset: 0x000A08BC
 		public MPButton AddCommandButton(string consoleString, string displayToken, params object[] formatParams)
 		{
 			return this.AddButton(delegate
@@ -89,7 +89,7 @@ namespace RoR2.UI
 			}, displayToken, formatParams);
 		}
 
-		// Token: 0x060023BA RID: 9146 RVA: 0x000A7E79 File Offset: 0x000A6079
+		// Token: 0x06002553 RID: 9555 RVA: 0x000A26F1 File Offset: 0x000A08F1
 		public MPButton AddCancelButton(string displayToken, params object[] formatParams)
 		{
 			return this.AddButton(delegate
@@ -98,7 +98,7 @@ namespace RoR2.UI
 			}, displayToken, formatParams);
 		}
 
-		// Token: 0x060023BB RID: 9147 RVA: 0x000A7E90 File Offset: 0x000A6090
+		// Token: 0x06002554 RID: 9556 RVA: 0x000A2708 File Offset: 0x000A0908
 		public MPButton AddActionButton(UnityAction action, string displayToken, params object[] formatParams)
 		{
 			return this.AddButton(delegate
@@ -108,7 +108,7 @@ namespace RoR2.UI
 			}, displayToken, formatParams);
 		}
 
-		// Token: 0x060023BC RID: 9148 RVA: 0x000A7EC8 File Offset: 0x000A60C8
+		// Token: 0x06002555 RID: 9557 RVA: 0x000A2740 File Offset: 0x000A0940
 		protected override void Start()
 		{
 			base.Start();
@@ -122,13 +122,13 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060023BD RID: 9149 RVA: 0x000A7F12 File Offset: 0x000A6112
+		// Token: 0x06002556 RID: 9558 RVA: 0x000A278A File Offset: 0x000A098A
 		private void Update()
 		{
 			this.buttonContainer.gameObject.SetActive(this.buttonContainer.childCount > 0);
 		}
 
-		// Token: 0x060023BE RID: 9150 RVA: 0x000A7F34 File Offset: 0x000A6134
+		// Token: 0x06002557 RID: 9559 RVA: 0x000A27AC File Offset: 0x000A09AC
 		public static SimpleDialogBox Create(MPEventSystem owner = null)
 		{
 			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/UI/SimpleDialogRoot"));
@@ -142,44 +142,44 @@ namespace RoR2.UI
 			return gameObject.transform.GetComponentInChildren<SimpleDialogBox>();
 		}
 
-		// Token: 0x040026A2 RID: 9890
+		// Token: 0x040022FF RID: 8959
 		public static readonly List<SimpleDialogBox> instancesList = new List<SimpleDialogBox>();
 
-		// Token: 0x040026A3 RID: 9891
+		// Token: 0x04002300 RID: 8960
 		public GameObject rootObject;
 
-		// Token: 0x040026A4 RID: 9892
+		// Token: 0x04002301 RID: 8961
 		public GameObject buttonPrefab;
 
-		// Token: 0x040026A5 RID: 9893
+		// Token: 0x04002302 RID: 8962
 		public RectTransform buttonContainer;
 
-		// Token: 0x040026A6 RID: 9894
+		// Token: 0x04002303 RID: 8963
 		public TextMeshProUGUI headerLabel;
 
-		// Token: 0x040026A7 RID: 9895
+		// Token: 0x04002304 RID: 8964
 		public TextMeshProUGUI descriptionLabel;
 
-		// Token: 0x040026A8 RID: 9896
+		// Token: 0x04002305 RID: 8965
 		private MPButton defaultChoice;
 
-		// Token: 0x040026A9 RID: 9897
+		// Token: 0x04002306 RID: 8966
 		public object[] descriptionFormatParameters;
 
-		// Token: 0x02000639 RID: 1593
+		// Token: 0x0200062C RID: 1580
 		public struct TokenParamsPair
 		{
-			// Token: 0x060023C2 RID: 9154 RVA: 0x000A7F9C File Offset: 0x000A619C
+			// Token: 0x0600255B RID: 9563 RVA: 0x000A2814 File Offset: 0x000A0A14
 			public TokenParamsPair(string token, params object[] formatParams)
 			{
 				this.token = token;
 				this.formatParams = formatParams;
 			}
 
-			// Token: 0x040026AA RID: 9898
+			// Token: 0x04002307 RID: 8967
 			public string token;
 
-			// Token: 0x040026AB RID: 9899
+			// Token: 0x04002308 RID: 8968
 			public object[] formatParams;
 		}
 	}

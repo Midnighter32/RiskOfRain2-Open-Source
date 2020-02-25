@@ -1,16 +1,16 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x02000032 RID: 50
+// Token: 0x0200002F RID: 47
 public class DestroyOnParticleEnd : MonoBehaviour
 {
-	// Token: 0x060000E7 RID: 231 RVA: 0x000059D0 File Offset: 0x00003BD0
+	// Token: 0x060000CD RID: 205 RVA: 0x00005968 File Offset: 0x00003B68
 	public void Awake()
 	{
 		this.ps = base.GetComponentInChildren<ParticleSystem>();
 	}
 
-	// Token: 0x060000E8 RID: 232 RVA: 0x000059DE File Offset: 0x00003BDE
+	// Token: 0x060000CE RID: 206 RVA: 0x00005976 File Offset: 0x00003B76
 	public void Update()
 	{
 		if (this.ps && !this.ps.IsAlive())
@@ -19,6 +19,6 @@ public class DestroyOnParticleEnd : MonoBehaviour
 		}
 	}
 
-	// Token: 0x040000D6 RID: 214
+	// Token: 0x040000DC RID: 220
 	private ParticleSystem ps;
 }

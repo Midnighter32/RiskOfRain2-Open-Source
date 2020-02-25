@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.Commando.CommandoWeapon
 {
-	// Token: 0x020001AE RID: 430
-	internal class FireThermite : BaseState
+	// Token: 0x020008C3 RID: 2243
+	public class FireThermite : BaseState
 	{
-		// Token: 0x0600086A RID: 2154 RVA: 0x0002A3E4 File Offset: 0x000285E4
+		// Token: 0x0600324C RID: 12876 RVA: 0x000D9968 File Offset: 0x000D7B68
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -19,7 +19,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			string muzzleName = "MuzzleCenter";
 			if (FireThermite.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireThermite.effectPrefab, base.gameObject, muzzleName, false);
+				EffectManager.SimpleMuzzleFlash(FireThermite.effectPrefab, base.gameObject, muzzleName, false);
 			}
 			if (base.isAuthority)
 			{
@@ -29,17 +29,17 @@ namespace EntityStates.Commando.CommandoWeapon
 			{
 				Vector3 vector = -aimRay.direction * FireThermite.selfForce;
 				vector.y *= 0.5f;
-				base.characterMotor.ApplyForce(vector, true);
+				base.characterMotor.ApplyForce(vector, true, false);
 			}
 		}
 
-		// Token: 0x0600086B RID: 2155 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x0600324D RID: 12877 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x0600086C RID: 2156 RVA: 0x0002A50D File Offset: 0x0002870D
+		// Token: 0x0600324E RID: 12878 RVA: 0x000D9A8D File Offset: 0x000D7C8D
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -50,34 +50,34 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x0600086D RID: 2157 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x0600324F RID: 12879 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000B40 RID: 2880
+		// Token: 0x04003141 RID: 12609
 		public static GameObject effectPrefab;
 
-		// Token: 0x04000B41 RID: 2881
+		// Token: 0x04003142 RID: 12610
 		public static GameObject projectilePrefab;
 
-		// Token: 0x04000B42 RID: 2882
+		// Token: 0x04003143 RID: 12611
 		public static float damageCoefficient;
 
-		// Token: 0x04000B43 RID: 2883
+		// Token: 0x04003144 RID: 12612
 		public static float force;
 
-		// Token: 0x04000B44 RID: 2884
+		// Token: 0x04003145 RID: 12613
 		public static float selfForce;
 
-		// Token: 0x04000B45 RID: 2885
+		// Token: 0x04003146 RID: 12614
 		public static float baseDuration = 2f;
 
-		// Token: 0x04000B46 RID: 2886
+		// Token: 0x04003147 RID: 12615
 		private float duration;
 
-		// Token: 0x04000B47 RID: 2887
+		// Token: 0x04003148 RID: 12616
 		public int bulletCountCurrent = 1;
 	}
 }

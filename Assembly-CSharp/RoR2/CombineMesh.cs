@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020002A3 RID: 675
+	// Token: 0x020001B4 RID: 436
 	public class CombineMesh : MonoBehaviour
 	{
-		// Token: 0x06000DC5 RID: 3525 RVA: 0x00043EC0 File Offset: 0x000420C0
+		// Token: 0x0600095C RID: 2396 RVA: 0x00028D70 File Offset: 0x00026F70
 		private void Start()
 		{
 			Renderer component = base.GetComponent<Renderer>();

@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.BeetleQueenMonster
 {
-	// Token: 0x020001D5 RID: 469
+	// Token: 0x020008F0 RID: 2288
 	public class SummonEggs : BaseState
 	{
-		// Token: 0x06000926 RID: 2342 RVA: 0x0002DF40 File Offset: 0x0002C140
+		// Token: 0x06003326 RID: 13094 RVA: 0x000DDB94 File Offset: 0x000DBD94
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -22,7 +22,7 @@ namespace EntityStates.BeetleQueenMonster
 			this.summonInterval = SummonEggs.summonDuration / (float)SummonEggs.maxSummonCount;
 		}
 
-		// Token: 0x06000927 RID: 2343 RVA: 0x0002DFC0 File Offset: 0x0002C1C0
+		// Token: 0x06003327 RID: 13095 RVA: 0x000DDC14 File Offset: 0x000DBE14
 		private Transform FindTargetClosest(Vector3 point, TeamIndex enemyTeam)
 		{
 			ReadOnlyCollection<TeamComponent> teamMembers = TeamComponent.GetTeamMembers(enemyTeam);
@@ -40,7 +40,7 @@ namespace EntityStates.BeetleQueenMonster
 			return result;
 		}
 
-		// Token: 0x06000928 RID: 2344 RVA: 0x0002E024 File Offset: 0x0002C224
+		// Token: 0x06003328 RID: 13096 RVA: 0x000DDC78 File Offset: 0x000DBE78
 		private void SummonEgg()
 		{
 			Vector3 point = Vector3.zero;
@@ -71,13 +71,15 @@ namespace EntityStates.BeetleQueenMonster
 			Transform transform = this.FindTargetClosest(point, enemyTeam);
 			if (transform)
 			{
-				GameObject gameObject = DirectorCore.instance.TrySpawnObject((SpawnCard)Resources.Load("SpawnCards/CharacterSpawnCards/cscBeetle"), new DirectorPlacementRule
+				DirectorSpawnRequest directorSpawnRequest = new DirectorSpawnRequest((SpawnCard)Resources.Load("SpawnCards/CharacterSpawnCards/cscBeetle"), new DirectorPlacementRule
 				{
 					placementMode = DirectorPlacementRule.PlacementMode.Approximate,
 					minDistance = 3f,
 					maxDistance = 20f,
 					spawnOnTarget = transform
 				}, RoR2Application.rng);
+				directorSpawnRequest.summonerBodyObject = base.gameObject;
+				GameObject gameObject = DirectorCore.instance.TrySpawnObject(directorSpawnRequest);
 				if (gameObject)
 				{
 					gameObject.GetComponent<Inventory>().SetEquipmentIndex(base.characterBody.inventory.currentEquipmentIndex);
@@ -85,7 +87,7 @@ namespace EntityStates.BeetleQueenMonster
 			}
 		}
 
-		// Token: 0x06000929 RID: 2345 RVA: 0x0002E130 File Offset: 0x0002C330
+		// Token: 0x06003329 RID: 13097 RVA: 0x000DDD9C File Offset: 0x000DBF9C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -117,52 +119,52 @@ namespace EntityStates.BeetleQueenMonster
 			}
 		}
 
-		// Token: 0x0600092A RID: 2346 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x0600332A RID: 13098 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000C64 RID: 3172
+		// Token: 0x0400328C RID: 12940
 		public static float baseDuration = 3.5f;
 
-		// Token: 0x04000C65 RID: 3173
+		// Token: 0x0400328D RID: 12941
 		public static string attackSoundString;
 
-		// Token: 0x04000C66 RID: 3174
+		// Token: 0x0400328E RID: 12942
 		public static float randomRadius = 8f;
 
-		// Token: 0x04000C67 RID: 3175
+		// Token: 0x0400328F RID: 12943
 		public static GameObject spitPrefab;
 
-		// Token: 0x04000C68 RID: 3176
+		// Token: 0x04003290 RID: 12944
 		public static int maxSummonCount = 5;
 
-		// Token: 0x04000C69 RID: 3177
+		// Token: 0x04003291 RID: 12945
 		private static float summonDuration = 3.26f;
 
-		// Token: 0x04000C6A RID: 3178
+		// Token: 0x04003292 RID: 12946
 		private Animator animator;
 
-		// Token: 0x04000C6B RID: 3179
+		// Token: 0x04003293 RID: 12947
 		private Transform modelTransform;
 
-		// Token: 0x04000C6C RID: 3180
+		// Token: 0x04003294 RID: 12948
 		private ChildLocator childLocator;
 
-		// Token: 0x04000C6D RID: 3181
+		// Token: 0x04003295 RID: 12949
 		private float duration;
 
-		// Token: 0x04000C6E RID: 3182
+		// Token: 0x04003296 RID: 12950
 		private float summonInterval;
 
-		// Token: 0x04000C6F RID: 3183
+		// Token: 0x04003297 RID: 12951
 		private float summonTimer;
 
-		// Token: 0x04000C70 RID: 3184
+		// Token: 0x04003298 RID: 12952
 		private int summonCount;
 
-		// Token: 0x04000C71 RID: 3185
+		// Token: 0x04003299 RID: 12953
 		private bool isSummoning;
 	}
 }

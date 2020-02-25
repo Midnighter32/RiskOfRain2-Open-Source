@@ -4,18 +4,18 @@ using UnityEngine;
 
 namespace RoR2.UI.SkinControllers
 {
-	// Token: 0x02000660 RID: 1632
+	// Token: 0x02000655 RID: 1621
 	[RequireComponent(typeof(TextMeshProUGUI))]
 	public class LabelSkinController : BaseSkinController
 	{
-		// Token: 0x06002476 RID: 9334 RVA: 0x000AAE84 File Offset: 0x000A9084
+		// Token: 0x0600261A RID: 9754 RVA: 0x000A59C0 File Offset: 0x000A3BC0
 		protected new void Awake()
 		{
 			this.label = base.GetComponent<TextMeshProUGUI>();
 			base.Awake();
 		}
 
-		// Token: 0x06002477 RID: 9335 RVA: 0x000AAE98 File Offset: 0x000A9098
+		// Token: 0x0600261B RID: 9755 RVA: 0x000A59D4 File Offset: 0x000A3BD4
 		protected override void OnSkinUI()
 		{
 			switch (this.labelType)
@@ -34,23 +34,23 @@ namespace RoR2.UI.SkinControllers
 			}
 		}
 
-		// Token: 0x04002771 RID: 10097
+		// Token: 0x040023D8 RID: 9176
 		public LabelSkinController.LabelType labelType;
 
-		// Token: 0x04002772 RID: 10098
+		// Token: 0x040023D9 RID: 9177
 		public bool useRecommendedAlignment = true;
 
-		// Token: 0x04002773 RID: 10099
+		// Token: 0x040023DA RID: 9178
 		private TextMeshProUGUI label;
 
-		// Token: 0x02000661 RID: 1633
+		// Token: 0x02000656 RID: 1622
 		public enum LabelType
 		{
-			// Token: 0x04002775 RID: 10101
+			// Token: 0x040023DC RID: 9180
 			Default,
-			// Token: 0x04002776 RID: 10102
+			// Token: 0x040023DD RID: 9181
 			Header,
-			// Token: 0x04002777 RID: 10103
+			// Token: 0x040023DE RID: 9182
 			Detail
 		}
 	}

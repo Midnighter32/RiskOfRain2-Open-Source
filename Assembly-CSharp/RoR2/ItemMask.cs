@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000448 RID: 1096
+	// Token: 0x020003AD RID: 941
 	[Serializable]
 	public struct ItemMask
 	{
-		// Token: 0x0600185D RID: 6237 RVA: 0x00074085 File Offset: 0x00072285
+		// Token: 0x060016C8 RID: 5832 RVA: 0x00061BF7 File Offset: 0x0005FDF7
 		public bool HasItem(ItemIndex itemIndex)
 		{
-			if (itemIndex < ItemIndex.Syringe || itemIndex >= ItemIndex.Count)
+			if (!ItemCatalog.IsIndexValid(itemIndex))
 			{
 				return false;
 			}
@@ -21,10 +21,10 @@ namespace RoR2
 			return (this.b & 1UL << itemIndex - ItemIndex.FireRing) > 0UL;
 		}
 
-		// Token: 0x0600185E RID: 6238 RVA: 0x000740BF File Offset: 0x000722BF
+		// Token: 0x060016C9 RID: 5833 RVA: 0x00061C31 File Offset: 0x0005FE31
 		public void AddItem(ItemIndex itemIndex)
 		{
-			if (itemIndex < ItemIndex.Syringe || itemIndex >= ItemIndex.Count)
+			if (!ItemCatalog.IsIndexValid(itemIndex))
 			{
 				return;
 			}
@@ -36,10 +36,10 @@ namespace RoR2
 			this.b |= 1UL << itemIndex - ItemIndex.FireRing;
 		}
 
-		// Token: 0x0600185F RID: 6239 RVA: 0x000740FC File Offset: 0x000722FC
+		// Token: 0x060016CA RID: 5834 RVA: 0x00061C6E File Offset: 0x0005FE6E
 		public void RemoveItem(ItemIndex itemIndex)
 		{
-			if (itemIndex < ItemIndex.Syringe || itemIndex >= ItemIndex.Count)
+			if (!ItemCatalog.IsIndexValid(itemIndex))
 			{
 				return;
 			}
@@ -51,7 +51,7 @@ namespace RoR2
 			this.b &= ~(1UL << itemIndex - ItemIndex.FireRing);
 		}
 
-		// Token: 0x06001860 RID: 6240 RVA: 0x0007413C File Offset: 0x0007233C
+		// Token: 0x060016CB RID: 5835 RVA: 0x00061CB0 File Offset: 0x0005FEB0
 		public static ItemMask operator &(ItemMask mask1, ItemMask mask2)
 		{
 			return new ItemMask
@@ -61,27 +61,30 @@ namespace RoR2
 			};
 		}
 
-		// Token: 0x06001861 RID: 6241 RVA: 0x0007417C File Offset: 0x0007237C
+		// Token: 0x060016CC RID: 5836 RVA: 0x00061CF0 File Offset: 0x0005FEF0
 		static ItemMask()
 		{
-			for (ItemIndex itemIndex = ItemIndex.Syringe; itemIndex < ItemIndex.Count; itemIndex++)
+			ItemIndex itemIndex = ItemIndex.Syringe;
+			ItemIndex itemCount = (ItemIndex)ItemCatalog.itemCount;
+			while (itemIndex < itemCount)
 			{
 				ItemMask.all.AddItem(itemIndex);
+				itemIndex++;
 			}
 		}
 
-		// Token: 0x04001BEF RID: 7151
+		// Token: 0x040015B3 RID: 5555
 		[SerializeField]
 		public ulong a;
 
-		// Token: 0x04001BF0 RID: 7152
+		// Token: 0x040015B4 RID: 5556
 		[SerializeField]
 		public ulong b;
 
-		// Token: 0x04001BF1 RID: 7153
+		// Token: 0x040015B5 RID: 5557
 		public static readonly ItemMask none;
 
-		// Token: 0x04001BF2 RID: 7154
+		// Token: 0x040015B6 RID: 5558
 		public static readonly ItemMask all = default(ItemMask);
 	}
 }

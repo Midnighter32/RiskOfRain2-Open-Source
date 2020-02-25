@@ -9,22 +9,22 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005DE RID: 1502
+	// Token: 0x020005BD RID: 1469
 	[RequireComponent(typeof(MPEventSystemProvider))]
 	public class GameEndReportPanelController : MonoBehaviour
 	{
-		// Token: 0x170002F2 RID: 754
-		// (get) Token: 0x060021A1 RID: 8609 RVA: 0x0009E40C File Offset: 0x0009C60C
-		// (set) Token: 0x060021A2 RID: 8610 RVA: 0x0009E414 File Offset: 0x0009C614
+		// Token: 0x170003A6 RID: 934
+		// (get) Token: 0x060022D1 RID: 8913 RVA: 0x000973B0 File Offset: 0x000955B0
+		// (set) Token: 0x060022D2 RID: 8914 RVA: 0x000973B8 File Offset: 0x000955B8
 		public GameEndReportPanelController.DisplayData displayData { get; private set; }
 
-		// Token: 0x060021A3 RID: 8611 RVA: 0x0009E41D File Offset: 0x0009C61D
+		// Token: 0x060022D3 RID: 8915 RVA: 0x000973C1 File Offset: 0x000955C1
 		private void Awake()
 		{
 			this.playerNavigationController.onPageChangeSubmitted += this.OnPlayerNavigationControllerPageChangeSubmitted;
 		}
 
-		// Token: 0x060021A4 RID: 8612 RVA: 0x0009E438 File Offset: 0x0009C638
+		// Token: 0x060022D4 RID: 8916 RVA: 0x000973DC File Offset: 0x000955DC
 		private void SetFlashAnimationValue(float t)
 		{
 			if (t == this.lastFlashAnimationValue)
@@ -40,14 +40,14 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060021A5 RID: 8613 RVA: 0x0009E4AC File Offset: 0x0009C6AC
+		// Token: 0x060022D5 RID: 8917 RVA: 0x00097450 File Offset: 0x00095650
 		private void Update()
 		{
 			this.flashStopwatch += Time.deltaTime;
 			this.SetFlashAnimationValue(Mathf.Clamp01(this.flashStopwatch / this.flashDuration));
 		}
 
-		// Token: 0x060021A6 RID: 8614 RVA: 0x0009E4D8 File Offset: 0x0009C6D8
+		// Token: 0x060022D6 RID: 8918 RVA: 0x0009747C File Offset: 0x0009567C
 		private void AllocateStatStrips(int count)
 		{
 			while (this.statStrips.Count > count)
@@ -74,7 +74,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060021A7 RID: 8615 RVA: 0x0009E5BC File Offset: 0x0009C7BC
+		// Token: 0x060022D7 RID: 8919 RVA: 0x00097560 File Offset: 0x00095760
 		private void AllocateUnlockStrips(int count)
 		{
 			while (this.unlockStrips.Count > count)
@@ -91,7 +91,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060021A8 RID: 8616 RVA: 0x0009E640 File Offset: 0x0009C840
+		// Token: 0x060022D8 RID: 8920 RVA: 0x000975E4 File Offset: 0x000957E4
 		public void SetDisplayData(GameEndReportPanelController.DisplayData newDisplayData)
 		{
 			if (this.displayData.Equals(newDisplayData))
@@ -124,6 +124,20 @@ namespace RoR2.UI
 				}
 				this.resultLabel.text = Language.GetString(token);
 			}
+			DifficultyIndex difficultyIndex = DifficultyIndex.Invalid;
+			if (this.displayData.runReport != null)
+			{
+				difficultyIndex = this.displayData.runReport.ruleBook.FindDifficulty();
+			}
+			DifficultyDef difficultyDef = DifficultyCatalog.GetDifficultyDef(difficultyIndex);
+			if (this.selectedDifficultyImage)
+			{
+				this.selectedDifficultyImage.sprite = ((difficultyDef != null) ? difficultyDef.GetIconSprite() : null);
+			}
+			if (this.selectedDifficultyLabel)
+			{
+				this.selectedDifficultyLabel.token = ((difficultyDef != null) ? difficultyDef.nameToken : null);
+			}
 			RunReport runReport = this.displayData.runReport;
 			RunReport.PlayerInfo playerInfo = (runReport != null) ? runReport.GetPlayerInfoSafe(this.displayData.playerIndex) : null;
 			this.SetPlayerInfo(playerInfo);
@@ -149,7 +163,7 @@ namespace RoR2.UI
 			this.selectedPlayerEffectRoot.localScale = Vector3.one;
 		}
 
-		// Token: 0x060021A9 RID: 8617 RVA: 0x0009E84C File Offset: 0x0009CA4C
+		// Token: 0x060022D9 RID: 8921 RVA: 0x00097868 File Offset: 0x00095A68
 		private void OnPlayerNavigationControllerPageChangeSubmitted(int newPage)
 		{
 			GameEndReportPanelController.DisplayData displayData = this.displayData;
@@ -157,7 +171,7 @@ namespace RoR2.UI
 			this.SetDisplayData(displayData);
 		}
 
-		// Token: 0x060021AA RID: 8618 RVA: 0x0009E870 File Offset: 0x0009CA70
+		// Token: 0x060022DA RID: 8922 RVA: 0x0009788C File Offset: 0x00095A8C
 		private void SetPlayerInfo([CanBeNull] RunReport.PlayerInfo playerInfo)
 		{
 			ulong num = 0UL;
@@ -218,7 +232,7 @@ namespace RoR2.UI
 				}
 			}
 			string @string = Language.GetString("STAT_POINTS_FORMAT");
-			this.totalPointsLabel.text = string.Format(@string, num);
+			this.totalPointsLabel.text = string.Format(@string, TextSerialization.ToStringNumeric(num));
 			GameObject gameObject = null;
 			if (playerInfo != null)
 			{
@@ -239,37 +253,45 @@ namespace RoR2.UI
 			{
 				gameObject2 = BodyCatalog.GetBodyPrefab(playerInfo.killerBodyIndex);
 			}
-			string arg2 = "";
-			Texture texture2 = null;
+			string string3 = Language.GetString("UNIDENTIFIED");
+			Texture texture2 = Resources.Load<Texture>("Textures/MiscIcons/texMysteryIcon");
 			if (gameObject2)
 			{
-				texture2 = gameObject2.GetComponent<CharacterBody>().portraitIcon;
-				arg2 = Language.GetString(gameObject2.GetComponent<CharacterBody>().baseNameToken);
+				Texture portraitIcon = gameObject2.GetComponent<CharacterBody>().portraitIcon;
+				string baseNameToken = gameObject2.GetComponent<CharacterBody>().baseNameToken;
+				if (portraitIcon != null)
+				{
+					texture2 = portraitIcon;
+				}
+				if (!Language.IsTokenInvalid(baseNameToken))
+				{
+					string3 = Language.GetString(gameObject2.GetComponent<CharacterBody>().baseNameToken);
+				}
 			}
-			string string3 = Language.GetString("STAT_KILLER_NAME_FORMAT");
-			this.killerBodyLabel.text = string.Format(string3, arg2);
+			string string4 = Language.GetString("STAT_KILLER_NAME_FORMAT");
+			this.killerBodyLabel.text = string.Format(string4, string3);
 			this.killerBodyPortraitImage.texture = texture2;
-			this.killerPanelObject.SetActive(gameObject2);
+			this.killerPanelObject.SetActive(true);
 		}
 
-		// Token: 0x060021AB RID: 8619 RVA: 0x0009EAF8 File Offset: 0x0009CCF8
+		// Token: 0x060022DB RID: 8923 RVA: 0x00097B3C File Offset: 0x00095D3C
 		private void AssignStatToStrip([CanBeNull] StatSheet srcStatSheet, [NotNull] StatDef statDef, GameObject destStatStrip)
 		{
 			string arg = "0";
-			ulong num = 0UL;
+			ulong value = 0UL;
 			if (srcStatSheet != null)
 			{
 				arg = srcStatSheet.GetStatDisplayValue(statDef);
-				num = srcStatSheet.GetStatPointValue(statDef);
+				value = srcStatSheet.GetStatPointValue(statDef);
 			}
 			string @string = Language.GetString(statDef.displayToken);
 			string text = string.Format(Language.GetString("STAT_NAME_VALUE_FORMAT"), @string, arg);
 			destStatStrip.transform.Find("StatNameLabel").GetComponent<TextMeshProUGUI>().text = text;
 			string string2 = Language.GetString("STAT_POINTS_FORMAT");
-			destStatStrip.transform.Find("PointValueLabel").GetComponent<TextMeshProUGUI>().text = string.Format(string2, num);
+			destStatStrip.transform.Find("PointValueLabel").GetComponent<TextMeshProUGUI>().text = string.Format(string2, TextSerialization.ToStringNumeric(value));
 		}
 
-		// Token: 0x060021AC RID: 8620 RVA: 0x0009EB90 File Offset: 0x0009CD90
+		// Token: 0x060022DC RID: 8924 RVA: 0x00097BD4 File Offset: 0x00095DD4
 		private void AssignUnlockToStrip(UnlockableDef unlockableDef, GameObject destUnlockableStrip)
 		{
 			AchievementDef achievementDefFromUnlockable = AchievementManager.GetAchievementDefFromUnlockable(unlockableDef.name);
@@ -310,121 +332,130 @@ namespace RoR2.UI
 			destUnlockableStrip.GetComponent<TooltipProvider>().overrideBodyText = string2;
 		}
 
-		// Token: 0x0400245F RID: 9311
-		[Tooltip("The TextMeshProUGUI component to use to display the result of the game: Win or Loss")]
+		// Token: 0x0400206E RID: 8302
 		[Header("Result")]
+		[Tooltip("The TextMeshProUGUI component to use to display the result of the game: Win or Loss")]
 		public TextMeshProUGUI resultLabel;
 
-		// Token: 0x04002460 RID: 9312
+		// Token: 0x0400206F RID: 8303
+		[Tooltip("The Image component to use to display the selected difficulty of the run.")]
+		[Header("Run Settings")]
+		public Image selectedDifficultyImage;
+
+		// Token: 0x04002070 RID: 8304
+		[Tooltip("The LanguageTextMeshController component to use to display the selected difficulty of the run.")]
+		public LanguageTextMeshController selectedDifficultyLabel;
+
+		// Token: 0x04002071 RID: 8305
 		[Tooltip("A list of StatDef names to display in the stats section.")]
 		[Header("Stats")]
 		public string[] statsToDisplay;
 
-		// Token: 0x04002461 RID: 9313
+		// Token: 0x04002072 RID: 8306
 		[Tooltip("Prefab to be used for stat display.")]
 		public GameObject statStripPrefab;
 
-		// Token: 0x04002462 RID: 9314
+		// Token: 0x04002073 RID: 8307
 		[Tooltip("The RectTransform in which to build the stat strips.")]
 		public RectTransform statContentArea;
 
-		// Token: 0x04002463 RID: 9315
+		// Token: 0x04002074 RID: 8308
 		[Tooltip("The TextMeshProUGUI component used to display the total points.")]
 		public TextMeshProUGUI totalPointsLabel;
 
-		// Token: 0x04002464 RID: 9316
+		// Token: 0x04002075 RID: 8309
 		[Tooltip("The component in charge of swiping over all elements over time.")]
 		public AnimateImageAlpha statsAnimateImageAlpha;
 
-		// Token: 0x04002465 RID: 9317
-		[Header("Unlocks")]
+		// Token: 0x04002076 RID: 8310
 		[Tooltip("Prefab to be used for unlock display.")]
+		[Header("Unlocks")]
 		public GameObject unlockStripPrefab;
 
-		// Token: 0x04002466 RID: 9318
+		// Token: 0x04002077 RID: 8311
 		[Tooltip("The RectTransform in which to build the unlock strips.")]
 		public RectTransform unlockContentArea;
 
-		// Token: 0x04002467 RID: 9319
+		// Token: 0x04002078 RID: 8312
 		[Tooltip("The inventory display controller.")]
 		[Header("Items")]
 		public ItemInventoryDisplay itemInventoryDisplay;
 
-		// Token: 0x04002468 RID: 9320
-		[Tooltip("How long the flash animation takes.")]
+		// Token: 0x04002079 RID: 8313
 		[Header("Intro Flash Animation")]
+		[Tooltip("How long the flash animation takes.")]
 		public float flashDuration;
 
-		// Token: 0x04002469 RID: 9321
+		// Token: 0x0400207A RID: 8314
 		[Tooltip("A white panel whose alpha will be animated from 0->1->0 when this panel is shown to simulate a flash effect.")]
 		public Image flashOverlay;
 
-		// Token: 0x0400246A RID: 9322
+		// Token: 0x0400207B RID: 8315
 		[Tooltip("The alpha curve for flashOverlay")]
 		public AnimationCurve flashCurve;
 
-		// Token: 0x0400246B RID: 9323
+		// Token: 0x0400207C RID: 8316
 		[Tooltip("The CanvasGroup which controls the alpha of this entire panel.")]
 		public CanvasGroup canvasGroup;
 
-		// Token: 0x0400246C RID: 9324
+		// Token: 0x0400207D RID: 8317
 		[Tooltip("The alpha curve for this panel during its appearance animation.")]
 		public AnimationCurve alphaCurve;
 
-		// Token: 0x0400246D RID: 9325
+		// Token: 0x0400207E RID: 8318
 		[Header("Player Info")]
 		[Tooltip("The RawImage component to use to display the player character's portrait.")]
 		public RawImage playerBodyPortraitImage;
 
-		// Token: 0x0400246E RID: 9326
+		// Token: 0x0400207F RID: 8319
 		[Tooltip("The TextMeshProUGUI component to use to display the player character's body name.")]
 		public TextMeshProUGUI playerBodyLabel;
 
-		// Token: 0x0400246F RID: 9327
-		[Tooltip("The RawImage component to use to display the killer character's portrait.")]
+		// Token: 0x04002080 RID: 8320
 		[Header("Killer Info")]
+		[Tooltip("The RawImage component to use to display the killer character's portrait.")]
 		public RawImage killerBodyPortraitImage;
 
-		// Token: 0x04002470 RID: 9328
+		// Token: 0x04002081 RID: 8321
 		[Tooltip("The TextMeshProUGUI component to use to display the killer character's body name.")]
 		public TextMeshProUGUI killerBodyLabel;
 
-		// Token: 0x04002471 RID: 9329
+		// Token: 0x04002082 RID: 8322
 		[Tooltip("The GameObject used as the panel for the killer information. This is used to disable the killer panel when the player has won the game.")]
 		public GameObject killerPanelObject;
 
-		// Token: 0x04002472 RID: 9330
+		// Token: 0x04002083 RID: 8323
 		[Header("Navigation")]
 		public MPButton continueButton;
 
-		// Token: 0x04002473 RID: 9331
+		// Token: 0x04002084 RID: 8324
 		public CarouselNavigationController playerNavigationController;
 
-		// Token: 0x04002474 RID: 9332
+		// Token: 0x04002085 RID: 8325
 		public RectTransform selectedPlayerEffectRoot;
 
-		// Token: 0x04002475 RID: 9333
+		// Token: 0x04002086 RID: 8326
 		private float lastFlashAnimationValue = -1f;
 
-		// Token: 0x04002476 RID: 9334
+		// Token: 0x04002087 RID: 8327
 		private float flashStopwatch;
 
-		// Token: 0x04002477 RID: 9335
+		// Token: 0x04002088 RID: 8328
 		private readonly List<GameObject> statStrips = new List<GameObject>();
 
-		// Token: 0x04002478 RID: 9336
+		// Token: 0x04002089 RID: 8329
 		private readonly List<GameObject> unlockStrips = new List<GameObject>();
 
-		// Token: 0x020005DF RID: 1503
+		// Token: 0x020005BE RID: 1470
 		public struct DisplayData : IEquatable<GameEndReportPanelController.DisplayData>
 		{
-			// Token: 0x060021AE RID: 8622 RVA: 0x0009ECEB File Offset: 0x0009CEEB
+			// Token: 0x060022DE RID: 8926 RVA: 0x00097D2F File Offset: 0x00095F2F
 			public bool Equals(GameEndReportPanelController.DisplayData other)
 			{
 				return object.Equals(this.runReport, other.runReport) && this.playerIndex == other.playerIndex;
 			}
 
-			// Token: 0x060021AF RID: 8623 RVA: 0x0009ED10 File Offset: 0x0009CF10
+			// Token: 0x060022DF RID: 8927 RVA: 0x00097D54 File Offset: 0x00095F54
 			public override bool Equals(object obj)
 			{
 				if (obj == null)
@@ -439,17 +470,17 @@ namespace RoR2.UI
 				return false;
 			}
 
-			// Token: 0x060021B0 RID: 8624 RVA: 0x0009ED3C File Offset: 0x0009CF3C
+			// Token: 0x060022E0 RID: 8928 RVA: 0x00097D80 File Offset: 0x00095F80
 			public override int GetHashCode()
 			{
 				return ((-1418150836 * -1521134295 + base.GetHashCode()) * -1521134295 + EqualityComparer<RunReport>.Default.GetHashCode(this.runReport)) * -1521134295 + this.playerIndex.GetHashCode();
 			}
 
-			// Token: 0x04002479 RID: 9337
+			// Token: 0x0400208A RID: 8330
 			[CanBeNull]
 			public RunReport runReport;
 
-			// Token: 0x0400247A RID: 9338
+			// Token: 0x0400208B RID: 8331
 			public int playerIndex;
 		}
 	}

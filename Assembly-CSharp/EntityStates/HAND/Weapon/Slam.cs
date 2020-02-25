@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.HAND.Weapon
 {
-	// Token: 0x02000167 RID: 359
+	// Token: 0x02000849 RID: 2121
 	public class Slam : BaseState
 	{
-		// Token: 0x060006F8 RID: 1784 RVA: 0x00021494 File Offset: 0x0001F694
+		// Token: 0x06002FFD RID: 12285 RVA: 0x000CDB9C File Offset: 0x000CBD9C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -42,7 +42,7 @@ namespace EntityStates.HAND.Weapon
 			}
 		}
 
-		// Token: 0x060006F9 RID: 1785 RVA: 0x00021600 File Offset: 0x0001F800
+		// Token: 0x06002FFE RID: 12286 RVA: 0x000CDD08 File Offset: 0x000CBF08
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -51,7 +51,7 @@ namespace EntityStates.HAND.Weapon
 				if (!this.hasSwung)
 				{
 					Ray aimRay = base.GetAimRay();
-					EffectManager.instance.SimpleMuzzleFlash(Slam.swingEffectPrefab, base.gameObject, "SwingCenter", true);
+					EffectManager.SimpleMuzzleFlash(Slam.swingEffectPrefab, base.gameObject, "SwingCenter", true);
 					ProjectileManager.instance.FireProjectile(Slam.projectilePrefab, aimRay.origin, Util.QuaternionSafeLookRotation(aimRay.direction), base.gameObject, this.damageStat * Slam.earthquakeDamageCoefficient, Slam.forceMagnitude, Util.CheckRoll(this.critStat, base.characterBody.master), DamageColorIndex.Default, null, -1f);
 					this.hasSwung = true;
 				}
@@ -65,52 +65,52 @@ namespace EntityStates.HAND.Weapon
 			}
 		}
 
-		// Token: 0x060006FA RID: 1786 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06002FFF RID: 12287 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x0400088B RID: 2187
+		// Token: 0x04002DD1 RID: 11729
 		public static float baseDuration = 3.5f;
 
-		// Token: 0x0400088C RID: 2188
+		// Token: 0x04002DD2 RID: 11730
 		public static float returnToIdlePercentage;
 
-		// Token: 0x0400088D RID: 2189
+		// Token: 0x04002DD3 RID: 11731
 		public static float impactDamageCoefficient = 2f;
 
-		// Token: 0x0400088E RID: 2190
+		// Token: 0x04002DD4 RID: 11732
 		public static float earthquakeDamageCoefficient = 2f;
 
-		// Token: 0x0400088F RID: 2191
+		// Token: 0x04002DD5 RID: 11733
 		public static float forceMagnitude = 16f;
 
-		// Token: 0x04000890 RID: 2192
+		// Token: 0x04002DD6 RID: 11734
 		public static float radius = 3f;
 
-		// Token: 0x04000891 RID: 2193
+		// Token: 0x04002DD7 RID: 11735
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000892 RID: 2194
+		// Token: 0x04002DD8 RID: 11736
 		public static GameObject swingEffectPrefab;
 
-		// Token: 0x04000893 RID: 2195
+		// Token: 0x04002DD9 RID: 11737
 		public static GameObject projectilePrefab;
 
-		// Token: 0x04000894 RID: 2196
+		// Token: 0x04002DDA RID: 11738
 		private Transform hammerChildTransform;
 
-		// Token: 0x04000895 RID: 2197
+		// Token: 0x04002DDB RID: 11739
 		private OverlapAttack attack;
 
-		// Token: 0x04000896 RID: 2198
+		// Token: 0x04002DDC RID: 11740
 		private Animator modelAnimator;
 
-		// Token: 0x04000897 RID: 2199
+		// Token: 0x04002DDD RID: 11741
 		private float duration;
 
-		// Token: 0x04000898 RID: 2200
+		// Token: 0x04002DDE RID: 11742
 		private bool hasSwung;
 	}
 }

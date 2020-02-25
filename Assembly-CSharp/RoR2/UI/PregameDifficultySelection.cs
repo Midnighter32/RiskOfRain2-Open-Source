@@ -5,38 +5,38 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000624 RID: 1572
-	[RequireComponent(typeof(RectTransform))]
+	// Token: 0x02000613 RID: 1555
 	[RequireComponent(typeof(Image))]
+	[RequireComponent(typeof(RectTransform))]
 	public class PregameDifficultySelection : MonoBehaviour
 	{
-		// Token: 0x0600234D RID: 9037 RVA: 0x000A6528 File Offset: 0x000A4728
+		// Token: 0x060024CC RID: 9420 RVA: 0x000A0908 File Offset: 0x0009EB08
 		private void Awake()
 		{
 			this.image = base.GetComponent<Image>();
 		}
 
-		// Token: 0x0600234E RID: 9038 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060024CD RID: 9421 RVA: 0x0000409B File Offset: 0x0000229B
 		private void LateUpdate()
 		{
 		}
 
-		// Token: 0x0600234F RID: 9039 RVA: 0x000A6536 File Offset: 0x000A4736
+		// Token: 0x060024CE RID: 9422 RVA: 0x000A0916 File Offset: 0x0009EB16
 		public void SetCharacterSelectControllerDifficulty()
 		{
 			bool active = NetworkServer.active;
 		}
 
-		// Token: 0x0400264A RID: 9802
+		// Token: 0x04002293 RID: 8851
 		private Image image;
 
-		// Token: 0x0400264B RID: 9803
+		// Token: 0x04002294 RID: 8852
 		public DifficultyIndex difficulty;
 
-		// Token: 0x0400264C RID: 9804
+		// Token: 0x04002295 RID: 8853
 		public Sprite enabledSprite;
 
-		// Token: 0x0400264D RID: 9805
+		// Token: 0x04002296 RID: 8854
 		public Sprite disabledSprite;
 	}
 }

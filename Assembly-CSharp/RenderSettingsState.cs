@@ -2,11 +2,11 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-// Token: 0x0200006C RID: 108
+// Token: 0x02000070 RID: 112
 [Serializable]
 public struct RenderSettingsState
 {
-	// Token: 0x060001A0 RID: 416 RVA: 0x00009008 File Offset: 0x00007208
+	// Token: 0x060001CE RID: 462 RVA: 0x00009914 File Offset: 0x00007B14
 	public static RenderSettingsState FromCurrent()
 	{
 		return new RenderSettingsState
@@ -38,7 +38,7 @@ public struct RenderSettingsState
 		};
 	}
 
-	// Token: 0x060001A1 RID: 417 RVA: 0x00009140 File Offset: 0x00007340
+	// Token: 0x060001CF RID: 463 RVA: 0x00009A4C File Offset: 0x00007C4C
 	public void Apply()
 	{
 		RenderSettings.haloStrength = this.haloStrength;
@@ -67,80 +67,80 @@ public struct RenderSettingsState
 		RenderSettings.flareFadeSpeed = this.flareFadeSpeed;
 	}
 
-	// Token: 0x040001D1 RID: 465
+	// Token: 0x040001D8 RID: 472
 	public float haloStrength;
 
-	// Token: 0x040001D2 RID: 466
+	// Token: 0x040001D9 RID: 473
 	public int defaultReflectionResolution;
 
-	// Token: 0x040001D3 RID: 467
+	// Token: 0x040001DA RID: 474
 	public DefaultReflectionMode defaultReflectionMode;
 
-	// Token: 0x040001D4 RID: 468
+	// Token: 0x040001DB RID: 475
 	public int reflectionBounces;
 
-	// Token: 0x040001D5 RID: 469
+	// Token: 0x040001DC RID: 476
 	public float reflectionIntensity;
 
-	// Token: 0x040001D6 RID: 470
+	// Token: 0x040001DD RID: 477
 	public Cubemap customReflection;
 
-	// Token: 0x040001D7 RID: 471
+	// Token: 0x040001DE RID: 478
 	public SphericalHarmonicsL2 ambientProbe;
 
-	// Token: 0x040001D8 RID: 472
+	// Token: 0x040001DF RID: 479
 	public Light sun;
 
-	// Token: 0x040001D9 RID: 473
+	// Token: 0x040001E0 RID: 480
 	public Material skybox;
 
-	// Token: 0x040001DA RID: 474
+	// Token: 0x040001E1 RID: 481
 	public Color subtractiveShadowColor;
 
-	// Token: 0x040001DB RID: 475
+	// Token: 0x040001E2 RID: 482
 	public float flareStrength;
 
-	// Token: 0x040001DC RID: 476
+	// Token: 0x040001E3 RID: 483
 	[ColorUsage(false, true)]
 	public Color ambientLight;
 
-	// Token: 0x040001DD RID: 477
+	// Token: 0x040001E4 RID: 484
 	[ColorUsage(false, true)]
 	public Color ambientGroundColor;
 
-	// Token: 0x040001DE RID: 478
+	// Token: 0x040001E5 RID: 485
 	[ColorUsage(false, true)]
 	public Color ambientEquatorColor;
 
-	// Token: 0x040001DF RID: 479
+	// Token: 0x040001E6 RID: 486
 	[ColorUsage(false, true)]
 	public Color ambientSkyColor;
 
-	// Token: 0x040001E0 RID: 480
+	// Token: 0x040001E7 RID: 487
 	public AmbientMode ambientMode;
 
-	// Token: 0x040001E1 RID: 481
+	// Token: 0x040001E8 RID: 488
 	public float fogDensity;
 
-	// Token: 0x040001E2 RID: 482
+	// Token: 0x040001E9 RID: 489
 	[ColorUsage(true, false)]
 	public Color fogColor;
 
-	// Token: 0x040001E3 RID: 483
+	// Token: 0x040001EA RID: 490
 	public FogMode fogMode;
 
-	// Token: 0x040001E4 RID: 484
+	// Token: 0x040001EB RID: 491
 	public float fogEndDistance;
 
-	// Token: 0x040001E5 RID: 485
+	// Token: 0x040001EC RID: 492
 	public float fogStartDistance;
 
-	// Token: 0x040001E6 RID: 486
+	// Token: 0x040001ED RID: 493
 	public bool fog;
 
-	// Token: 0x040001E7 RID: 487
+	// Token: 0x040001EE RID: 494
 	public float ambientIntensity;
 
-	// Token: 0x040001E8 RID: 488
+	// Token: 0x040001EF RID: 495
 	public float flareFadeSpeed;
 }

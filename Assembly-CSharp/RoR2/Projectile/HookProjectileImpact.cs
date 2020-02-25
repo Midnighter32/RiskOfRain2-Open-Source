@@ -1,30 +1,43 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RoR2.Projectile
 {
-	// Token: 0x02000539 RID: 1337
+	// Token: 0x020004F4 RID: 1268
 	[RequireComponent(typeof(ProjectileController))]
 	public class HookProjectileImpact : NetworkBehaviour, IProjectileImpactBehavior
 	{
-		// Token: 0x06001DEA RID: 7658 RVA: 0x0008C9F8 File Offset: 0x0008ABF8
-		private void Awake()
+		// Token: 0x06001E2F RID: 7727 RVA: 0x00081F68 File Offset: 0x00080168
+		private void Start()
 		{
 			this.rigidbody = base.GetComponent<Rigidbody>();
 			this.projectileController = base.GetComponent<ProjectileController>();
 			this.projectileDamage = base.GetComponent<ProjectileDamage>();
-			if (this.projectileController && this.projectileController.owner)
+			this.ownerTransform = this.projectileController.owner.transform;
+			if (this.ownerTransform)
 			{
-				this.ownerTransform = this.projectileController.owner.transform;
+				ModelLocator component = this.ownerTransform.GetComponent<ModelLocator>();
+				if (component)
+				{
+					Transform modelTransform = component.modelTransform;
+					if (modelTransform)
+					{
+						ChildLocator component2 = modelTransform.GetComponent<ChildLocator>();
+						if (component2)
+						{
+							this.ownerTransform = component2.FindChild(this.attachmentString);
+						}
+					}
+				}
 			}
-			this.liveTimer = this.maxDistance / this.reelSpeed;
 		}
 
-		// Token: 0x06001DEB RID: 7659 RVA: 0x0008CA74 File Offset: 0x0008AC74
+		// Token: 0x06001E30 RID: 7728 RVA: 0x00082000 File Offset: 0x00080200
 		public void OnProjectileImpact(ProjectileImpactInfo impactInfo)
 		{
-			EffectManager.instance.SimpleImpactEffect(this.impactSpark, impactInfo.estimatedPointOfImpact, -base.transform.forward, true);
+			EffectManager.SimpleImpactEffect(this.impactSpark, impactInfo.estimatedPointOfImpact, -base.transform.forward, true);
 			if (this.hookState != HookProjectileImpact.HookState.Flying)
 			{
 				return;
@@ -42,11 +55,6 @@ namespace RoR2.Projectile
 						return;
 					}
 					this.Networkvictim = healthComponent.gameObject;
-					this.victimSetStateOnHurt = this.victim.GetComponent<SetStateOnHurt>();
-					if (this.victimSetStateOnHurt)
-					{
-						this.victimSetStateOnHurt.SetPain();
-					}
 					DamageInfo damageInfo = new DamageInfo();
 					if (this.projectileDamage)
 					{
@@ -60,15 +68,11 @@ namespace RoR2.Projectile
 						damageInfo.procCoefficient = this.projectileController.procCoefficient;
 						damageInfo.damageColorIndex = this.projectileDamage.damageColorIndex;
 					}
-					else
-					{
-						Debug.Log("No projectile damage component!");
-					}
-					Debug.Log(damageInfo.damage);
 					healthComponent.TakeDamage(damageInfo);
 					GlobalEventManager.instance.OnHitEnemy(damageInfo, healthComponent.gameObject);
 					this.NetworkhookState = HookProjectileImpact.HookState.HitDelay;
-					EffectManager.instance.SimpleImpactEffect(this.impactSuccess, impactInfo.estimatedPointOfImpact, -base.transform.forward, true);
+					EffectManager.SimpleImpactEffect(this.impactSuccess, impactInfo.estimatedPointOfImpact, -base.transform.forward, true);
+					base.gameObject.layer = LayerIndex.noCollision.intVal;
 				}
 			}
 			if (!this.victim)
@@ -77,10 +81,10 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001DEC RID: 7660 RVA: 0x0008CC98 File Offset: 0x0008AE98
+		// Token: 0x06001E31 RID: 7729 RVA: 0x000821E8 File Offset: 0x000803E8
 		private bool Reel()
 		{
-			Vector3 vector = this.projectileController.owner.transform.position - this.victim.transform.position;
+			Vector3 vector = this.ownerTransform.position - this.victim.transform.position;
 			Vector3 normalized = vector.normalized;
 			float num = vector.magnitude;
 			Collider component = this.projectileController.owner.GetComponent<Collider>();
@@ -89,8 +93,7 @@ namespace RoR2.Projectile
 			{
 				num = Util.EstimateSurfaceDistance(component, component2);
 			}
-			bool flag = num <= 2f;
-			Rigidbody rigidbody = null;
+			bool flag = num <= this.pullMinimumDistance;
 			float num2 = -1f;
 			CharacterMotor component3 = this.projectileController.owner.GetComponent<CharacterMotor>();
 			if (component3)
@@ -99,83 +102,61 @@ namespace RoR2.Projectile
 			}
 			else
 			{
-				rigidbody = this.projectileController.owner.GetComponent<Rigidbody>();
-				if (rigidbody)
+				Rigidbody component4 = this.projectileController.owner.GetComponent<Rigidbody>();
+				if (component4)
 				{
-					num2 = rigidbody.mass;
+					num2 = component4.mass;
 				}
 			}
-			Rigidbody rigidbody2 = null;
+			Rigidbody rigidbody = null;
 			float num3 = -1f;
-			CharacterMotor component4 = this.victim.GetComponent<CharacterMotor>();
-			if (component4)
+			CharacterMotor component5 = this.victim.GetComponent<CharacterMotor>();
+			if (component5)
 			{
-				num3 = component4.mass;
+				num3 = component5.mass;
 			}
 			else
 			{
-				rigidbody2 = this.victim.GetComponent<Rigidbody>();
-				if (rigidbody2)
+				rigidbody = this.victim.GetComponent<Rigidbody>();
+				if (rigidbody)
 				{
-					num3 = rigidbody2.mass;
+					num3 = rigidbody.mass;
 				}
 			}
 			float num4 = 0f;
-			float num5 = 0f;
 			if (num2 > 0f && num3 > 0f)
 			{
-				num4 = 1f - num2 / (num2 + num3);
-				num5 = 1f - num4;
+				float num5 = 1f - num2 / (num2 + num3);
+				num4 = 1f - num5;
 			}
-			else if (num2 > 0f)
+			else if (num2 <= 0f)
 			{
-				num4 = 1f;
-			}
-			else if (num3 > 0f)
-			{
-				num5 = 1f;
-			}
-			else
-			{
-				flag = true;
+				if (num3 > 0f)
+				{
+					num4 = 1f;
+				}
+				else
+				{
+					flag = true;
+				}
 			}
 			if (flag)
 			{
 				num4 = 0f;
-				num5 = 0f;
 			}
-			Vector3 velocity = normalized * (num4 * this.ownerPullFactor * -this.reelSpeed);
-			Vector3 velocity2 = normalized * (num5 * this.victimPullFactor * this.reelSpeed);
-			if (component3)
+			Vector3 velocity = normalized * (num4 * this.victimPullFactor * this.reelSpeed);
+			if (component5)
 			{
-				component3.velocity = velocity;
+				component5.velocity = velocity;
 			}
 			if (rigidbody)
 			{
 				rigidbody.velocity = velocity;
 			}
-			if (component4)
-			{
-				component4.velocity = velocity2;
-			}
-			if (rigidbody2)
-			{
-				rigidbody2.velocity = velocity2;
-			}
-			CharacterDirection component5 = this.projectileController.owner.GetComponent<CharacterDirection>();
-			CharacterDirection component6 = this.victim.GetComponent<CharacterDirection>();
-			if (component5)
-			{
-				component5.forward = -normalized;
-			}
-			if (component6)
-			{
-				component6.forward = normalized;
-			}
 			return flag;
 		}
 
-		// Token: 0x06001DED RID: 7661 RVA: 0x0008CF00 File Offset: 0x0008B100
+		// Token: 0x06001E32 RID: 7730 RVA: 0x000823C0 File Offset: 0x000805C0
 		public void FixedUpdate()
 		{
 			if (NetworkServer.active && !this.projectileController.owner)
@@ -185,7 +166,7 @@ namespace RoR2.Projectile
 			}
 			if (this.victim)
 			{
-				base.transform.position = this.victim.transform.position;
+				this.rigidbody.MovePosition(this.victim.transform.position);
 			}
 			switch (this.hookState)
 			{
@@ -231,10 +212,6 @@ namespace RoR2.Projectile
 					}
 					if (flag)
 					{
-						if (this.victimSetStateOnHurt)
-						{
-							this.victimSetStateOnHurt.SetPain();
-						}
 						UnityEngine.Object.Destroy(base.gameObject);
 						return;
 					}
@@ -246,12 +223,12 @@ namespace RoR2.Projectile
 				{
 					if (this.rigidbody)
 					{
+						this.rigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
 						this.rigidbody.isKinematic = true;
 					}
-					this.ownerTransform = this.projectileController.owner.transform;
 					if (this.ownerTransform)
 					{
-						base.transform.position = Vector3.MoveTowards(base.transform.position, this.ownerTransform.position, this.reelSpeed * Time.fixedDeltaTime);
+						this.rigidbody.MovePosition(Vector3.MoveTowards(base.transform.position, this.ownerTransform.position, this.reelSpeed * Time.fixedDeltaTime));
 						if (base.transform.position == this.ownerTransform.position)
 						{
 							UnityEngine.Object.Destroy(base.gameObject);
@@ -264,42 +241,44 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001DEF RID: 7663 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001E34 RID: 7732 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x1700029F RID: 671
-		// (get) Token: 0x06001DF0 RID: 7664 RVA: 0x0008D120 File Offset: 0x0008B320
-		// (set) Token: 0x06001DF1 RID: 7665 RVA: 0x0008D133 File Offset: 0x0008B333
+		// Token: 0x17000336 RID: 822
+		// (get) Token: 0x06001E35 RID: 7733 RVA: 0x000825BC File Offset: 0x000807BC
+		// (set) Token: 0x06001E36 RID: 7734 RVA: 0x000825CF File Offset: 0x000807CF
 		public HookProjectileImpact.HookState NetworkhookState
 		{
 			get
 			{
 				return this.hookState;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<HookProjectileImpact.HookState>(value, ref this.hookState, 1u);
+				base.SetSyncVar<HookProjectileImpact.HookState>(value, ref this.hookState, 1U);
 			}
 		}
 
-		// Token: 0x170002A0 RID: 672
-		// (get) Token: 0x06001DF2 RID: 7666 RVA: 0x0008D148 File Offset: 0x0008B348
-		// (set) Token: 0x06001DF3 RID: 7667 RVA: 0x0008D15B File Offset: 0x0008B35B
+		// Token: 0x17000337 RID: 823
+		// (get) Token: 0x06001E37 RID: 7735 RVA: 0x000825E4 File Offset: 0x000807E4
+		// (set) Token: 0x06001E38 RID: 7736 RVA: 0x000825F7 File Offset: 0x000807F7
 		public GameObject Networkvictim
 		{
 			get
 			{
 				return this.victim;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVarGameObject(value, ref this.victim, 2u, ref this.___victimNetId);
+				base.SetSyncVarGameObject(value, ref this.victim, 2U, ref this.___victimNetId);
 			}
 		}
 
-		// Token: 0x06001DF4 RID: 7668 RVA: 0x0008D178 File Offset: 0x0008B378
+		// Token: 0x06001E39 RID: 7737 RVA: 0x00082614 File Offset: 0x00080814
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -309,7 +288,7 @@ namespace RoR2.Projectile
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -318,7 +297,7 @@ namespace RoR2.Projectile
 				}
 				writer.Write((int)this.hookState);
 			}
-			if ((base.syncVarDirtyBits & 2u) != 0u)
+			if ((base.syncVarDirtyBits & 2U) != 0U)
 			{
 				if (!flag)
 				{
@@ -334,7 +313,7 @@ namespace RoR2.Projectile
 			return flag;
 		}
 
-		// Token: 0x06001DF5 RID: 7669 RVA: 0x0008D224 File Offset: 0x0008B424
+		// Token: 0x06001E3A RID: 7738 RVA: 0x000826C0 File Offset: 0x000808C0
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -354,7 +333,7 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001DF6 RID: 7670 RVA: 0x0008D28A File Offset: 0x0008B48A
+		// Token: 0x06001E3B RID: 7739 RVA: 0x00082726 File Offset: 0x00080926
 		public override void PreStartClient()
 		{
 			if (!this.___victimNetId.IsEmpty())
@@ -363,72 +342,69 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x0400203C RID: 8252
+		// Token: 0x04001B5A RID: 7002
 		private ProjectileController projectileController;
 
-		// Token: 0x0400203D RID: 8253
+		// Token: 0x04001B5B RID: 7003
 		public float reelDelayTime;
 
-		// Token: 0x0400203E RID: 8254
+		// Token: 0x04001B5C RID: 7004
 		public float reelSpeed = 40f;
 
-		// Token: 0x0400203F RID: 8255
-		public float ownerPullFactor = 1f;
+		// Token: 0x04001B5D RID: 7005
+		public string attachmentString;
 
-		// Token: 0x04002040 RID: 8256
+		// Token: 0x04001B5E RID: 7006
 		public float victimPullFactor = 1f;
 
-		// Token: 0x04002041 RID: 8257
-		public float maxDistance;
+		// Token: 0x04001B5F RID: 7007
+		public float pullMinimumDistance = 10f;
 
-		// Token: 0x04002042 RID: 8258
+		// Token: 0x04001B60 RID: 7008
 		public GameObject impactSpark;
 
-		// Token: 0x04002043 RID: 8259
+		// Token: 0x04001B61 RID: 7009
 		public GameObject impactSuccess;
 
-		// Token: 0x04002044 RID: 8260
+		// Token: 0x04001B62 RID: 7010
 		[SyncVar]
 		private HookProjectileImpact.HookState hookState;
 
-		// Token: 0x04002045 RID: 8261
+		// Token: 0x04001B63 RID: 7011
 		[SyncVar]
 		private GameObject victim;
 
-		// Token: 0x04002046 RID: 8262
-		private SetStateOnHurt victimSetStateOnHurt;
-
-		// Token: 0x04002047 RID: 8263
+		// Token: 0x04001B64 RID: 7012
 		private Transform ownerTransform;
 
-		// Token: 0x04002048 RID: 8264
+		// Token: 0x04001B65 RID: 7013
 		private ProjectileDamage projectileDamage;
 
-		// Token: 0x04002049 RID: 8265
+		// Token: 0x04001B66 RID: 7014
 		private Rigidbody rigidbody;
 
-		// Token: 0x0400204A RID: 8266
-		private float liveTimer;
+		// Token: 0x04001B67 RID: 7015
+		public float liveTimer;
 
-		// Token: 0x0400204B RID: 8267
+		// Token: 0x04001B68 RID: 7016
 		private float delayTimer;
 
-		// Token: 0x0400204C RID: 8268
+		// Token: 0x04001B69 RID: 7017
 		private float flyTimer;
 
-		// Token: 0x0400204D RID: 8269
+		// Token: 0x04001B6A RID: 7018
 		private NetworkInstanceId ___victimNetId;
 
-		// Token: 0x0200053A RID: 1338
+		// Token: 0x020004F5 RID: 1269
 		private enum HookState
 		{
-			// Token: 0x0400204F RID: 8271
+			// Token: 0x04001B6C RID: 7020
 			Flying,
-			// Token: 0x04002050 RID: 8272
+			// Token: 0x04001B6D RID: 7021
 			HitDelay,
-			// Token: 0x04002051 RID: 8273
+			// Token: 0x04001B6E RID: 7022
 			Reel,
-			// Token: 0x04002052 RID: 8274
+			// Token: 0x04001B6F RID: 7023
 			ReelFail
 		}
 	}

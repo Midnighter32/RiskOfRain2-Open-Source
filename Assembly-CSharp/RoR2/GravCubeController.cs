@@ -3,45 +3,43 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000304 RID: 772
+	// Token: 0x0200021C RID: 540
 	[RequireComponent(typeof(ItemFollower))]
 	public class GravCubeController : MonoBehaviour
 	{
-		// Token: 0x06000FE3 RID: 4067 RVA: 0x0004F921 File Offset: 0x0004DB21
+		// Token: 0x06000BF0 RID: 3056 RVA: 0x0003573D File Offset: 0x0003393D
 		private void Start()
 		{
 			this.itemFollower = base.GetComponent<ItemFollower>();
-			if (this.itemFollower)
-			{
-				this.itemFollowerAnimator = this.itemFollower.followerInstance.GetComponentInChildren<Animator>();
-			}
 		}
 
-		// Token: 0x06000FE4 RID: 4068 RVA: 0x0004F952 File Offset: 0x0004DB52
+		// Token: 0x06000BF1 RID: 3057 RVA: 0x0003574B File Offset: 0x0003394B
 		public void ActivateCube(float duration)
 		{
 			this.activeTimer = duration;
 		}
 
-		// Token: 0x06000FE5 RID: 4069 RVA: 0x0004F95C File Offset: 0x0004DB5C
+		// Token: 0x06000BF2 RID: 3058 RVA: 0x00035754 File Offset: 0x00033954
 		private void Update()
 		{
-			this.activeTimer -= Time.deltaTime;
-			if (this.activeTimer > 0f)
+			if (this.itemFollower && this.itemFollower.followerInstance)
 			{
-				this.itemFollowerAnimator.SetBool("active", true);
-				return;
+				if (!this.itemFollowerAnimator)
+				{
+					this.itemFollowerAnimator = this.itemFollower.followerInstance.GetComponentInChildren<Animator>();
+				}
+				this.activeTimer -= Time.deltaTime;
+				this.itemFollowerAnimator.SetBool("active", this.activeTimer > 0f);
 			}
-			this.itemFollowerAnimator.SetBool("active", false);
 		}
 
-		// Token: 0x040013E7 RID: 5095
+		// Token: 0x04000BFD RID: 3069
 		private ItemFollower itemFollower;
 
-		// Token: 0x040013E8 RID: 5096
+		// Token: 0x04000BFE RID: 3070
 		private float activeTimer;
 
-		// Token: 0x040013E9 RID: 5097
+		// Token: 0x04000BFF RID: 3071
 		private Animator itemFollowerAnimator;
 	}
 }

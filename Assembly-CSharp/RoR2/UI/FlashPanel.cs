@@ -4,16 +4,16 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005DD RID: 1501
+	// Token: 0x020005BC RID: 1468
 	public class FlashPanel : MonoBehaviour
 	{
-		// Token: 0x0600219D RID: 8605 RVA: 0x0009E24C File Offset: 0x0009C44C
+		// Token: 0x060022CD RID: 8909 RVA: 0x000971F0 File Offset: 0x000953F0
 		private void Start()
 		{
 			this.image = this.flashRectTransform.GetComponent<Image>();
 		}
 
-		// Token: 0x0600219E RID: 8606 RVA: 0x0009E260 File Offset: 0x0009C460
+		// Token: 0x060022CE RID: 8910 RVA: 0x00097204 File Offset: 0x00095404
 		private void Update()
 		{
 			this.flashRectTransform.anchorMin = new Vector2(0f, 0f);
@@ -48,35 +48,35 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600219F RID: 8607 RVA: 0x0009E3BD File Offset: 0x0009C5BD
+		// Token: 0x060022CF RID: 8911 RVA: 0x00097361 File Offset: 0x00095561
 		public void Flash()
 		{
 			this.theta = 0f;
 			this.isFlashing = true;
 		}
 
-		// Token: 0x04002456 RID: 9302
+		// Token: 0x04002065 RID: 8293
 		public RectTransform flashRectTransform;
 
-		// Token: 0x04002457 RID: 9303
+		// Token: 0x04002066 RID: 8294
 		public float strength = 1f;
 
-		// Token: 0x04002458 RID: 9304
+		// Token: 0x04002067 RID: 8295
 		public float freq = 1f;
 
-		// Token: 0x04002459 RID: 9305
+		// Token: 0x04002068 RID: 8296
 		public float flashAlpha = 0.7f;
 
-		// Token: 0x0400245A RID: 9306
+		// Token: 0x04002069 RID: 8297
 		public bool alwaysFlash = true;
 
-		// Token: 0x0400245B RID: 9307
+		// Token: 0x0400206A RID: 8298
 		private bool isFlashing;
 
-		// Token: 0x0400245C RID: 9308
+		// Token: 0x0400206B RID: 8299
 		private float theta = 1f;
 
-		// Token: 0x0400245D RID: 9309
+		// Token: 0x0400206C RID: 8300
 		private Image image;
 	}
 }

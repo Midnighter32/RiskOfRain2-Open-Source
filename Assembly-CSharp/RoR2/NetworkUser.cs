@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using Rewired;
+using RoR2.Networking;
 using RoR2.Stats;
 using Unity;
 using UnityEngine;
@@ -11,10 +13,11 @@ using UnityEngine.SceneManagement;
 
 namespace RoR2
 {
-	// Token: 0x02000371 RID: 881
+	// Token: 0x020002A2 RID: 674
+	[RequireComponent(typeof(NetworkLoadout))]
 	public class NetworkUser : NetworkBehaviour
 	{
-		// Token: 0x06001231 RID: 4657 RVA: 0x000598C8 File Offset: 0x00057AC8
+		// Token: 0x06000F12 RID: 3858 RVA: 0x00042994 File Offset: 0x00040B94
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void Init()
 		{
@@ -31,9 +34,22 @@ namespace RoR2
 					}
 				}
 			};
+			UserProfile.onLoadoutChangedGlobal += delegate(UserProfile userProfile)
+			{
+				if (NetworkClient.active)
+				{
+					foreach (NetworkUser networkUser in NetworkUser.readOnlyLocalPlayersList)
+					{
+						if (networkUser.localUser.userProfile == userProfile)
+						{
+							networkUser.PullLoadoutFromUserProfile();
+						}
+					}
+				}
+			};
 		}
 
-		// Token: 0x06001232 RID: 4658 RVA: 0x000598EE File Offset: 0x00057AEE
+		// Token: 0x06000F13 RID: 3859 RVA: 0x000429E9 File Offset: 0x00040BE9
 		private void OnEnable()
 		{
 			NetworkUser.instancesList.Add(this);
@@ -45,7 +61,7 @@ namespace RoR2
 			networkUserGenericDelegate(this);
 		}
 
-		// Token: 0x06001233 RID: 4659 RVA: 0x0005990B File Offset: 0x00057B0B
+		// Token: 0x06000F14 RID: 3860 RVA: 0x00042A06 File Offset: 0x00040C06
 		private void OnDisable()
 		{
 			NetworkUser.NetworkUserGenericDelegate networkUserGenericDelegate = NetworkUser.onNetworkUserLost;
@@ -56,13 +72,45 @@ namespace RoR2
 			NetworkUser.instancesList.Remove(this);
 		}
 
-		// Token: 0x06001234 RID: 4660 RVA: 0x0005992A File Offset: 0x00057B2A
+		// Token: 0x170001E0 RID: 480
+		// (get) Token: 0x06000F15 RID: 3861 RVA: 0x00042A25 File Offset: 0x00040C25
+		// (set) Token: 0x06000F16 RID: 3862 RVA: 0x00042A2D File Offset: 0x00040C2D
+		public NetworkLoadout networkLoadout { get; private set; }
+
+		// Token: 0x06000F17 RID: 3863 RVA: 0x00042A36 File Offset: 0x00040C36
 		private void Awake()
 		{
 			UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
+			this.networkLoadout = base.GetComponent<NetworkLoadout>();
+			this.networkLoadout.onLoadoutUpdated += this.OnLoadoutUpdated;
 		}
 
-		// Token: 0x06001235 RID: 4661 RVA: 0x00059938 File Offset: 0x00057B38
+		// Token: 0x06000F18 RID: 3864 RVA: 0x00042A66 File Offset: 0x00040C66
+		private void OnLoadoutUpdated()
+		{
+			Action<NetworkUser> action = NetworkUser.onLoadoutChangedGlobal;
+			if (action == null)
+			{
+				return;
+			}
+			action(this);
+		}
+
+		// Token: 0x06000F19 RID: 3865 RVA: 0x00042A78 File Offset: 0x00040C78
+		private void PullLoadoutFromUserProfile()
+		{
+			LocalUser localUser = this.localUser;
+			UserProfile userProfile = (localUser != null) ? localUser.userProfile : null;
+			if (userProfile == null)
+			{
+				return;
+			}
+			Loadout loadout = new Loadout();
+			userProfile.CopyLoadout(loadout);
+			this.networkLoadout.SetLoadout(loadout);
+		}
+
+		// Token: 0x06000F1A RID: 3866 RVA: 0x00042AB8 File Offset: 0x00040CB8
 		private void Start()
 		{
 			if (base.isLocalPlayer)
@@ -72,6 +120,7 @@ namespace RoR2
 				{
 					localUser.LinkNetworkUser(this);
 				}
+				this.PullLoadoutFromUserProfile();
 				if (SceneManager.GetActiveScene().name == "lobby")
 				{
 					this.CallCmdSetBodyPreference(BodyCatalog.FindBodyIndex("CommandoBody"));
@@ -86,6 +135,7 @@ namespace RoR2
 				this.SyncLunarCoinsToServer();
 				this.SendServerUnlockables();
 			}
+			this.OnLoadoutUpdated();
 			NetworkUser.NetworkUserGenericDelegate onPostNetworkUserStart = NetworkUser.OnPostNetworkUserStart;
 			if (onPostNetworkUserStart == null)
 			{
@@ -94,7 +144,7 @@ namespace RoR2
 			onPostNetworkUserStart(this);
 		}
 
-		// Token: 0x06001236 RID: 4662 RVA: 0x000599C7 File Offset: 0x00057BC7
+		// Token: 0x06000F1B RID: 3867 RVA: 0x00042B53 File Offset: 0x00040D53
 		private void OnDestroy()
 		{
 			NetworkUser.localPlayers.Remove(this);
@@ -111,22 +161,22 @@ namespace RoR2
 			localUser.UnlinkNetworkUser();
 		}
 
-		// Token: 0x06001237 RID: 4663 RVA: 0x000599F6 File Offset: 0x00057BF6
+		// Token: 0x06000F1C RID: 3868 RVA: 0x00042B82 File Offset: 0x00040D82
 		public override void OnStartLocalPlayer()
 		{
 			base.OnStartLocalPlayer();
 			NetworkUser.localPlayers.Add(this);
 		}
 
-		// Token: 0x06001238 RID: 4664 RVA: 0x00059A09 File Offset: 0x00057C09
+		// Token: 0x06000F1D RID: 3869 RVA: 0x00042B95 File Offset: 0x00040D95
 		public override void OnStartClient()
 		{
 			this.UpdateUserName();
 		}
 
-		// Token: 0x17000191 RID: 401
-		// (get) Token: 0x06001239 RID: 4665 RVA: 0x00059A11 File Offset: 0x00057C11
-		// (set) Token: 0x0600123A RID: 4666 RVA: 0x00059A19 File Offset: 0x00057C19
+		// Token: 0x170001E1 RID: 481
+		// (get) Token: 0x06000F1E RID: 3870 RVA: 0x00042B9D File Offset: 0x00040D9D
+		// (set) Token: 0x06000F1F RID: 3871 RVA: 0x00042BA5 File Offset: 0x00040DA5
 		public NetworkUserId id
 		{
 			get
@@ -135,19 +185,23 @@ namespace RoR2
 			}
 			set
 			{
+				if (this._id.Equals(value))
+				{
+					return;
+				}
 				this.Network_id = value;
 				this.UpdateUserName();
 			}
 		}
 
-		// Token: 0x0600123B RID: 4667 RVA: 0x00059A28 File Offset: 0x00057C28
+		// Token: 0x06000F20 RID: 3872 RVA: 0x00042BC3 File Offset: 0x00040DC3
 		private void OnSyncId(NetworkUserId newId)
 		{
 			this.id = newId;
 		}
 
-		// Token: 0x17000192 RID: 402
-		// (get) Token: 0x0600123C RID: 4668 RVA: 0x00059A31 File Offset: 0x00057C31
+		// Token: 0x170001E2 RID: 482
+		// (get) Token: 0x06000F21 RID: 3873 RVA: 0x00042BCC File Offset: 0x00040DCC
 		public bool authed
 		{
 			get
@@ -156,15 +210,15 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600123D RID: 4669 RVA: 0x00059A42 File Offset: 0x00057C42
+		// Token: 0x06000F22 RID: 3874 RVA: 0x00042BDD File Offset: 0x00040DDD
 		private void OnSyncMasterObjectId(NetworkInstanceId newValue)
 		{
 			this._masterObject = null;
 			this.Network_masterObjectId = newValue;
 		}
 
-		// Token: 0x17000193 RID: 403
-		// (get) Token: 0x0600123E RID: 4670 RVA: 0x00059A52 File Offset: 0x00057C52
+		// Token: 0x170001E3 RID: 483
+		// (get) Token: 0x06000F23 RID: 3875 RVA: 0x00042BED File Offset: 0x00040DED
 		public Player inputPlayer
 		{
 			get
@@ -178,18 +232,18 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600123F RID: 4671 RVA: 0x00059A68 File Offset: 0x00057C68
+		// Token: 0x06000F24 RID: 3876 RVA: 0x00042C00 File Offset: 0x00040E00
 		public NetworkPlayerName GetNetworkPlayerName()
 		{
 			return new NetworkPlayerName
 			{
 				nameOverride = null,
-				steamId = new CSteamID(this.id.value)
+				steamId = this.id.steamId
 			};
 		}
 
-		// Token: 0x17000194 RID: 404
-		// (get) Token: 0x06001240 RID: 4672 RVA: 0x00059A9D File Offset: 0x00057C9D
+		// Token: 0x170001E4 RID: 484
+		// (get) Token: 0x06000F25 RID: 3877 RVA: 0x00042C33 File Offset: 0x00040E33
 		public uint lunarCoins
 		{
 			get
@@ -202,7 +256,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001241 RID: 4673 RVA: 0x00059ABE File Offset: 0x00057CBE
+		// Token: 0x06000F26 RID: 3878 RVA: 0x00042C54 File Offset: 0x00040E54
 		[Server]
 		public void DeductLunarCoins(uint count)
 		{
@@ -215,7 +269,7 @@ namespace RoR2
 			this.CallRpcDeductLunarCoins(count);
 		}
 
-		// Token: 0x06001242 RID: 4674 RVA: 0x00059AEE File Offset: 0x00057CEE
+		// Token: 0x06000F27 RID: 3879 RVA: 0x00042C84 File Offset: 0x00040E84
 		[ClientRpc]
 		private void RpcDeductLunarCoins(uint count)
 		{
@@ -227,7 +281,7 @@ namespace RoR2
 			this.SyncLunarCoinsToServer();
 		}
 
-		// Token: 0x06001243 RID: 4675 RVA: 0x00059B25 File Offset: 0x00057D25
+		// Token: 0x06000F28 RID: 3880 RVA: 0x00042CBB File Offset: 0x00040EBB
 		[Server]
 		public void AwardLunarCoins(uint count)
 		{
@@ -240,7 +294,7 @@ namespace RoR2
 			this.CallRpcAwardLunarCoins(count);
 		}
 
-		// Token: 0x06001244 RID: 4676 RVA: 0x00059B58 File Offset: 0x00057D58
+		// Token: 0x06000F29 RID: 3881 RVA: 0x00042CEC File Offset: 0x00040EEC
 		[ClientRpc]
 		private void RpcAwardLunarCoins(uint count)
 		{
@@ -253,7 +307,7 @@ namespace RoR2
 			this.SyncLunarCoinsToServer();
 		}
 
-		// Token: 0x06001245 RID: 4677 RVA: 0x00059BC0 File Offset: 0x00057DC0
+		// Token: 0x06000F2A RID: 3882 RVA: 0x00042D54 File Offset: 0x00040F54
 		[Client]
 		private void SyncLunarCoinsToServer()
 		{
@@ -269,15 +323,15 @@ namespace RoR2
 			this.CallCmdSetNetLunarCoins(this.localUser.userProfile.coins);
 		}
 
-		// Token: 0x06001246 RID: 4678 RVA: 0x00059BF6 File Offset: 0x00057DF6
+		// Token: 0x06000F2B RID: 3883 RVA: 0x00042D8A File Offset: 0x00040F8A
 		[Command]
 		private void CmdSetNetLunarCoins(uint newNetLunarCoins)
 		{
 			this.NetworknetLunarCoins = newNetLunarCoins;
 		}
 
-		// Token: 0x17000195 RID: 405
-		// (get) Token: 0x06001247 RID: 4679 RVA: 0x00059BFF File Offset: 0x00057DFF
+		// Token: 0x170001E5 RID: 485
+		// (get) Token: 0x06000F2C RID: 3884 RVA: 0x00042D93 File Offset: 0x00040F93
 		public CharacterMaster master
 		{
 			get
@@ -286,8 +340,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000196 RID: 406
-		// (get) Token: 0x06001248 RID: 4680 RVA: 0x00059C12 File Offset: 0x00057E12
+		// Token: 0x170001E6 RID: 486
+		// (get) Token: 0x06000F2D RID: 3885 RVA: 0x00042DA6 File Offset: 0x00040FA6
 		public PlayerCharacterMasterController masterController
 		{
 			get
@@ -296,8 +350,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000197 RID: 407
-		// (get) Token: 0x06001249 RID: 4681 RVA: 0x00059C25 File Offset: 0x00057E25
+		// Token: 0x170001E7 RID: 487
+		// (get) Token: 0x06000F2E RID: 3886 RVA: 0x00042DB9 File Offset: 0x00040FB9
 		public PlayerStatsComponent masterPlayerStatsComponent
 		{
 			get
@@ -306,9 +360,9 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000198 RID: 408
-		// (get) Token: 0x0600124A RID: 4682 RVA: 0x00059C38 File Offset: 0x00057E38
-		// (set) Token: 0x0600124B RID: 4683 RVA: 0x00059C60 File Offset: 0x00057E60
+		// Token: 0x170001E8 RID: 488
+		// (get) Token: 0x06000F2F RID: 3887 RVA: 0x00042DCC File Offset: 0x00040FCC
+		// (set) Token: 0x06000F30 RID: 3888 RVA: 0x00042DF4 File Offset: 0x00040FF4
 		public GameObject masterObject
 		{
 			get
@@ -338,7 +392,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600124C RID: 4684 RVA: 0x00059CBC File Offset: 0x00057EBC
+		// Token: 0x06000F31 RID: 3889 RVA: 0x00042E50 File Offset: 0x00041050
 		public CharacterBody GetCurrentBody()
 		{
 			CharacterMaster master = this.master;
@@ -349,8 +403,8 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x17000199 RID: 409
-		// (get) Token: 0x0600124D RID: 4685 RVA: 0x00059CE0 File Offset: 0x00057EE0
+		// Token: 0x170001E9 RID: 489
+		// (get) Token: 0x06000F32 RID: 3890 RVA: 0x00042E74 File Offset: 0x00041074
 		public bool isParticipating
 		{
 			get
@@ -359,7 +413,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600124E RID: 4686 RVA: 0x00059CF0 File Offset: 0x00057EF0
+		// Token: 0x06000F33 RID: 3891 RVA: 0x00042E84 File Offset: 0x00041084
 		private void UpdateMasterPreferences()
 		{
 			if (this.masterObject)
@@ -379,12 +433,15 @@ namespace RoR2
 					else
 					{
 						master.bodyPrefab = BodyCatalog.GetBodyPrefab(this.bodyIndexPreference);
+						Loadout loadout = new Loadout();
+						this.networkLoadout.CopyLoadout(loadout);
+						master.SetLoadoutServer(loadout);
 					}
 				}
 			}
 		}
 
-		// Token: 0x0600124F RID: 4687 RVA: 0x00059D5E File Offset: 0x00057F5E
+		// Token: 0x06000F34 RID: 3892 RVA: 0x00042F0B File Offset: 0x0004110B
 		private void SetBodyPreference(int newBodyIndexPreference)
 		{
 			this.NetworkbodyIndexPreference = newBodyIndexPreference;
@@ -394,14 +451,14 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001250 RID: 4688 RVA: 0x00059D7A File Offset: 0x00057F7A
+		// Token: 0x06000F35 RID: 3893 RVA: 0x00042F27 File Offset: 0x00041127
 		[Command]
 		public void CmdSetBodyPreference(int newBodyIndexPreference)
 		{
 			this.SetBodyPreference(newBodyIndexPreference);
 		}
 
-		// Token: 0x06001251 RID: 4689 RVA: 0x00059D84 File Offset: 0x00057F84
+		// Token: 0x06000F36 RID: 3894 RVA: 0x00042F30 File Offset: 0x00041130
 		private void Update()
 		{
 			if (this.localUser != null)
@@ -415,13 +472,13 @@ namespace RoR2
 					this.secondAccumulator -= 1f;
 					if (Run.instance)
 					{
-						this.localUser.userProfile.totalRunSeconds += 1u;
+						this.localUser.userProfile.totalRunSeconds += 1U;
 						if (this.masterObject)
 						{
 							CharacterMaster component = this.masterObject.GetComponent<CharacterMaster>();
 							if (component && component.alive)
 							{
-								this.localUser.userProfile.totalAliveSeconds += 1u;
+								this.localUser.userProfile.totalAliveSeconds += 1U;
 							}
 						}
 					}
@@ -429,20 +486,20 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001252 RID: 4690 RVA: 0x00059E40 File Offset: 0x00058040
+		// Token: 0x06000F37 RID: 3895 RVA: 0x00042FEC File Offset: 0x000411EC
 		public void UpdateUserName()
 		{
 			this.userName = this.GetNetworkPlayerName().GetResolvedName();
 		}
 
-		// Token: 0x06001253 RID: 4691 RVA: 0x00059E61 File Offset: 0x00058061
+		// Token: 0x06000F38 RID: 3896 RVA: 0x0004300D File Offset: 0x0004120D
 		[Command]
-		public void CmdSendConsoleCommand(string cmd)
+		public void CmdSendConsoleCommand(string commandName, string[] args)
 		{
-			Console.instance.SubmitCmd(this, cmd, false);
+			Console.instance.RunClientCmd(this, commandName, args);
 		}
 
-		// Token: 0x06001254 RID: 4692 RVA: 0x00059E70 File Offset: 0x00058070
+		// Token: 0x06000F39 RID: 3897 RVA: 0x0004301C File Offset: 0x0004121C
 		[Client]
 		public void SendServerUnlockables()
 		{
@@ -463,7 +520,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001255 RID: 4693 RVA: 0x00059EE8 File Offset: 0x000580E8
+		// Token: 0x06000F3A RID: 3898 RVA: 0x00043094 File Offset: 0x00041294
 		[Command]
 		private void CmdSendNewUnlockables(UnlockableIndex[] newUnlockableIndices)
 		{
@@ -489,7 +546,7 @@ namespace RoR2
 			onNetworkUserUnlockablesUpdated(this);
 		}
 
-		// Token: 0x06001256 RID: 4694 RVA: 0x00059F58 File Offset: 0x00058158
+		// Token: 0x06000F3B RID: 3899 RVA: 0x00043104 File Offset: 0x00041304
 		[Server]
 		public void ServerRequestUnlockables()
 		{
@@ -501,7 +558,7 @@ namespace RoR2
 			this.CallRpcRequestUnlockables();
 		}
 
-		// Token: 0x06001257 RID: 4695 RVA: 0x00059F75 File Offset: 0x00058175
+		// Token: 0x06000F3C RID: 3900 RVA: 0x00043121 File Offset: 0x00041321
 		[ClientRpc]
 		private void RpcRequestUnlockables()
 		{
@@ -511,14 +568,14 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001258 RID: 4696 RVA: 0x00059F8C File Offset: 0x0005818C
+		// Token: 0x06000F3D RID: 3901 RVA: 0x00043138 File Offset: 0x00041338
 		[Command]
 		public void CmdReportAchievement(string achievementNameToken)
 		{
 			Chat.SendBroadcastChat(new Chat.SubjectFormatChatMessage
 			{
 				baseToken = "ACHIEVEMENT_UNLOCKED_MESSAGE",
-				subjectNetworkUser = this,
+				subjectAsNetworkUser = this,
 				paramTokens = new string[]
 				{
 					achievementNameToken
@@ -526,7 +583,7 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x06001259 RID: 4697 RVA: 0x00059FC8 File Offset: 0x000581C8
+		// Token: 0x06000F3E RID: 3902 RVA: 0x00043174 File Offset: 0x00041374
 		[Command]
 		public void CmdReportUnlock(UnlockableIndex unlockIndex)
 		{
@@ -541,7 +598,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600125A RID: 4698 RVA: 0x0005A000 File Offset: 0x00058200
+		// Token: 0x06000F3F RID: 3903 RVA: 0x000431AC File Offset: 0x000413AC
 		[Server]
 		public void ServerHandleUnlock([NotNull] UnlockableDef unlockableDef)
 		{
@@ -565,7 +622,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600125B RID: 4699 RVA: 0x0005A070 File Offset: 0x00058270
+		// Token: 0x06000F40 RID: 3904 RVA: 0x0004321C File Offset: 0x0004141C
 		[Command]
 		public void CmdSubmitVote(GameObject voteControllerGameObject, int choiceIndex)
 		{
@@ -581,27 +638,32 @@ namespace RoR2
 			component.ReceiveUserVote(this, choiceIndex);
 		}
 
-		// Token: 0x14000015 RID: 21
-		// (add) Token: 0x0600125C RID: 4700 RVA: 0x0005A0A0 File Offset: 0x000582A0
-		// (remove) Token: 0x0600125D RID: 4701 RVA: 0x0005A0D4 File Offset: 0x000582D4
+		// Token: 0x14000025 RID: 37
+		// (add) Token: 0x06000F41 RID: 3905 RVA: 0x0004324C File Offset: 0x0004144C
+		// (remove) Token: 0x06000F42 RID: 3906 RVA: 0x00043280 File Offset: 0x00041480
+		public static event Action<NetworkUser> onLoadoutChangedGlobal;
+
+		// Token: 0x14000026 RID: 38
+		// (add) Token: 0x06000F43 RID: 3907 RVA: 0x000432B4 File Offset: 0x000414B4
+		// (remove) Token: 0x06000F44 RID: 3908 RVA: 0x000432E8 File Offset: 0x000414E8
 		public static event NetworkUser.NetworkUserGenericDelegate OnPostNetworkUserStart;
 
-		// Token: 0x14000016 RID: 22
-		// (add) Token: 0x0600125E RID: 4702 RVA: 0x0005A108 File Offset: 0x00058308
-		// (remove) Token: 0x0600125F RID: 4703 RVA: 0x0005A13C File Offset: 0x0005833C
+		// Token: 0x14000027 RID: 39
+		// (add) Token: 0x06000F45 RID: 3909 RVA: 0x0004331C File Offset: 0x0004151C
+		// (remove) Token: 0x06000F46 RID: 3910 RVA: 0x00043350 File Offset: 0x00041550
 		public static event NetworkUser.NetworkUserGenericDelegate OnNetworkUserUnlockablesUpdated;
 
-		// Token: 0x14000017 RID: 23
-		// (add) Token: 0x06001260 RID: 4704 RVA: 0x0005A170 File Offset: 0x00058370
-		// (remove) Token: 0x06001261 RID: 4705 RVA: 0x0005A1A4 File Offset: 0x000583A4
+		// Token: 0x14000028 RID: 40
+		// (add) Token: 0x06000F47 RID: 3911 RVA: 0x00043384 File Offset: 0x00041584
+		// (remove) Token: 0x06000F48 RID: 3912 RVA: 0x000433B8 File Offset: 0x000415B8
 		public static event NetworkUser.NetworkUserGenericDelegate onNetworkUserDiscovered;
 
-		// Token: 0x14000018 RID: 24
-		// (add) Token: 0x06001262 RID: 4706 RVA: 0x0005A1D8 File Offset: 0x000583D8
-		// (remove) Token: 0x06001263 RID: 4707 RVA: 0x0005A20C File Offset: 0x0005840C
+		// Token: 0x14000029 RID: 41
+		// (add) Token: 0x06000F49 RID: 3913 RVA: 0x000433EC File Offset: 0x000415EC
+		// (remove) Token: 0x06000F4A RID: 3914 RVA: 0x00043420 File Offset: 0x00041620
 		public static event NetworkUser.NetworkUserGenericDelegate onNetworkUserLost;
 
-		// Token: 0x06001265 RID: 4709 RVA: 0x0005A280 File Offset: 0x00058480
+		// Token: 0x06000F4C RID: 3916 RVA: 0x00043494 File Offset: 0x00041694
 		static NetworkUser()
 		{
 			NetworkBehaviour.RegisterCommandDelegate(typeof(NetworkUser), NetworkUser.kCmdCmdSetNetLunarCoins, new NetworkBehaviour.CmdDelegate(NetworkUser.InvokeCmdCmdSetNetLunarCoins));
@@ -626,23 +688,24 @@ namespace RoR2
 			NetworkCRC.RegisterBehaviour("NetworkUser", 0);
 		}
 
-		// Token: 0x06001266 RID: 4710 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000F4D RID: 3917 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x1700019A RID: 410
-		// (get) Token: 0x06001267 RID: 4711 RVA: 0x0005A474 File Offset: 0x00058674
-		// (set) Token: 0x06001268 RID: 4712 RVA: 0x0005A487 File Offset: 0x00058687
+		// Token: 0x170001EA RID: 490
+		// (get) Token: 0x06000F4E RID: 3918 RVA: 0x00043688 File Offset: 0x00041888
+		// (set) Token: 0x06000F4F RID: 3919 RVA: 0x0004369B File Offset: 0x0004189B
 		public NetworkUserId Network_id
 		{
 			get
 			{
 				return this._id;
 			}
+			[param: In]
 			set
 			{
-				uint dirtyBit = 1u;
+				uint dirtyBit = 1U;
 				if (NetworkServer.localClientActive && !base.syncVarHookGuard)
 				{
 					base.syncVarHookGuard = true;
@@ -653,33 +716,35 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x1700019B RID: 411
-		// (get) Token: 0x06001269 RID: 4713 RVA: 0x0005A4C8 File Offset: 0x000586C8
-		// (set) Token: 0x0600126A RID: 4714 RVA: 0x0005A4DB File Offset: 0x000586DB
+		// Token: 0x170001EB RID: 491
+		// (get) Token: 0x06000F50 RID: 3920 RVA: 0x000436DC File Offset: 0x000418DC
+		// (set) Token: 0x06000F51 RID: 3921 RVA: 0x000436EF File Offset: 0x000418EF
 		public byte NetworkrewiredPlayerId
 		{
 			get
 			{
 				return this.rewiredPlayerId;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<byte>(value, ref this.rewiredPlayerId, 2u);
+				base.SetSyncVar<byte>(value, ref this.rewiredPlayerId, 2U);
 			}
 		}
 
-		// Token: 0x1700019C RID: 412
-		// (get) Token: 0x0600126B RID: 4715 RVA: 0x0005A4F0 File Offset: 0x000586F0
-		// (set) Token: 0x0600126C RID: 4716 RVA: 0x0005A503 File Offset: 0x00058703
+		// Token: 0x170001EC RID: 492
+		// (get) Token: 0x06000F52 RID: 3922 RVA: 0x00043704 File Offset: 0x00041904
+		// (set) Token: 0x06000F53 RID: 3923 RVA: 0x00043717 File Offset: 0x00041917
 		public NetworkInstanceId Network_masterObjectId
 		{
 			get
 			{
 				return this._masterObjectId;
 			}
+			[param: In]
 			set
 			{
-				uint dirtyBit = 4u;
+				uint dirtyBit = 4U;
 				if (NetworkServer.localClientActive && !base.syncVarHookGuard)
 				{
 					base.syncVarHookGuard = true;
@@ -690,48 +755,51 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x1700019D RID: 413
-		// (get) Token: 0x0600126D RID: 4717 RVA: 0x0005A544 File Offset: 0x00058744
-		// (set) Token: 0x0600126E RID: 4718 RVA: 0x0005A557 File Offset: 0x00058757
+		// Token: 0x170001ED RID: 493
+		// (get) Token: 0x06000F54 RID: 3924 RVA: 0x00043758 File Offset: 0x00041958
+		// (set) Token: 0x06000F55 RID: 3925 RVA: 0x0004376B File Offset: 0x0004196B
 		public Color32 NetworkuserColor
 		{
 			get
 			{
 				return this.userColor;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<Color32>(value, ref this.userColor, 8u);
+				base.SetSyncVar<Color32>(value, ref this.userColor, 8U);
 			}
 		}
 
-		// Token: 0x1700019E RID: 414
-		// (get) Token: 0x0600126F RID: 4719 RVA: 0x0005A56C File Offset: 0x0005876C
-		// (set) Token: 0x06001270 RID: 4720 RVA: 0x0005A57F File Offset: 0x0005877F
+		// Token: 0x170001EE RID: 494
+		// (get) Token: 0x06000F56 RID: 3926 RVA: 0x00043780 File Offset: 0x00041980
+		// (set) Token: 0x06000F57 RID: 3927 RVA: 0x00043793 File Offset: 0x00041993
 		public uint NetworknetLunarCoins
 		{
 			get
 			{
 				return this.netLunarCoins;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<uint>(value, ref this.netLunarCoins, 16u);
+				base.SetSyncVar<uint>(value, ref this.netLunarCoins, 16U);
 			}
 		}
 
-		// Token: 0x1700019F RID: 415
-		// (get) Token: 0x06001271 RID: 4721 RVA: 0x0005A594 File Offset: 0x00058794
-		// (set) Token: 0x06001272 RID: 4722 RVA: 0x0005A5A7 File Offset: 0x000587A7
+		// Token: 0x170001EF RID: 495
+		// (get) Token: 0x06000F58 RID: 3928 RVA: 0x000437A8 File Offset: 0x000419A8
+		// (set) Token: 0x06000F59 RID: 3929 RVA: 0x000437BB File Offset: 0x000419BB
 		public int NetworkbodyIndexPreference
 		{
 			get
 			{
 				return this.bodyIndexPreference;
 			}
+			[param: In]
 			set
 			{
-				uint dirtyBit = 32u;
+				uint dirtyBit = 32U;
 				if (NetworkServer.localClientActive && !base.syncVarHookGuard)
 				{
 					base.syncVarHookGuard = true;
@@ -742,7 +810,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001273 RID: 4723 RVA: 0x0005A5E6 File Offset: 0x000587E6
+		// Token: 0x06000F5A RID: 3930 RVA: 0x000437FA File Offset: 0x000419FA
 		protected static void InvokeCmdCmdSetNetLunarCoins(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkServer.active)
@@ -753,7 +821,7 @@ namespace RoR2
 			((NetworkUser)obj).CmdSetNetLunarCoins(reader.ReadPackedUInt32());
 		}
 
-		// Token: 0x06001274 RID: 4724 RVA: 0x0005A60F File Offset: 0x0005880F
+		// Token: 0x06000F5B RID: 3931 RVA: 0x00043823 File Offset: 0x00041A23
 		protected static void InvokeCmdCmdSetBodyPreference(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkServer.active)
@@ -764,7 +832,7 @@ namespace RoR2
 			((NetworkUser)obj).CmdSetBodyPreference((int)reader.ReadPackedUInt32());
 		}
 
-		// Token: 0x06001275 RID: 4725 RVA: 0x0005A638 File Offset: 0x00058838
+		// Token: 0x06000F5C RID: 3932 RVA: 0x0004384C File Offset: 0x00041A4C
 		protected static void InvokeCmdCmdSendConsoleCommand(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkServer.active)
@@ -772,10 +840,10 @@ namespace RoR2
 				Debug.LogError("Command CmdSendConsoleCommand called on client.");
 				return;
 			}
-			((NetworkUser)obj).CmdSendConsoleCommand(reader.ReadString());
+			((NetworkUser)obj).CmdSendConsoleCommand(reader.ReadString(), GeneratedNetworkCode._ReadArrayString_None(reader));
 		}
 
-		// Token: 0x06001276 RID: 4726 RVA: 0x0005A661 File Offset: 0x00058861
+		// Token: 0x06000F5D RID: 3933 RVA: 0x0004387B File Offset: 0x00041A7B
 		protected static void InvokeCmdCmdSendNewUnlockables(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkServer.active)
@@ -786,7 +854,7 @@ namespace RoR2
 			((NetworkUser)obj).CmdSendNewUnlockables(GeneratedNetworkCode._ReadArrayUnlockableIndex_None(reader));
 		}
 
-		// Token: 0x06001277 RID: 4727 RVA: 0x0005A68A File Offset: 0x0005888A
+		// Token: 0x06000F5E RID: 3934 RVA: 0x000438A4 File Offset: 0x00041AA4
 		protected static void InvokeCmdCmdReportAchievement(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkServer.active)
@@ -797,7 +865,7 @@ namespace RoR2
 			((NetworkUser)obj).CmdReportAchievement(reader.ReadString());
 		}
 
-		// Token: 0x06001278 RID: 4728 RVA: 0x0005A6B3 File Offset: 0x000588B3
+		// Token: 0x06000F5F RID: 3935 RVA: 0x000438CD File Offset: 0x00041ACD
 		protected static void InvokeCmdCmdReportUnlock(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkServer.active)
@@ -808,7 +876,7 @@ namespace RoR2
 			((NetworkUser)obj).CmdReportUnlock(GeneratedNetworkCode._ReadUnlockableIndex_None(reader));
 		}
 
-		// Token: 0x06001279 RID: 4729 RVA: 0x0005A6DC File Offset: 0x000588DC
+		// Token: 0x06000F60 RID: 3936 RVA: 0x000438F6 File Offset: 0x00041AF6
 		protected static void InvokeCmdCmdSubmitVote(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkServer.active)
@@ -819,7 +887,7 @@ namespace RoR2
 			((NetworkUser)obj).CmdSubmitVote(reader.ReadGameObject(), (int)reader.ReadPackedUInt32());
 		}
 
-		// Token: 0x0600127A RID: 4730 RVA: 0x0005A70C File Offset: 0x0005890C
+		// Token: 0x06000F61 RID: 3937 RVA: 0x00043928 File Offset: 0x00041B28
 		public void CallCmdSetNetLunarCoins(uint newNetLunarCoins)
 		{
 			if (!NetworkClient.active)
@@ -841,7 +909,7 @@ namespace RoR2
 			base.SendCommandInternal(networkWriter, 0, "CmdSetNetLunarCoins");
 		}
 
-		// Token: 0x0600127B RID: 4731 RVA: 0x0005A798 File Offset: 0x00058998
+		// Token: 0x06000F62 RID: 3938 RVA: 0x000439B4 File Offset: 0x00041BB4
 		public void CallCmdSetBodyPreference(int newBodyIndexPreference)
 		{
 			if (!NetworkClient.active)
@@ -863,8 +931,8 @@ namespace RoR2
 			base.SendCommandInternal(networkWriter, 0, "CmdSetBodyPreference");
 		}
 
-		// Token: 0x0600127C RID: 4732 RVA: 0x0005A824 File Offset: 0x00058A24
-		public void CallCmdSendConsoleCommand(string cmd)
+		// Token: 0x06000F63 RID: 3939 RVA: 0x00043A40 File Offset: 0x00041C40
+		public void CallCmdSendConsoleCommand(string commandName, string[] args)
 		{
 			if (!NetworkClient.active)
 			{
@@ -873,7 +941,7 @@ namespace RoR2
 			}
 			if (base.isServer)
 			{
-				this.CmdSendConsoleCommand(cmd);
+				this.CmdSendConsoleCommand(commandName, args);
 				return;
 			}
 			NetworkWriter networkWriter = new NetworkWriter();
@@ -881,11 +949,12 @@ namespace RoR2
 			networkWriter.Write((short)((ushort)5));
 			networkWriter.WritePackedUInt32((uint)NetworkUser.kCmdCmdSendConsoleCommand);
 			networkWriter.Write(base.GetComponent<NetworkIdentity>().netId);
-			networkWriter.Write(cmd);
+			networkWriter.Write(commandName);
+			GeneratedNetworkCode._WriteArrayString_None(networkWriter, args);
 			base.SendCommandInternal(networkWriter, 0, "CmdSendConsoleCommand");
 		}
 
-		// Token: 0x0600127D RID: 4733 RVA: 0x0005A8B0 File Offset: 0x00058AB0
+		// Token: 0x06000F64 RID: 3940 RVA: 0x00043AD8 File Offset: 0x00041CD8
 		public void CallCmdSendNewUnlockables(UnlockableIndex[] newUnlockableIndices)
 		{
 			if (!NetworkClient.active)
@@ -907,7 +976,7 @@ namespace RoR2
 			base.SendCommandInternal(networkWriter, 0, "CmdSendNewUnlockables");
 		}
 
-		// Token: 0x0600127E RID: 4734 RVA: 0x0005A93C File Offset: 0x00058B3C
+		// Token: 0x06000F65 RID: 3941 RVA: 0x00043B64 File Offset: 0x00041D64
 		public void CallCmdReportAchievement(string achievementNameToken)
 		{
 			if (!NetworkClient.active)
@@ -929,7 +998,7 @@ namespace RoR2
 			base.SendCommandInternal(networkWriter, 0, "CmdReportAchievement");
 		}
 
-		// Token: 0x0600127F RID: 4735 RVA: 0x0005A9C8 File Offset: 0x00058BC8
+		// Token: 0x06000F66 RID: 3942 RVA: 0x00043BF0 File Offset: 0x00041DF0
 		public void CallCmdReportUnlock(UnlockableIndex unlockIndex)
 		{
 			if (!NetworkClient.active)
@@ -951,7 +1020,7 @@ namespace RoR2
 			base.SendCommandInternal(networkWriter, 0, "CmdReportUnlock");
 		}
 
-		// Token: 0x06001280 RID: 4736 RVA: 0x0005AA54 File Offset: 0x00058C54
+		// Token: 0x06000F67 RID: 3943 RVA: 0x00043C7C File Offset: 0x00041E7C
 		public void CallCmdSubmitVote(GameObject voteControllerGameObject, int choiceIndex)
 		{
 			if (!NetworkClient.active)
@@ -974,7 +1043,7 @@ namespace RoR2
 			base.SendCommandInternal(networkWriter, 0, "CmdSubmitVote");
 		}
 
-		// Token: 0x06001281 RID: 4737 RVA: 0x0005AAEC File Offset: 0x00058CEC
+		// Token: 0x06000F68 RID: 3944 RVA: 0x00043D14 File Offset: 0x00041F14
 		protected static void InvokeRpcRpcDeductLunarCoins(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkClient.active)
@@ -985,7 +1054,7 @@ namespace RoR2
 			((NetworkUser)obj).RpcDeductLunarCoins(reader.ReadPackedUInt32());
 		}
 
-		// Token: 0x06001282 RID: 4738 RVA: 0x0005AB15 File Offset: 0x00058D15
+		// Token: 0x06000F69 RID: 3945 RVA: 0x00043D3D File Offset: 0x00041F3D
 		protected static void InvokeRpcRpcAwardLunarCoins(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkClient.active)
@@ -996,7 +1065,7 @@ namespace RoR2
 			((NetworkUser)obj).RpcAwardLunarCoins(reader.ReadPackedUInt32());
 		}
 
-		// Token: 0x06001283 RID: 4739 RVA: 0x0005AB3E File Offset: 0x00058D3E
+		// Token: 0x06000F6A RID: 3946 RVA: 0x00043D66 File Offset: 0x00041F66
 		protected static void InvokeRpcRpcRequestUnlockables(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkClient.active)
@@ -1007,7 +1076,7 @@ namespace RoR2
 			((NetworkUser)obj).RpcRequestUnlockables();
 		}
 
-		// Token: 0x06001284 RID: 4740 RVA: 0x0005AB64 File Offset: 0x00058D64
+		// Token: 0x06000F6B RID: 3947 RVA: 0x00043D8C File Offset: 0x00041F8C
 		public void CallRpcDeductLunarCoins(uint count)
 		{
 			if (!NetworkServer.active)
@@ -1024,7 +1093,7 @@ namespace RoR2
 			this.SendRPCInternal(networkWriter, 0, "RpcDeductLunarCoins");
 		}
 
-		// Token: 0x06001285 RID: 4741 RVA: 0x0005ABD8 File Offset: 0x00058DD8
+		// Token: 0x06000F6C RID: 3948 RVA: 0x00043E00 File Offset: 0x00042000
 		public void CallRpcAwardLunarCoins(uint count)
 		{
 			if (!NetworkServer.active)
@@ -1041,7 +1110,7 @@ namespace RoR2
 			this.SendRPCInternal(networkWriter, 0, "RpcAwardLunarCoins");
 		}
 
-		// Token: 0x06001286 RID: 4742 RVA: 0x0005AC4C File Offset: 0x00058E4C
+		// Token: 0x06000F6D RID: 3949 RVA: 0x00043E74 File Offset: 0x00042074
 		public void CallRpcRequestUnlockables()
 		{
 			if (!NetworkServer.active)
@@ -1057,7 +1126,7 @@ namespace RoR2
 			this.SendRPCInternal(networkWriter, 0, "RpcRequestUnlockables");
 		}
 
-		// Token: 0x06001287 RID: 4743 RVA: 0x0005ACB8 File Offset: 0x00058EB8
+		// Token: 0x06000F6E RID: 3950 RVA: 0x00043EE0 File Offset: 0x000420E0
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -1071,7 +1140,7 @@ namespace RoR2
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -1080,7 +1149,7 @@ namespace RoR2
 				}
 				GeneratedNetworkCode._WriteNetworkUserId_None(writer, this._id);
 			}
-			if ((base.syncVarDirtyBits & 2u) != 0u)
+			if ((base.syncVarDirtyBits & 2U) != 0U)
 			{
 				if (!flag)
 				{
@@ -1089,7 +1158,7 @@ namespace RoR2
 				}
 				writer.WritePackedUInt32((uint)this.rewiredPlayerId);
 			}
-			if ((base.syncVarDirtyBits & 4u) != 0u)
+			if ((base.syncVarDirtyBits & 4U) != 0U)
 			{
 				if (!flag)
 				{
@@ -1098,7 +1167,7 @@ namespace RoR2
 				}
 				writer.Write(this._masterObjectId);
 			}
-			if ((base.syncVarDirtyBits & 8u) != 0u)
+			if ((base.syncVarDirtyBits & 8U) != 0U)
 			{
 				if (!flag)
 				{
@@ -1107,7 +1176,7 @@ namespace RoR2
 				}
 				writer.Write(this.userColor);
 			}
-			if ((base.syncVarDirtyBits & 16u) != 0u)
+			if ((base.syncVarDirtyBits & 16U) != 0U)
 			{
 				if (!flag)
 				{
@@ -1116,7 +1185,7 @@ namespace RoR2
 				}
 				writer.WritePackedUInt32(this.netLunarCoins);
 			}
-			if ((base.syncVarDirtyBits & 32u) != 0u)
+			if ((base.syncVarDirtyBits & 32U) != 0U)
 			{
 				if (!flag)
 				{
@@ -1132,7 +1201,7 @@ namespace RoR2
 			return flag;
 		}
 
-		// Token: 0x06001288 RID: 4744 RVA: 0x0005AE60 File Offset: 0x00059060
+		// Token: 0x06000F6F RID: 3951 RVA: 0x00044088 File Offset: 0x00042288
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -1172,107 +1241,107 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001617 RID: 5655
+		// Token: 0x04000EC5 RID: 3781
 		private static readonly List<NetworkUser> instancesList = new List<NetworkUser>();
 
-		// Token: 0x04001618 RID: 5656
+		// Token: 0x04000EC6 RID: 3782
 		public static readonly ReadOnlyCollection<NetworkUser> readOnlyInstancesList = new ReadOnlyCollection<NetworkUser>(NetworkUser.instancesList);
 
-		// Token: 0x04001619 RID: 5657
+		// Token: 0x04000EC7 RID: 3783
 		private static readonly List<NetworkUser> localPlayers = new List<NetworkUser>();
 
-		// Token: 0x0400161A RID: 5658
+		// Token: 0x04000EC8 RID: 3784
 		public static readonly ReadOnlyCollection<NetworkUser> readOnlyLocalPlayersList = new ReadOnlyCollection<NetworkUser>(NetworkUser.localPlayers);
 
-		// Token: 0x0400161B RID: 5659
+		// Token: 0x04000ECA RID: 3786
 		[SyncVar(hook = "OnSyncId")]
 		private NetworkUserId _id;
 
-		// Token: 0x0400161C RID: 5660
+		// Token: 0x04000ECB RID: 3787
 		[SyncVar]
 		public byte rewiredPlayerId;
 
-		// Token: 0x0400161D RID: 5661
+		// Token: 0x04000ECC RID: 3788
 		[SyncVar(hook = "OnSyncMasterObjectId")]
 		private NetworkInstanceId _masterObjectId;
 
-		// Token: 0x0400161E RID: 5662
+		// Token: 0x04000ECD RID: 3789
 		[CanBeNull]
 		public LocalUser localUser;
 
-		// Token: 0x0400161F RID: 5663
+		// Token: 0x04000ECE RID: 3790
 		public CameraRigController cameraRigController;
 
-		// Token: 0x04001620 RID: 5664
+		// Token: 0x04000ECF RID: 3791
 		public string userName = "";
 
-		// Token: 0x04001621 RID: 5665
+		// Token: 0x04000ED0 RID: 3792
 		[SyncVar]
 		public Color32 userColor = Color.red;
 
-		// Token: 0x04001622 RID: 5666
+		// Token: 0x04000ED1 RID: 3793
 		[SyncVar]
 		private uint netLunarCoins;
 
-		// Token: 0x04001623 RID: 5667
+		// Token: 0x04000ED2 RID: 3794
 		private MemoizedGetComponent<CharacterMaster> cachedMaster;
 
-		// Token: 0x04001624 RID: 5668
+		// Token: 0x04000ED3 RID: 3795
 		private MemoizedGetComponent<PlayerCharacterMasterController> cachedPlayerCharacterMasterController;
 
-		// Token: 0x04001625 RID: 5669
+		// Token: 0x04000ED4 RID: 3796
 		private MemoizedGetComponent<PlayerStatsComponent> cachedPlayerStatsComponent;
 
-		// Token: 0x04001626 RID: 5670
+		// Token: 0x04000ED5 RID: 3797
 		private GameObject _masterObject;
 
-		// Token: 0x04001627 RID: 5671
+		// Token: 0x04000ED6 RID: 3798
 		[SyncVar(hook = "SetBodyPreference")]
 		[NonSerialized]
 		public int bodyIndexPreference = -1;
 
-		// Token: 0x04001628 RID: 5672
+		// Token: 0x04000ED7 RID: 3799
 		private float secondAccumulator;
 
-		// Token: 0x04001629 RID: 5673
+		// Token: 0x04000ED8 RID: 3800
 		[NonSerialized]
 		public List<UnlockableDef> unlockables = new List<UnlockableDef>();
 
-		// Token: 0x0400162A RID: 5674
+		// Token: 0x04000ED9 RID: 3801
 		public List<string> debugUnlockablesList = new List<string>();
 
-		// Token: 0x0400162F RID: 5679
+		// Token: 0x04000EDF RID: 3807
 		private static int kRpcRpcDeductLunarCoins;
 
-		// Token: 0x04001630 RID: 5680
+		// Token: 0x04000EE0 RID: 3808
 		private static int kRpcRpcAwardLunarCoins;
 
-		// Token: 0x04001631 RID: 5681
+		// Token: 0x04000EE1 RID: 3809
 		private static int kCmdCmdSetNetLunarCoins = -934763456;
 
-		// Token: 0x04001632 RID: 5682
+		// Token: 0x04000EE2 RID: 3810
 		private static int kCmdCmdSetBodyPreference;
 
-		// Token: 0x04001633 RID: 5683
+		// Token: 0x04000EE3 RID: 3811
 		private static int kCmdCmdSendConsoleCommand;
 
-		// Token: 0x04001634 RID: 5684
+		// Token: 0x04000EE4 RID: 3812
 		private static int kCmdCmdSendNewUnlockables;
 
-		// Token: 0x04001635 RID: 5685
+		// Token: 0x04000EE5 RID: 3813
 		private static int kRpcRpcRequestUnlockables;
 
-		// Token: 0x04001636 RID: 5686
+		// Token: 0x04000EE6 RID: 3814
 		private static int kCmdCmdReportAchievement;
 
-		// Token: 0x04001637 RID: 5687
+		// Token: 0x04000EE7 RID: 3815
 		private static int kCmdCmdReportUnlock;
 
-		// Token: 0x04001638 RID: 5688
+		// Token: 0x04000EE8 RID: 3816
 		private static int kCmdCmdSubmitVote;
 
-		// Token: 0x02000372 RID: 882
-		// (Invoke) Token: 0x0600128A RID: 4746
+		// Token: 0x020002A3 RID: 675
+		// (Invoke) Token: 0x06000F71 RID: 3953
 		public delegate void NetworkUserGenericDelegate(NetworkUser networkUser);
 	}
 }

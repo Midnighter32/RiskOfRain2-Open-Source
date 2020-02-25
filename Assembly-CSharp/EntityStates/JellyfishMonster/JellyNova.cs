@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.JellyfishMonster
 {
-	// Token: 0x02000133 RID: 307
-	internal class JellyNova : BaseState
+	// Token: 0x02000809 RID: 2057
+	public class JellyNova : BaseState
 	{
-		// Token: 0x060005E8 RID: 1512 RVA: 0x0001B220 File Offset: 0x00019420
+		// Token: 0x06002EBF RID: 11967 RVA: 0x000C6EC8 File Offset: 0x000C50C8
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -34,7 +34,7 @@ namespace EntityStates.JellyfishMonster
 			}
 		}
 
-		// Token: 0x060005E9 RID: 1513 RVA: 0x0001B350 File Offset: 0x00019550
+		// Token: 0x06002EC0 RID: 11968 RVA: 0x000C6FF8 File Offset: 0x000C51F8
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -49,7 +49,7 @@ namespace EntityStates.JellyfishMonster
 			}
 		}
 
-		// Token: 0x060005EA RID: 1514 RVA: 0x0001B39F File Offset: 0x0001959F
+		// Token: 0x06002EC1 RID: 11969 RVA: 0x000C7047 File Offset: 0x000C5247
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -61,7 +61,7 @@ namespace EntityStates.JellyfishMonster
 			}
 		}
 
-		// Token: 0x060005EB RID: 1515 RVA: 0x0001B3E0 File Offset: 0x000195E0
+		// Token: 0x06002EC2 RID: 11970 RVA: 0x000C7088 File Offset: 0x000C5288
 		private void Detonate()
 		{
 			this.hasExploded = true;
@@ -83,7 +83,7 @@ namespace EntityStates.JellyfishMonster
 			}
 			if (JellyNova.novaEffectPrefab)
 			{
-				EffectManager.instance.SpawnEffect(JellyNova.novaEffectPrefab, new EffectData
+				EffectManager.SpawnEffect(JellyNova.novaEffectPrefab, new EffectData
 				{
 					origin = base.transform.position,
 					scale = JellyNova.novaRadius
@@ -97,60 +97,61 @@ namespace EntityStates.JellyfishMonster
 				baseDamage = this.damageStat * JellyNova.novaDamageCoefficient,
 				baseForce = JellyNova.novaForce,
 				position = base.transform.position,
-				radius = JellyNova.novaRadius
+				radius = JellyNova.novaRadius,
+				procCoefficient = 2f
 			}.Fire();
 			if (base.healthComponent)
 			{
-				base.healthComponent.Suicide(null);
+				base.healthComponent.Suicide(null, null, DamageType.Generic);
 			}
 		}
 
-		// Token: 0x060005EC RID: 1516 RVA: 0x0000BB2B File Offset: 0x00009D2B
+		// Token: 0x06002EC3 RID: 11971 RVA: 0x0000C5D3 File Offset: 0x0000A7D3
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Pain;
 		}
 
-		// Token: 0x040006D6 RID: 1750
+		// Token: 0x04002BFA RID: 11258
 		public static float baseDuration = 3f;
 
-		// Token: 0x040006D7 RID: 1751
+		// Token: 0x04002BFB RID: 11259
 		public static GameObject chargingEffectPrefab;
 
-		// Token: 0x040006D8 RID: 1752
+		// Token: 0x04002BFC RID: 11260
 		public static GameObject novaEffectPrefab;
 
-		// Token: 0x040006D9 RID: 1753
+		// Token: 0x04002BFD RID: 11261
 		public static string chargingSoundString;
 
-		// Token: 0x040006DA RID: 1754
+		// Token: 0x04002BFE RID: 11262
 		public static string novaSoundString;
 
-		// Token: 0x040006DB RID: 1755
+		// Token: 0x04002BFF RID: 11263
 		public static float novaDamageCoefficient;
 
-		// Token: 0x040006DC RID: 1756
+		// Token: 0x04002C00 RID: 11264
 		public static float novaRadius;
 
-		// Token: 0x040006DD RID: 1757
+		// Token: 0x04002C01 RID: 11265
 		public static float novaForce;
 
-		// Token: 0x040006DE RID: 1758
+		// Token: 0x04002C02 RID: 11266
 		private bool hasExploded;
 
-		// Token: 0x040006DF RID: 1759
+		// Token: 0x04002C03 RID: 11267
 		private float duration;
 
-		// Token: 0x040006E0 RID: 1760
+		// Token: 0x04002C04 RID: 11268
 		private float stopwatch;
 
-		// Token: 0x040006E1 RID: 1761
+		// Token: 0x04002C05 RID: 11269
 		private GameObject chargeEffect;
 
-		// Token: 0x040006E2 RID: 1762
+		// Token: 0x04002C06 RID: 11270
 		private PrintController printController;
 
-		// Token: 0x040006E3 RID: 1763
+		// Token: 0x04002C07 RID: 11271
 		private uint soundID;
 	}
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x02000063 RID: 99
+// Token: 0x02000064 RID: 100
 public struct NetworkLerpedAngle
 {
-	// Token: 0x0600018E RID: 398 RVA: 0x00008AB8 File Offset: 0x00006CB8
+	// Token: 0x060001AF RID: 431 RVA: 0x000091DC File Offset: 0x000073DC
 	public float GetCurrentValue(bool hasAuthority)
 	{
 		if (hasAuthority)
@@ -15,7 +15,7 @@ public struct NetworkLerpedAngle
 		return Mathf.LerpAngle(this.interpStartValue, this.authoritativeValue, t);
 	}
 
-	// Token: 0x0600018F RID: 399 RVA: 0x00008AF9 File Offset: 0x00006CF9
+	// Token: 0x060001B0 RID: 432 RVA: 0x0000921D File Offset: 0x0000741D
 	public void SetAuthoritativeValue(float newValue, bool hasAuthority)
 	{
 		this.interpStartValue = this.GetCurrentValue(hasAuthority);
@@ -23,18 +23,18 @@ public struct NetworkLerpedAngle
 		this.authoritativeValue = newValue;
 	}
 
-	// Token: 0x040001B0 RID: 432
+	// Token: 0x040001B5 RID: 437
 	private const float interpDuration = 0.05f;
 
-	// Token: 0x040001B1 RID: 433
+	// Token: 0x040001B6 RID: 438
 	private const float invInterpDuration = 20f;
 
-	// Token: 0x040001B2 RID: 434
+	// Token: 0x040001B7 RID: 439
 	public float authoritativeValue;
 
-	// Token: 0x040001B3 RID: 435
+	// Token: 0x040001B8 RID: 440
 	private float interpStartValue;
 
-	// Token: 0x040001B4 RID: 436
+	// Token: 0x040001B9 RID: 441
 	private float interpStartTime;
 }

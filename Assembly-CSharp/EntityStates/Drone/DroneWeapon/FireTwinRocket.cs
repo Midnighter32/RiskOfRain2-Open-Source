@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.Drone.DroneWeapon
 {
-	// Token: 0x02000199 RID: 409
-	internal class FireTwinRocket : BaseState
+	// Token: 0x0200089E RID: 2206
+	public class FireTwinRocket : BaseState
 	{
-		// Token: 0x060007E2 RID: 2018 RVA: 0x00027154 File Offset: 0x00025354
+		// Token: 0x06003177 RID: 12663 RVA: 0x000D5120 File Offset: 0x000D3320
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -24,20 +24,20 @@ namespace EntityStates.Drone.DroneWeapon
 			this.FireProjectile("GatRight");
 		}
 
-		// Token: 0x060007E3 RID: 2019 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06003178 RID: 12664 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x060007E4 RID: 2020 RVA: 0x000271BC File Offset: 0x000253BC
+		// Token: 0x06003179 RID: 12665 RVA: 0x000D5188 File Offset: 0x000D3388
 		private void FireProjectile(string muzzleString)
 		{
 			base.GetAimRay();
 			Transform transform = this.childLocator.FindChild(muzzleString);
 			if (FireTwinRocket.muzzleEffectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireTwinRocket.muzzleEffectPrefab, base.gameObject, muzzleString, false);
+				EffectManager.SimpleMuzzleFlash(FireTwinRocket.muzzleEffectPrefab, base.gameObject, muzzleString, false);
 			}
 			if (base.isAuthority && FireTwinRocket.projectilePrefab != null)
 			{
@@ -58,7 +58,7 @@ namespace EntityStates.Drone.DroneWeapon
 			}
 		}
 
-		// Token: 0x060007E5 RID: 2021 RVA: 0x000272DC File Offset: 0x000254DC
+		// Token: 0x0600317A RID: 12666 RVA: 0x000D52A0 File Offset: 0x000D34A0
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -70,34 +70,34 @@ namespace EntityStates.Drone.DroneWeapon
 			}
 		}
 
-		// Token: 0x060007E6 RID: 2022 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x0600317B RID: 12667 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000A4E RID: 2638
+		// Token: 0x04002FED RID: 12269
 		public static GameObject projectilePrefab;
 
-		// Token: 0x04000A4F RID: 2639
+		// Token: 0x04002FEE RID: 12270
 		public static GameObject muzzleEffectPrefab;
 
-		// Token: 0x04000A50 RID: 2640
+		// Token: 0x04002FEF RID: 12271
 		public static float damageCoefficient;
 
-		// Token: 0x04000A51 RID: 2641
+		// Token: 0x04002FF0 RID: 12272
 		public static float force;
 
-		// Token: 0x04000A52 RID: 2642
+		// Token: 0x04002FF1 RID: 12273
 		public static float baseDuration = 2f;
 
-		// Token: 0x04000A53 RID: 2643
+		// Token: 0x04002FF2 RID: 12274
 		private ChildLocator childLocator;
 
-		// Token: 0x04000A54 RID: 2644
+		// Token: 0x04002FF3 RID: 12275
 		private float stopwatch;
 
-		// Token: 0x04000A55 RID: 2645
+		// Token: 0x04002FF4 RID: 12276
 		private float duration;
 	}
 }

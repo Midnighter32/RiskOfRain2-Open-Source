@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000642 RID: 1602
+	// Token: 0x02000637 RID: 1591
 	[RequireComponent(typeof(TextMeshProUGUI))]
 	public class SteamBuildIdLabel : MonoBehaviour
 	{
-		// Token: 0x060023DA RID: 9178 RVA: 0x000A86FC File Offset: 0x000A68FC
+		// Token: 0x06002579 RID: 9593 RVA: 0x000A310C File Offset: 0x000A130C
 		private void Start()
 		{
 			if (Client.Instance != null)

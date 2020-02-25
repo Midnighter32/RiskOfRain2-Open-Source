@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace EntityStates.Huntress
 {
-	// Token: 0x02000150 RID: 336
+	// Token: 0x02000830 RID: 2096
 	public class BlinkState : BaseState
 	{
-		// Token: 0x06000677 RID: 1655 RVA: 0x0001E78C File Offset: 0x0001C98C
+		// Token: 0x06002F73 RID: 12147 RVA: 0x000CAD48 File Offset: 0x000C8F48
 		public override void OnEnter()
 		{
 			base.OnEnter();
-			Util.PlaySound(BlinkState.beginSoundString, base.gameObject);
+			Util.PlaySound(this.beginSoundString, base.gameObject);
 			this.modelTransform = base.GetModelTransform();
 			if (this.modelTransform)
 			{
@@ -28,20 +28,26 @@ namespace EntityStates.Huntress
 				int hurtBoxesDeactivatorCounter = hurtBoxGroup.hurtBoxesDeactivatorCounter + 1;
 				hurtBoxGroup.hurtBoxesDeactivatorCounter = hurtBoxesDeactivatorCounter;
 			}
-			this.blinkVector = base.inputBank.aimDirection;
+			this.blinkVector = this.GetBlinkVector();
 			this.CreateBlinkEffect(Util.GetCorePosition(base.gameObject));
 		}
 
-		// Token: 0x06000678 RID: 1656 RVA: 0x0001E850 File Offset: 0x0001CA50
+		// Token: 0x06002F74 RID: 12148 RVA: 0x000CAE07 File Offset: 0x000C9007
+		protected virtual Vector3 GetBlinkVector()
+		{
+			return base.inputBank.aimDirection;
+		}
+
+		// Token: 0x06002F75 RID: 12149 RVA: 0x000CAE14 File Offset: 0x000C9014
 		private void CreateBlinkEffect(Vector3 origin)
 		{
 			EffectData effectData = new EffectData();
 			effectData.rotation = Util.QuaternionSafeLookRotation(this.blinkVector);
 			effectData.origin = origin;
-			EffectManager.instance.SpawnEffect(BlinkState.blinkPrefab, effectData, false);
+			EffectManager.SpawnEffect(BlinkState.blinkPrefab, effectData, false);
 		}
 
-		// Token: 0x06000679 RID: 1657 RVA: 0x0001E88C File Offset: 0x0001CA8C
+		// Token: 0x06002F76 RID: 12150 RVA: 0x000CAE4C File Offset: 0x000C904C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -49,20 +55,20 @@ namespace EntityStates.Huntress
 			if (base.characterMotor && base.characterDirection)
 			{
 				base.characterMotor.velocity = Vector3.zero;
-				base.characterMotor.rootMotion += this.blinkVector * (this.moveSpeedStat * BlinkState.speedCoefficient * Time.fixedDeltaTime);
+				base.characterMotor.rootMotion += this.blinkVector * (this.moveSpeedStat * this.speedCoefficient * Time.fixedDeltaTime);
 			}
-			if (this.stopwatch >= BlinkState.duration && base.isAuthority)
+			if (this.stopwatch >= this.duration && base.isAuthority)
 			{
 				this.outer.SetNextStateToMain();
 			}
 		}
 
-		// Token: 0x0600067A RID: 1658 RVA: 0x0001E930 File Offset: 0x0001CB30
+		// Token: 0x06002F77 RID: 12151 RVA: 0x000CAEF0 File Offset: 0x000C90F0
 		public override void OnExit()
 		{
 			if (!this.outer.destroying)
 			{
-				Util.PlaySound(BlinkState.endSoundString, base.gameObject);
+				Util.PlaySound(this.endSoundString, base.gameObject);
 				this.CreateBlinkEffect(Util.GetCorePosition(base.gameObject));
 				this.modelTransform = base.GetModelTransform();
 				if (this.modelTransform)
@@ -96,34 +102,38 @@ namespace EntityStates.Huntress
 			base.OnExit();
 		}
 
-		// Token: 0x040007C2 RID: 1986
+		// Token: 0x04002D06 RID: 11526
 		private Transform modelTransform;
 
-		// Token: 0x040007C3 RID: 1987
+		// Token: 0x04002D07 RID: 11527
 		public static GameObject blinkPrefab;
 
-		// Token: 0x040007C4 RID: 1988
+		// Token: 0x04002D08 RID: 11528
 		private float stopwatch;
 
-		// Token: 0x040007C5 RID: 1989
+		// Token: 0x04002D09 RID: 11529
 		private Vector3 blinkVector = Vector3.zero;
 
-		// Token: 0x040007C6 RID: 1990
-		public static float duration = 0.3f;
+		// Token: 0x04002D0A RID: 11530
+		[SerializeField]
+		public float duration = 0.3f;
 
-		// Token: 0x040007C7 RID: 1991
-		public static float speedCoefficient = 25f;
+		// Token: 0x04002D0B RID: 11531
+		[SerializeField]
+		public float speedCoefficient = 25f;
 
-		// Token: 0x040007C8 RID: 1992
-		public static string beginSoundString;
+		// Token: 0x04002D0C RID: 11532
+		[SerializeField]
+		public string beginSoundString;
 
-		// Token: 0x040007C9 RID: 1993
-		public static string endSoundString;
+		// Token: 0x04002D0D RID: 11533
+		[SerializeField]
+		public string endSoundString;
 
-		// Token: 0x040007CA RID: 1994
+		// Token: 0x04002D0E RID: 11534
 		private CharacterModel characterModel;
 
-		// Token: 0x040007CB RID: 1995
+		// Token: 0x04002D0F RID: 11535
 		private HurtBoxGroup hurtboxGroup;
 	}
 }

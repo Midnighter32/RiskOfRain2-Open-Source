@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Destructible
 {
-	// Token: 0x0200019D RID: 413
+	// Token: 0x020008A4 RID: 2212
 	public class FusionCellDeath : BaseState
 	{
-		// Token: 0x060007FF RID: 2047 RVA: 0x00027994 File Offset: 0x00025B94
+		// Token: 0x0600319B RID: 12699 RVA: 0x000D59FC File Offset: 0x000D3BFC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -23,7 +23,7 @@ namespace EntityStates.Destructible
 			}
 		}
 
-		// Token: 0x06000800 RID: 2048 RVA: 0x000279DB File Offset: 0x00025BDB
+		// Token: 0x0600319C RID: 12700 RVA: 0x000D5A43 File Offset: 0x000D3C43
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -34,7 +34,7 @@ namespace EntityStates.Destructible
 			}
 		}
 
-		// Token: 0x06000801 RID: 2049 RVA: 0x00027A08 File Offset: 0x00025C08
+		// Token: 0x0600319D RID: 12701 RVA: 0x000D5A70 File Offset: 0x000D3C70
 		private void Explode()
 		{
 			if (base.modelLocator)
@@ -50,7 +50,7 @@ namespace EntityStates.Destructible
 			}
 			if (FusionCellDeath.explosionEffectPrefab && NetworkServer.active)
 			{
-				EffectManager.instance.SpawnEffect(FusionCellDeath.explosionEffectPrefab, new EffectData
+				EffectManager.SpawnEffect(FusionCellDeath.explosionEffectPrefab, new EffectData
 				{
 					origin = base.transform.position,
 					scale = FusionCellDeath.explosionRadius,
@@ -73,34 +73,34 @@ namespace EntityStates.Destructible
 			EntityState.Destroy(base.gameObject);
 		}
 
-		// Token: 0x06000802 RID: 2050 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x0600319E RID: 12702 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Death;
 		}
 
-		// Token: 0x04000A74 RID: 2676
+		// Token: 0x04003012 RID: 12306
 		public static string chargeChildEffectName;
 
-		// Token: 0x04000A75 RID: 2677
+		// Token: 0x04003013 RID: 12307
 		public static float chargeDuration;
 
-		// Token: 0x04000A76 RID: 2678
+		// Token: 0x04003014 RID: 12308
 		public static GameObject explosionEffectPrefab;
 
-		// Token: 0x04000A77 RID: 2679
+		// Token: 0x04003015 RID: 12309
 		public static float explosionRadius;
 
-		// Token: 0x04000A78 RID: 2680
+		// Token: 0x04003016 RID: 12310
 		public static float explosionDamageCoefficient;
 
-		// Token: 0x04000A79 RID: 2681
+		// Token: 0x04003017 RID: 12311
 		public static float explosionProcCoefficient;
 
-		// Token: 0x04000A7A RID: 2682
+		// Token: 0x04003018 RID: 12312
 		public static float explosionForce;
 
-		// Token: 0x04000A7B RID: 2683
+		// Token: 0x04003019 RID: 12313
 		private float stopwatch;
 	}
 }

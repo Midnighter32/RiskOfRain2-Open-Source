@@ -2,32 +2,32 @@
 
 namespace RoR2.Achievements
 {
-	// Token: 0x0200069A RID: 1690
+	// Token: 0x020006A2 RID: 1698
 	[RegisterAchievement("Discover5Equipment", "Items.EquipmentMagazine", null, null)]
 	public class Discover5EquipmentAchievement : BaseAchievement
 	{
-		// Token: 0x060025A9 RID: 9641 RVA: 0x000AF8D3 File Offset: 0x000ADAD3
+		// Token: 0x060027B4 RID: 10164 RVA: 0x000AB118 File Offset: 0x000A9318
 		public override void OnInstall()
 		{
 			base.OnInstall();
-			this.userProfile.onPickupDiscovered += this.OnPickupDiscovered;
+			base.userProfile.onPickupDiscovered += this.OnPickupDiscovered;
 			this.Check();
 		}
 
-		// Token: 0x060025AA RID: 9642 RVA: 0x000AF8F8 File Offset: 0x000ADAF8
+		// Token: 0x060027B5 RID: 10165 RVA: 0x000AB13D File Offset: 0x000A933D
 		public override void OnUninstall()
 		{
-			this.userProfile.onPickupDiscovered -= this.OnPickupDiscovered;
+			base.userProfile.onPickupDiscovered -= this.OnPickupDiscovered;
 			base.OnUninstall();
 		}
 
-		// Token: 0x060025AB RID: 9643 RVA: 0x000AF917 File Offset: 0x000ADB17
+		// Token: 0x060027B6 RID: 10166 RVA: 0x000AB15C File Offset: 0x000A935C
 		public override float ProgressForAchievement()
 		{
 			return (float)this.EquipmentDiscovered() / 5f;
 		}
 
-		// Token: 0x060025AC RID: 9644 RVA: 0x000AF926 File Offset: 0x000ADB26
+		// Token: 0x060027B7 RID: 10167 RVA: 0x000AB16B File Offset: 0x000A936B
 		private void OnPickupDiscovered(PickupIndex pickupIndex)
 		{
 			if (pickupIndex.equipmentIndex != EquipmentIndex.None)
@@ -36,21 +36,24 @@ namespace RoR2.Achievements
 			}
 		}
 
-		// Token: 0x060025AD RID: 9645 RVA: 0x000AF938 File Offset: 0x000ADB38
+		// Token: 0x060027B8 RID: 10168 RVA: 0x000AB180 File Offset: 0x000A9380
 		private int EquipmentDiscovered()
 		{
 			int num = 0;
-			for (EquipmentIndex equipmentIndex = EquipmentIndex.CommandMissile; equipmentIndex < EquipmentIndex.Count; equipmentIndex++)
+			EquipmentIndex equipmentIndex = EquipmentIndex.CommandMissile;
+			EquipmentIndex equipmentCount = (EquipmentIndex)EquipmentCatalog.equipmentCount;
+			while (equipmentIndex < equipmentCount)
 			{
-				if (this.userProfile.HasDiscoveredPickup(new PickupIndex(equipmentIndex)))
+				if (base.userProfile.HasDiscoveredPickup(new PickupIndex(equipmentIndex)))
 				{
 					num++;
 				}
+				equipmentIndex++;
 			}
 			return num;
 		}
 
-		// Token: 0x060025AE RID: 9646 RVA: 0x000AF96C File Offset: 0x000ADB6C
+		// Token: 0x060027B9 RID: 10169 RVA: 0x000AB1B9 File Offset: 0x000A93B9
 		private void Check()
 		{
 			if (this.EquipmentDiscovered() >= 5)
@@ -59,7 +62,7 @@ namespace RoR2.Achievements
 			}
 		}
 
-		// Token: 0x0400286D RID: 10349
+		// Token: 0x040024FB RID: 9467
 		private const int requirement = 5;
 	}
 }

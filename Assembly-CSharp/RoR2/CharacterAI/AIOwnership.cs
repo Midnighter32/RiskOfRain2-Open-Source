@@ -3,17 +3,18 @@ using UnityEngine;
 
 namespace RoR2.CharacterAI
 {
-	// Token: 0x02000597 RID: 1431
+	// Token: 0x02000568 RID: 1384
 	[RequireComponent(typeof(BaseAI))]
+	[DisallowMultipleComponent]
 	public class AIOwnership : MonoBehaviour
 	{
-		// Token: 0x06002036 RID: 8246 RVA: 0x0009740E File Offset: 0x0009560E
+		// Token: 0x06002100 RID: 8448 RVA: 0x0008E9C2 File Offset: 0x0008CBC2
 		private void Awake()
 		{
 			this.baseAI = base.GetComponent<BaseAI>();
 		}
 
-		// Token: 0x06002037 RID: 8247 RVA: 0x0009741C File Offset: 0x0009561C
+		// Token: 0x06002101 RID: 8449 RVA: 0x0008E9D0 File Offset: 0x0008CBD0
 		private void FixedUpdate()
 		{
 			if (this.ownerMaster)
@@ -22,10 +23,10 @@ namespace RoR2.CharacterAI
 			}
 		}
 
-		// Token: 0x0400226C RID: 8812
+		// Token: 0x04001E27 RID: 7719
 		public CharacterMaster ownerMaster;
 
-		// Token: 0x0400226D RID: 8813
+		// Token: 0x04001E28 RID: 7720
 		private BaseAI baseAI;
 	}
 }

@@ -4,10 +4,10 @@ using UnityEngine.Networking;
 
 namespace RoR2.Orbs
 {
-	// Token: 0x0200050D RID: 1293
+	// Token: 0x020004C5 RID: 1221
 	public class BeetleWardOrb : Orb
 	{
-		// Token: 0x06001D33 RID: 7475 RVA: 0x00087FD8 File Offset: 0x000861D8
+		// Token: 0x06001D61 RID: 7521 RVA: 0x0007D1C4 File Offset: 0x0007B3C4
 		public override void Begin()
 		{
 			base.duration = base.distanceToTarget / this.speed;
@@ -17,10 +17,10 @@ namespace RoR2.Orbs
 				genericFloat = base.duration
 			};
 			effectData.SetHurtBoxReference(this.target);
-			EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/OrbEffects/BeetleWardOrbEffect"), effectData, true);
+			EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/OrbEffects/BeetleWardOrbEffect"), effectData, true);
 		}
 
-		// Token: 0x06001D34 RID: 7476 RVA: 0x00088038 File Offset: 0x00086238
+		// Token: 0x06001D62 RID: 7522 RVA: 0x0007D220 File Offset: 0x0007B420
 		public override void OnArrival()
 		{
 			if (this.target)
@@ -31,7 +31,7 @@ namespace RoR2.Orbs
 			}
 		}
 
-		// Token: 0x04001F58 RID: 8024
+		// Token: 0x04001A65 RID: 6757
 		public float speed;
 	}
 }

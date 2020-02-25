@@ -3,19 +3,19 @@ using UnityEngine;
 
 namespace LeTai.Asset.TranslucentImage
 {
-	// Token: 0x020006BF RID: 1727
-	[ExecuteInEditMode]
-	[RequireComponent(typeof(Camera))]
+	// Token: 0x0200090A RID: 2314
 	[AddComponentMenu("Image Effects/Tai Le Assets/Translucent Image Source")]
+	[RequireComponent(typeof(Camera))]
+	[ExecuteInEditMode]
 	public class TranslucentImageSource : MonoBehaviour
 	{
-		// Token: 0x17000330 RID: 816
-		// (get) Token: 0x0600265C RID: 9820 RVA: 0x000B0F62 File Offset: 0x000AF162
-		// (set) Token: 0x0600265D RID: 9821 RVA: 0x000B0F6A File Offset: 0x000AF16A
+		// Token: 0x1700046D RID: 1133
+		// (get) Token: 0x060033A6 RID: 13222 RVA: 0x000E03A2 File Offset: 0x000DE5A2
+		// (set) Token: 0x060033A7 RID: 13223 RVA: 0x000E03AA File Offset: 0x000DE5AA
 		public RenderTexture BlurredScreen { get; private set; }
 
-		// Token: 0x17000331 RID: 817
-		// (get) Token: 0x0600265E RID: 9822 RVA: 0x000B0F74 File Offset: 0x000AF174
+		// Token: 0x1700046E RID: 1134
+		// (get) Token: 0x060033A8 RID: 13224 RVA: 0x000E03B4 File Offset: 0x000DE5B4
 		private Camera Cam
 		{
 			get
@@ -28,9 +28,9 @@ namespace LeTai.Asset.TranslucentImage
 			}
 		}
 
-		// Token: 0x17000332 RID: 818
-		// (get) Token: 0x0600265F RID: 9823 RVA: 0x000B0FA4 File Offset: 0x000AF1A4
-		// (set) Token: 0x06002660 RID: 9824 RVA: 0x000B0FD9 File Offset: 0x000AF1D9
+		// Token: 0x1700046F RID: 1135
+		// (get) Token: 0x060033A9 RID: 13225 RVA: 0x000E03E4 File Offset: 0x000DE5E4
+		// (set) Token: 0x060033AA RID: 13226 RVA: 0x000E0419 File Offset: 0x000DE619
 		public float Strength
 		{
 			get
@@ -44,9 +44,9 @@ namespace LeTai.Asset.TranslucentImage
 			}
 		}
 
-		// Token: 0x17000333 RID: 819
-		// (get) Token: 0x06002661 RID: 9825 RVA: 0x000B0FF2 File Offset: 0x000AF1F2
-		// (set) Token: 0x06002662 RID: 9826 RVA: 0x000B0FFA File Offset: 0x000AF1FA
+		// Token: 0x17000470 RID: 1136
+		// (get) Token: 0x060033AB RID: 13227 RVA: 0x000E0432 File Offset: 0x000DE632
+		// (set) Token: 0x060033AC RID: 13228 RVA: 0x000E043A File Offset: 0x000DE63A
 		public float Size
 		{
 			get
@@ -59,9 +59,9 @@ namespace LeTai.Asset.TranslucentImage
 			}
 		}
 
-		// Token: 0x17000334 RID: 820
-		// (get) Token: 0x06002663 RID: 9827 RVA: 0x000B100D File Offset: 0x000AF20D
-		// (set) Token: 0x06002664 RID: 9828 RVA: 0x000B1015 File Offset: 0x000AF215
+		// Token: 0x17000471 RID: 1137
+		// (get) Token: 0x060033AD RID: 13229 RVA: 0x000E044D File Offset: 0x000DE64D
+		// (set) Token: 0x060033AE RID: 13230 RVA: 0x000E0455 File Offset: 0x000DE655
 		public int Iteration
 		{
 			get
@@ -74,9 +74,9 @@ namespace LeTai.Asset.TranslucentImage
 			}
 		}
 
-		// Token: 0x17000335 RID: 821
-		// (get) Token: 0x06002665 RID: 9829 RVA: 0x000B1024 File Offset: 0x000AF224
-		// (set) Token: 0x06002666 RID: 9830 RVA: 0x000B102C File Offset: 0x000AF22C
+		// Token: 0x17000472 RID: 1138
+		// (get) Token: 0x060033AF RID: 13231 RVA: 0x000E0464 File Offset: 0x000DE664
+		// (set) Token: 0x060033B0 RID: 13232 RVA: 0x000E046C File Offset: 0x000DE66C
 		public int Downsample
 		{
 			get
@@ -89,9 +89,9 @@ namespace LeTai.Asset.TranslucentImage
 			}
 		}
 
-		// Token: 0x17000336 RID: 822
-		// (get) Token: 0x06002667 RID: 9831 RVA: 0x000B103B File Offset: 0x000AF23B
-		// (set) Token: 0x06002668 RID: 9832 RVA: 0x000B1044 File Offset: 0x000AF244
+		// Token: 0x17000473 RID: 1139
+		// (get) Token: 0x060033B1 RID: 13233 RVA: 0x000E047B File Offset: 0x000DE67B
+		// (set) Token: 0x060033B2 RID: 13234 RVA: 0x000E0484 File Offset: 0x000DE684
 		public Rect BlurRegion
 		{
 			get
@@ -109,9 +109,9 @@ namespace LeTai.Asset.TranslucentImage
 			}
 		}
 
-		// Token: 0x17000337 RID: 823
-		// (get) Token: 0x06002669 RID: 9833 RVA: 0x000B1117 File Offset: 0x000AF317
-		// (set) Token: 0x0600266A RID: 9834 RVA: 0x000B111F File Offset: 0x000AF31F
+		// Token: 0x17000474 RID: 1140
+		// (get) Token: 0x060033B3 RID: 13235 RVA: 0x000E0557 File Offset: 0x000DE757
+		// (set) Token: 0x060033B4 RID: 13236 RVA: 0x000E055F File Offset: 0x000DE75F
 		public int MaxDepth
 		{
 			get
@@ -124,8 +124,8 @@ namespace LeTai.Asset.TranslucentImage
 			}
 		}
 
-		// Token: 0x17000338 RID: 824
-		// (get) Token: 0x0600266B RID: 9835 RVA: 0x000B112E File Offset: 0x000AF32E
+		// Token: 0x17000475 RID: 1141
+		// (get) Token: 0x060033B5 RID: 13237 RVA: 0x000E056E File Offset: 0x000DE76E
 		private float ScreenSize
 		{
 			get
@@ -134,8 +134,8 @@ namespace LeTai.Asset.TranslucentImage
 			}
 		}
 
-		// Token: 0x17000339 RID: 825
-		// (get) Token: 0x0600266C RID: 9836 RVA: 0x000B1152 File Offset: 0x000AF352
+		// Token: 0x17000476 RID: 1142
+		// (get) Token: 0x060033B6 RID: 13238 RVA: 0x000E0592 File Offset: 0x000DE792
 		private float MinUpdateCycle
 		{
 			get
@@ -148,7 +148,7 @@ namespace LeTai.Asset.TranslucentImage
 			}
 		}
 
-		// Token: 0x0600266D RID: 9837 RVA: 0x000B1174 File Offset: 0x000AF374
+		// Token: 0x060033B7 RID: 13239 RVA: 0x000E05B4 File Offset: 0x000DE7B4
 		protected virtual void SetAdvancedFieldFromSimple()
 		{
 			this.Size = this.strength / Mathf.Pow(2f, (float)(this.Iteration + this.Downsample));
@@ -175,14 +175,15 @@ namespace LeTai.Asset.TranslucentImage
 			}
 		}
 
-		// Token: 0x0600266E RID: 9838 RVA: 0x000B1240 File Offset: 0x000AF440
+		// Token: 0x060033B8 RID: 13240 RVA: 0x000E0680 File Offset: 0x000DE880
 		protected virtual void Start()
 		{
 			this.camera = this.Cam;
 			this.shader = Shader.Find("Hidden/EfficientBlur");
-			if (!this.shader.isSupported)
+			if (!this.shader.isSupported || !SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.Default))
 			{
 				base.enabled = false;
+				return;
 			}
 			this.material = new Material(this.shader);
 			this.previewMaterial = new Material(Shader.Find("Hidden/FillCrop"));
@@ -192,7 +193,7 @@ namespace LeTai.Asset.TranslucentImage
 			this.lastDownsample = this.Downsample;
 		}
 
-		// Token: 0x0600266F RID: 9839 RVA: 0x000B12D4 File Offset: 0x000AF4D4
+		// Token: 0x060033B9 RID: 13241 RVA: 0x000E071C File Offset: 0x000DE91C
 		protected virtual void CreateNewBlurredScreen()
 		{
 			this.BlurredScreen = new RenderTexture(Mathf.RoundToInt((float)this.Cam.pixelWidth * this.BlurRegion.width) >> this.Downsample, Mathf.RoundToInt((float)this.Cam.pixelHeight * this.BlurRegion.height) >> this.Downsample, 0)
@@ -201,7 +202,7 @@ namespace LeTai.Asset.TranslucentImage
 			};
 		}
 
-		// Token: 0x06002670 RID: 9840 RVA: 0x000B1348 File Offset: 0x000AF548
+		// Token: 0x060033BA RID: 13242 RVA: 0x000E0790 File Offset: 0x000DE990
 		protected virtual void ProgressiveResampling(int level, ref RenderTexture target)
 		{
 			level = Mathf.Min(level + this.Downsample, this.MaxDepth);
@@ -214,7 +215,7 @@ namespace LeTai.Asset.TranslucentImage
 			target = temporary;
 		}
 
-		// Token: 0x06002671 RID: 9841 RVA: 0x000B13C0 File Offset: 0x000AF5C0
+		// Token: 0x060033BB RID: 13243 RVA: 0x000E0808 File Offset: 0x000DEA08
 		protected virtual void ProgressiveBlur(RenderTexture sourceRt)
 		{
 			if (this.Downsample != this.lastDownsample || !this.BlurRegion.Equals(this.lastBlurRegion))
@@ -248,7 +249,7 @@ namespace LeTai.Asset.TranslucentImage
 			RenderTexture.ReleaseTemporary(temporary);
 		}
 
-		// Token: 0x06002672 RID: 9842 RVA: 0x000B1544 File Offset: 0x000AF744
+		// Token: 0x060033BC RID: 13244 RVA: 0x000E098C File Offset: 0x000DEB8C
 		protected virtual void OnRenderImage(RenderTexture source, RenderTexture destination)
 		{
 			if (Time.unscaledTime - this.lastUpdate >= this.MinUpdateCycle)
@@ -265,63 +266,63 @@ namespace LeTai.Asset.TranslucentImage
 			Graphics.Blit(source, destination);
 		}
 
-		// Token: 0x04002895 RID: 10389
+		// Token: 0x0400332E RID: 13102
 		public float maxUpdateRate = float.PositiveInfinity;
 
-		// Token: 0x04002896 RID: 10390
+		// Token: 0x0400332F RID: 13103
 		[Tooltip("Preview the effect on entire screen")]
 		public bool preview;
 
-		// Token: 0x04002897 RID: 10391
+		// Token: 0x04003330 RID: 13104
 		[SerializeField]
 		private float size = 5f;
 
-		// Token: 0x04002898 RID: 10392
+		// Token: 0x04003331 RID: 13105
 		[SerializeField]
 		private int iteration = 4;
 
-		// Token: 0x04002899 RID: 10393
+		// Token: 0x04003332 RID: 13106
 		[SerializeField]
 		private Rect blurRegion = new Rect(0f, 0f, 1f, 1f);
 
-		// Token: 0x0400289A RID: 10394
+		// Token: 0x04003333 RID: 13107
 		private Rect lastBlurRegion = new Rect(0f, 0f, 1f, 1f);
 
-		// Token: 0x0400289B RID: 10395
+		// Token: 0x04003334 RID: 13108
 		[SerializeField]
 		private int maxDepth = 4;
 
-		// Token: 0x0400289C RID: 10396
+		// Token: 0x04003335 RID: 13109
 		[SerializeField]
 		private int downsample;
 
-		// Token: 0x0400289D RID: 10397
+		// Token: 0x04003336 RID: 13110
 		[SerializeField]
 		private int lastDownsample;
 
-		// Token: 0x0400289E RID: 10398
+		// Token: 0x04003337 RID: 13111
 		[SerializeField]
 		private float strength;
 
-		// Token: 0x0400289F RID: 10399
+		// Token: 0x04003338 RID: 13112
 		private float lastUpdate;
 
-		// Token: 0x040028A0 RID: 10400
+		// Token: 0x04003339 RID: 13113
 		private Camera camera;
 
-		// Token: 0x040028A1 RID: 10401
+		// Token: 0x0400333A RID: 13114
 		private Shader shader;
 
-		// Token: 0x040028A2 RID: 10402
+		// Token: 0x0400333B RID: 13115
 		private Material material;
 
-		// Token: 0x040028A3 RID: 10403
+		// Token: 0x0400333C RID: 13116
 		private Material previewMaterial;
 
-		// Token: 0x040028A5 RID: 10405
+		// Token: 0x0400333E RID: 13118
 		private static int _sizePropId;
 
-		// Token: 0x040028A6 RID: 10406
+		// Token: 0x0400333F RID: 13119
 		private static int _cropRegionPropId;
 	}
 }

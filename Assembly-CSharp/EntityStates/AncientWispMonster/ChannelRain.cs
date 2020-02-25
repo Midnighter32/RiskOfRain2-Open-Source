@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.AncientWispMonster
 {
-	// Token: 0x020000CF RID: 207
+	// Token: 0x0200072E RID: 1838
 	public class ChannelRain : BaseState
 	{
-		// Token: 0x06000409 RID: 1033 RVA: 0x00010994 File Offset: 0x0000EB94
+		// Token: 0x06002AB2 RID: 10930 RVA: 0x000B39E0 File Offset: 0x000B1BE0
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -17,7 +17,7 @@ namespace EntityStates.AncientWispMonster
 			base.PlayCrossfade("Body", "ChannelRain", 0.3f);
 		}
 
-		// Token: 0x0600040A RID: 1034 RVA: 0x000109E0 File Offset: 0x0000EBE0
+		// Token: 0x06002AB3 RID: 10931 RVA: 0x000B3A2C File Offset: 0x000B1C2C
 		private void PlaceRain()
 		{
 			Vector3 vector = Vector3.zero;
@@ -84,7 +84,7 @@ namespace EntityStates.AncientWispMonster
 			}
 		}
 
-		// Token: 0x0600040B RID: 1035 RVA: 0x00010C18 File Offset: 0x0000EE18
+		// Token: 0x06002AB4 RID: 10932 RVA: 0x000B3C64 File Offset: 0x000B1E64
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -100,7 +100,7 @@ namespace EntityStates.AncientWispMonster
 			}
 		}
 
-		// Token: 0x0600040C RID: 1036 RVA: 0x00010C8C File Offset: 0x0000EE8C
+		// Token: 0x06002AB5 RID: 10933 RVA: 0x000B3CD8 File Offset: 0x000B1ED8
 		private Transform FindTargetClosest(Vector3 point, TeamIndex enemyTeam)
 		{
 			ReadOnlyCollection<TeamComponent> teamMembers = TeamComponent.GetTeamMembers(enemyTeam);
@@ -118,40 +118,40 @@ namespace EntityStates.AncientWispMonster
 			return result;
 		}
 
-		// Token: 0x0600040D RID: 1037 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x06002AB6 RID: 10934 RVA: 0x0000C68F File Offset: 0x0000A88F
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
-			return InterruptPriority.Death;
+			return InterruptPriority.Frozen;
 		}
 
-		// Token: 0x040003C7 RID: 967
+		// Token: 0x0400268D RID: 9869
 		private float castTimer;
 
-		// Token: 0x040003C8 RID: 968
+		// Token: 0x0400268E RID: 9870
 		public static float baseDuration = 4f;
 
-		// Token: 0x040003C9 RID: 969
+		// Token: 0x0400268F RID: 9871
 		public static float explosionDelay = 2f;
 
-		// Token: 0x040003CA RID: 970
+		// Token: 0x04002690 RID: 9872
 		public static int explosionCount = 10;
 
-		// Token: 0x040003CB RID: 971
+		// Token: 0x04002691 RID: 9873
 		public static float damageCoefficient;
 
-		// Token: 0x040003CC RID: 972
+		// Token: 0x04002692 RID: 9874
 		public static float randomRadius;
 
-		// Token: 0x040003CD RID: 973
+		// Token: 0x04002693 RID: 9875
 		public static float radius;
 
-		// Token: 0x040003CE RID: 974
+		// Token: 0x04002694 RID: 9876
 		public static GameObject delayPrefab;
 
-		// Token: 0x040003CF RID: 975
+		// Token: 0x04002695 RID: 9877
 		private float duration;
 
-		// Token: 0x040003D0 RID: 976
+		// Token: 0x04002696 RID: 9878
 		private float durationBetweenCast;
 	}
 }

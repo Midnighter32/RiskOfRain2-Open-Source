@@ -1,77 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using RoR2.Audio;
 using RoR2.Networking;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020002DF RID: 735
-	public class EffectManager : MonoBehaviour
+	// Token: 0x02000129 RID: 297
+	public static class EffectManager
 	{
-		// Token: 0x1700013E RID: 318
-		// (get) Token: 0x06000EB1 RID: 3761 RVA: 0x000486D3 File Offset: 0x000468D3
-		// (set) Token: 0x06000EB0 RID: 3760 RVA: 0x000486CB File Offset: 0x000468CB
-		public static EffectManager instance { get; private set; }
-
-		// Token: 0x06000EB2 RID: 3762 RVA: 0x000486DA File Offset: 0x000468DA
-		private void OnEnable()
-		{
-			if (EffectManager.instance)
-			{
-				Debug.LogError("Only one EffectManager can exist at a time.");
-				return;
-			}
-			EffectManager.instance = this;
-		}
-
-		// Token: 0x06000EB3 RID: 3763 RVA: 0x000486F9 File Offset: 0x000468F9
-		private void OnDisable()
-		{
-			if (EffectManager.instance == this)
-			{
-				EffectManager.instance = null;
-			}
-		}
-
-		// Token: 0x06000EB4 RID: 3764 RVA: 0x00048710 File Offset: 0x00046910
-		private void Awake()
-		{
-			this.effectPrefabsList = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs/Effects/"));
-			uint num = 0u;
-			while ((ulong)num < (ulong)((long)this.effectPrefabsList.Count))
-			{
-				this.effectPrefabToIndexMap[this.effectPrefabsList[(int)num]] = num;
-				num += 1u;
-			}
-		}
-
-		// Token: 0x06000EB5 RID: 3765 RVA: 0x00048762 File Offset: 0x00046962
+		// Token: 0x0600055B RID: 1371 RVA: 0x00015BD3 File Offset: 0x00013DD3
 		[NetworkMessageHandler(msgType = 52, server = true)]
 		private static void HandleEffectServer(NetworkMessage netMsg)
 		{
-			if (EffectManager.instance)
-			{
-				EffectManager.instance.HandleEffectServerInternal(netMsg);
-			}
+			EffectManager.HandleEffectServerInternal(netMsg);
 		}
 
-		// Token: 0x06000EB6 RID: 3766 RVA: 0x0004877B File Offset: 0x0004697B
+		// Token: 0x0600055C RID: 1372 RVA: 0x00015BDB File Offset: 0x00013DDB
 		[NetworkMessageHandler(msgType = 52, client = true)]
 		private static void HandleEffectClient(NetworkMessage netMsg)
 		{
-			if (EffectManager.instance)
-			{
-				EffectManager.instance.HandleEffectClientInternal(netMsg);
-			}
+			EffectManager.HandleEffectClientInternal(netMsg);
 		}
 
-		// Token: 0x06000EB7 RID: 3767 RVA: 0x00048794 File Offset: 0x00046994
-		public void SpawnEffect(GameObject effectPrefab, EffectData effectData, bool transmit)
+		// Token: 0x0600055D RID: 1373 RVA: 0x00015BE3 File Offset: 0x00013DE3
+		public static void SpawnEffect(GameObject effectPrefab, EffectData effectData, bool transmit)
+		{
+			EffectManager.SpawnEffect(EffectCatalog.FindEffectIndexFromPrefab(effectPrefab), effectData, transmit);
+		}
+
+		// Token: 0x0600055E RID: 1374 RVA: 0x00015BF4 File Offset: 0x00013DF4
+		public static void SpawnEffect(EffectIndex effectIndex, EffectData effectData, bool transmit)
 		{
 			if (transmit)
 			{
-				this.TransmitEffect(effectPrefab, effectData, null);
+				EffectManager.TransmitEffect(effectIndex, effectData, null);
 				if (NetworkServer.active)
 				{
 					return;
@@ -79,12 +43,39 @@ namespace RoR2
 			}
 			if (NetworkClient.active)
 			{
-				if (!VFXBudget.CanAffordSpawn(effectPrefab))
+				if (effectData.networkSoundEventIndex != NetworkSoundEventIndex.Invalid)
+				{
+					PointSoundManager.EmitSoundLocal(NetworkSoundEventCatalog.GetAkIdFromNetworkSoundEventIndex(effectData.networkSoundEventIndex), effectData.origin);
+				}
+				EffectDef effectDef = EffectCatalog.GetEffectDef(effectIndex);
+				if (effectDef == null)
+				{
+					return;
+				}
+				string spawnSoundEventName = effectDef.spawnSoundEventName;
+				if (!string.IsNullOrEmpty(spawnSoundEventName))
+				{
+					PointSoundManager.EmitSoundLocal((AkEventIdArg)spawnSoundEventName, effectData.origin);
+				}
+				SurfaceDef surfaceDef = SurfaceDefCatalog.GetSurfaceDef(effectData.surfaceDefIndex);
+				if (surfaceDef != null)
+				{
+					string impactSoundString = surfaceDef.impactSoundString;
+					if (!string.IsNullOrEmpty(impactSoundString))
+					{
+						PointSoundManager.EmitSoundLocal((AkEventIdArg)impactSoundString, effectData.origin);
+					}
+				}
+				if (!VFXBudget.CanAffordSpawn(effectDef.prefabVfxAttributes))
+				{
+					return;
+				}
+				if (effectDef.cullMethod != null && !effectDef.cullMethod(effectData))
 				{
 					return;
 				}
 				EffectData effectData2 = effectData.Clone();
-				EffectComponent component = UnityEngine.Object.Instantiate<GameObject>(effectPrefab, effectData2.origin, effectData2.rotation).GetComponent<EffectComponent>();
+				EffectComponent component = UnityEngine.Object.Instantiate<GameObject>(effectDef.prefab, effectData2.origin, effectData2.rotation).GetComponent<EffectComponent>();
 				if (component)
 				{
 					component.effectData = effectData2.Clone();
@@ -92,21 +83,10 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000EB8 RID: 3768 RVA: 0x000487F8 File Offset: 0x000469F8
-		private void TransmitEffect(GameObject effectPrefab, EffectData effectData, NetworkConnection netOrigin = null)
+		// Token: 0x0600055F RID: 1375 RVA: 0x00015D04 File Offset: 0x00013F04
+		private static void TransmitEffect(EffectIndex effectIndex, EffectData effectData, NetworkConnection netOrigin = null)
 		{
-			uint effectPrefabIndex;
-			if (!this.LookupEffectPrefabIndex(effectPrefab, out effectPrefabIndex))
-			{
-				return;
-			}
-			this.TransmitEffect(effectPrefabIndex, effectData, netOrigin);
-		}
-
-		// Token: 0x06000EB9 RID: 3769 RVA: 0x0004881C File Offset: 0x00046A1C
-		private void TransmitEffect(uint effectPrefabIndex, EffectData effectData, NetworkConnection netOrigin = null)
-		{
-			EffectManager.outgoingEffectMessage.effectPrefabIndex = effectPrefabIndex;
+			EffectManager.outgoingEffectMessage.effectIndex = effectIndex;
 			EffectData.Copy(effectData, EffectManager.outgoingEffectMessage.effectData);
 			if (NetworkServer.active)
 			{
@@ -117,7 +97,7 @@ namespace RoR2
 						NetworkConnection networkConnection = enumerator.Current;
 						if (networkConnection != null && networkConnection != netOrigin)
 						{
-							networkConnection.SendByChannel(52, EffectManager.outgoingEffectMessage, QosChannelIndex.effects.intVal);
+							networkConnection.SendByChannel(52, EffectManager.outgoingEffectMessage, EffectManager.qosChannel.intVal);
 						}
 					}
 					return;
@@ -125,64 +105,30 @@ namespace RoR2
 			}
 			if (ClientScene.readyConnection != null)
 			{
-				ClientScene.readyConnection.SendByChannel(52, EffectManager.outgoingEffectMessage, QosChannelIndex.effects.intVal);
+				ClientScene.readyConnection.SendByChannel(52, EffectManager.outgoingEffectMessage, EffectManager.qosChannel.intVal);
 			}
 		}
 
-		// Token: 0x06000EBA RID: 3770 RVA: 0x000488C8 File Offset: 0x00046AC8
-		private bool LookupEffectPrefabIndex(GameObject effectPrefab, out uint effectPrefabIndex)
-		{
-			if (!this.effectPrefabToIndexMap.TryGetValue(effectPrefab, out effectPrefabIndex))
-			{
-				Debug.LogErrorFormat("Attempted to find effect index for prefab \"{0}\" which is not in Resources/Prefabs/Effects.", new object[]
-				{
-					effectPrefab
-				});
-				return false;
-			}
-			return true;
-		}
-
-		// Token: 0x06000EBB RID: 3771 RVA: 0x000488F0 File Offset: 0x00046AF0
-		private GameObject LookupEffectPrefab(uint effectPrefabIndex)
-		{
-			if ((ulong)effectPrefabIndex >= (ulong)((long)this.effectPrefabsList.Count))
-			{
-				Debug.LogErrorFormat("Attempted to find effect prefab for bad index #{0}.", new object[]
-				{
-					effectPrefabIndex
-				});
-				return null;
-			}
-			return this.effectPrefabsList[(int)effectPrefabIndex];
-		}
-
-		// Token: 0x06000EBC RID: 3772 RVA: 0x0004892C File Offset: 0x00046B2C
-		private void HandleEffectClientInternal(NetworkMessage netMsg)
+		// Token: 0x06000560 RID: 1376 RVA: 0x00015DB0 File Offset: 0x00013FB0
+		private static void HandleEffectClientInternal(NetworkMessage netMsg)
 		{
 			netMsg.ReadMessage<EffectManager.EffectMessage>(EffectManager.incomingEffectMessage);
-			GameObject gameObject = this.LookupEffectPrefab(EffectManager.incomingEffectMessage.effectPrefabIndex);
-			if (gameObject == null)
+			if (EffectCatalog.GetEffectDef(EffectManager.incomingEffectMessage.effectIndex) == null)
 			{
 				return;
 			}
-			this.SpawnEffect(gameObject, EffectManager.incomingEffectMessage.effectData, false);
+			EffectManager.SpawnEffect(EffectManager.incomingEffectMessage.effectIndex, EffectManager.incomingEffectMessage.effectData, false);
 		}
 
-		// Token: 0x06000EBD RID: 3773 RVA: 0x00048974 File Offset: 0x00046B74
-		private void HandleEffectServerInternal(NetworkMessage netMsg)
+		// Token: 0x06000561 RID: 1377 RVA: 0x00015DE9 File Offset: 0x00013FE9
+		private static void HandleEffectServerInternal(NetworkMessage netMsg)
 		{
 			netMsg.ReadMessage<EffectManager.EffectMessage>(EffectManager.incomingEffectMessage);
-			GameObject gameObject = this.LookupEffectPrefab(EffectManager.incomingEffectMessage.effectPrefabIndex);
-			if (gameObject == null)
-			{
-				return;
-			}
-			this.TransmitEffect(gameObject, EffectManager.incomingEffectMessage.effectData, netMsg.conn);
+			EffectManager.TransmitEffect(EffectManager.incomingEffectMessage.effectIndex, EffectManager.incomingEffectMessage.effectData, netMsg.conn);
 		}
 
-		// Token: 0x06000EBE RID: 3774 RVA: 0x000489C0 File Offset: 0x00046BC0
-		public void SimpleMuzzleFlash(GameObject effectPrefab, GameObject obj, string muzzleName, bool transmit)
+		// Token: 0x06000562 RID: 1378 RVA: 0x00015E18 File Offset: 0x00014018
+		public static void SimpleMuzzleFlash(GameObject effectPrefab, GameObject obj, string muzzleName, bool transmit)
 		{
 			if (!obj)
 			{
@@ -203,76 +149,83 @@ namespace RoR2
 							origin = transform.position
 						};
 						effectData.SetChildLocatorTransformReference(obj, childIndex);
-						EffectManager.instance.SpawnEffect(effectPrefab, effectData, transmit);
+						EffectManager.SpawnEffect(effectPrefab, effectData, transmit);
 					}
 				}
 			}
 		}
 
-		// Token: 0x06000EBF RID: 3775 RVA: 0x00048A49 File Offset: 0x00046C49
-		public void SimpleImpactEffect(GameObject effectPrefab, Vector3 hitPos, Vector3 normal, bool transmit)
+		// Token: 0x06000563 RID: 1379 RVA: 0x00015E9B File Offset: 0x0001409B
+		public static void SimpleImpactEffect(GameObject effectPrefab, Vector3 hitPos, Vector3 normal, bool transmit)
 		{
-			this.SpawnEffect(effectPrefab, new EffectData
+			EffectManager.SpawnEffect(effectPrefab, new EffectData
 			{
 				origin = hitPos,
 				rotation = ((normal == Vector3.zero) ? Quaternion.identity : Util.QuaternionSafeLookRotation(normal))
 			}, transmit);
 		}
 
-		// Token: 0x06000EC0 RID: 3776 RVA: 0x00048A80 File Offset: 0x00046C80
-		public void SimpleImpactEffect(GameObject effectPrefab, Vector3 hitPos, Vector3 normal, Color color, bool transmit)
+		// Token: 0x06000564 RID: 1380 RVA: 0x00015ED0 File Offset: 0x000140D0
+		public static void SimpleImpactEffect(GameObject effectPrefab, Vector3 hitPos, Vector3 normal, Color color, bool transmit)
 		{
-			this.SpawnEffect(effectPrefab, new EffectData
+			EffectManager.SpawnEffect(effectPrefab, new EffectData
 			{
 				origin = hitPos,
-				rotation = ((normal == Vector3.zero) ? Quaternion.identity : Util.QuaternionSafeLookRotation(normal)),
+				rotation = Util.QuaternionSafeLookRotation(normal),
 				color = color
 			}, transmit);
 		}
 
-		// Token: 0x06000EC1 RID: 3777 RVA: 0x00048ACF File Offset: 0x00046CCF
-		public void SimpleEffect(GameObject effectPrefab, Vector3 position, Quaternion rotation, bool transmit)
+		// Token: 0x06000565 RID: 1381 RVA: 0x00015EFE File Offset: 0x000140FE
+		public static void SimpleEffect(GameObject effectPrefab, Vector3 position, Quaternion rotation, bool transmit)
 		{
-			this.SpawnEffect(effectPrefab, new EffectData
+			EffectManager.SpawnEffect(effectPrefab, new EffectData
 			{
 				origin = position,
 				rotation = rotation
 			}, transmit);
 		}
 
-		// Token: 0x040012CA RID: 4810
-		private List<GameObject> effectPrefabsList;
+		// Token: 0x06000566 RID: 1382 RVA: 0x00015F1A File Offset: 0x0001411A
+		public static void SimpleSoundEffect(NetworkSoundEventIndex soundEventIndex, Vector3 position, bool transmit)
+		{
+			EffectManager.SpawnEffect(null, new EffectData
+			{
+				origin = position,
+				networkSoundEventIndex = soundEventIndex
+			}, transmit);
+		}
 
-		// Token: 0x040012CB RID: 4811
-		private readonly Dictionary<GameObject, uint> effectPrefabToIndexMap = new Dictionary<GameObject, uint>();
+		// Token: 0x0400059E RID: 1438
+		private static readonly QosChannelIndex qosChannel = QosChannelIndex.effects;
 
-		// Token: 0x040012CC RID: 4812
+		// Token: 0x0400059F RID: 1439
 		private static readonly EffectManager.EffectMessage outgoingEffectMessage = new EffectManager.EffectMessage();
 
-		// Token: 0x040012CD RID: 4813
+		// Token: 0x040005A0 RID: 1440
 		private static readonly EffectManager.EffectMessage incomingEffectMessage = new EffectManager.EffectMessage();
 
-		// Token: 0x020002E0 RID: 736
+		// Token: 0x0200012A RID: 298
 		private class EffectMessage : MessageBase
 		{
-			// Token: 0x06000EC4 RID: 3780 RVA: 0x00048B16 File Offset: 0x00046D16
+			// Token: 0x06000568 RID: 1384 RVA: 0x00015F56 File Offset: 0x00014156
 			public override void Serialize(NetworkWriter writer)
 			{
-				writer.WritePackedUInt32(this.effectPrefabIndex);
+				writer.WriteEffectIndex(this.effectIndex);
 				writer.Write(this.effectData);
 			}
 
-			// Token: 0x06000EC5 RID: 3781 RVA: 0x00048B30 File Offset: 0x00046D30
+			// Token: 0x06000569 RID: 1385 RVA: 0x00015F70 File Offset: 0x00014170
 			public override void Deserialize(NetworkReader reader)
 			{
-				this.effectPrefabIndex = reader.ReadPackedUInt32();
+				this.effectIndex = reader.ReadEffectIndex();
 				reader.ReadEffectData(this.effectData);
 			}
 
-			// Token: 0x040012CE RID: 4814
-			public uint effectPrefabIndex;
+			// Token: 0x040005A1 RID: 1441
+			public EffectIndex effectIndex;
 
-			// Token: 0x040012CF RID: 4815
+			// Token: 0x040005A2 RID: 1442
 			public readonly EffectData effectData = new EffectData();
 		}
 	}

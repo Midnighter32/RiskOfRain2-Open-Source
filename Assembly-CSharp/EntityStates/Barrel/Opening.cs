@@ -3,10 +3,10 @@ using RoR2;
 
 namespace EntityStates.Barrel
 {
-	// Token: 0x020001DE RID: 478
+	// Token: 0x020008F9 RID: 2297
 	public class Opening : EntityState
 	{
-		// Token: 0x06000950 RID: 2384 RVA: 0x0002ECE8 File Offset: 0x0002CEE8
+		// Token: 0x06003350 RID: 13136 RVA: 0x000DE90C File Offset: 0x000DCB0C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -17,7 +17,7 @@ namespace EntityStates.Barrel
 			}
 		}
 
-		// Token: 0x06000951 RID: 2385 RVA: 0x0002ED39 File Offset: 0x0002CF39
+		// Token: 0x06003351 RID: 13137 RVA: 0x000DE95D File Offset: 0x000DCB5D
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -28,7 +28,7 @@ namespace EntityStates.Barrel
 			}
 		}
 
-		// Token: 0x04000CA4 RID: 3236
+		// Token: 0x040032CD RID: 13005
 		public static float duration = 1f;
 	}
 }

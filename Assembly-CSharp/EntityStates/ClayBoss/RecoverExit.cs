@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace EntityStates.ClayBoss
 {
-	// Token: 0x020001BC RID: 444
+	// Token: 0x020008D7 RID: 2263
 	public class RecoverExit : BaseState
 	{
-		// Token: 0x060008B0 RID: 2224 RVA: 0x0002BAD1 File Offset: 0x00029CD1
+		// Token: 0x060032AF RID: 12975 RVA: 0x000DB705 File Offset: 0x000D9905
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -14,7 +14,7 @@ namespace EntityStates.ClayBoss
 			base.PlayAnimation("Body", "ExitSiphon", "ExitSiphon.playbackRate", RecoverExit.exitDuration);
 		}
 
-		// Token: 0x060008B1 RID: 2225 RVA: 0x0002BAFE File Offset: 0x00029CFE
+		// Token: 0x060032B0 RID: 12976 RVA: 0x000DB732 File Offset: 0x000D9932
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -26,10 +26,10 @@ namespace EntityStates.ClayBoss
 			}
 		}
 
-		// Token: 0x04000BAA RID: 2986
+		// Token: 0x040031D2 RID: 12754
 		public static float exitDuration = 1f;
 
-		// Token: 0x04000BAB RID: 2987
+		// Token: 0x040031D3 RID: 12755
 		private float stopwatch;
 	}
 }

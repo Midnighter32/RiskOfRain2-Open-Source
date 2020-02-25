@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003C3 RID: 963
+	// Token: 0x0200030D RID: 781
 	public class ScaleParticleSystemDuration : MonoBehaviour
 	{
-		// Token: 0x170001E6 RID: 486
-		// (get) Token: 0x060014ED RID: 5357 RVA: 0x00064A71 File Offset: 0x00062C71
-		// (set) Token: 0x060014EC RID: 5356 RVA: 0x00064A59 File Offset: 0x00062C59
+		// Token: 0x17000241 RID: 577
+		// (get) Token: 0x06001258 RID: 4696 RVA: 0x0004F231 File Offset: 0x0004D431
+		// (set) Token: 0x06001257 RID: 4695 RVA: 0x0004F219 File Offset: 0x0004D419
 		public float newDuration
 		{
 			get
@@ -25,13 +25,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060014EE RID: 5358 RVA: 0x00064A79 File Offset: 0x00062C79
+		// Token: 0x06001259 RID: 4697 RVA: 0x0004F239 File Offset: 0x0004D439
 		private void Start()
 		{
 			this.UpdateParticleDurations();
 		}
 
-		// Token: 0x060014EF RID: 5359 RVA: 0x00064A84 File Offset: 0x00062C84
+		// Token: 0x0600125A RID: 4698 RVA: 0x0004F244 File Offset: 0x0004D444
 		private void UpdateParticleDurations()
 		{
 			float simulationSpeed = this.initialDuration / this._newDuration;
@@ -45,13 +45,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001844 RID: 6212
+		// Token: 0x0400114C RID: 4428
 		public float initialDuration = 1f;
 
-		// Token: 0x04001845 RID: 6213
+		// Token: 0x0400114D RID: 4429
 		private float _newDuration = 1f;
 
-		// Token: 0x04001846 RID: 6214
+		// Token: 0x0400114E RID: 4430
 		public ParticleSystem[] particleSystems;
 	}
 }

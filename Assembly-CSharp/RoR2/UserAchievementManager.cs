@@ -6,10 +6,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020001F9 RID: 505
+	// Token: 0x020000BA RID: 186
 	public class UserAchievementManager
 	{
-		// Token: 0x060009EB RID: 2539 RVA: 0x000316BE File Offset: 0x0002F8BE
+		// Token: 0x060003B0 RID: 944 RVA: 0x0000E37E File Offset: 0x0000C57E
 		public void SetServerAchievementTracked(ServerAchievementIndex serverAchievementIndex, bool shouldTrack)
 		{
 			if (this.serverAchievementTrackingMask[serverAchievementIndex.intValue] == shouldTrack)
@@ -20,7 +20,7 @@ namespace RoR2
 			this.serverAchievementTrackingMaskDirty = true;
 		}
 
-		// Token: 0x060009EC RID: 2540 RVA: 0x000316E6 File Offset: 0x0002F8E6
+		// Token: 0x060003B1 RID: 945 RVA: 0x0000E3A6 File Offset: 0x0000C5A6
 		public void TransmitAchievementRequestsToServer()
 		{
 			if (this.localUser.currentNetworkUser)
@@ -29,7 +29,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060009ED RID: 2541 RVA: 0x00031718 File Offset: 0x0002F918
+		// Token: 0x060003B2 RID: 946 RVA: 0x0000E3D8 File Offset: 0x0000C5D8
 		public void Update()
 		{
 			if (this.serverAchievementTrackingMaskDirty)
@@ -58,7 +58,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060009EE RID: 2542 RVA: 0x000317D8 File Offset: 0x0002F9D8
+		// Token: 0x060003B3 RID: 947 RVA: 0x0000E498 File Offset: 0x0000C698
 		public void GrantAchievement(AchievementDef achievementDef)
 		{
 			for (int i = 0; i < this.achievementsList.Count; i++)
@@ -70,7 +70,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060009EF RID: 2543 RVA: 0x00031820 File Offset: 0x0002FA20
+		// Token: 0x060003B4 RID: 948 RVA: 0x0000E4E0 File Offset: 0x0000C6E0
 		public void HandleServerAchievementCompleted(ServerAchievementIndex serverAchievementIndex)
 		{
 			BaseAchievement baseAchievement = this.achievementsList.FirstOrDefault((BaseAchievement a) => a.achievementDef.serverIndex == serverAchievementIndex);
@@ -81,7 +81,7 @@ namespace RoR2
 			baseAchievement.Grant();
 		}
 
-		// Token: 0x060009F0 RID: 2544 RVA: 0x0003185C File Offset: 0x0002FA5C
+		// Token: 0x060003B5 RID: 949 RVA: 0x0000E51C File Offset: 0x0000C71C
 		public float GetAchievementProgress(AchievementDef achievementDef)
 		{
 			BaseAchievement baseAchievement = this.achievementsList.FirstOrDefault((BaseAchievement a) => a.achievementDef == achievementDef);
@@ -92,7 +92,7 @@ namespace RoR2
 			return baseAchievement.ProgressForAchievement();
 		}
 
-		// Token: 0x060009F1 RID: 2545 RVA: 0x0003189C File Offset: 0x0002FA9C
+		// Token: 0x060003B6 RID: 950 RVA: 0x0000E55C File Offset: 0x0000C75C
 		public void OnInstall(LocalUser localUser)
 		{
 			this.localUser = localUser;
@@ -124,7 +124,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060009F2 RID: 2546 RVA: 0x00031998 File Offset: 0x0002FB98
+		// Token: 0x060003B7 RID: 951 RVA: 0x0000E658 File Offset: 0x0000C858
 		public void OnUninstall()
 		{
 			for (int i = this.achievementsList.Count - 1; i >= 0; i--)
@@ -136,22 +136,22 @@ namespace RoR2
 			this.userProfile = null;
 		}
 
-		// Token: 0x04000D24 RID: 3364
+		// Token: 0x04000333 RID: 819
 		private readonly List<BaseAchievement> achievementsList = new List<BaseAchievement>();
 
-		// Token: 0x04000D25 RID: 3365
+		// Token: 0x04000334 RID: 820
 		public LocalUser localUser;
 
-		// Token: 0x04000D26 RID: 3366
+		// Token: 0x04000335 RID: 821
 		public UserProfile userProfile;
 
-		// Token: 0x04000D27 RID: 3367
+		// Token: 0x04000336 RID: 822
 		public int dirtyGrantsCount;
 
-		// Token: 0x04000D28 RID: 3368
+		// Token: 0x04000337 RID: 823
 		private readonly bool[] serverAchievementTrackingMask = new bool[AchievementManager.serverAchievementCount];
 
-		// Token: 0x04000D29 RID: 3369
+		// Token: 0x04000338 RID: 824
 		private bool serverAchievementTrackingMaskDirty;
 	}
 }

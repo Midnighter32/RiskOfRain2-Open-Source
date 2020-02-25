@@ -2,16 +2,16 @@
 
 namespace RoR2
 {
-	// Token: 0x020004EB RID: 1259
+	// Token: 0x02000487 RID: 1159
 	public enum VisibilityLevel
 	{
-		// Token: 0x04001E94 RID: 7828
+		// Token: 0x04001932 RID: 6450
 		Invisible,
-		// Token: 0x04001E95 RID: 7829
+		// Token: 0x04001933 RID: 6451
 		Cloaked,
-		// Token: 0x04001E96 RID: 7830
+		// Token: 0x04001934 RID: 6452
 		Revealed,
-		// Token: 0x04001E97 RID: 7831
+		// Token: 0x04001935 RID: 6453
 		Visible
 	}
 }

@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Commando.CommandoWeapon
 {
-	// Token: 0x020001A2 RID: 418
+	// Token: 0x020008B3 RID: 2227
 	public class CastSmokescreen : BaseState
 	{
-		// Token: 0x0600081B RID: 2075 RVA: 0x00028728 File Offset: 0x00026928
+		// Token: 0x060031ED RID: 12781 RVA: 0x000D7694 File Offset: 0x000D5894
 		private void CastSmoke()
 		{
 			if (!this.hasCastSmoke)
@@ -19,7 +19,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			{
 				Util.PlaySound(CastSmokescreen.stopCloakSoundString, base.gameObject);
 			}
-			EffectManager.instance.SpawnEffect(CastSmokescreen.smokescreenEffectPrefab, new EffectData
+			EffectManager.SpawnEffect(CastSmokescreen.smokescreenEffectPrefab, new EffectData
 			{
 				origin = base.transform.position
 			}, false);
@@ -46,7 +46,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x0600081C RID: 2076 RVA: 0x00028848 File Offset: 0x00026A48
+		// Token: 0x060031EE RID: 12782 RVA: 0x000D77B0 File Offset: 0x000D59B0
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -55,7 +55,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			base.PlayCrossfade("Gesture, Smokescreen", "CastSmokescreen", "CastSmokescreen.playbackRate", this.duration, 0.2f);
 			this.animator = base.GetModelAnimator();
 			Util.PlaySound(CastSmokescreen.jumpSoundString, base.gameObject);
-			EffectManager.instance.SpawnEffect(CastSmokescreen.initialEffectPrefab, new EffectData
+			EffectManager.SpawnEffect(CastSmokescreen.initialEffectPrefab, new EffectData
 			{
 				origin = base.transform.position
 			}, true);
@@ -65,7 +65,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x0600081D RID: 2077 RVA: 0x00028904 File Offset: 0x00026B04
+		// Token: 0x060031EF RID: 12783 RVA: 0x000D7868 File Offset: 0x000D5A68
 		public override void OnExit()
 		{
 			if (base.characterBody && NetworkServer.active)
@@ -86,7 +86,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			base.OnExit();
 		}
 
-		// Token: 0x0600081E RID: 2078 RVA: 0x00028974 File Offset: 0x00026B74
+		// Token: 0x060031F0 RID: 12784 RVA: 0x000D78D8 File Offset: 0x000D5AD8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -106,7 +106,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x0600081F RID: 2079 RVA: 0x000289EC File Offset: 0x00026BEC
+		// Token: 0x060031F1 RID: 12785 RVA: 0x000D7950 File Offset: 0x000D5B50
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			if (!this.hasCastSmoke)
@@ -116,46 +116,46 @@ namespace EntityStates.Commando.CommandoWeapon
 			return InterruptPriority.Any;
 		}
 
-		// Token: 0x04000A9E RID: 2718
+		// Token: 0x04003086 RID: 12422
 		public static float baseDuration;
 
-		// Token: 0x04000A9F RID: 2719
+		// Token: 0x04003087 RID: 12423
 		public static float stealthDuration = 3f;
 
-		// Token: 0x04000AA0 RID: 2720
+		// Token: 0x04003088 RID: 12424
 		public static string jumpSoundString;
 
-		// Token: 0x04000AA1 RID: 2721
+		// Token: 0x04003089 RID: 12425
 		public static string startCloakSoundString;
 
-		// Token: 0x04000AA2 RID: 2722
+		// Token: 0x0400308A RID: 12426
 		public static string stopCloakSoundString;
 
-		// Token: 0x04000AA3 RID: 2723
+		// Token: 0x0400308B RID: 12427
 		public static GameObject initialEffectPrefab;
 
-		// Token: 0x04000AA4 RID: 2724
+		// Token: 0x0400308C RID: 12428
 		public static GameObject smokescreenEffectPrefab;
 
-		// Token: 0x04000AA5 RID: 2725
+		// Token: 0x0400308D RID: 12429
 		public static float damageCoefficient = 1.3f;
 
-		// Token: 0x04000AA6 RID: 2726
+		// Token: 0x0400308E RID: 12430
 		public static float radius = 4f;
 
-		// Token: 0x04000AA7 RID: 2727
+		// Token: 0x0400308F RID: 12431
 		public static float forceMagnitude = 100f;
 
-		// Token: 0x04000AA8 RID: 2728
+		// Token: 0x04003090 RID: 12432
 		private float duration;
 
-		// Token: 0x04000AA9 RID: 2729
+		// Token: 0x04003091 RID: 12433
 		private float totalDuration;
 
-		// Token: 0x04000AAA RID: 2730
+		// Token: 0x04003092 RID: 12434
 		private bool hasCastSmoke;
 
-		// Token: 0x04000AAB RID: 2731
+		// Token: 0x04003093 RID: 12435
 		private Animator animator;
 	}
 }

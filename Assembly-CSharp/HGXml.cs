@@ -5,10 +5,10 @@ using System.Xml.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 
-// Token: 0x0200000E RID: 14
+// Token: 0x0200005E RID: 94
 public static class HGXml
 {
-	// Token: 0x0600003D RID: 61 RVA: 0x00003CED File Offset: 0x00001EED
+	// Token: 0x06000186 RID: 390 RVA: 0x00008D75 File Offset: 0x00006F75
 	public static void Register<T>(HGXml.Serializer<T> serializer, HGXml.Deserializer<T> deserializer)
 	{
 		HGXml.SerializationRules<T>.defaultRules = new HGXml.SerializationRules<T>
@@ -18,7 +18,7 @@ public static class HGXml
 		};
 	}
 
-	// Token: 0x0600003E RID: 62 RVA: 0x00003D07 File Offset: 0x00001F07
+	// Token: 0x06000187 RID: 391 RVA: 0x00008D8F File Offset: 0x00006F8F
 	public static void RegisterEnum<T>() where T : struct
 	{
 		HGXml.SerializationRules<T>.defaultRules = new HGXml.SerializationRules<T>
@@ -28,14 +28,14 @@ public static class HGXml
 		};
 	}
 
-	// Token: 0x0600003F RID: 63 RVA: 0x00003D3F File Offset: 0x00001F3F
+	// Token: 0x06000188 RID: 392 RVA: 0x00008DC7 File Offset: 0x00006FC7
 	[NotNull]
 	public static XElement ToXml<T>(string name, T value)
 	{
 		return HGXml.ToXml<T>(name, value, HGXml.SerializationRules<T>.defaultRules);
 	}
 
-	// Token: 0x06000040 RID: 64 RVA: 0x00003D50 File Offset: 0x00001F50
+	// Token: 0x06000189 RID: 393 RVA: 0x00008DD8 File Offset: 0x00006FD8
 	[NotNull]
 	public static XElement ToXml<T>(string name, T value, HGXml.SerializationRules<T> rules)
 	{
@@ -44,13 +44,13 @@ public static class HGXml
 		return xelement;
 	}
 
-	// Token: 0x06000041 RID: 65 RVA: 0x00003D77 File Offset: 0x00001F77
+	// Token: 0x0600018A RID: 394 RVA: 0x00008DFF File Offset: 0x00006FFF
 	public static bool FromXml<T>([NotNull] XElement element, ref T value)
 	{
 		return HGXml.FromXml<T>(element, ref value, HGXml.SerializationRules<T>.defaultRules);
 	}
 
-	// Token: 0x06000042 RID: 66 RVA: 0x00003D85 File Offset: 0x00001F85
+	// Token: 0x0600018B RID: 395 RVA: 0x00008E0D File Offset: 0x0000700D
 	public static bool FromXml<T>([NotNull] XElement element, ref T value, HGXml.SerializationRules<T> rules)
 	{
 		if (rules == null)
@@ -64,13 +64,13 @@ public static class HGXml
 		return rules.deserializer(element, ref value);
 	}
 
-	// Token: 0x06000043 RID: 67 RVA: 0x00003DBB File Offset: 0x00001FBB
+	// Token: 0x0600018C RID: 396 RVA: 0x00008E43 File Offset: 0x00007043
 	public static bool FromXml<T>([NotNull] XElement element, [NotNull] Action<T> setter)
 	{
 		return HGXml.FromXml<T>(element, setter, HGXml.SerializationRules<T>.defaultRules);
 	}
 
-	// Token: 0x06000044 RID: 68 RVA: 0x00003DCC File Offset: 0x00001FCC
+	// Token: 0x0600018D RID: 397 RVA: 0x00008E54 File Offset: 0x00007054
 	public static bool FromXml<T>([NotNull] XElement element, [NotNull] Action<T> setter, [NotNull] HGXml.SerializationRules<T> rules)
 	{
 		T obj = default(T);
@@ -82,7 +82,7 @@ public static class HGXml
 		return false;
 	}
 
-	// Token: 0x06000045 RID: 69 RVA: 0x00003DF8 File Offset: 0x00001FF8
+	// Token: 0x0600018E RID: 398 RVA: 0x00008E80 File Offset: 0x00007080
 	static HGXml()
 	{
 		HGXml.Register<int>(delegate(XElement element, int contents)
@@ -183,36 +183,36 @@ public static class HGXml
 		}
 	}
 
-	// Token: 0x06000046 RID: 70 RVA: 0x00003F98 File Offset: 0x00002198
+	// Token: 0x0600018F RID: 399 RVA: 0x00009020 File Offset: 0x00007220
 	public static void Deserialize<T>(this XElement element, ref T dest)
 	{
 		HGXml.FromXml<T>(element, ref dest);
 	}
 
-	// Token: 0x06000047 RID: 71 RVA: 0x00003FA2 File Offset: 0x000021A2
+	// Token: 0x06000190 RID: 400 RVA: 0x0000902A File Offset: 0x0000722A
 	public static void Deserialize<T>(this XElement element, ref T dest, HGXml.SerializationRules<T> rules)
 	{
 		HGXml.FromXml<T>(element, ref dest, rules);
 	}
 
-	// Token: 0x0200000F RID: 15
-	// (Invoke) Token: 0x06000049 RID: 73
+	// Token: 0x0200005F RID: 95
+	// (Invoke) Token: 0x06000192 RID: 402
 	public delegate void Serializer<T>(XElement element, T contents);
 
-	// Token: 0x02000010 RID: 16
-	// (Invoke) Token: 0x0600004D RID: 77
+	// Token: 0x02000060 RID: 96
+	// (Invoke) Token: 0x06000196 RID: 406
 	public delegate bool Deserializer<T>(XElement element, ref T contents);
 
-	// Token: 0x02000011 RID: 17
+	// Token: 0x02000061 RID: 97
 	public class SerializationRules<T>
 	{
-		// Token: 0x0400005F RID: 95
+		// Token: 0x040001B0 RID: 432
 		public HGXml.Serializer<T> serializer;
 
-		// Token: 0x04000060 RID: 96
+		// Token: 0x040001B1 RID: 433
 		public HGXml.Deserializer<T> deserializer;
 
-		// Token: 0x04000061 RID: 97
+		// Token: 0x040001B2 RID: 434
 		public static HGXml.SerializationRules<T> defaultRules;
 	}
 }

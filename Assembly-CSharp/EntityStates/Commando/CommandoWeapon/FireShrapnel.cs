@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Commando.CommandoWeapon
 {
-	// Token: 0x020001AD RID: 429
-	internal class FireShrapnel : BaseState
+	// Token: 0x020008C1 RID: 2241
+	public class FireShrapnel : BaseState
 	{
-		// Token: 0x06000864 RID: 2148 RVA: 0x0002A184 File Offset: 0x00028384
+		// Token: 0x06003241 RID: 12865 RVA: 0x000D92DC File Offset: 0x000D74DC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -22,7 +22,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			base.PlayAnimation("Gesture", "FireLaser", "FireLaser.playbackRate", this.duration);
 			if (FireShrapnel.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireShrapnel.effectPrefab, base.gameObject, muzzleName, false);
+				EffectManager.SimpleMuzzleFlash(FireShrapnel.effectPrefab, base.gameObject, muzzleName, false);
 			}
 			if (base.isAuthority)
 			{
@@ -61,13 +61,13 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x06000865 RID: 2149 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06003242 RID: 12866 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000866 RID: 2150 RVA: 0x0002A3AE File Offset: 0x000285AE
+		// Token: 0x06003243 RID: 12867 RVA: 0x000D9502 File Offset: 0x000D7702
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -78,52 +78,52 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x06000867 RID: 2151 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06003244 RID: 12868 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000B32 RID: 2866
+		// Token: 0x0400311A RID: 12570
 		public static GameObject effectPrefab;
 
-		// Token: 0x04000B33 RID: 2867
+		// Token: 0x0400311B RID: 12571
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000B34 RID: 2868
+		// Token: 0x0400311C RID: 12572
 		public static GameObject tracerEffectPrefab;
 
-		// Token: 0x04000B35 RID: 2869
+		// Token: 0x0400311D RID: 12573
 		public static float damageCoefficient;
 
-		// Token: 0x04000B36 RID: 2870
+		// Token: 0x0400311E RID: 12574
 		public static float blastRadius;
 
-		// Token: 0x04000B37 RID: 2871
+		// Token: 0x0400311F RID: 12575
 		public static float force;
 
-		// Token: 0x04000B38 RID: 2872
+		// Token: 0x04003120 RID: 12576
 		public static float minSpread;
 
-		// Token: 0x04000B39 RID: 2873
+		// Token: 0x04003121 RID: 12577
 		public static float maxSpread;
 
-		// Token: 0x04000B3A RID: 2874
+		// Token: 0x04003122 RID: 12578
 		public static int bulletCount;
 
-		// Token: 0x04000B3B RID: 2875
+		// Token: 0x04003123 RID: 12579
 		public static float baseDuration = 2f;
 
-		// Token: 0x04000B3C RID: 2876
+		// Token: 0x04003124 RID: 12580
 		public static string attackSoundString;
 
-		// Token: 0x04000B3D RID: 2877
+		// Token: 0x04003125 RID: 12581
 		public static float maxDistance;
 
-		// Token: 0x04000B3E RID: 2878
+		// Token: 0x04003126 RID: 12582
 		private float duration;
 
-		// Token: 0x04000B3F RID: 2879
+		// Token: 0x04003127 RID: 12583
 		private Ray modifiedAimRay;
 	}
 }

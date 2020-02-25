@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200038B RID: 907
+	// Token: 0x020002C3 RID: 707
 	public class PortalStatueBehavior : MonoBehaviour
 	{
-		// Token: 0x0600130C RID: 4876 RVA: 0x0005D55C File Offset: 0x0005B75C
+		// Token: 0x06001019 RID: 4121 RVA: 0x00046CC8 File Offset: 0x00044EC8
 		public void GrantPortalEntry()
 		{
 			PortalStatueBehavior.PortalType portalType = this.portalType;
@@ -18,7 +18,7 @@ namespace RoR2
 					{
 						TeleporterInteraction.instance.shouldAttemptToSpawnGoldshoresPortal = true;
 					}
-					EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ShrineUseEffect"), new EffectData
+					EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ShrineUseEffect"), new EffectData
 					{
 						origin = base.transform.position,
 						rotation = Quaternion.identity,
@@ -33,7 +33,7 @@ namespace RoR2
 				{
 					TeleporterInteraction.instance.shouldAttemptToSpawnShopPortal = true;
 				}
-				EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ShrineUseEffect"), new EffectData
+				EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ShrineUseEffect"), new EffectData
 				{
 					origin = base.transform.position,
 					rotation = Quaternion.identity,
@@ -54,17 +54,17 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x040016D0 RID: 5840
+		// Token: 0x04000F8D RID: 3981
 		public PortalStatueBehavior.PortalType portalType;
 
-		// Token: 0x0200038C RID: 908
+		// Token: 0x020002C4 RID: 708
 		public enum PortalType
 		{
-			// Token: 0x040016D2 RID: 5842
+			// Token: 0x04000F8F RID: 3983
 			Shop,
-			// Token: 0x040016D3 RID: 5843
+			// Token: 0x04000F90 RID: 3984
 			Goldshores,
-			// Token: 0x040016D4 RID: 5844
+			// Token: 0x04000F91 RID: 3985
 			Count
 		}
 	}

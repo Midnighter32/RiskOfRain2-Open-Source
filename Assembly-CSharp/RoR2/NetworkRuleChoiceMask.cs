@@ -5,10 +5,22 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x0200036D RID: 877
+	// Token: 0x0200029E RID: 670
+	[DefaultExecutionOrder(-1)]
 	public class NetworkRuleChoiceMask : NetworkBehaviour
 	{
-		// Token: 0x06001210 RID: 4624 RVA: 0x00059271 File Offset: 0x00057471
+		// Token: 0x170001DD RID: 477
+		// (get) Token: 0x06000EEE RID: 3822 RVA: 0x000422FA File Offset: 0x000404FA
+		// (set) Token: 0x06000EEF RID: 3823 RVA: 0x00042302 File Offset: 0x00040502
+		public RuleChoiceMask ruleChoiceMask { get; private set; }
+
+		// Token: 0x06000EF0 RID: 3824 RVA: 0x0004230B File Offset: 0x0004050B
+		private void Awake()
+		{
+			this.ruleChoiceMask = new RuleChoiceMask();
+		}
+
+		// Token: 0x06000EF1 RID: 3825 RVA: 0x00042318 File Offset: 0x00040518
 		[Server]
 		public void SetRuleChoiceMask([NotNull] RuleChoiceMask newRuleChoiceMask)
 		{
@@ -21,28 +33,28 @@ namespace RoR2
 			{
 				return;
 			}
-			base.SetDirtyBit(1u);
+			base.SetDirtyBit(1U);
 			this.ruleChoiceMask.Copy(newRuleChoiceMask);
 		}
 
-		// Token: 0x06001211 RID: 4625 RVA: 0x000592AC File Offset: 0x000574AC
+		// Token: 0x06000EF2 RID: 3826 RVA: 0x00042354 File Offset: 0x00040554
 		public override bool OnSerialize(NetworkWriter writer, bool initialState)
 		{
 			uint num = base.syncVarDirtyBits;
 			if (initialState)
 			{
-				num = 1u;
+				num = 1U;
 			}
-			bool flag = (num & 1u) > 0u;
+			bool flag = (num & 1U) > 0U;
 			writer.Write((byte)num);
 			if (flag)
 			{
 				writer.Write(this.ruleChoiceMask);
 			}
-			return !initialState && num > 0u;
+			return !initialState && num > 0U;
 		}
 
-		// Token: 0x06001212 RID: 4626 RVA: 0x000592EA File Offset: 0x000574EA
+		// Token: 0x06000EF3 RID: 3827 RVA: 0x00042392 File Offset: 0x00040592
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if ((reader.ReadByte() & 1) != 0)
@@ -51,15 +63,12 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001214 RID: 4628 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000EF5 RID: 3829 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x04001611 RID: 5649
-		public readonly RuleChoiceMask ruleChoiceMask = new RuleChoiceMask();
-
-		// Token: 0x04001612 RID: 5650
-		private const uint maskDirtyBit = 1u;
+		// Token: 0x04000EC0 RID: 3776
+		private const uint maskDirtyBit = 1U;
 	}
 }

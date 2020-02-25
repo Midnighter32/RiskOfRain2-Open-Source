@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Commando
 {
-	// Token: 0x020001A0 RID: 416
+	// Token: 0x020008B0 RID: 2224
 	public class DodgeState : BaseState
 	{
-		// Token: 0x0600080E RID: 2062 RVA: 0x00027ED0 File Offset: 0x000260D0
+		// Token: 0x060031DB RID: 12763 RVA: 0x000D6B2C File Offset: 0x000D4D2C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -27,11 +27,11 @@ namespace EntityStates.Commando
 			this.animator.SetFloat("rightSpeed", num2, 0.1f, Time.fixedDeltaTime);
 			if (Mathf.Abs(num) > Mathf.Abs(num2))
 			{
-				base.PlayAnimation("Body", (num > 0f) ? "DodgeForward" : "DodgeBackward", "Dodge.playbackRate", DodgeState.duration);
+				base.PlayAnimation("Body", (num > 0f) ? "DodgeForward" : "DodgeBackward", "Dodge.playbackRate", this.duration);
 			}
 			else
 			{
-				base.PlayAnimation("Body", (num2 > 0f) ? "DodgeRight" : "DodgeLeft", "Dodge.playbackRate", DodgeState.duration);
+				base.PlayAnimation("Body", (num2 > 0f) ? "DodgeRight" : "DodgeLeft", "Dodge.playbackRate", this.duration);
 			}
 			if (DodgeState.jetEffect)
 			{
@@ -56,20 +56,20 @@ namespace EntityStates.Commando
 			this.previousPosition = base.transform.position - b;
 		}
 
-		// Token: 0x0600080F RID: 2063 RVA: 0x0002812B File Offset: 0x0002632B
+		// Token: 0x060031DC RID: 12764 RVA: 0x000D6D89 File Offset: 0x000D4F89
 		private void RecalculateRollSpeed()
 		{
-			this.rollSpeed = this.moveSpeedStat * Mathf.Lerp(DodgeState.initialSpeedCoefficient, DodgeState.finalSpeedCoefficient, base.fixedAge / DodgeState.duration);
+			this.rollSpeed = this.moveSpeedStat * Mathf.Lerp(this.initialSpeedCoefficient, this.finalSpeedCoefficient, base.fixedAge / this.duration);
 		}
 
-		// Token: 0x06000810 RID: 2064 RVA: 0x00028158 File Offset: 0x00026358
+		// Token: 0x060031DD RID: 12765 RVA: 0x000D6DB8 File Offset: 0x000D4FB8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
 			this.RecalculateRollSpeed();
 			if (base.cameraTargetParams)
 			{
-				base.cameraTargetParams.fovOverride = Mathf.Lerp(DodgeState.dodgeFOV, 60f, base.fixedAge / DodgeState.duration);
+				base.cameraTargetParams.fovOverride = Mathf.Lerp(DodgeState.dodgeFOV, 60f, base.fixedAge / this.duration);
 			}
 			Vector3 normalized = (base.transform.position - this.previousPosition).normalized;
 			if (base.characterMotor && base.characterDirection && normalized != Vector3.zero)
@@ -83,68 +83,68 @@ namespace EntityStates.Commando
 				base.characterMotor.velocity = vector;
 			}
 			this.previousPosition = base.transform.position;
-			if (base.fixedAge >= DodgeState.duration && base.isAuthority)
+			if (base.fixedAge >= this.duration && base.isAuthority)
 			{
 				this.outer.SetNextStateToMain();
 				return;
 			}
 		}
 
-		// Token: 0x06000811 RID: 2065 RVA: 0x00028287 File Offset: 0x00026487
+		// Token: 0x060031DE RID: 12766 RVA: 0x000D6EE9 File Offset: 0x000D50E9
 		public override void OnExit()
 		{
-			base.OnExit();
 			if (base.cameraTargetParams)
 			{
 				base.cameraTargetParams.fovOverride = -1f;
 			}
+			base.OnExit();
 		}
 
-		// Token: 0x06000812 RID: 2066 RVA: 0x000282AC File Offset: 0x000264AC
+		// Token: 0x060031DF RID: 12767 RVA: 0x000D6F0E File Offset: 0x000D510E
 		public override void OnSerialize(NetworkWriter writer)
 		{
 			base.OnSerialize(writer);
 			writer.Write(this.forwardDirection);
 		}
 
-		// Token: 0x06000813 RID: 2067 RVA: 0x000282C1 File Offset: 0x000264C1
+		// Token: 0x060031E0 RID: 12768 RVA: 0x000D6F23 File Offset: 0x000D5123
 		public override void OnDeserialize(NetworkReader reader)
 		{
 			base.OnDeserialize(reader);
 			this.forwardDirection = reader.ReadVector3();
 		}
 
-		// Token: 0x04000A88 RID: 2696
-		public static float duration = 0.9f;
+		// Token: 0x04003065 RID: 12389
+		[SerializeField]
+		public float duration = 0.9f;
 
-		// Token: 0x04000A89 RID: 2697
-		public static float initialSpeedCoefficient;
+		// Token: 0x04003066 RID: 12390
+		[SerializeField]
+		public float initialSpeedCoefficient;
 
-		// Token: 0x04000A8A RID: 2698
-		public static float finalSpeedCoefficient;
+		// Token: 0x04003067 RID: 12391
+		[SerializeField]
+		public float finalSpeedCoefficient;
 
-		// Token: 0x04000A8B RID: 2699
+		// Token: 0x04003068 RID: 12392
 		public static string dodgeSoundString;
 
-		// Token: 0x04000A8C RID: 2700
+		// Token: 0x04003069 RID: 12393
 		public static GameObject jetEffect;
 
-		// Token: 0x04000A8D RID: 2701
+		// Token: 0x0400306A RID: 12394
 		public static float dodgeFOV;
 
-		// Token: 0x04000A8E RID: 2702
-		public static float commandoBoostBuffDuration;
-
-		// Token: 0x04000A8F RID: 2703
+		// Token: 0x0400306B RID: 12395
 		private float rollSpeed;
 
-		// Token: 0x04000A90 RID: 2704
+		// Token: 0x0400306C RID: 12396
 		private Vector3 forwardDirection;
 
-		// Token: 0x04000A91 RID: 2705
+		// Token: 0x0400306D RID: 12397
 		private Animator animator;
 
-		// Token: 0x04000A92 RID: 2706
+		// Token: 0x0400306E RID: 12398
 		private Vector3 previousPosition;
 	}
 }

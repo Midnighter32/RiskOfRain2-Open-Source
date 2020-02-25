@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000647 RID: 1607
+	// Token: 0x0200063C RID: 1596
 	[RequireComponent(typeof(TMP_InputField))]
 	public class SubmitInputFieldOnEnterKey : MonoBehaviour
 	{
-		// Token: 0x060023F5 RID: 9205 RVA: 0x000A8E6A File Offset: 0x000A706A
+		// Token: 0x06002594 RID: 9620 RVA: 0x000A387A File Offset: 0x000A1A7A
 		private void Awake()
 		{
 			this.inputField = base.GetComponent<TMP_InputField>();
 		}
 
-		// Token: 0x060023F6 RID: 9206 RVA: 0x000A8E78 File Offset: 0x000A7078
+		// Token: 0x06002595 RID: 9621 RVA: 0x000A3888 File Offset: 0x000A1A88
 		private void Update()
 		{
 			if (this.inputField.isFocused && this.inputField.text != "")
@@ -23,7 +23,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x040026DF RID: 9951
+		// Token: 0x04002342 RID: 9026
 		private TMP_InputField inputField;
 	}
 }

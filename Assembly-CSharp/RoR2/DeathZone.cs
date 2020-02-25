@@ -4,10 +4,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020002C4 RID: 708
+	// Token: 0x020001D3 RID: 467
 	internal class DeathZone : MonoBehaviour
 	{
-		// Token: 0x06000E61 RID: 3681 RVA: 0x0004707C File Offset: 0x0004527C
+		// Token: 0x06000A04 RID: 2564 RVA: 0x0002BE48 File Offset: 0x0002A048
 		public void OnTriggerEnter(Collider other)
 		{
 			if (NetworkServer.active)

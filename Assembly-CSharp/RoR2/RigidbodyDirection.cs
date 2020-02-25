@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003A5 RID: 933
-	[RequireComponent(typeof(QuaternionPID))]
+	// Token: 0x020002E3 RID: 739
 	[RequireComponent(typeof(VectorPID))]
+	[RequireComponent(typeof(QuaternionPID))]
 	public class RigidbodyDirection : MonoBehaviour
 	{
-		// Token: 0x060013C3 RID: 5059 RVA: 0x00060AB8 File Offset: 0x0005ECB8
+		// Token: 0x060010ED RID: 4333 RVA: 0x0004A520 File Offset: 0x00048720
 		private void Start()
 		{
 			this.inputBank = base.GetComponent<InputBankTest>();
@@ -23,7 +23,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060013C4 RID: 5060 RVA: 0x00060B0C File Offset: 0x0005ED0C
+		// Token: 0x060010EE RID: 4334 RVA: 0x0004A574 File Offset: 0x00048774
 		private void Update()
 		{
 			if (this.animator)
@@ -43,7 +43,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060013C5 RID: 5061 RVA: 0x00060C2C File Offset: 0x0005EE2C
+		// Token: 0x060010EF RID: 4335 RVA: 0x0004A694 File Offset: 0x00048894
 		private void FixedUpdate()
 		{
 			if (this.inputBank && this.rigid && this.angularVelocityPID && this.torquePID)
@@ -71,49 +71,49 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0400177A RID: 6010
+		// Token: 0x0400104C RID: 4172
 		public Vector3 aimDirection = Vector3.one;
 
-		// Token: 0x0400177B RID: 6011
+		// Token: 0x0400104D RID: 4173
 		public Rigidbody rigid;
 
-		// Token: 0x0400177C RID: 6012
+		// Token: 0x0400104E RID: 4174
 		public QuaternionPID angularVelocityPID;
 
-		// Token: 0x0400177D RID: 6013
+		// Token: 0x0400104F RID: 4175
 		public VectorPID torquePID;
 
-		// Token: 0x0400177E RID: 6014
+		// Token: 0x04001050 RID: 4176
 		public bool freezeXRotation;
 
-		// Token: 0x0400177F RID: 6015
+		// Token: 0x04001051 RID: 4177
 		public bool freezeYRotation;
 
-		// Token: 0x04001780 RID: 6016
+		// Token: 0x04001052 RID: 4178
 		public bool freezeZRotation;
 
-		// Token: 0x04001781 RID: 6017
+		// Token: 0x04001053 RID: 4179
 		private ModelLocator modelLocator;
 
-		// Token: 0x04001782 RID: 6018
+		// Token: 0x04001054 RID: 4180
 		private Animator animator;
 
-		// Token: 0x04001783 RID: 6019
+		// Token: 0x04001055 RID: 4181
 		public string animatorXCycle;
 
-		// Token: 0x04001784 RID: 6020
+		// Token: 0x04001056 RID: 4182
 		public string animatorYCycle;
 
-		// Token: 0x04001785 RID: 6021
+		// Token: 0x04001057 RID: 4183
 		public string animatorZCycle;
 
-		// Token: 0x04001786 RID: 6022
+		// Token: 0x04001058 RID: 4184
 		public float animatorTorqueScale;
 
-		// Token: 0x04001787 RID: 6023
+		// Token: 0x04001059 RID: 4185
 		private InputBankTest inputBank;
 
-		// Token: 0x04001788 RID: 6024
+		// Token: 0x0400105A RID: 4186
 		private Vector3 targetTorque;
 	}
 }

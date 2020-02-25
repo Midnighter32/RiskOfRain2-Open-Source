@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003C1 RID: 961
+	// Token: 0x0200030A RID: 778
 	public class RunCameraManager : MonoBehaviour
 	{
-		// Token: 0x060014E5 RID: 5349 RVA: 0x00064694 File Offset: 0x00062894
+		// Token: 0x0600124E RID: 4686 RVA: 0x0004EDE8 File Offset: 0x0004CFE8
 		private static GameObject GetNetworkUserBodyObject(NetworkUser networkUser)
 		{
 			if (networkUser.masterObject)
@@ -21,7 +21,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x060014E6 RID: 5350 RVA: 0x000646CC File Offset: 0x000628CC
+		// Token: 0x0600124F RID: 4687 RVA: 0x0004EE20 File Offset: 0x0004D020
 		private static TeamIndex GetNetworkUserTeamIndex(NetworkUser networkUser)
 		{
 			if (networkUser.masterObject)
@@ -35,7 +35,7 @@ namespace RoR2
 			return TeamIndex.Neutral;
 		}
 
-		// Token: 0x060014E7 RID: 5351 RVA: 0x00064704 File Offset: 0x00062904
+		// Token: 0x06001250 RID: 4688 RVA: 0x0004EE58 File Offset: 0x0004D058
 		private void Update()
 		{
 			if (Stage.instance)
@@ -102,10 +102,10 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001841 RID: 6209
+		// Token: 0x04001146 RID: 4422
 		private readonly CameraRigController[] cameras = new CameraRigController[RoR2Application.maxLocalPlayers];
 
-		// Token: 0x04001842 RID: 6210
+		// Token: 0x04001147 RID: 4423
 		private static readonly Rect[][] screenLayouts = new Rect[][]
 		{
 			new Rect[0],

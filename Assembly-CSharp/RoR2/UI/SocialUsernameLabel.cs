@@ -5,17 +5,17 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x0200063F RID: 1599
+	// Token: 0x02000632 RID: 1586
 	[RequireComponent(typeof(TextMeshProUGUI))]
 	public class SocialUsernameLabel : MonoBehaviour
 	{
-		// Token: 0x060023D0 RID: 9168 RVA: 0x000A84F2 File Offset: 0x000A66F2
+		// Token: 0x06002569 RID: 9577 RVA: 0x000A2DE6 File Offset: 0x000A0FE6
 		private void Awake()
 		{
 			this.textMeshComponent = base.GetComponent<TextMeshProUGUI>();
 		}
 
-		// Token: 0x060023D1 RID: 9169 RVA: 0x000A8500 File Offset: 0x000A6700
+		// Token: 0x0600256A RID: 9578 RVA: 0x000A2DF4 File Offset: 0x000A0FF4
 		public virtual void Refresh()
 		{
 			if (this.sourceType == SocialUsernameLabel.SourceType.Steam)
@@ -24,9 +24,9 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x1700031D RID: 797
-		// (get) Token: 0x060023D2 RID: 9170 RVA: 0x000A8511 File Offset: 0x000A6711
-		// (set) Token: 0x060023D3 RID: 9171 RVA: 0x000A8519 File Offset: 0x000A6719
+		// Token: 0x170003DC RID: 988
+		// (get) Token: 0x0600256B RID: 9579 RVA: 0x000A2E05 File Offset: 0x000A1005
+		// (set) Token: 0x0600256C RID: 9580 RVA: 0x000A2E0D File Offset: 0x000A100D
 		public ulong userSteamId
 		{
 			get
@@ -40,7 +40,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060023D4 RID: 9172 RVA: 0x000A852C File Offset: 0x000A672C
+		// Token: 0x0600256D RID: 9581 RVA: 0x000A2E20 File Offset: 0x000A1020
 		public void RefreshForSteam()
 		{
 			Client instance = Client.Instance;
@@ -61,24 +61,24 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x040026C4 RID: 9924
+		// Token: 0x04002321 RID: 8993
 		protected TextMeshProUGUI textMeshComponent;
 
-		// Token: 0x040026C5 RID: 9925
+		// Token: 0x04002322 RID: 8994
 		private SocialUsernameLabel.SourceType sourceType;
 
-		// Token: 0x040026C6 RID: 9926
+		// Token: 0x04002323 RID: 8995
 		private ulong _userSteamId;
 
-		// Token: 0x040026C7 RID: 9927
+		// Token: 0x04002324 RID: 8996
 		public int subPlayerIndex;
 
-		// Token: 0x02000640 RID: 1600
+		// Token: 0x02000633 RID: 1587
 		private enum SourceType
 		{
-			// Token: 0x040026C9 RID: 9929
+			// Token: 0x04002326 RID: 8998
 			None,
-			// Token: 0x040026CA RID: 9930
+			// Token: 0x04002327 RID: 8999
 			Steam
 		}
 	}

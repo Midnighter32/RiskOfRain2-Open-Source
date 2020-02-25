@@ -1,13 +1,14 @@
 ﻿using System;
 using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace EntityStates
 {
-	// Token: 0x020000C0 RID: 192
+	// Token: 0x0200071A RID: 1818
 	public class SpawnTeleporterState : BaseState
 	{
-		// Token: 0x060003C0 RID: 960 RVA: 0x0000F63C File Offset: 0x0000D83C
+		// Token: 0x06002A5E RID: 10846 RVA: 0x000B23D8 File Offset: 0x000B05D8
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -24,7 +25,7 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x060003C1 RID: 961 RVA: 0x0000F6AC File Offset: 0x0000D8AC
+		// Token: 0x06002A5F RID: 10847 RVA: 0x000B2448 File Offset: 0x000B0648
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -36,9 +37,13 @@ namespace EntityStates
 			{
 				base.cameraTargetParams.aimMode = CameraTargetParams.AimType.Standard;
 			}
+			if (NetworkServer.active)
+			{
+				base.characterBody.AddTimedBuff(BuffIndex.HiddenInvincibility, 3f);
+			}
 		}
 
-		// Token: 0x060003C2 RID: 962 RVA: 0x0000F6E8 File Offset: 0x0000D8E8
+		// Token: 0x06002A60 RID: 10848 RVA: 0x000B24A8 File Offset: 0x000B06A8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -51,7 +56,7 @@ namespace EntityStates
 				GameObject teleportEffectPrefab = Run.instance.GetTeleportEffectPrefab(base.gameObject);
 				if (teleportEffectPrefab)
 				{
-					UnityEngine.Object.Instantiate<GameObject>(teleportEffectPrefab, base.gameObject.transform.position, Quaternion.identity);
+					EffectManager.SimpleEffect(teleportEffectPrefab, base.transform.position, Quaternion.identity, false);
 				}
 				Util.PlaySound(SpawnTeleporterState.soundString, base.gameObject);
 			}
@@ -61,31 +66,31 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x060003C3 RID: 963 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x06002A61 RID: 10849 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Death;
 		}
 
-		// Token: 0x04000371 RID: 881
+		// Token: 0x0400262B RID: 9771
 		private float duration = 4f;
 
-		// Token: 0x04000372 RID: 882
+		// Token: 0x0400262C RID: 9772
 		public static string soundString;
 
-		// Token: 0x04000373 RID: 883
+		// Token: 0x0400262D RID: 9773
 		public static float initialDelay;
 
-		// Token: 0x04000374 RID: 884
+		// Token: 0x0400262E RID: 9774
 		private bool hasTeleported;
 
-		// Token: 0x04000375 RID: 885
+		// Token: 0x0400262F RID: 9775
 		private Animator modelAnimator;
 
-		// Token: 0x04000376 RID: 886
+		// Token: 0x04002630 RID: 9776
 		private PrintController printController;
 
-		// Token: 0x04000377 RID: 887
+		// Token: 0x04002631 RID: 9777
 		private CharacterModel characterModel;
 	}
 }

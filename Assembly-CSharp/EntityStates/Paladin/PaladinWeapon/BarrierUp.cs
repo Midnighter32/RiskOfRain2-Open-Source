@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Paladin.PaladinWeapon
 {
-	// Token: 0x020000FC RID: 252
-	internal class BarrierUp : BaseState
+	// Token: 0x020007AD RID: 1965
+	public class BarrierUp : BaseState
 	{
-		// Token: 0x060004DB RID: 1243 RVA: 0x00014A24 File Offset: 0x00012C24
+		// Token: 0x06002CEF RID: 11503 RVA: 0x000BDC60 File Offset: 0x000BBE60
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -20,7 +20,7 @@ namespace EntityStates.Paladin.PaladinWeapon
 			}
 		}
 
-		// Token: 0x060004DC RID: 1244 RVA: 0x00014A77 File Offset: 0x00012C77
+		// Token: 0x06002CF0 RID: 11504 RVA: 0x000BDCB3 File Offset: 0x000BBEB3
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -30,7 +30,7 @@ namespace EntityStates.Paladin.PaladinWeapon
 			}
 		}
 
-		// Token: 0x060004DD RID: 1245 RVA: 0x00014A98 File Offset: 0x00012C98
+		// Token: 0x06002CF1 RID: 11505 RVA: 0x000BDCD4 File Offset: 0x000BBED4
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -42,22 +42,22 @@ namespace EntityStates.Paladin.PaladinWeapon
 			}
 		}
 
-		// Token: 0x060004DE RID: 1246 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06002CF2 RID: 11506 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x040004BC RID: 1212
+		// Token: 0x04002925 RID: 10533
 		public static float duration = 5f;
 
-		// Token: 0x040004BD RID: 1213
+		// Token: 0x04002926 RID: 10534
 		public static string soundEffectString;
 
-		// Token: 0x040004BE RID: 1214
+		// Token: 0x04002927 RID: 10535
 		private float stopwatch;
 
-		// Token: 0x040004BF RID: 1215
+		// Token: 0x04002928 RID: 10536
 		private PaladinBarrierController paladinBarrierController;
 	}
 }

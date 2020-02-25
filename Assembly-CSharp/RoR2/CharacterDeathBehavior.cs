@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000287 RID: 647
+	// Token: 0x0200018A RID: 394
 	public class CharacterDeathBehavior : MonoBehaviour
 	{
-		// Token: 0x06000CB7 RID: 3255 RVA: 0x0003F398 File Offset: 0x0003D598
-		private void OnDeath()
+		// Token: 0x060007F7 RID: 2039 RVA: 0x00022934 File Offset: 0x00020B34
+		public void OnDeath()
 		{
 			if (Util.HasEffectiveAuthority(base.gameObject))
 			{
@@ -48,15 +48,15 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x040010D7 RID: 4311
+		// Token: 0x04000869 RID: 2153
 		[Tooltip("The state machine to set the state of when this character is killed.")]
 		public EntityStateMachine deathStateMachine;
 
-		// Token: 0x040010D8 RID: 4312
+		// Token: 0x0400086A RID: 2154
 		[Tooltip("The state to enter when this character is killed.")]
 		public SerializableEntityStateType deathState;
 
-		// Token: 0x040010D9 RID: 4313
+		// Token: 0x0400086B RID: 2155
 		[Tooltip("The state machine(s) to set to idle when this character is killed.")]
 		public EntityStateMachine[] idleStateMachine;
 	}

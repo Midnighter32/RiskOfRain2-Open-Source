@@ -4,10 +4,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates
 {
-	// Token: 0x020000AA RID: 170
+	// Token: 0x02000701 RID: 1793
 	public class CloakTest : BaseState
 	{
-		// Token: 0x06000334 RID: 820 RVA: 0x0000D496 File Offset: 0x0000B696
+		// Token: 0x060029AE RID: 10670 RVA: 0x000AF9CC File Offset: 0x000ADBCC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -18,7 +18,7 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x06000335 RID: 821 RVA: 0x0000D4CA File Offset: 0x0000B6CA
+		// Token: 0x060029AF RID: 10671 RVA: 0x000AFA00 File Offset: 0x000ADC00
 		public override void OnExit()
 		{
 			if (base.characterBody && NetworkServer.active)
@@ -29,7 +29,7 @@ namespace EntityStates
 			base.OnExit();
 		}
 
-		// Token: 0x06000336 RID: 822 RVA: 0x0000D4FE File Offset: 0x0000B6FE
+		// Token: 0x060029B0 RID: 10672 RVA: 0x000AFA34 File Offset: 0x000ADC34
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -40,7 +40,7 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x0400031E RID: 798
+		// Token: 0x040025AF RID: 9647
 		private float duration = 3f;
 	}
 }

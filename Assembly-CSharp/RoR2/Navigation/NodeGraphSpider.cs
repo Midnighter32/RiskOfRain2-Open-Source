@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 namespace RoR2.Navigation
 {
-	// Token: 0x02000532 RID: 1330
+	// Token: 0x020004EC RID: 1260
 	public class NodeGraphSpider
 	{
-		// Token: 0x06001DD1 RID: 7633 RVA: 0x0008C08F File Offset: 0x0008A28F
+		// Token: 0x06001E06 RID: 7686 RVA: 0x0008137F File Offset: 0x0007F57F
 		public NodeGraphSpider(NodeGraph nodeGraph, HullMask hullMask)
 		{
 			this.nodeGraph = nodeGraph;
@@ -17,7 +17,7 @@ namespace RoR2.Navigation
 			this.visitedNodes = new BitArray(nodeGraph.GetNodeCount());
 		}
 
-		// Token: 0x06001DD2 RID: 7634 RVA: 0x0008C0CC File Offset: 0x0008A2CC
+		// Token: 0x06001E07 RID: 7687 RVA: 0x000813BC File Offset: 0x0007F5BC
 		public bool PerformStep()
 		{
 			List<NodeGraphSpider.StepInfo> list = this.uncheckedSteps;
@@ -46,7 +46,7 @@ namespace RoR2.Navigation
 			return list.Count > 0;
 		}
 
-		// Token: 0x06001DD3 RID: 7635 RVA: 0x0008C1BC File Offset: 0x0008A3BC
+		// Token: 0x06001E08 RID: 7688 RVA: 0x000814AC File Offset: 0x0007F6AC
 		public void AddNodeForNextStep(NodeGraph.NodeIndex nodeIndex)
 		{
 			if (!this.visitedNodes[nodeIndex.nodeIndex])
@@ -60,28 +60,28 @@ namespace RoR2.Navigation
 			}
 		}
 
-		// Token: 0x04002016 RID: 8214
+		// Token: 0x04001B2F RID: 6959
 		private NodeGraph nodeGraph;
 
-		// Token: 0x04002017 RID: 8215
+		// Token: 0x04001B30 RID: 6960
 		public List<NodeGraphSpider.StepInfo> collectedSteps;
 
-		// Token: 0x04002018 RID: 8216
+		// Token: 0x04001B31 RID: 6961
 		private List<NodeGraphSpider.StepInfo> uncheckedSteps;
 
-		// Token: 0x04002019 RID: 8217
+		// Token: 0x04001B32 RID: 6962
 		private BitArray visitedNodes;
 
-		// Token: 0x0400201A RID: 8218
+		// Token: 0x04001B33 RID: 6963
 		public HullMask hullMask;
 
-		// Token: 0x02000533 RID: 1331
+		// Token: 0x020004ED RID: 1261
 		public class StepInfo
 		{
-			// Token: 0x0400201B RID: 8219
+			// Token: 0x04001B34 RID: 6964
 			public NodeGraph.NodeIndex node;
 
-			// Token: 0x0400201C RID: 8220
+			// Token: 0x04001B35 RID: 6965
 			public NodeGraphSpider.StepInfo previousStep;
 		}
 	}

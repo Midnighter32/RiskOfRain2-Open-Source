@@ -3,19 +3,20 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003A1 RID: 929
+	// Token: 0x020002DE RID: 734
 	public class RagdollController : MonoBehaviour
 	{
-		// Token: 0x060013B2 RID: 5042 RVA: 0x00060290 File Offset: 0x0005E490
+		// Token: 0x060010D9 RID: 4313 RVA: 0x00049C68 File Offset: 0x00047E68
 		private void Start()
 		{
 			this.animator = base.GetComponent<Animator>();
 			foreach (Transform transform in this.bones)
 			{
 				Collider component = transform.GetComponent<Collider>();
+				Rigidbody component2 = transform.GetComponent<Rigidbody>();
 				if (!component)
 				{
-					Debug.LogFormat("Bone {0} is missing a collider!", new object[]
+					Debug.LogWarningFormat("Bone {0} is missing a collider!", new object[]
 					{
 						transform
 					});
@@ -23,16 +24,17 @@ namespace RoR2
 				else
 				{
 					component.enabled = false;
+					component2.interpolation = RigidbodyInterpolation.None;
+					component2.isKinematic = true;
 				}
 			}
 		}
 
-		// Token: 0x060013B3 RID: 5043 RVA: 0x000602F0 File Offset: 0x0005E4F0
+		// Token: 0x060010DA RID: 4314 RVA: 0x00049CE0 File Offset: 0x00047EE0
 		public void BeginRagdoll(Vector3 force)
 		{
 			if (this.animator)
 			{
-				Debug.Log("animator disabled");
 				this.animator.enabled = false;
 			}
 			foreach (Transform transform in this.bones)
@@ -52,13 +54,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001757 RID: 5975
+		// Token: 0x04001026 RID: 4134
 		public Transform[] bones;
 
-		// Token: 0x04001758 RID: 5976
+		// Token: 0x04001027 RID: 4135
 		public MonoBehaviour[] componentsToDisableOnRagdoll;
 
-		// Token: 0x04001759 RID: 5977
+		// Token: 0x04001028 RID: 4136
 		private Animator animator;
 	}
 }

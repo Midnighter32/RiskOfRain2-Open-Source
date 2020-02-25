@@ -2,10 +2,10 @@
 
 namespace EntityStates.TitanMonster
 {
-	// Token: 0x02000169 RID: 361
-	internal class ChargeGoldMegaLaser : ChargeMegaLaser
+	// Token: 0x0200084F RID: 2127
+	public class ChargeGoldMegaLaser : ChargeMegaLaser
 	{
-		// Token: 0x06000700 RID: 1792 RVA: 0x00021754 File Offset: 0x0001F954
+		// Token: 0x0600301B RID: 12315 RVA: 0x000CE54C File Offset: 0x000CC74C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();

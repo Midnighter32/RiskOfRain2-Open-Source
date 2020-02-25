@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.AncientWispMonster
 {
-	// Token: 0x020000D6 RID: 214
-	internal class FireRHCannon : BaseState
+	// Token: 0x02000735 RID: 1845
+	public class FireRHCannon : BaseState
 	{
-		// Token: 0x06000437 RID: 1079 RVA: 0x00011674 File Offset: 0x0000F874
+		// Token: 0x06002AE0 RID: 10976 RVA: 0x000B46BC File Offset: 0x000B28BC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -18,7 +18,7 @@ namespace EntityStates.AncientWispMonster
 			this.durationBetweenShots = FireRHCannon.baseDurationBetweenShots / this.attackSpeedStat;
 			if (FireRHCannon.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireRHCannon.effectPrefab, base.gameObject, text, false);
+				EffectManager.SimpleMuzzleFlash(FireRHCannon.effectPrefab, base.gameObject, text, false);
 			}
 			base.PlayAnimation("Gesture", "FireRHCannon", "FireRHCannon.playbackRate", this.duration);
 			if (base.isAuthority && base.modelLocator && base.modelLocator.modelTransform)
@@ -41,13 +41,13 @@ namespace EntityStates.AncientWispMonster
 			}
 		}
 
-		// Token: 0x06000438 RID: 1080 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002AE1 RID: 10977 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000439 RID: 1081 RVA: 0x000117E0 File Offset: 0x0000F9E0
+		// Token: 0x06002AE2 RID: 10978 RVA: 0x000B4824 File Offset: 0x000B2A24
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -68,40 +68,40 @@ namespace EntityStates.AncientWispMonster
 			}
 		}
 
-		// Token: 0x0600043A RID: 1082 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002AE3 RID: 10979 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x040003F0 RID: 1008
+		// Token: 0x040026B6 RID: 9910
 		public static GameObject projectilePrefab;
 
-		// Token: 0x040003F1 RID: 1009
+		// Token: 0x040026B7 RID: 9911
 		public static GameObject effectPrefab;
 
-		// Token: 0x040003F2 RID: 1010
+		// Token: 0x040026B8 RID: 9912
 		public static float baseDuration = 2f;
 
-		// Token: 0x040003F3 RID: 1011
+		// Token: 0x040026B9 RID: 9913
 		public static float baseDurationBetweenShots = 0.5f;
 
-		// Token: 0x040003F4 RID: 1012
+		// Token: 0x040026BA RID: 9914
 		public static float damageCoefficient = 1.2f;
 
-		// Token: 0x040003F5 RID: 1013
+		// Token: 0x040026BB RID: 9915
 		public static float force = 20f;
 
-		// Token: 0x040003F6 RID: 1014
+		// Token: 0x040026BC RID: 9916
 		public static int bulletCount;
 
-		// Token: 0x040003F7 RID: 1015
+		// Token: 0x040026BD RID: 9917
 		private float duration;
 
-		// Token: 0x040003F8 RID: 1016
+		// Token: 0x040026BE RID: 9918
 		private float durationBetweenShots;
 
-		// Token: 0x040003F9 RID: 1017
+		// Token: 0x040026BF RID: 9919
 		public int bulletCountCurrent = 1;
 	}
 }

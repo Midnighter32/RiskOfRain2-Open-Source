@@ -2,19 +2,19 @@
 
 namespace RoR2
 {
-	// Token: 0x02000457 RID: 1111
+	// Token: 0x020003CA RID: 970
 	[Serializable]
 	public enum MageElement : byte
 	{
-		// Token: 0x04001C55 RID: 7253
+		// Token: 0x04001648 RID: 5704
 		None,
-		// Token: 0x04001C56 RID: 7254
+		// Token: 0x04001649 RID: 5705
 		Fire,
-		// Token: 0x04001C57 RID: 7255
+		// Token: 0x0400164A RID: 5706
 		Ice,
-		// Token: 0x04001C58 RID: 7256
+		// Token: 0x0400164B RID: 5707
 		Lightning,
-		// Token: 0x04001C59 RID: 7257
+		// Token: 0x0400164C RID: 5708
 		Count
 	}
 }

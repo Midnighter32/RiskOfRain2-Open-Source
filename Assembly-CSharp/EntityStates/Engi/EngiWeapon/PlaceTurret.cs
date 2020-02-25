@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace EntityStates.Engi.EngiWeapon
 {
-	// Token: 0x0200018D RID: 397
-	internal class PlaceTurret : BaseState
+	// Token: 0x0200088C RID: 2188
+	public class PlaceTurret : BaseState
 	{
-		// Token: 0x060007A7 RID: 1959 RVA: 0x00025DFC File Offset: 0x00023FFC
+		// Token: 0x06003131 RID: 12593 RVA: 0x000D3C24 File Offset: 0x000D1E24
 		public override void OnEnter()
 		{
 			base.OnEnter();
 			if (base.isAuthority)
 			{
 				this.currentPlacementInfo = this.GetPlacementInfo();
-				this.blueprints = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/EngiTurretBlueprints"), this.currentPlacementInfo.position, this.currentPlacementInfo.rotation).GetComponent<BlueprintController>();
+				this.blueprints = UnityEngine.Object.Instantiate<GameObject>(this.blueprintPrefab, this.currentPlacementInfo.position, this.currentPlacementInfo.rotation).GetComponent<BlueprintController>();
 			}
 			base.PlayAnimation("Gesture", "PrepTurret");
 			this.entryCountdown = 0.1f;
@@ -28,13 +28,13 @@ namespace EntityStates.Engi.EngiWeapon
 					Transform transform = component.FindChild("WristDisplay");
 					if (transform)
 					{
-						this.wristDisplayObject = UnityEngine.Object.Instantiate<GameObject>(PlaceTurret.wristDisplayPrefab, transform);
+						this.wristDisplayObject = UnityEngine.Object.Instantiate<GameObject>(this.wristDisplayPrefab, transform);
 					}
 				}
 			}
 		}
 
-		// Token: 0x060007A8 RID: 1960 RVA: 0x00025ECC File Offset: 0x000240CC
+		// Token: 0x06003132 RID: 12594 RVA: 0x000D3CF0 File Offset: 0x000D1EF0
 		private PlaceTurret.PlacementInfo GetPlacementInfo()
 		{
 			Ray aimRay = base.GetAimRay();
@@ -56,11 +56,10 @@ namespace EntityStates.Engi.EngiWeapon
 			}
 			Vector3 point = ray.GetPoint(num2 + 0.5f);
 			placementInfo.position = point;
-			placementInfo.position.y = placementInfo.position.y + 0.91f;
 			if (placementInfo.ok)
 			{
-				float d = Mathf.Max(0.82000005f, 0f) * 0.5f;
-				if (Physics.CheckCapsule(placementInfo.position + Vector3.up * d, placementInfo.position + Vector3.down * d, 0.45f, LayerIndex.world.mask | LayerIndex.defaultLayer.mask))
+				float num3 = Mathf.Max(1.82f, 0f);
+				if (Physics.CheckCapsule(placementInfo.position + Vector3.up * (num3 - 0.5f), placementInfo.position + Vector3.up * 0.5f, 0.45f, LayerIndex.world.mask | LayerIndex.defaultLayer.mask))
 				{
 					placementInfo.ok = false;
 				}
@@ -68,7 +67,7 @@ namespace EntityStates.Engi.EngiWeapon
 			return placementInfo;
 		}
 
-		// Token: 0x060007A9 RID: 1961 RVA: 0x00026060 File Offset: 0x00024260
+		// Token: 0x06003133 RID: 12595 RVA: 0x000D3E72 File Offset: 0x000D2072
 		private void DestroyBlueprints()
 		{
 			if (this.blueprints)
@@ -78,7 +77,7 @@ namespace EntityStates.Engi.EngiWeapon
 			}
 		}
 
-		// Token: 0x060007AA RID: 1962 RVA: 0x00026086 File Offset: 0x00024286
+		// Token: 0x06003134 RID: 12596 RVA: 0x000D3E98 File Offset: 0x000D2098
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -90,7 +89,7 @@ namespace EntityStates.Engi.EngiWeapon
 			this.DestroyBlueprints();
 		}
 
-		// Token: 0x060007AB RID: 1963 RVA: 0x000260BC File Offset: 0x000242BC
+		// Token: 0x06003135 RID: 12597 RVA: 0x000D3ED0 File Offset: 0x000D20D0
 		public override void Update()
 		{
 			if (base.inputBank && !base.inputBank.skill4.down)
@@ -105,7 +104,7 @@ namespace EntityStates.Engi.EngiWeapon
 			}
 		}
 
-		// Token: 0x060007AC RID: 1964 RVA: 0x0002613C File Offset: 0x0002433C
+		// Token: 0x06003136 RID: 12598 RVA: 0x000D3F50 File Offset: 0x000D2150
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -127,7 +126,7 @@ namespace EntityStates.Engi.EngiWeapon
 					{
 						if (base.characterBody)
 						{
-							base.characterBody.SendConstructTurret(base.characterBody, this.currentPlacementInfo.position, this.currentPlacementInfo.rotation);
+							base.characterBody.SendConstructTurret(base.characterBody, this.currentPlacementInfo.position, this.currentPlacementInfo.rotation, MasterCatalog.FindMasterIndex(this.turretMasterPrefab));
 							if (base.skillLocator)
 							{
 								GenericSkill skill = base.skillLocator.GetSkill(SkillSlot.Special);
@@ -137,7 +136,7 @@ namespace EntityStates.Engi.EngiWeapon
 								}
 							}
 						}
-						Util.PlaySound(PlaceTurret.placeSoundString, base.gameObject);
+						Util.PlaySound(this.placeSoundString, base.gameObject);
 						this.DestroyBlueprints();
 						this.exitPending = true;
 					}
@@ -150,76 +149,86 @@ namespace EntityStates.Engi.EngiWeapon
 			}
 		}
 
-		// Token: 0x060007AD RID: 1965 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06003137 RID: 12599 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x040009E2 RID: 2530
-		public static GameObject wristDisplayPrefab;
+		// Token: 0x04002F7C RID: 12156
+		[SerializeField]
+		public GameObject wristDisplayPrefab;
 
-		// Token: 0x040009E3 RID: 2531
-		public static string placeSoundString;
+		// Token: 0x04002F7D RID: 12157
+		[SerializeField]
+		public string placeSoundString;
 
-		// Token: 0x040009E4 RID: 2532
+		// Token: 0x04002F7E RID: 12158
+		[SerializeField]
+		public GameObject blueprintPrefab;
+
+		// Token: 0x04002F7F RID: 12159
+		[SerializeField]
+		public GameObject turretMasterPrefab;
+
+		// Token: 0x04002F80 RID: 12160
 		private const float placementMaxUp = 1f;
 
-		// Token: 0x040009E5 RID: 2533
+		// Token: 0x04002F81 RID: 12161
 		private const float placementMaxDown = 3f;
 
-		// Token: 0x040009E6 RID: 2534
+		// Token: 0x04002F82 RID: 12162
 		private const float placementForwardDistance = 2f;
 
-		// Token: 0x040009E7 RID: 2535
+		// Token: 0x04002F83 RID: 12163
 		private const float entryDelay = 0.1f;
 
-		// Token: 0x040009E8 RID: 2536
+		// Token: 0x04002F84 RID: 12164
 		private const float exitDelay = 0.25f;
 
-		// Token: 0x040009E9 RID: 2537
+		// Token: 0x04002F85 RID: 12165
 		private const float turretRadius = 0.5f;
 
-		// Token: 0x040009EA RID: 2538
+		// Token: 0x04002F86 RID: 12166
 		private const float turretHeight = 1.82f;
 
-		// Token: 0x040009EB RID: 2539
+		// Token: 0x04002F87 RID: 12167
 		private const float turretCenter = 0f;
 
-		// Token: 0x040009EC RID: 2540
+		// Token: 0x04002F88 RID: 12168
 		private const float turretModelYOffset = -0.75f;
 
-		// Token: 0x040009ED RID: 2541
+		// Token: 0x04002F89 RID: 12169
 		private GameObject wristDisplayObject;
 
-		// Token: 0x040009EE RID: 2542
+		// Token: 0x04002F8A RID: 12170
 		private BlueprintController blueprints;
 
-		// Token: 0x040009EF RID: 2543
+		// Token: 0x04002F8B RID: 12171
 		private float exitCountdown;
 
-		// Token: 0x040009F0 RID: 2544
+		// Token: 0x04002F8C RID: 12172
 		private bool exitPending;
 
-		// Token: 0x040009F1 RID: 2545
+		// Token: 0x04002F8D RID: 12173
 		private float entryCountdown;
 
-		// Token: 0x040009F2 RID: 2546
+		// Token: 0x04002F8E RID: 12174
 		private PlaceTurret.PlacementInfo currentPlacementInfo;
 
-		// Token: 0x040009F3 RID: 2547
+		// Token: 0x04002F8F RID: 12175
 		private bool skill4Released;
 
-		// Token: 0x0200018E RID: 398
+		// Token: 0x0200088D RID: 2189
 		private struct PlacementInfo
 		{
-			// Token: 0x040009F4 RID: 2548
+			// Token: 0x04002F90 RID: 12176
 			public bool ok;
 
-			// Token: 0x040009F5 RID: 2549
+			// Token: 0x04002F91 RID: 12177
 			public Vector3 position;
 
-			// Token: 0x040009F6 RID: 2550
+			// Token: 0x04002F92 RID: 12178
 			public Quaternion rotation;
 		}
 	}

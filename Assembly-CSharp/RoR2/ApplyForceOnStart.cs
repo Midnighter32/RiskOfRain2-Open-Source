@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200025A RID: 602
+	// Token: 0x0200014B RID: 331
 	public class ApplyForceOnStart : MonoBehaviour
 	{
-		// Token: 0x06000B3C RID: 2876 RVA: 0x00037B74 File Offset: 0x00035D74
+		// Token: 0x060005E5 RID: 1509 RVA: 0x000186E8 File Offset: 0x000168E8
 		private void Start()
 		{
 			Rigidbody component = base.GetComponent<Rigidbody>();
@@ -16,7 +16,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04000F4B RID: 3915
+		// Token: 0x04000668 RID: 1640
 		public Vector3 localForce;
 	}
 }

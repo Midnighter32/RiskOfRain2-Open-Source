@@ -4,10 +4,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x0200036F RID: 879
+	// Token: 0x020002A0 RID: 672
 	public class NetworkSpawnOnStart : MonoBehaviour
 	{
-		// Token: 0x06001227 RID: 4647 RVA: 0x000595D9 File Offset: 0x000577D9
+		// Token: 0x06000F08 RID: 3848 RVA: 0x0004267D File Offset: 0x0004087D
 		private void Start()
 		{
 			if (NetworkServer.active)

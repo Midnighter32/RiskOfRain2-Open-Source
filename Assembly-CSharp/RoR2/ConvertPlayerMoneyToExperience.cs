@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020002B9 RID: 697
+	// Token: 0x020001C8 RID: 456
 	public class ConvertPlayerMoneyToExperience : MonoBehaviour
 	{
-		// Token: 0x06000E2A RID: 3626 RVA: 0x00045C41 File Offset: 0x00043E41
+		// Token: 0x060009C9 RID: 2505 RVA: 0x0002ABC1 File Offset: 0x00028DC1
 		private void Start()
 		{
 			if (!NetworkServer.active)
@@ -24,7 +24,7 @@ namespace RoR2
 			this.burstTimer = 0f;
 		}
 
-		// Token: 0x06000E2B RID: 3627 RVA: 0x00045C7C File Offset: 0x00043E7C
+		// Token: 0x060009CA RID: 2506 RVA: 0x0002ABFC File Offset: 0x00028DFC
 		private void FixedUpdate()
 		{
 			this.burstTimer -= Time.fixedDeltaTime;
@@ -49,7 +49,7 @@ namespace RoR2
 					component.money -= num;
 					GameObject bodyObject = component.GetBodyObject();
 					ulong num2 = (ulong)(num / 2f / (float)instances.Count);
-					if (num > 0u)
+					if (num > 0U)
 					{
 						flag = true;
 					}
@@ -74,16 +74,16 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001213 RID: 4627
+		// Token: 0x040009FB RID: 2555
 		private Dictionary<GameObject, uint> burstSizes = new Dictionary<GameObject, uint>();
 
-		// Token: 0x04001214 RID: 4628
+		// Token: 0x040009FC RID: 2556
 		private float burstTimer;
 
-		// Token: 0x04001215 RID: 4629
+		// Token: 0x040009FD RID: 2557
 		public float burstInterval = 0.25f;
 
-		// Token: 0x04001216 RID: 4630
+		// Token: 0x040009FE RID: 2558
 		public int burstCount = 8;
 	}
 }

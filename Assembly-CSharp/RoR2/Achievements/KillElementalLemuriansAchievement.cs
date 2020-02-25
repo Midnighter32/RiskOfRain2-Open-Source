@@ -2,18 +2,18 @@
 
 namespace RoR2.Achievements
 {
-	// Token: 0x020006A8 RID: 1704
+	// Token: 0x020006B1 RID: 1713
 	[RegisterAchievement("KillElementalLemurians", "Items.ElementalRings", null, typeof(KillElementalLemuriansAchievement.KillElementalLemuriansServerAchievement))]
 	public class KillElementalLemuriansAchievement : BaseAchievement
 	{
-		// Token: 0x060025E8 RID: 9704 RVA: 0x000AF2C0 File Offset: 0x000AD4C0
+		// Token: 0x060027FA RID: 10234 RVA: 0x000AA636 File Offset: 0x000A8836
 		public override void OnInstall()
 		{
 			base.OnInstall();
 			base.SetServerTracked(true);
 		}
 
-		// Token: 0x020006A9 RID: 1705
+		// Token: 0x020006B2 RID: 1714
 		private class KillElementalLemuriansServerAchievement : BaseServerAchievement
 		{
 		}

@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.Huntress.HuntressWeapon
 {
-	// Token: 0x02000154 RID: 340
-	internal class FireGlaive : BaseState
+	// Token: 0x02000836 RID: 2102
+	public class FireGlaive : BaseState
 	{
-		// Token: 0x06000690 RID: 1680 RVA: 0x0001F41C File Offset: 0x0001D61C
+		// Token: 0x06002F91 RID: 12177 RVA: 0x000CBAD8 File Offset: 0x000C9CD8
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -31,19 +31,19 @@ namespace EntityStates.Huntress.HuntressWeapon
 					}
 				}
 			}
-			if (base.hasAuthority)
+			if (base.isAuthority)
 			{
 				ProjectileManager.instance.FireProjectile(FireGlaive.projectilePrefab, position, rotation, base.gameObject, this.damageStat * FireGlaive.damageCoefficient, FireGlaive.force, Util.CheckRoll(this.critStat, base.characterBody.master), DamageColorIndex.Default, null, -1f);
 			}
 		}
 
-		// Token: 0x06000691 RID: 1681 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002F92 RID: 12178 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000692 RID: 1682 RVA: 0x0001F511 File Offset: 0x0001D711
+		// Token: 0x06002F93 RID: 12179 RVA: 0x000CBBCD File Offset: 0x000C9DCD
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -54,25 +54,25 @@ namespace EntityStates.Huntress.HuntressWeapon
 			}
 		}
 
-		// Token: 0x06000693 RID: 1683 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06002F94 RID: 12180 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000800 RID: 2048
+		// Token: 0x04002D46 RID: 11590
 		public static GameObject projectilePrefab;
 
-		// Token: 0x04000801 RID: 2049
+		// Token: 0x04002D47 RID: 11591
 		public static float baseDuration = 2f;
 
-		// Token: 0x04000802 RID: 2050
+		// Token: 0x04002D48 RID: 11592
 		public static float damageCoefficient = 1.2f;
 
-		// Token: 0x04000803 RID: 2051
+		// Token: 0x04002D49 RID: 11593
 		public static float force = 20f;
 
-		// Token: 0x04000804 RID: 2052
+		// Token: 0x04002D4A RID: 11594
 		private float duration;
 	}
 }

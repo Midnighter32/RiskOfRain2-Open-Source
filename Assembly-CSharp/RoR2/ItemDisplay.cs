@@ -4,10 +4,16 @@ using UnityEngine.Rendering;
 
 namespace RoR2
 {
-	// Token: 0x02000341 RID: 833
+	// Token: 0x02000265 RID: 613
 	public class ItemDisplay : MonoBehaviour
 	{
-		// Token: 0x06001139 RID: 4409 RVA: 0x00055AB0 File Offset: 0x00053CB0
+		// Token: 0x06000D91 RID: 3473 RVA: 0x0003CE35 File Offset: 0x0003B035
+		public VisibilityLevel GetVisibilityLevel()
+		{
+			return this.visibilityLevel;
+		}
+
+		// Token: 0x06000D92 RID: 3474 RVA: 0x0003CE40 File Offset: 0x0003B040
 		public void SetVisibilityLevel(VisibilityLevel newVisibilityLevel)
 		{
 			if (this.visibilityLevel != newVisibilityLevel)
@@ -56,10 +62,10 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001549 RID: 5449
+		// Token: 0x04000D98 RID: 3480
 		public CharacterModel.RendererInfo[] rendererInfos;
 
-		// Token: 0x0400154A RID: 5450
+		// Token: 0x04000D99 RID: 3481
 		private VisibilityLevel visibilityLevel = VisibilityLevel.Visible;
 	}
 }

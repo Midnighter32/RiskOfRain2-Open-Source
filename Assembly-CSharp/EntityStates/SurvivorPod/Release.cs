@@ -1,14 +1,13 @@
 ﻿using System;
-using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace EntityStates.SurvivorPod
 {
-	// Token: 0x020000F0 RID: 240
+	// Token: 0x0200077D RID: 1917
 	public class Release : SurvivorPodBaseState
 	{
-		// Token: 0x0600049B RID: 1179 RVA: 0x00013388 File Offset: 0x00011588
+		// Token: 0x06002C17 RID: 11287 RVA: 0x000BA400 File Offset: 0x000B8600
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -24,29 +23,23 @@ namespace EntityStates.SurvivorPod
 			{
 				return;
 			}
-			if (Util.HasEffectiveAuthority(base.survivorPodController.characterBodyObject))
+			if (NetworkServer.active && base.vehicleSeat && base.vehicleSeat.currentPassengerBody)
 			{
-				base.survivorPodController.characterStateMachine.SetNextStateToMain();
-				TeleportHelper.TeleportGameObject(base.survivorPodController.characterBodyObject, base.survivorPodController.exitPosition.position);
-				CharacterMotor component2 = base.survivorPodController.characterBodyObject.GetComponent<CharacterMotor>();
-				if (component2)
-				{
-					component2.velocity = base.survivorPodController.exitPosition.forward * Release.ejectionSpeed;
-				}
+				base.vehicleSeat.EjectPassenger(base.vehicleSeat.currentPassengerBody.gameObject);
 			}
 		}
 
-		// Token: 0x0600049C RID: 1180 RVA: 0x00013474 File Offset: 0x00011674
+		// Token: 0x06002C18 RID: 11288 RVA: 0x000BA4B4 File Offset: 0x000B86B4
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
-			if (NetworkServer.active && (!base.survivorPodController.characterStateMachine || !(base.survivorPodController.characterStateMachine.state is GenericCharacterPod)))
+			if (NetworkServer.active && (!base.vehicleSeat || !base.vehicleSeat.currentPassengerBody))
 			{
 				this.outer.SetNextState(new ReleaseFinished());
 			}
 		}
 
-		// Token: 0x0400045A RID: 1114
+		// Token: 0x04002826 RID: 10278
 		public static float ejectionSpeed = 20f;
 	}
 }

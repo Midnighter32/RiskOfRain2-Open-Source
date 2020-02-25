@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates
 {
-	// Token: 0x020000C1 RID: 193
+	// Token: 0x0200071B RID: 1819
 	public class StunState : BaseState
 	{
-		// Token: 0x060003C5 RID: 965 RVA: 0x0000F7D8 File Offset: 0x0000D9D8
+		// Token: 0x06002A63 RID: 10851 RVA: 0x000B2594 File Offset: 0x000B0794
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -21,24 +21,27 @@ namespace EntityStates
 				int layerIndex = modelAnimator.GetLayerIndex("Body");
 				modelAnimator.CrossFadeInFixedTime((UnityEngine.Random.Range(0, 2) == 0) ? "Hurt1" : "Hurt2", 0.1f);
 				modelAnimator.Update(0f);
-				AnimatorStateInfo currentAnimatorStateInfo = modelAnimator.GetCurrentAnimatorStateInfo(layerIndex);
-				this.duration = Mathf.Max(this.stunDuration, currentAnimatorStateInfo.length);
-				this.stunEffect = UnityEngine.Object.Instantiate<GameObject>(StunState.stunEffectPrefab, base.transform);
-				this.stunEffect.GetComponent<ScaleParticleSystemDuration>().newDuration = this.duration;
+				AnimatorStateInfo nextAnimatorStateInfo = modelAnimator.GetNextAnimatorStateInfo(layerIndex);
+				this.duration = Mathf.Max(this.stunDuration, nextAnimatorStateInfo.length);
+				if (this.stunDuration >= 0f)
+				{
+					this.stunVfxInstance = UnityEngine.Object.Instantiate<GameObject>(StunState.stunVfxPrefab, base.transform);
+					this.stunVfxInstance.GetComponent<ScaleParticleSystemDuration>().newDuration = this.duration;
+				}
 			}
 		}
 
-		// Token: 0x060003C6 RID: 966 RVA: 0x0000F8BB File Offset: 0x0000DABB
+		// Token: 0x06002A64 RID: 10852 RVA: 0x000B2684 File Offset: 0x000B0884
 		public override void OnExit()
 		{
-			if (this.stunEffect)
+			if (this.stunVfxInstance)
 			{
-				EntityState.Destroy(this.stunEffect);
+				EntityState.Destroy(this.stunVfxInstance);
 			}
 			base.OnExit();
 		}
 
-		// Token: 0x060003C7 RID: 967 RVA: 0x0000F8DB File Offset: 0x0000DADB
+		// Token: 0x06002A65 RID: 10853 RVA: 0x000B26A4 File Offset: 0x000B08A4
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -49,19 +52,19 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x04000378 RID: 888
+		// Token: 0x04002632 RID: 9778
 		private float stopwatch;
 
-		// Token: 0x04000379 RID: 889
+		// Token: 0x04002633 RID: 9779
 		private float duration;
 
-		// Token: 0x0400037A RID: 890
-		private GameObject stunEffect;
+		// Token: 0x04002634 RID: 9780
+		private GameObject stunVfxInstance;
 
-		// Token: 0x0400037B RID: 891
+		// Token: 0x04002635 RID: 9781
 		public float stunDuration = 0.35f;
 
-		// Token: 0x0400037C RID: 892
-		public static GameObject stunEffectPrefab;
+		// Token: 0x04002636 RID: 9782
+		public static GameObject stunVfxPrefab;
 	}
 }

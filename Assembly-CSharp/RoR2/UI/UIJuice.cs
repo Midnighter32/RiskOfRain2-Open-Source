@@ -3,23 +3,23 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x0200064F RID: 1615
+	// Token: 0x02000644 RID: 1604
 	public class UIJuice : MonoBehaviour
 	{
-		// Token: 0x0600241E RID: 9246 RVA: 0x000A9A61 File Offset: 0x000A7C61
+		// Token: 0x060025BD RID: 9661 RVA: 0x000A4529 File Offset: 0x000A2729
 		private void Awake()
 		{
 			this.InitializeFirstTimeInfo();
 		}
 
-		// Token: 0x0600241F RID: 9247 RVA: 0x000A9A69 File Offset: 0x000A7C69
+		// Token: 0x060025BE RID: 9662 RVA: 0x000A4531 File Offset: 0x000A2731
 		private void Update()
 		{
 			this.transitionStopwatch = Mathf.Min(this.transitionStopwatch + Time.unscaledDeltaTime, this.transitionDuration);
 			this.ProcessTransition();
 		}
 
-		// Token: 0x06002420 RID: 9248 RVA: 0x000A9A90 File Offset: 0x000A7C90
+		// Token: 0x060025BF RID: 9663 RVA: 0x000A4558 File Offset: 0x000A2758
 		private void ProcessTransition()
 		{
 			this.InitializeFirstTimeInfo();
@@ -62,7 +62,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002421 RID: 9249 RVA: 0x000A9C20 File Offset: 0x000A7E20
+		// Token: 0x060025C0 RID: 9664 RVA: 0x000A46E8 File Offset: 0x000A28E8
 		public void TransitionScaleUpWidth()
 		{
 			this.InitializeFirstTimeInfo();
@@ -74,7 +74,7 @@ namespace RoR2.UI
 			this.BeginTransition();
 		}
 
-		// Token: 0x06002422 RID: 9250 RVA: 0x000A9C78 File Offset: 0x000A7E78
+		// Token: 0x060025C1 RID: 9665 RVA: 0x000A4740 File Offset: 0x000A2940
 		public void TransitionPanFromLeft()
 		{
 			this.InitializeFirstTimeInfo();
@@ -86,7 +86,7 @@ namespace RoR2.UI
 			this.BeginTransition();
 		}
 
-		// Token: 0x06002423 RID: 9251 RVA: 0x000A9CCC File Offset: 0x000A7ECC
+		// Token: 0x060025C2 RID: 9666 RVA: 0x000A4794 File Offset: 0x000A2994
 		public void TransitionPanToLeft()
 		{
 			this.InitializeFirstTimeInfo();
@@ -98,7 +98,7 @@ namespace RoR2.UI
 			this.BeginTransition();
 		}
 
-		// Token: 0x06002424 RID: 9252 RVA: 0x000A9D20 File Offset: 0x000A7F20
+		// Token: 0x060025C3 RID: 9667 RVA: 0x000A47E8 File Offset: 0x000A29E8
 		public void TransitionPanFromRight()
 		{
 			this.InitializeFirstTimeInfo();
@@ -110,7 +110,7 @@ namespace RoR2.UI
 			this.BeginTransition();
 		}
 
-		// Token: 0x06002425 RID: 9253 RVA: 0x000A9D74 File Offset: 0x000A7F74
+		// Token: 0x060025C4 RID: 9668 RVA: 0x000A483C File Offset: 0x000A2A3C
 		public void TransitionPanToRight()
 		{
 			this.InitializeFirstTimeInfo();
@@ -122,7 +122,7 @@ namespace RoR2.UI
 			this.BeginTransition();
 		}
 
-		// Token: 0x06002426 RID: 9254 RVA: 0x000A9DC8 File Offset: 0x000A7FC8
+		// Token: 0x060025C5 RID: 9669 RVA: 0x000A4890 File Offset: 0x000A2A90
 		public void TransitionPanFromTop()
 		{
 			this.InitializeFirstTimeInfo();
@@ -134,7 +134,7 @@ namespace RoR2.UI
 			this.BeginTransition();
 		}
 
-		// Token: 0x06002427 RID: 9255 RVA: 0x000A9E1C File Offset: 0x000A801C
+		// Token: 0x060025C6 RID: 9670 RVA: 0x000A48E4 File Offset: 0x000A2AE4
 		public void TransitionPanToTop()
 		{
 			this.InitializeFirstTimeInfo();
@@ -146,7 +146,7 @@ namespace RoR2.UI
 			this.BeginTransition();
 		}
 
-		// Token: 0x06002428 RID: 9256 RVA: 0x000A9E70 File Offset: 0x000A8070
+		// Token: 0x060025C7 RID: 9671 RVA: 0x000A4938 File Offset: 0x000A2B38
 		public void TransitionPanFromBottom()
 		{
 			this.InitializeFirstTimeInfo();
@@ -158,7 +158,7 @@ namespace RoR2.UI
 			this.BeginTransition();
 		}
 
-		// Token: 0x06002429 RID: 9257 RVA: 0x000A9EC4 File Offset: 0x000A80C4
+		// Token: 0x060025C8 RID: 9672 RVA: 0x000A498C File Offset: 0x000A2B8C
 		public void TransitionPanToBottom()
 		{
 			this.InitializeFirstTimeInfo();
@@ -170,7 +170,7 @@ namespace RoR2.UI
 			this.BeginTransition();
 		}
 
-		// Token: 0x0600242A RID: 9258 RVA: 0x000A9F16 File Offset: 0x000A8116
+		// Token: 0x060025C9 RID: 9673 RVA: 0x000A49DE File Offset: 0x000A2BDE
 		public void TransitionAlphaFadeIn()
 		{
 			this.InitializeFirstTimeInfo();
@@ -179,7 +179,7 @@ namespace RoR2.UI
 			this.BeginTransition();
 		}
 
-		// Token: 0x0600242B RID: 9259 RVA: 0x000A9F3B File Offset: 0x000A813B
+		// Token: 0x060025CA RID: 9674 RVA: 0x000A4A03 File Offset: 0x000A2C03
 		public void TransitionAlphaFadeOut()
 		{
 			this.InitializeFirstTimeInfo();
@@ -188,20 +188,20 @@ namespace RoR2.UI
 			this.BeginTransition();
 		}
 
-		// Token: 0x0600242C RID: 9260 RVA: 0x000A9F60 File Offset: 0x000A8160
+		// Token: 0x060025CB RID: 9675 RVA: 0x000A4A28 File Offset: 0x000A2C28
 		public void DestroyOnEndOfTransition(bool set)
 		{
 			this.destroyOnEndOfTransition = set;
 		}
 
-		// Token: 0x0600242D RID: 9261 RVA: 0x000A9F69 File Offset: 0x000A8169
+		// Token: 0x060025CC RID: 9676 RVA: 0x000A4A31 File Offset: 0x000A2C31
 		private void BeginTransition()
 		{
 			this.transitionStopwatch = 0f;
 			this.ProcessTransition();
 		}
 
-		// Token: 0x0600242E RID: 9262 RVA: 0x000A9F7C File Offset: 0x000A817C
+		// Token: 0x060025CD RID: 9677 RVA: 0x000A4A44 File Offset: 0x000A2C44
 		private void InitializeFirstTimeInfo()
 		{
 			if (this.hasInitialized)
@@ -222,53 +222,53 @@ namespace RoR2.UI
 			this.hasInitialized = true;
 		}
 
-		// Token: 0x04002718 RID: 10008
+		// Token: 0x0400237D RID: 9085
 		[Header("Transition Settings")]
 		public CanvasGroup canvasGroup;
 
-		// Token: 0x04002719 RID: 10009
+		// Token: 0x0400237E RID: 9086
 		public RectTransform panningRect;
 
-		// Token: 0x0400271A RID: 10010
+		// Token: 0x0400237F RID: 9087
 		public float transitionDuration;
 
-		// Token: 0x0400271B RID: 10011
+		// Token: 0x04002380 RID: 9088
 		public float panningMagnitude;
 
-		// Token: 0x0400271C RID: 10012
+		// Token: 0x04002381 RID: 9089
 		public bool destroyOnEndOfTransition;
 
-		// Token: 0x0400271D RID: 10013
+		// Token: 0x04002382 RID: 9090
 		private float transitionStopwatch;
 
-		// Token: 0x0400271E RID: 10014
+		// Token: 0x04002383 RID: 9091
 		private float transitionEndAlpha;
 
-		// Token: 0x0400271F RID: 10015
+		// Token: 0x04002384 RID: 9092
 		private float transitionStartAlpha;
 
-		// Token: 0x04002720 RID: 10016
+		// Token: 0x04002385 RID: 9093
 		private float originalAlpha;
 
-		// Token: 0x04002721 RID: 10017
+		// Token: 0x04002386 RID: 9094
 		private Vector2 transitionStartPosition;
 
-		// Token: 0x04002722 RID: 10018
+		// Token: 0x04002387 RID: 9095
 		private Vector2 transitionEndPosition;
 
-		// Token: 0x04002723 RID: 10019
+		// Token: 0x04002388 RID: 9096
 		private Vector2 originalPosition;
 
-		// Token: 0x04002724 RID: 10020
+		// Token: 0x04002389 RID: 9097
 		private Vector2 transitionStartSize;
 
-		// Token: 0x04002725 RID: 10021
+		// Token: 0x0400238A RID: 9098
 		private Vector2 transitionEndSize;
 
-		// Token: 0x04002726 RID: 10022
+		// Token: 0x0400238B RID: 9099
 		private Vector3 originalSize;
 
-		// Token: 0x04002727 RID: 10023
+		// Token: 0x0400238C RID: 9100
 		private bool hasInitialized;
 	}
 }

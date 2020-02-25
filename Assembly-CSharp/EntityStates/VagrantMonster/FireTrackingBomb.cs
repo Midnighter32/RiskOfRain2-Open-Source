@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.VagrantMonster
 {
-	// Token: 0x0200012E RID: 302
-	internal class FireTrackingBomb : BaseState
+	// Token: 0x02000804 RID: 2052
+	public class FireTrackingBomb : BaseState
 	{
-		// Token: 0x060005D2 RID: 1490 RVA: 0x0001AA4C File Offset: 0x00018C4C
+		// Token: 0x06002EA9 RID: 11945 RVA: 0x000C66FC File Offset: 0x000C48FC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -18,13 +18,13 @@ namespace EntityStates.VagrantMonster
 			this.FireBomb();
 		}
 
-		// Token: 0x060005D3 RID: 1491 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002EAA RID: 11946 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x060005D4 RID: 1492 RVA: 0x0001AA9D File Offset: 0x00018C9D
+		// Token: 0x06002EAB RID: 11947 RVA: 0x000C674D File Offset: 0x000C494D
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -36,7 +36,7 @@ namespace EntityStates.VagrantMonster
 			}
 		}
 
-		// Token: 0x060005D5 RID: 1493 RVA: 0x0001AADC File Offset: 0x00018CDC
+		// Token: 0x06002EAC RID: 11948 RVA: 0x000C678C File Offset: 0x000C498C
 		private void FireBomb()
 		{
 			Ray aimRay = base.GetAimRay();
@@ -49,38 +49,38 @@ namespace EntityStates.VagrantMonster
 					aimRay.origin = component.FindChild("TrackingBombMuzzle").transform.position;
 				}
 			}
-			EffectManager.instance.SimpleMuzzleFlash(FireTrackingBomb.muzzleEffectPrefab, base.gameObject, "TrackingBombMuzzle", false);
+			EffectManager.SimpleMuzzleFlash(FireTrackingBomb.muzzleEffectPrefab, base.gameObject, "TrackingBombMuzzle", false);
 			if (base.isAuthority)
 			{
 				ProjectileManager.instance.FireProjectile(FireTrackingBomb.projectilePrefab, aimRay.origin, Util.QuaternionSafeLookRotation(aimRay.direction), base.gameObject, this.damageStat * FireTrackingBomb.bombDamageCoefficient, FireTrackingBomb.bombForce, Util.CheckRoll(this.critStat, base.characterBody.master), DamageColorIndex.Default, null, -1f);
 			}
 		}
 
-		// Token: 0x040006AB RID: 1707
+		// Token: 0x04002BCF RID: 11215
 		public static float baseDuration = 3f;
 
-		// Token: 0x040006AC RID: 1708
+		// Token: 0x04002BD0 RID: 11216
 		public static GameObject projectilePrefab;
 
-		// Token: 0x040006AD RID: 1709
+		// Token: 0x04002BD1 RID: 11217
 		public static GameObject muzzleEffectPrefab;
 
-		// Token: 0x040006AE RID: 1710
+		// Token: 0x04002BD2 RID: 11218
 		public static string fireBombSoundString;
 
-		// Token: 0x040006AF RID: 1711
+		// Token: 0x04002BD3 RID: 11219
 		public static float bombDamageCoefficient;
 
-		// Token: 0x040006B0 RID: 1712
+		// Token: 0x04002BD4 RID: 11220
 		public static float bombForce;
 
-		// Token: 0x040006B1 RID: 1713
+		// Token: 0x04002BD5 RID: 11221
 		public float novaRadius;
 
-		// Token: 0x040006B2 RID: 1714
+		// Token: 0x04002BD6 RID: 11222
 		private float duration;
 
-		// Token: 0x040006B3 RID: 1715
+		// Token: 0x04002BD7 RID: 11223
 		private float stopwatch;
 	}
 }

@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020002F3 RID: 755
+	// Token: 0x02000202 RID: 514
 	public class FireworkLauncher : MonoBehaviour
 	{
-		// Token: 0x06000F45 RID: 3909 RVA: 0x0004B6F4 File Offset: 0x000498F4
+		// Token: 0x06000AFC RID: 2812 RVA: 0x00030B14 File Offset: 0x0002ED14
 		private void FixedUpdate()
 		{
 			if (NetworkServer.active)
@@ -28,7 +28,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F46 RID: 3910 RVA: 0x0004B770 File Offset: 0x00049970
+		// Token: 0x06000AFD RID: 2813 RVA: 0x00030B90 File Offset: 0x0002ED90
 		private void FireMissile()
 		{
 			CharacterBody component = this.owner.GetComponent<CharacterBody>();
@@ -39,38 +39,38 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001362 RID: 4962
+		// Token: 0x04000B61 RID: 2913
 		public GameObject projectilePrefab;
 
-		// Token: 0x04001363 RID: 4963
+		// Token: 0x04000B62 RID: 2914
 		public float launchInterval = 0.1f;
 
-		// Token: 0x04001364 RID: 4964
+		// Token: 0x04000B63 RID: 2915
 		public float damageCoefficient = 3f;
 
-		// Token: 0x04001365 RID: 4965
+		// Token: 0x04000B64 RID: 2916
 		public float coneAngle = 10f;
 
-		// Token: 0x04001366 RID: 4966
+		// Token: 0x04000B65 RID: 2917
 		public float randomCircleRange;
 
-		// Token: 0x04001367 RID: 4967
+		// Token: 0x04000B66 RID: 2918
 		[HideInInspector]
 		public GameObject owner;
 
-		// Token: 0x04001368 RID: 4968
+		// Token: 0x04000B67 RID: 2919
 		[HideInInspector]
 		public TeamIndex team;
 
-		// Token: 0x04001369 RID: 4969
+		// Token: 0x04000B68 RID: 2920
 		[HideInInspector]
 		public int remaining;
 
-		// Token: 0x0400136A RID: 4970
+		// Token: 0x04000B69 RID: 2921
 		[HideInInspector]
 		public bool crit;
 
-		// Token: 0x0400136B RID: 4971
+		// Token: 0x04000B6A RID: 2922
 		private float nextFireTimer;
 	}
 }

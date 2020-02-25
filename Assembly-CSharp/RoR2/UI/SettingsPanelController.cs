@@ -4,16 +4,16 @@ using UnityEngine.Serialization;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000636 RID: 1590
+	// Token: 0x02000629 RID: 1577
 	public class SettingsPanelController : MonoBehaviour
 	{
-		// Token: 0x060023A9 RID: 9129 RVA: 0x000A7B57 File Offset: 0x000A5D57
+		// Token: 0x06002543 RID: 9539 RVA: 0x000A23DF File Offset: 0x000A05DF
 		private void Start()
 		{
 			this.settingsControllers = base.GetComponentsInChildren<BaseSettingsControl>();
 		}
 
-		// Token: 0x060023AA RID: 9130 RVA: 0x000A7B68 File Offset: 0x000A5D68
+		// Token: 0x06002544 RID: 9540 RVA: 0x000A23F0 File Offset: 0x000A05F0
 		private void Update()
 		{
 			bool interactable = false;
@@ -27,7 +27,7 @@ namespace RoR2.UI
 			this.revertButton.interactable = interactable;
 		}
 
-		// Token: 0x060023AB RID: 9131 RVA: 0x000A7BA8 File Offset: 0x000A5DA8
+		// Token: 0x06002545 RID: 9541 RVA: 0x000A2430 File Offset: 0x000A0630
 		public void RevertChanges()
 		{
 			if (base.isActiveAndEnabled)
@@ -39,11 +39,11 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0400269B RID: 9883
+		// Token: 0x040022F8 RID: 8952
 		[FormerlySerializedAs("carouselControllers")]
 		private BaseSettingsControl[] settingsControllers;
 
-		// Token: 0x0400269C RID: 9884
+		// Token: 0x040022F9 RID: 8953
 		public MPButton revertButton;
 	}
 }

@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000610 RID: 1552
+	// Token: 0x020005FF RID: 1535
 	public class Nameplate : MonoBehaviour
 	{
-		// Token: 0x06002304 RID: 8964 RVA: 0x000A4F08 File Offset: 0x000A3108
+		// Token: 0x06002474 RID: 9332 RVA: 0x0009F078 File Offset: 0x0009D278
 		public void SetBody(CharacterBody body)
 		{
 			this.body = body;
 		}
 
-		// Token: 0x06002305 RID: 8965 RVA: 0x000A4F14 File Offset: 0x000A3114
+		// Token: 0x06002475 RID: 9333 RVA: 0x0009F084 File Offset: 0x0009D284
 		private void LateUpdate()
 		{
 			string text = "";
@@ -69,28 +69,28 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x040025EF RID: 9711
+		// Token: 0x04002233 RID: 8755
 		public TextMeshPro label;
 
-		// Token: 0x040025F0 RID: 9712
+		// Token: 0x04002234 RID: 8756
 		private CharacterBody body;
 
-		// Token: 0x040025F1 RID: 9713
+		// Token: 0x04002235 RID: 8757
 		public GameObject aliveObject;
 
-		// Token: 0x040025F2 RID: 9714
+		// Token: 0x04002236 RID: 8758
 		public GameObject deadObject;
 
-		// Token: 0x040025F3 RID: 9715
+		// Token: 0x04002237 RID: 8759
 		public SpriteRenderer criticallyHurtSpriteRenderer;
 
-		// Token: 0x040025F4 RID: 9716
+		// Token: 0x04002238 RID: 8760
 		public SpriteRenderer[] coloredSprites;
 
-		// Token: 0x040025F5 RID: 9717
+		// Token: 0x04002239 RID: 8761
 		public Color baseColor;
 
-		// Token: 0x040025F6 RID: 9718
+		// Token: 0x0400223A RID: 8762
 		public Color combatColor;
 	}
 }

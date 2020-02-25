@@ -6,18 +6,18 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020002BF RID: 703
+	// Token: 0x020001CE RID: 462
 	public class DamageDisplay : MonoBehaviour
 	{
-		// Token: 0x06000E41 RID: 3649 RVA: 0x00046279 File Offset: 0x00044479
+		// Token: 0x060009E1 RID: 2529 RVA: 0x0002B092 File Offset: 0x00029292
 		static DamageDisplay()
 		{
 			UICamera.onUICameraPreCull += DamageDisplay.OnUICameraPreCull;
 			RoR2Application.onUpdate += DamageDisplay.UpdateAll;
 		}
 
-		// Token: 0x17000133 RID: 307
-		// (get) Token: 0x06000E42 RID: 3650 RVA: 0x000462B6 File Offset: 0x000444B6
+		// Token: 0x17000143 RID: 323
+		// (get) Token: 0x060009E2 RID: 2530 RVA: 0x0002B0CF File Offset: 0x000292CF
 		public static ReadOnlyCollection<DamageDisplay> readOnlyInstancesList
 		{
 			get
@@ -26,7 +26,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000E43 RID: 3651 RVA: 0x000462C0 File Offset: 0x000444C0
+		// Token: 0x060009E3 RID: 2531 RVA: 0x0002B0D8 File Offset: 0x000292D8
 		private void Start()
 		{
 			this.velocity = Vector3.Normalize(Vector3.up + new Vector3(UnityEngine.Random.Range(-this.offset, this.offset), 0f, UnityEngine.Random.Range(-this.offset, this.offset))) * this.magnitude;
@@ -34,13 +34,13 @@ namespace RoR2
 			this.internalPosition = base.transform.position;
 		}
 
-		// Token: 0x06000E44 RID: 3652 RVA: 0x00046337 File Offset: 0x00044537
+		// Token: 0x060009E4 RID: 2532 RVA: 0x0002B14F File Offset: 0x0002934F
 		private void OnDestroy()
 		{
 			DamageDisplay.instancesList.Remove(this);
 		}
 
-		// Token: 0x06000E45 RID: 3653 RVA: 0x00046348 File Offset: 0x00044548
+		// Token: 0x060009E5 RID: 2533 RVA: 0x0002B160 File Offset: 0x00029360
 		public void SetValues(GameObject victim, GameObject attacker, float damage, bool crit, DamageColorIndex damageColorIndex)
 		{
 			this.victimTeam = TeamIndex.Neutral;
@@ -85,14 +85,14 @@ namespace RoR2
 			this.UpdateMagnitude();
 		}
 
-		// Token: 0x06000E46 RID: 3654 RVA: 0x00046474 File Offset: 0x00044674
+		// Token: 0x060009E6 RID: 2534 RVA: 0x0002B28C File Offset: 0x0002948C
 		private void UpdateMagnitude()
 		{
 			float fontSize = this.magnitudeCurve.Evaluate(this.life / this.maxLife) * this.textMagnitude * this.scale;
 			this.textMeshComponent.fontSize = fontSize;
 		}
 
-		// Token: 0x06000E47 RID: 3655 RVA: 0x000464B4 File Offset: 0x000446B4
+		// Token: 0x060009E7 RID: 2535 RVA: 0x0002B2CC File Offset: 0x000294CC
 		private static void UpdateAll()
 		{
 			for (int i = DamageDisplay.instancesList.Count - 1; i >= 0; i--)
@@ -101,7 +101,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000E48 RID: 3656 RVA: 0x000464E8 File Offset: 0x000446E8
+		// Token: 0x060009E8 RID: 2536 RVA: 0x0002B300 File Offset: 0x00029500
 		private void DoUpdate()
 		{
 			this.UpdateMagnitude();
@@ -115,7 +115,7 @@ namespace RoR2
 			this.internalPosition += this.velocity * Time.deltaTime;
 		}
 
-		// Token: 0x06000E49 RID: 3657 RVA: 0x00046574 File Offset: 0x00044774
+		// Token: 0x060009E9 RID: 2537 RVA: 0x0002B38C File Offset: 0x0002958C
 		private static void OnUICameraPreCull(UICamera uiCamera)
 		{
 			Camera camera = uiCamera.camera;
@@ -147,72 +147,72 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001225 RID: 4645
+		// Token: 0x04000A0E RID: 2574
 		private static List<DamageDisplay> instancesList = new List<DamageDisplay>();
 
-		// Token: 0x04001226 RID: 4646
+		// Token: 0x04000A0F RID: 2575
 		private static ReadOnlyCollection<DamageDisplay> _readOnlyInstancesList = new ReadOnlyCollection<DamageDisplay>(DamageDisplay.instancesList);
 
-		// Token: 0x04001227 RID: 4647
+		// Token: 0x04000A10 RID: 2576
 		public TextMeshPro textMeshComponent;
 
-		// Token: 0x04001228 RID: 4648
+		// Token: 0x04000A11 RID: 2577
 		public AnimationCurve magnitudeCurve;
 
-		// Token: 0x04001229 RID: 4649
+		// Token: 0x04000A12 RID: 2578
 		public float maxLife = 3f;
 
-		// Token: 0x0400122A RID: 4650
+		// Token: 0x04000A13 RID: 2579
 		public float gravity = 9.81f;
 
-		// Token: 0x0400122B RID: 4651
+		// Token: 0x04000A14 RID: 2580
 		public float magnitude = 3f;
 
-		// Token: 0x0400122C RID: 4652
+		// Token: 0x04000A15 RID: 2581
 		public float offset = 20f;
 
-		// Token: 0x0400122D RID: 4653
+		// Token: 0x04000A16 RID: 2582
 		private Vector3 velocity;
 
-		// Token: 0x0400122E RID: 4654
+		// Token: 0x04000A17 RID: 2583
 		public float textMagnitude = 0.01f;
 
-		// Token: 0x0400122F RID: 4655
+		// Token: 0x04000A18 RID: 2584
 		private float vel;
 
-		// Token: 0x04001230 RID: 4656
+		// Token: 0x04000A19 RID: 2585
 		private float life;
 
-		// Token: 0x04001231 RID: 4657
+		// Token: 0x04000A1A RID: 2586
 		private float scale = 1f;
 
-		// Token: 0x04001232 RID: 4658
+		// Token: 0x04000A1B RID: 2587
 		[HideInInspector]
 		public Color baseColor = Color.white;
 
-		// Token: 0x04001233 RID: 4659
+		// Token: 0x04000A1C RID: 2588
 		[HideInInspector]
 		public Color baseOutlineColor = Color.gray;
 
-		// Token: 0x04001234 RID: 4660
+		// Token: 0x04000A1D RID: 2589
 		private GameObject victim;
 
-		// Token: 0x04001235 RID: 4661
+		// Token: 0x04000A1E RID: 2590
 		private GameObject attacker;
 
-		// Token: 0x04001236 RID: 4662
+		// Token: 0x04000A1F RID: 2591
 		private TeamIndex victimTeam;
 
-		// Token: 0x04001237 RID: 4663
+		// Token: 0x04000A20 RID: 2592
 		private TeamIndex attackerTeam;
 
-		// Token: 0x04001238 RID: 4664
+		// Token: 0x04000A21 RID: 2593
 		private bool crit;
 
-		// Token: 0x04001239 RID: 4665
+		// Token: 0x04000A22 RID: 2594
 		private bool heal;
 
-		// Token: 0x0400123A RID: 4666
+		// Token: 0x04000A23 RID: 2595
 		private Vector3 internalPosition;
 	}
 }

@@ -6,21 +6,21 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020002EB RID: 747
+	// Token: 0x020001F9 RID: 505
 	public class ExperienceManager : MonoBehaviour
 	{
-		// Token: 0x17000148 RID: 328
-		// (get) Token: 0x06000F18 RID: 3864 RVA: 0x0004A9CD File Offset: 0x00048BCD
-		// (set) Token: 0x06000F19 RID: 3865 RVA: 0x0004A9D4 File Offset: 0x00048BD4
+		// Token: 0x1700015A RID: 346
+		// (get) Token: 0x06000AC0 RID: 2752 RVA: 0x0002F8FD File Offset: 0x0002DAFD
+		// (set) Token: 0x06000AC1 RID: 2753 RVA: 0x0002F904 File Offset: 0x0002DB04
 		public static ExperienceManager instance { get; private set; }
 
-		// Token: 0x06000F1A RID: 3866 RVA: 0x0004A9DC File Offset: 0x00048BDC
+		// Token: 0x06000AC2 RID: 2754 RVA: 0x0002F90C File Offset: 0x0002DB0C
 		private static float CalcOrbTravelTime(float timeOffset)
 		{
 			return 0.5f + 1.5f * timeOffset;
 		}
 
-		// Token: 0x06000F1B RID: 3867 RVA: 0x0004A9EB File Offset: 0x00048BEB
+		// Token: 0x06000AC3 RID: 2755 RVA: 0x0002F91B File Offset: 0x0002DB1B
 		private void OnEnable()
 		{
 			if (ExperienceManager.instance && ExperienceManager.instance != this)
@@ -31,7 +31,7 @@ namespace RoR2
 			ExperienceManager.instance = this;
 		}
 
-		// Token: 0x06000F1C RID: 3868 RVA: 0x0004AA17 File Offset: 0x00048C17
+		// Token: 0x06000AC4 RID: 2756 RVA: 0x0002F947 File Offset: 0x0002DB47
 		private void OnDisable()
 		{
 			if (ExperienceManager.instance == this)
@@ -40,14 +40,14 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F1D RID: 3869 RVA: 0x0004AA2C File Offset: 0x00048C2C
+		// Token: 0x06000AC5 RID: 2757 RVA: 0x0002F95C File Offset: 0x0002DB5C
 		private void Start()
 		{
 			this.localTime = 0f;
 			this.nextAward = float.PositiveInfinity;
 		}
 
-		// Token: 0x06000F1E RID: 3870 RVA: 0x0004AA44 File Offset: 0x00048C44
+		// Token: 0x06000AC6 RID: 2758 RVA: 0x0002F974 File Offset: 0x0002DB74
 		private void FixedUpdate()
 		{
 			this.localTime += Time.fixedDeltaTime;
@@ -72,7 +72,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F1F RID: 3871 RVA: 0x0004AB40 File Offset: 0x00048D40
+		// Token: 0x06000AC7 RID: 2759 RVA: 0x0002FA70 File Offset: 0x0002DC70
 		public void AwardExperience(Vector3 origin, CharacterBody body, ulong amount)
 		{
 			CharacterMaster master = body.master;
@@ -82,14 +82,14 @@ namespace RoR2
 			}
 			TeamIndex teamIndex = master.teamIndex;
 			List<ulong> list = this.CalculateDenominations(amount);
-			uint num = 0u;
+			uint num = 0U;
 			for (int i = 0; i < list.Count; i++)
 			{
 				this.AddPendingAward(this.localTime + 0.5f + 1.5f * ExperienceManager.orbTimeOffsetSequence[(int)num], teamIndex, list[i]);
-				num += 1u;
+				num += 1U;
 				if ((ulong)num >= (ulong)((long)ExperienceManager.orbTimeOffsetSequence.Length))
 				{
-					num = 0u;
+					num = 0U;
 				}
 			}
 			ExperienceManager.currentOutgoingCreateExpEffectMessage.awardAmount = amount;
@@ -98,7 +98,7 @@ namespace RoR2
 			NetworkServer.SendToAll(55, ExperienceManager.currentOutgoingCreateExpEffectMessage);
 		}
 
-		// Token: 0x06000F20 RID: 3872 RVA: 0x0004ABF4 File Offset: 0x00048DF4
+		// Token: 0x06000AC8 RID: 2760 RVA: 0x0002FB24 File Offset: 0x0002DD24
 		private void AddPendingAward(float awardTime, TeamIndex recipient, ulong awardAmount)
 		{
 			this.pendingAwards.Add(new ExperienceManager.TimedExpAward
@@ -113,7 +113,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F21 RID: 3873 RVA: 0x0004AC40 File Offset: 0x00048E40
+		// Token: 0x06000AC9 RID: 2761 RVA: 0x0002FB70 File Offset: 0x0002DD70
 		public List<ulong> CalculateDenominations(ulong total)
 		{
 			List<ulong> list = new List<ulong>();
@@ -126,7 +126,7 @@ namespace RoR2
 			return list;
 		}
 
-		// Token: 0x06000F22 RID: 3874 RVA: 0x0004AC91 File Offset: 0x00048E91
+		// Token: 0x06000ACA RID: 2762 RVA: 0x0002FBC1 File Offset: 0x0002DDC1
 		[NetworkMessageHandler(msgType = 55, client = true)]
 		private static void HandleCreateExpEffect(NetworkMessage netMsg)
 		{
@@ -136,10 +136,14 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F23 RID: 3875 RVA: 0x0004ACAC File Offset: 0x00048EAC
+		// Token: 0x06000ACB RID: 2763 RVA: 0x0002FBDC File Offset: 0x0002DDDC
 		private void HandleCreateExpEffectInternal(NetworkMessage netMsg)
 		{
 			netMsg.ReadMessage<ExperienceManager.CreateExpEffectMessage>(ExperienceManager.currentIncomingCreateExpEffectMessage);
+			if (!SettingsConVars.cvExpAndMoneyEffects.value)
+			{
+				return;
+			}
 			GameObject targetBody = ExperienceManager.currentIncomingCreateExpEffectMessage.targetBody;
 			if (!targetBody)
 			{
@@ -148,37 +152,37 @@ namespace RoR2
 			HurtBox hurtBox = Util.FindBodyMainHurtBox(targetBody);
 			Transform targetTransform = ((hurtBox != null) ? hurtBox.transform : null) ?? targetBody.transform;
 			List<ulong> list = this.CalculateDenominations(ExperienceManager.currentIncomingCreateExpEffectMessage.awardAmount);
-			uint num = 0u;
+			uint num = 0U;
 			for (int i = 0; i < list.Count; i++)
 			{
 				ExperienceOrbBehavior component = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/ExpOrb"), ExperienceManager.currentIncomingCreateExpEffectMessage.origin, Quaternion.identity).GetComponent<ExperienceOrbBehavior>();
 				component.targetTransform = targetTransform;
 				component.travelTime = ExperienceManager.CalcOrbTravelTime(ExperienceManager.orbTimeOffsetSequence[(int)num]);
 				component.exp = list[i];
-				num += 1u;
+				num += 1U;
 				if ((ulong)num >= (ulong)((long)ExperienceManager.orbTimeOffsetSequence.Length))
 				{
-					num = 0u;
+					num = 0U;
 				}
 			}
 		}
 
-		// Token: 0x0400132B RID: 4907
+		// Token: 0x04000B0D RID: 2829
 		private float localTime;
 
-		// Token: 0x0400132C RID: 4908
+		// Token: 0x04000B0E RID: 2830
 		private List<ExperienceManager.TimedExpAward> pendingAwards = new List<ExperienceManager.TimedExpAward>();
 
-		// Token: 0x0400132D RID: 4909
+		// Token: 0x04000B0F RID: 2831
 		private float nextAward;
 
-		// Token: 0x0400132E RID: 4910
+		// Token: 0x04000B10 RID: 2832
 		private const float minOrbTravelTime = 0.5f;
 
-		// Token: 0x0400132F RID: 4911
+		// Token: 0x04000B11 RID: 2833
 		public const float maxOrbTravelTime = 2f;
 
-		// Token: 0x04001330 RID: 4912
+		// Token: 0x04000B12 RID: 2834
 		public static readonly float[] orbTimeOffsetSequence = new float[]
 		{
 			0.841f,
@@ -199,30 +203,30 @@ namespace RoR2
 			0.917f
 		};
 
-		// Token: 0x04001331 RID: 4913
+		// Token: 0x04000B13 RID: 2835
 		private static ExperienceManager.CreateExpEffectMessage currentOutgoingCreateExpEffectMessage = new ExperienceManager.CreateExpEffectMessage();
 
-		// Token: 0x04001332 RID: 4914
+		// Token: 0x04000B14 RID: 2836
 		private static ExperienceManager.CreateExpEffectMessage currentIncomingCreateExpEffectMessage = new ExperienceManager.CreateExpEffectMessage();
 
-		// Token: 0x020002EC RID: 748
+		// Token: 0x020001FA RID: 506
 		[Serializable]
 		private struct TimedExpAward
 		{
-			// Token: 0x04001333 RID: 4915
+			// Token: 0x04000B15 RID: 2837
 			public float awardTime;
 
-			// Token: 0x04001334 RID: 4916
+			// Token: 0x04000B16 RID: 2838
 			public ulong awardAmount;
 
-			// Token: 0x04001335 RID: 4917
+			// Token: 0x04000B17 RID: 2839
 			public TeamIndex recipient;
 		}
 
-		// Token: 0x020002ED RID: 749
+		// Token: 0x020001FB RID: 507
 		private class CreateExpEffectMessage : MessageBase
 		{
-			// Token: 0x06000F27 RID: 3879 RVA: 0x0004ADB8 File Offset: 0x00048FB8
+			// Token: 0x06000ACF RID: 2767 RVA: 0x0002FCF5 File Offset: 0x0002DEF5
 			public override void Serialize(NetworkWriter writer)
 			{
 				writer.Write(this.origin);
@@ -230,7 +234,7 @@ namespace RoR2
 				writer.WritePackedUInt64(this.awardAmount);
 			}
 
-			// Token: 0x06000F28 RID: 3880 RVA: 0x0004ADDE File Offset: 0x00048FDE
+			// Token: 0x06000AD0 RID: 2768 RVA: 0x0002FD1B File Offset: 0x0002DF1B
 			public override void Deserialize(NetworkReader reader)
 			{
 				this.origin = reader.ReadVector3();
@@ -238,13 +242,13 @@ namespace RoR2
 				this.awardAmount = reader.ReadPackedUInt64();
 			}
 
-			// Token: 0x04001336 RID: 4918
+			// Token: 0x04000B18 RID: 2840
 			public Vector3 origin;
 
-			// Token: 0x04001337 RID: 4919
+			// Token: 0x04000B19 RID: 2841
 			public GameObject targetBody;
 
-			// Token: 0x04001338 RID: 4920
+			// Token: 0x04000B1A RID: 2842
 			public ulong awardAmount;
 		}
 	}

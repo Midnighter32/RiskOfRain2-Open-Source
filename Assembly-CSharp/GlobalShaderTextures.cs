@@ -1,11 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x0200003F RID: 63
+// Token: 0x0200003B RID: 59
 [ExecuteInEditMode]
 public class GlobalShaderTextures : MonoBehaviour
 {
-	// Token: 0x06000118 RID: 280 RVA: 0x000072DD File Offset: 0x000054DD
+	// Token: 0x060000FC RID: 252 RVA: 0x00007235 File Offset: 0x00005435
 	private void OnValidate()
 	{
 		Shader.SetGlobalTexture(this.warpRampShaderVariableName, this.warpRampTexture);
@@ -13,7 +13,7 @@ public class GlobalShaderTextures : MonoBehaviour
 		Shader.SetGlobalTexture(this.snowMicrofacetNoiseVariableName, this.snowMicrofacetTexture);
 	}
 
-	// Token: 0x06000119 RID: 281 RVA: 0x000072DD File Offset: 0x000054DD
+	// Token: 0x060000FD RID: 253 RVA: 0x00007235 File Offset: 0x00005435
 	private void Start()
 	{
 		Shader.SetGlobalTexture(this.warpRampShaderVariableName, this.warpRampTexture);
@@ -21,21 +21,21 @@ public class GlobalShaderTextures : MonoBehaviour
 		Shader.SetGlobalTexture(this.snowMicrofacetNoiseVariableName, this.snowMicrofacetTexture);
 	}
 
-	// Token: 0x04000129 RID: 297
+	// Token: 0x0400012E RID: 302
 	public Texture warpRampTexture;
 
-	// Token: 0x0400012A RID: 298
+	// Token: 0x0400012F RID: 303
 	public string warpRampShaderVariableName;
 
-	// Token: 0x0400012B RID: 299
+	// Token: 0x04000130 RID: 304
 	public Texture eliteRampTexture;
 
-	// Token: 0x0400012C RID: 300
+	// Token: 0x04000131 RID: 305
 	public string eliteRampShaderVariableName;
 
-	// Token: 0x0400012D RID: 301
+	// Token: 0x04000132 RID: 306
 	public Texture snowMicrofacetTexture;
 
-	// Token: 0x0400012E RID: 302
+	// Token: 0x04000133 RID: 307
 	public string snowMicrofacetNoiseVariableName;
 }

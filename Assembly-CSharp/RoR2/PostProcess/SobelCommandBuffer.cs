@@ -4,24 +4,24 @@ using UnityEngine.Rendering;
 
 namespace RoR2.PostProcess
 {
-	// Token: 0x02000563 RID: 1379
-	[ExecuteInEditMode]
+	// Token: 0x0200052D RID: 1325
 	[RequireComponent(typeof(Camera))]
+	[ExecuteInEditMode]
 	public class SobelCommandBuffer : MonoBehaviour
 	{
-		// Token: 0x06001EC9 RID: 7881 RVA: 0x00091605 File Offset: 0x0008F805
+		// Token: 0x06001F57 RID: 8023 RVA: 0x000881D5 File Offset: 0x000863D5
 		private void Awake()
 		{
 			this.camera = base.GetComponent<Camera>();
 		}
 
-		// Token: 0x06001ECA RID: 7882 RVA: 0x00091613 File Offset: 0x0008F813
+		// Token: 0x06001F58 RID: 8024 RVA: 0x000881E3 File Offset: 0x000863E3
 		private void OnPreRender()
 		{
 			this.SetupCommandBuffer();
 		}
 
-		// Token: 0x06001ECB RID: 7883 RVA: 0x0009161B File Offset: 0x0008F81B
+		// Token: 0x06001F59 RID: 8025 RVA: 0x000881EB File Offset: 0x000863EB
 		private void OnDisable()
 		{
 			if (this.camera != null && this.sobelCommandBuffer != null)
@@ -31,7 +31,7 @@ namespace RoR2.PostProcess
 			}
 		}
 
-		// Token: 0x06001ECC RID: 7884 RVA: 0x00091654 File Offset: 0x0008F854
+		// Token: 0x06001F5A RID: 8026 RVA: 0x00088224 File Offset: 0x00086424
 		private void SetupCommandBuffer()
 		{
 			if (!this.camera)
@@ -41,7 +41,7 @@ namespace RoR2.PostProcess
 			if (this.sobelCommandBuffer == null)
 			{
 				int nameID = Shader.PropertyToID("_SobelTex");
-				this.sobelBufferMaterial = new Material(Shader.Find("Hidden/SobelBuffer"));
+				this.sobelBufferMaterial = new Material(Shader.Find("Hopoo Games/Internal/SobelBuffer"));
 				this.sobelCommandBuffer = new CommandBuffer();
 				this.sobelCommandBuffer.name = "Sobel Command Buffer";
 				this.sobelCommandBuffer.GetTemporaryRT(nameID, -1, -1);
@@ -56,19 +56,19 @@ namespace RoR2.PostProcess
 			}
 		}
 
-		// Token: 0x04002176 RID: 8566
+		// Token: 0x04001D00 RID: 7424
 		public CameraEvent cameraEvent = CameraEvent.BeforeLighting;
 
-		// Token: 0x04002177 RID: 8567
+		// Token: 0x04001D01 RID: 7425
 		private RenderTexture sobelRT;
 
-		// Token: 0x04002178 RID: 8568
+		// Token: 0x04001D02 RID: 7426
 		private CommandBuffer sobelCommandBuffer;
 
-		// Token: 0x04002179 RID: 8569
+		// Token: 0x04001D03 RID: 7427
 		private Material sobelBufferMaterial;
 
-		// Token: 0x0400217A RID: 8570
+		// Token: 0x04001D04 RID: 7428
 		private Camera camera;
 	}
 }

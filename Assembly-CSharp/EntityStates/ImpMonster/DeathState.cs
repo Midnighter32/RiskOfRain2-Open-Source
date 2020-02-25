@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.ImpMonster
 {
-	// Token: 0x02000147 RID: 327
+	// Token: 0x02000823 RID: 2083
 	public class DeathState : GenericCharacterDeath
 	{
-		// Token: 0x06000648 RID: 1608 RVA: 0x0001D58C File Offset: 0x0001B78C
+		// Token: 0x06002F35 RID: 12085 RVA: 0x000C9910 File Offset: 0x000C7B10
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -18,41 +18,45 @@ namespace EntityStates.ImpMonster
 			}
 			if (base.modelLocator && base.modelLocator.modelTransform.GetComponent<ChildLocator>() && DeathState.initialEffect)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(DeathState.initialEffect, base.gameObject, "Base", false);
+				EffectManager.SimpleMuzzleFlash(DeathState.initialEffect, base.gameObject, "Base", false);
 			}
 		}
 
-		// Token: 0x06000649 RID: 1609 RVA: 0x0001D610 File Offset: 0x0001B810
+		// Token: 0x06002F36 RID: 12086 RVA: 0x000C9990 File Offset: 0x000C7B90
 		public override void FixedUpdate()
 		{
-			this.stopwatch += Time.fixedDeltaTime;
-			if (!this.hasPlayedDeathEffect && this.animator.GetFloat("DeathEffect") > 0.5f)
+			base.FixedUpdate();
+			if (this.animator)
 			{
-				this.hasPlayedDeathEffect = true;
-				EffectManager.instance.SimpleMuzzleFlash(DeathState.deathEffect, base.gameObject, "Center", false);
-			}
-			if (this.stopwatch >= DeathState.duration)
-			{
-				EntityState.Destroy(base.gameObject);
+				this.stopwatch += Time.fixedDeltaTime;
+				if (!this.hasPlayedDeathEffect && this.animator.GetFloat("DeathEffect") > 0.5f)
+				{
+					this.hasPlayedDeathEffect = true;
+					EffectManager.SimpleMuzzleFlash(DeathState.deathEffect, base.gameObject, "Center", false);
+				}
+				if (this.stopwatch >= DeathState.duration)
+				{
+					EntityState.Destroy(base.gameObject);
+				}
 			}
 		}
 
-		// Token: 0x04000771 RID: 1905
+		// Token: 0x04002CB1 RID: 11441
 		public static GameObject initialEffect;
 
-		// Token: 0x04000772 RID: 1906
+		// Token: 0x04002CB2 RID: 11442
 		public static GameObject deathEffect;
 
-		// Token: 0x04000773 RID: 1907
+		// Token: 0x04002CB3 RID: 11443
 		private static float duration = 1.333f;
 
-		// Token: 0x04000774 RID: 1908
+		// Token: 0x04002CB4 RID: 11444
 		private float stopwatch;
 
-		// Token: 0x04000775 RID: 1909
+		// Token: 0x04002CB5 RID: 11445
 		private Animator animator;
 
-		// Token: 0x04000776 RID: 1910
+		// Token: 0x04002CB6 RID: 11446
 		private bool hasPlayedDeathEffect;
 	}
 }

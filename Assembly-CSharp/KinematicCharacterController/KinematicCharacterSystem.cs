@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace KinematicCharacterController
 {
-	// Token: 0x020006CE RID: 1742
+	// Token: 0x02000919 RID: 2329
 	[DefaultExecutionOrder(-100)]
 	public class KinematicCharacterSystem : MonoBehaviour
 	{
-		// Token: 0x17000357 RID: 855
-		// (get) Token: 0x060026F4 RID: 9972 RVA: 0x000B461F File Offset: 0x000B281F
-		// (set) Token: 0x060026F5 RID: 9973 RVA: 0x000B4628 File Offset: 0x000B2828
+		// Token: 0x17000494 RID: 1172
+		// (get) Token: 0x0600343E RID: 13374 RVA: 0x000E3A67 File Offset: 0x000E1C67
+		// (set) Token: 0x0600343F RID: 13375 RVA: 0x000E3A70 File Offset: 0x000E1C70
 		public static CharacterSystemInterpolationMethod InterpolationMethod
 		{
 			get
@@ -33,7 +33,7 @@ namespace KinematicCharacterController
 			}
 		}
 
-		// Token: 0x060026F6 RID: 9974 RVA: 0x000B46A3 File Offset: 0x000B28A3
+		// Token: 0x06003440 RID: 13376 RVA: 0x000E3AEB File Offset: 0x000E1CEB
 		public static void EnsureCreation()
 		{
 			if (KinematicCharacterSystem._instance == null)
@@ -45,13 +45,13 @@ namespace KinematicCharacterController
 			}
 		}
 
-		// Token: 0x060026F7 RID: 9975 RVA: 0x000B46D8 File Offset: 0x000B28D8
+		// Token: 0x06003441 RID: 13377 RVA: 0x000E3B20 File Offset: 0x000E1D20
 		public static KinematicCharacterSystem GetInstance()
 		{
 			return KinematicCharacterSystem._instance;
 		}
 
-		// Token: 0x060026F8 RID: 9976 RVA: 0x000B46DF File Offset: 0x000B28DF
+		// Token: 0x06003442 RID: 13378 RVA: 0x000E3B27 File Offset: 0x000E1D27
 		public static void SetCharacterMotorsCapacity(int capacity)
 		{
 			if (capacity < KinematicCharacterSystem.CharacterMotors.Count)
@@ -61,7 +61,7 @@ namespace KinematicCharacterController
 			KinematicCharacterSystem.CharacterMotors.Capacity = capacity;
 		}
 
-		// Token: 0x060026F9 RID: 9977 RVA: 0x000B4708 File Offset: 0x000B2908
+		// Token: 0x06003443 RID: 13379 RVA: 0x000E3B50 File Offset: 0x000E1D50
 		public static void RegisterCharacterMotor(KinematicCharacterMotor motor)
 		{
 			KinematicCharacterSystem.CharacterMotors.Add(motor);
@@ -69,13 +69,13 @@ namespace KinematicCharacterController
 			motor.Rigidbody.interpolation = interpolation;
 		}
 
-		// Token: 0x060026FA RID: 9978 RVA: 0x000B4739 File Offset: 0x000B2939
+		// Token: 0x06003444 RID: 13380 RVA: 0x000E3B81 File Offset: 0x000E1D81
 		public static void UnregisterCharacterMotor(KinematicCharacterMotor motor)
 		{
 			KinematicCharacterSystem.CharacterMotors.Remove(motor);
 		}
 
-		// Token: 0x060026FB RID: 9979 RVA: 0x000B4747 File Offset: 0x000B2947
+		// Token: 0x06003445 RID: 13381 RVA: 0x000E3B8F File Offset: 0x000E1D8F
 		public static void SetPhysicsMoversCapacity(int capacity)
 		{
 			if (capacity < KinematicCharacterSystem.PhysicsMovers.Count)
@@ -85,7 +85,7 @@ namespace KinematicCharacterController
 			KinematicCharacterSystem.PhysicsMovers.Capacity = capacity;
 		}
 
-		// Token: 0x060026FC RID: 9980 RVA: 0x000B4770 File Offset: 0x000B2970
+		// Token: 0x06003446 RID: 13382 RVA: 0x000E3BB8 File Offset: 0x000E1DB8
 		public static void RegisterPhysicsMover(PhysicsMover mover)
 		{
 			KinematicCharacterSystem.PhysicsMovers.Add(mover);
@@ -93,25 +93,25 @@ namespace KinematicCharacterController
 			mover.Rigidbody.interpolation = interpolation;
 		}
 
-		// Token: 0x060026FD RID: 9981 RVA: 0x000B47A1 File Offset: 0x000B29A1
+		// Token: 0x06003447 RID: 13383 RVA: 0x000E3BE9 File Offset: 0x000E1DE9
 		public static void UnregisterPhysicsMover(PhysicsMover mover)
 		{
 			KinematicCharacterSystem.PhysicsMovers.Remove(mover);
 		}
 
-		// Token: 0x060026FE RID: 9982 RVA: 0x0004A8F2 File Offset: 0x00048AF2
+		// Token: 0x06003448 RID: 13384 RVA: 0x0002F7B2 File Offset: 0x0002D9B2
 		private void OnDisable()
 		{
 			UnityEngine.Object.Destroy(base.gameObject);
 		}
 
-		// Token: 0x060026FF RID: 9983 RVA: 0x000B47AF File Offset: 0x000B29AF
+		// Token: 0x06003449 RID: 13385 RVA: 0x000E3BF7 File Offset: 0x000E1DF7
 		private void Awake()
 		{
 			KinematicCharacterSystem._instance = this;
 		}
 
-		// Token: 0x06002700 RID: 9984 RVA: 0x000B47B8 File Offset: 0x000B29B8
+		// Token: 0x0600344A RID: 13386 RVA: 0x000E3C00 File Offset: 0x000E1E00
 		private void FixedUpdate()
 		{
 			if (KinematicCharacterSystem.AutoSimulation)
@@ -127,7 +127,7 @@ namespace KinematicCharacterController
 			}
 		}
 
-		// Token: 0x06002701 RID: 9985 RVA: 0x000B47ED File Offset: 0x000B29ED
+		// Token: 0x0600344B RID: 13387 RVA: 0x000E3C35 File Offset: 0x000E1E35
 		private void Update()
 		{
 			if (KinematicCharacterSystem.InterpolationMethod == CharacterSystemInterpolationMethod.Custom)
@@ -136,7 +136,7 @@ namespace KinematicCharacterController
 			}
 		}
 
-		// Token: 0x06002702 RID: 9986 RVA: 0x000B47FC File Offset: 0x000B29FC
+		// Token: 0x0600344C RID: 13388 RVA: 0x000E3C44 File Offset: 0x000E1E44
 		public static void Simulate(float deltaTime)
 		{
 			for (int i = 0; i < KinematicCharacterSystem.PhysicsMovers.Count; i++)
@@ -162,7 +162,7 @@ namespace KinematicCharacterController
 			}
 		}
 
-		// Token: 0x06002703 RID: 9987 RVA: 0x000B499C File Offset: 0x000B2B9C
+		// Token: 0x0600344D RID: 13389 RVA: 0x000E3DE4 File Offset: 0x000E1FE4
 		public static void Simulate(float deltaTime, KinematicCharacterMotor[] motors, int characterMotorsCount, PhysicsMover[] movers, int physicsMoversCount)
 		{
 			for (int i = 0; i < physicsMoversCount; i++)
@@ -188,7 +188,7 @@ namespace KinematicCharacterController
 			}
 		}
 
-		// Token: 0x06002704 RID: 9988 RVA: 0x000B4A84 File Offset: 0x000B2C84
+		// Token: 0x0600344E RID: 13390 RVA: 0x000E3ECC File Offset: 0x000E20CC
 		public static void PreSimulationUpdate(float deltaTime)
 		{
 			if (KinematicCharacterSystem.InterpolationMethod == CharacterSystemInterpolationMethod.Custom)
@@ -207,7 +207,7 @@ namespace KinematicCharacterController
 			}
 		}
 
-		// Token: 0x06002705 RID: 9989 RVA: 0x000B4B5C File Offset: 0x000B2D5C
+		// Token: 0x0600344F RID: 13391 RVA: 0x000E3FA4 File Offset: 0x000E21A4
 		public static void PostSimulationUpdate(float deltaTime)
 		{
 			Physics.SyncTransforms();
@@ -232,7 +232,7 @@ namespace KinematicCharacterController
 			}
 		}
 
-		// Token: 0x06002706 RID: 9990 RVA: 0x000B4CE4 File Offset: 0x000B2EE4
+		// Token: 0x06003450 RID: 13392 RVA: 0x000E412C File Offset: 0x000E232C
 		private static void MoveActorsToDestination()
 		{
 			for (int i = 0; i < KinematicCharacterSystem.CharacterMotors.Count; i++)
@@ -249,7 +249,7 @@ namespace KinematicCharacterController
 			}
 		}
 
-		// Token: 0x06002707 RID: 9991 RVA: 0x000B4E28 File Offset: 0x000B3028
+		// Token: 0x06003451 RID: 13393 RVA: 0x000E4270 File Offset: 0x000E2470
 		private static void CustomInterpolationUpdate()
 		{
 			float t = Mathf.Clamp01((Time.time - KinematicCharacterSystem._lastCustomInterpolationStartTime) / KinematicCharacterSystem._lastCustomInterpolationDeltaTime);
@@ -263,31 +263,31 @@ namespace KinematicCharacterController
 			}
 		}
 
-		// Token: 0x04002940 RID: 10560
+		// Token: 0x040033D9 RID: 13273
 		private static KinematicCharacterSystem _instance;
 
-		// Token: 0x04002941 RID: 10561
+		// Token: 0x040033DA RID: 13274
 		public static List<KinematicCharacterMotor> CharacterMotors = new List<KinematicCharacterMotor>(100);
 
-		// Token: 0x04002942 RID: 10562
+		// Token: 0x040033DB RID: 13275
 		public static List<PhysicsMover> PhysicsMovers = new List<PhysicsMover>(100);
 
-		// Token: 0x04002943 RID: 10563
+		// Token: 0x040033DC RID: 13276
 		public static bool AutoSimulation = true;
 
-		// Token: 0x04002944 RID: 10564
+		// Token: 0x040033DD RID: 13277
 		private static float _lastCustomInterpolationStartTime = -1f;
 
-		// Token: 0x04002945 RID: 10565
+		// Token: 0x040033DE RID: 13278
 		private static float _lastCustomInterpolationDeltaTime = -1f;
 
-		// Token: 0x04002946 RID: 10566
+		// Token: 0x040033DF RID: 13279
 		private const int CharacterMotorsBaseCapacity = 100;
 
-		// Token: 0x04002947 RID: 10567
+		// Token: 0x040033E0 RID: 13280
 		private const int PhysicsMoversBaseCapacity = 100;
 
-		// Token: 0x04002948 RID: 10568
+		// Token: 0x040033E1 RID: 13281
 		[SerializeField]
 		private static CharacterSystemInterpolationMethod _internalInterpolationMethod = CharacterSystemInterpolationMethod.Custom;
 	}

@@ -4,10 +4,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000248 RID: 584
+	// Token: 0x02000139 RID: 313
 	public class AchievementGranter : NetworkBehaviour
 	{
-		// Token: 0x06000AF6 RID: 2806 RVA: 0x000368E4 File Offset: 0x00034AE4
+		// Token: 0x0600059E RID: 1438 RVA: 0x00017410 File Offset: 0x00015610
 		[ClientRpc]
 		public void RpcGrantAchievement(string achievementName)
 		{
@@ -17,12 +17,12 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000AF8 RID: 2808 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060005A0 RID: 1440 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x06000AF9 RID: 2809 RVA: 0x00036940 File Offset: 0x00034B40
+		// Token: 0x060005A1 RID: 1441 RVA: 0x0001746C File Offset: 0x0001566C
 		protected static void InvokeRpcRpcGrantAchievement(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkClient.active)
@@ -33,7 +33,7 @@ namespace RoR2
 			((AchievementGranter)obj).RpcGrantAchievement(reader.ReadString());
 		}
 
-		// Token: 0x06000AFA RID: 2810 RVA: 0x0003696C File Offset: 0x00034B6C
+		// Token: 0x060005A2 RID: 1442 RVA: 0x00017498 File Offset: 0x00015698
 		public void CallRpcGrantAchievement(string achievementName)
 		{
 			if (!NetworkServer.active)
@@ -50,26 +50,26 @@ namespace RoR2
 			this.SendRPCInternal(networkWriter, 0, "RpcGrantAchievement");
 		}
 
-		// Token: 0x06000AFB RID: 2811 RVA: 0x000369DF File Offset: 0x00034BDF
+		// Token: 0x060005A3 RID: 1443 RVA: 0x0001750B File Offset: 0x0001570B
 		static AchievementGranter()
 		{
 			NetworkBehaviour.RegisterRpcDelegate(typeof(AchievementGranter), AchievementGranter.kRpcRpcGrantAchievement, new NetworkBehaviour.CmdDelegate(AchievementGranter.InvokeRpcRpcGrantAchievement));
 			NetworkCRC.RegisterBehaviour("AchievementGranter", 0);
 		}
 
-		// Token: 0x06000AFC RID: 2812 RVA: 0x00036A1C File Offset: 0x00034C1C
+		// Token: 0x060005A4 RID: 1444 RVA: 0x00017548 File Offset: 0x00015748
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			bool result;
 			return result;
 		}
 
-		// Token: 0x06000AFD RID: 2813 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060005A5 RID: 1445 RVA: 0x0000409B File Offset: 0x0000229B
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 		}
 
-		// Token: 0x04000EE9 RID: 3817
+		// Token: 0x04000606 RID: 1542
 		private static int kRpcRpcGrantAchievement = -180752285;
 	}
 }

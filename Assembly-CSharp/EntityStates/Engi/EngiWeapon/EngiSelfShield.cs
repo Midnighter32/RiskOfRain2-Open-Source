@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Engi.EngiWeapon
 {
-	// Token: 0x02000184 RID: 388
-	internal class EngiSelfShield : BaseState
+	// Token: 0x02000883 RID: 2179
+	public class EngiSelfShield : BaseState
 	{
-		// Token: 0x06000777 RID: 1911 RVA: 0x00024AC4 File Offset: 0x00022CC4
+		// Token: 0x06003107 RID: 12551 RVA: 0x000D2D2C File Offset: 0x000D0F2C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -35,7 +35,7 @@ namespace EntityStates.Engi.EngiWeapon
 			this.indicator = new Indicator(base.gameObject, Resources.Load<GameObject>("Prefabs/ShieldTransferIndicator"));
 		}
 
-		// Token: 0x06000778 RID: 1912 RVA: 0x00024BB4 File Offset: 0x00022DB4
+		// Token: 0x06003108 RID: 12552 RVA: 0x000D2E1C File Offset: 0x000D101C
 		public override void OnExit()
 		{
 			base.skillLocator.utility = base.skillLocator.FindSkill("RetractShield");
@@ -51,11 +51,11 @@ namespace EntityStates.Engi.EngiWeapon
 			base.OnExit();
 		}
 
-		// Token: 0x06000779 RID: 1913 RVA: 0x00024C1C File Offset: 0x00022E1C
+		// Token: 0x06003109 RID: 12553 RVA: 0x000D2E84 File Offset: 0x000D1084
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
-			if (base.isAuthority && base.fixedAge >= EngiSelfShield.transferDelay && base.skillLocator.utility.CanExecute())
+			if (base.isAuthority && base.fixedAge >= EngiSelfShield.transferDelay && base.skillLocator.utility.IsReady())
 			{
 				if (base.characterBody)
 				{
@@ -88,22 +88,22 @@ namespace EntityStates.Engi.EngiWeapon
 			}
 		}
 
-		// Token: 0x0600077A RID: 1914 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x0600310A RID: 12554 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x0400098B RID: 2443
+		// Token: 0x04002F3B RID: 12091
 		public static float transferDelay = 0.1f;
 
-		// Token: 0x0400098C RID: 2444
+		// Token: 0x04002F3C RID: 12092
 		private HurtBox transferTarget;
 
-		// Token: 0x0400098D RID: 2445
+		// Token: 0x04002F3D RID: 12093
 		private BullseyeSearch friendLocator;
 
-		// Token: 0x0400098E RID: 2446
+		// Token: 0x04002F3E RID: 12094
 		private Indicator indicator;
 	}
 }

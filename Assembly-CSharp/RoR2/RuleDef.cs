@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace RoR2
 {
-	// Token: 0x0200047F RID: 1151
+	// Token: 0x02000401 RID: 1025
 	public class RuleDef
 	{
-		// Token: 0x060019AF RID: 6575 RVA: 0x0007A930 File Offset: 0x00078B30
+		// Token: 0x060018D1 RID: 6353 RVA: 0x0006AD0C File Offset: 0x00068F0C
 		public RuleChoiceDef AddChoice(string choiceName, object extraData = null, bool excludeByDefault = false)
 		{
 			RuleChoiceDef ruleChoiceDef = new RuleChoiceDef();
@@ -20,7 +20,7 @@ namespace RoR2
 			return ruleChoiceDef;
 		}
 
-		// Token: 0x060019B0 RID: 6576 RVA: 0x0007A994 File Offset: 0x00078B94
+		// Token: 0x060018D2 RID: 6354 RVA: 0x0006AD70 File Offset: 0x00068F70
 		public RuleChoiceDef FindChoice(string choiceLocalName)
 		{
 			int i = 0;
@@ -36,20 +36,20 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x060019B1 RID: 6577 RVA: 0x0007A9E0 File Offset: 0x00078BE0
+		// Token: 0x060018D3 RID: 6355 RVA: 0x0006ADBC File Offset: 0x00068FBC
 		public void MakeNewestChoiceDefault()
 		{
 			this.defaultChoiceIndex = this.choices.Count - 1;
 		}
 
-		// Token: 0x060019B2 RID: 6578 RVA: 0x0007A9F5 File Offset: 0x00078BF5
+		// Token: 0x060018D4 RID: 6356 RVA: 0x0006ADD1 File Offset: 0x00068FD1
 		public RuleDef(string globalName, string displayToken)
 		{
 			this.globalName = globalName;
 			this.displayToken = displayToken;
 		}
 
-		// Token: 0x060019B3 RID: 6579 RVA: 0x0007AA18 File Offset: 0x00078C18
+		// Token: 0x060018D5 RID: 6357 RVA: 0x0006ADF4 File Offset: 0x00068FF4
 		public static RuleDef FromDifficulty()
 		{
 			RuleDef ruleDef = new RuleDef("Difficulty", "RULE_NAME_DIFFICULTY");
@@ -67,7 +67,7 @@ namespace RoR2
 			return ruleDef;
 		}
 
-		// Token: 0x060019B4 RID: 6580 RVA: 0x0007AA9C File Offset: 0x00078C9C
+		// Token: 0x060018D6 RID: 6358 RVA: 0x0006AE78 File Offset: 0x00069078
 		public static RuleDef FromArtifact(ArtifactIndex artifactIndex)
 		{
 			ArtifactDef artifactDef = ArtifactCatalog.GetArtifactDef(artifactIndex);
@@ -85,7 +85,7 @@ namespace RoR2
 			return ruleDef;
 		}
 
-		// Token: 0x060019B5 RID: 6581 RVA: 0x0007AB3C File Offset: 0x00078D3C
+		// Token: 0x060018D7 RID: 6359 RVA: 0x0006AF18 File Offset: 0x00069118
 		public static RuleDef FromItem(ItemIndex itemIndex)
 		{
 			ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
@@ -103,7 +103,7 @@ namespace RoR2
 			return ruleDef;
 		}
 
-		// Token: 0x060019B6 RID: 6582 RVA: 0x0007ABDC File Offset: 0x00078DDC
+		// Token: 0x060018D8 RID: 6360 RVA: 0x0006AFB8 File Offset: 0x000691B8
 		public static RuleDef FromEquipment(EquipmentIndex equipmentIndex)
 		{
 			EquipmentDef equipmentDef = EquipmentCatalog.GetEquipmentDef(equipmentIndex);
@@ -123,25 +123,25 @@ namespace RoR2
 			return ruleDef;
 		}
 
-		// Token: 0x04001D18 RID: 7448
+		// Token: 0x04001743 RID: 5955
 		public readonly string globalName;
 
-		// Token: 0x04001D19 RID: 7449
+		// Token: 0x04001744 RID: 5956
 		public int globalIndex;
 
-		// Token: 0x04001D1A RID: 7450
+		// Token: 0x04001745 RID: 5957
 		public readonly string displayToken;
 
-		// Token: 0x04001D1B RID: 7451
+		// Token: 0x04001746 RID: 5958
 		public readonly List<RuleChoiceDef> choices = new List<RuleChoiceDef>();
 
-		// Token: 0x04001D1C RID: 7452
+		// Token: 0x04001747 RID: 5959
 		public int defaultChoiceIndex;
 
-		// Token: 0x04001D1D RID: 7453
+		// Token: 0x04001748 RID: 5960
 		public RuleCategoryDef category;
 
-		// Token: 0x04001D1E RID: 7454
+		// Token: 0x04001749 RID: 5961
 		private const string pathToOffChoiceMaterial = "Materials/UI/matRuleChoiceOff";
 	}
 }

@@ -9,11 +9,11 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000429 RID: 1065
+	// Token: 0x02000385 RID: 901
 	[RequireComponent(typeof(CharacterBody))]
 	public class WormBodyPositions2 : NetworkBehaviour, ITeleportHandler, IEventSystemHandler, ILifeBehavior, IPainAnimationHandler
 	{
-		// Token: 0x060017AA RID: 6058 RVA: 0x000704C8 File Offset: 0x0006E6C8
+		// Token: 0x060015E4 RID: 5604 RVA: 0x0005D7E4 File Offset: 0x0005B9E4
 		private void Awake()
 		{
 			this.characterBody = base.GetComponent<CharacterBody>();
@@ -32,7 +32,7 @@ namespace RoR2
 			this.boneDisplacements = new Vector3[this.bones.Length];
 		}
 
-		// Token: 0x060017AB RID: 6059 RVA: 0x00070566 File Offset: 0x0006E766
+		// Token: 0x060015E5 RID: 5605 RVA: 0x0005D882 File Offset: 0x0005BA82
 		private void Start()
 		{
 			if (NetworkServer.active)
@@ -43,14 +43,14 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060017AC RID: 6060 RVA: 0x00070592 File Offset: 0x0006E792
+		// Token: 0x060015E6 RID: 5606 RVA: 0x0005D8AE File Offset: 0x0005BAAE
 		private void OnDestroy()
 		{
 			this.travelCallbacks = null;
 			Util.PlaySound("Stop_magmaWorm_burrowed_loop", this.bones[0].gameObject);
 		}
 
-		// Token: 0x060017AD RID: 6061 RVA: 0x000705B4 File Offset: 0x0006E7B4
+		// Token: 0x060015E7 RID: 5607 RVA: 0x0005D8D0 File Offset: 0x0005BAD0
 		private void BakeSegmentLengths()
 		{
 			this.segmentLengths = new float[this.bones.Length];
@@ -65,7 +65,7 @@ namespace RoR2
 			this.segmentLengths[this.bones.Length - 1] = 2f;
 		}
 
-		// Token: 0x060017AE RID: 6062 RVA: 0x00070638 File Offset: 0x0006E838
+		// Token: 0x060015E8 RID: 5608 RVA: 0x0005D954 File Offset: 0x0005BB54
 		[Server]
 		private void PopulateInitialKeyFrames()
 		{
@@ -84,7 +84,7 @@ namespace RoR2
 			this.headDistance = 0f;
 		}
 
-		// Token: 0x060017AF RID: 6063 RVA: 0x000706D0 File Offset: 0x0006E8D0
+		// Token: 0x060015E9 RID: 5609 RVA: 0x0005D9EC File Offset: 0x0005BBEC
 		private Vector3 EvaluatePositionAlongCurve(float positionDownBody)
 		{
 			float num = 0f;
@@ -106,7 +106,7 @@ namespace RoR2
 			return Vector3.zero;
 		}
 
-		// Token: 0x060017B0 RID: 6064 RVA: 0x00070794 File Offset: 0x0006E994
+		// Token: 0x060015EA RID: 5610 RVA: 0x0005DAB0 File Offset: 0x0005BCB0
 		private void UpdateBones()
 		{
 			float num = this.totalLength;
@@ -136,7 +136,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060017B1 RID: 6065 RVA: 0x00070910 File Offset: 0x0006EB10
+		// Token: 0x060015EB RID: 5611 RVA: 0x0005DC2C File Offset: 0x0005BE2C
 		[Server]
 		private void AttemptToGenerateKeyFrame(Vector3 position)
 		{
@@ -161,7 +161,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060017B2 RID: 6066 RVA: 0x000709D4 File Offset: 0x0006EBD4
+		// Token: 0x060015EC RID: 5612 RVA: 0x0005DCF0 File Offset: 0x0005BEF0
 		private void AddKeyFrame(ref WormBodyPositions2.KeyFrame newKeyFrame)
 		{
 			this.newestKeyFrame = newKeyFrame;
@@ -189,7 +189,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060017B3 RID: 6067 RVA: 0x00070AF4 File Offset: 0x0006ECF4
+		// Token: 0x060015ED RID: 5613 RVA: 0x0005DE10 File Offset: 0x0005C010
 		[ClientRpc]
 		private void RpcSendKeyFrame(WormBodyPositions2.KeyFrame newKeyFrame)
 		{
@@ -199,7 +199,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060017B4 RID: 6068 RVA: 0x00070B05 File Offset: 0x0006ED05
+		// Token: 0x060015EE RID: 5614 RVA: 0x0005DE21 File Offset: 0x0005C021
 		private void Update()
 		{
 			this.UpdateBoneDisplacements(Time.deltaTime);
@@ -210,7 +210,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060017B5 RID: 6069 RVA: 0x00070B28 File Offset: 0x0006ED28
+		// Token: 0x060015EF RID: 5615 RVA: 0x0005DE44 File Offset: 0x0005C044
 		private void UpdateJaws()
 		{
 			if (this.animator)
@@ -220,7 +220,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060017B6 RID: 6070 RVA: 0x00070BA8 File Offset: 0x0006EDA8
+		// Token: 0x060015F0 RID: 5616 RVA: 0x0005DEC4 File Offset: 0x0005C0C4
 		private void UpdateHeadOffset()
 		{
 			float num = this.headDistance;
@@ -241,14 +241,14 @@ namespace RoR2
 			this.OnTravel(this.headDistance - num);
 		}
 
-		// Token: 0x060017B7 RID: 6071 RVA: 0x00070C4D File Offset: 0x0006EE4D
+		// Token: 0x060015F1 RID: 5617 RVA: 0x0005DF69 File Offset: 0x0005C169
 		private void OnTravel(float distance)
 		{
 			this.headDistance -= distance;
 			this.UpdateBones();
 		}
 
-		// Token: 0x060017B8 RID: 6072 RVA: 0x00070C64 File Offset: 0x0006EE64
+		// Token: 0x060015F2 RID: 5618 RVA: 0x0005DF80 File Offset: 0x0005C180
 		[Server]
 		private void SurfaceTest()
 		{
@@ -288,7 +288,7 @@ namespace RoR2
 			this.previousSurfaceTestEnd = vector;
 		}
 
-		// Token: 0x060017B9 RID: 6073 RVA: 0x00070D64 File Offset: 0x0006EF64
+		// Token: 0x060015F3 RID: 5619 RVA: 0x0005E080 File Offset: 0x0005C280
 		private void AddTravelCallback(WormBodyPositions2.TravelCallback newTravelCallback)
 		{
 			int index = this.travelCallbacks.Count;
@@ -304,7 +304,7 @@ namespace RoR2
 			this.travelCallbacks.Insert(index, newTravelCallback);
 		}
 
-		// Token: 0x060017BA RID: 6074 RVA: 0x00070DC0 File Offset: 0x0006EFC0
+		// Token: 0x060015F4 RID: 5620 RVA: 0x0005E0DC File Offset: 0x0005C2DC
 		[Server]
 		private void OnChaserEnterSurface(Vector3 point, Vector3 surfaceNormal)
 		{
@@ -328,7 +328,7 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x060017BB RID: 6075 RVA: 0x00070E70 File Offset: 0x0006F070
+		// Token: 0x060015F5 RID: 5621 RVA: 0x0005E18C File Offset: 0x0005C38C
 		[Server]
 		private void OnChaserExitSurface(Vector3 point, Vector3 surfaceNormal)
 		{
@@ -339,7 +339,7 @@ namespace RoR2
 			}
 			if (this.warningEffectPrefab)
 			{
-				EffectManager.instance.SpawnEffect(this.warningEffectPrefab, new EffectData
+				EffectManager.SpawnEffect(this.warningEffectPrefab, new EffectData
 				{
 					origin = point,
 					rotation = Util.QuaternionSafeLookRotation(surfaceNormal)
@@ -360,14 +360,14 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x060017BC RID: 6076 RVA: 0x00070F5D File Offset: 0x0006F15D
+		// Token: 0x060015F6 RID: 5622 RVA: 0x0005E274 File Offset: 0x0005C474
 		[ClientRpc]
 		private void RpcPlaySurfaceImpactSound()
 		{
 			Util.PlaySound("Play_magmaWorm_M1", this.bones[0].gameObject);
 		}
 
-		// Token: 0x060017BD RID: 6077 RVA: 0x00070F78 File Offset: 0x0006F178
+		// Token: 0x060015F7 RID: 5623 RVA: 0x0005E290 File Offset: 0x0005C490
 		[Server]
 		private void OnEnterSurface(Vector3 point, Vector3 surfaceNormal)
 		{
@@ -386,23 +386,30 @@ namespace RoR2
 				return;
 			}
 			this.enterTriggerCooldownTimer = this.impactCooldownDuration;
-			EffectManager.instance.SpawnEffect(this.burrowEffectPrefab, new EffectData
+			EffectManager.SpawnEffect(this.burrowEffectPrefab, new EffectData
 			{
 				origin = point,
 				rotation = Util.QuaternionSafeLookRotation(surfaceNormal),
 				scale = 1f
 			}, true);
-			this.FireMeatballs(surfaceNormal, point + surfaceNormal * 3f, this.characterDirection.forward, this.meatballCount, this.meatballAngle, this.meatballForce);
+			if (this.shouldFireMeatballsOnImpact)
+			{
+				this.FireMeatballs(surfaceNormal, point + surfaceNormal * 3f, this.characterDirection.forward, this.meatballCount, this.meatballAngle, this.meatballForce);
+			}
+			if (this.shouldFireBlastAttackOnImpact)
+			{
+				this.FireImpactBlastAttack(point + surfaceNormal);
+			}
 		}
 
-		// Token: 0x060017BE RID: 6078 RVA: 0x0007104B File Offset: 0x0006F24B
+		// Token: 0x060015F8 RID: 5624 RVA: 0x0005E37B File Offset: 0x0005C57B
 		public void OnDeathStart()
 		{
 			this.deathTime = Run.instance.fixedTime;
 			this.shouldTriggerDeathEffectOnNextImpact = true;
 		}
 
-		// Token: 0x060017BF RID: 6079 RVA: 0x00071064 File Offset: 0x0006F264
+		// Token: 0x060015F9 RID: 5625 RVA: 0x0005E394 File Offset: 0x0005C594
 		[Server]
 		private void PerformDeath()
 		{
@@ -415,7 +422,7 @@ namespace RoR2
 			{
 				if (this.bones[i])
 				{
-					EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/MagmaWormDeathDust"), new EffectData
+					EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/MagmaWormDeathDust"), new EffectData
 					{
 						origin = this.bones[i].position,
 						rotation = UnityEngine.Random.rotation,
@@ -426,7 +433,7 @@ namespace RoR2
 			UnityEngine.Object.Destroy(base.gameObject);
 		}
 
-		// Token: 0x060017C0 RID: 6080 RVA: 0x000710F8 File Offset: 0x0006F2F8
+		// Token: 0x060015FA RID: 5626 RVA: 0x0005E424 File Offset: 0x0005C624
 		[Server]
 		private void OnExitSurface(Vector3 point, Vector3 surfaceNormal)
 		{
@@ -440,16 +447,19 @@ namespace RoR2
 				return;
 			}
 			this.exitTriggerCooldownTimer = this.impactCooldownDuration;
-			EffectManager.instance.SpawnEffect(this.burrowEffectPrefab, new EffectData
+			EffectManager.SpawnEffect(this.burrowEffectPrefab, new EffectData
 			{
 				origin = point,
 				rotation = Util.QuaternionSafeLookRotation(surfaceNormal),
 				scale = 1f
 			}, true);
-			this.FireMeatballs(surfaceNormal, point + surfaceNormal * 3f, this.characterDirection.forward, this.meatballCount, this.meatballAngle, this.meatballForce);
+			if (this.shouldFireMeatballsOnImpact)
+			{
+				this.FireMeatballs(surfaceNormal, point + surfaceNormal * 3f, this.characterDirection.forward, this.meatballCount, this.meatballAngle, this.meatballForce);
+			}
 		}
 
-		// Token: 0x060017C1 RID: 6081 RVA: 0x000711A0 File Offset: 0x0006F3A0
+		// Token: 0x060015FB RID: 5627 RVA: 0x0005E4CC File Offset: 0x0005C6CC
 		private void FireMeatballs(Vector3 impactNormal, Vector3 impactPosition, Vector3 forward, int meatballCount, float meatballAngle, float meatballForce)
 		{
 			float num = 360f / (float)meatballCount;
@@ -460,6 +470,11 @@ namespace RoR2
 				Vector3 forward2 = Quaternion.AngleAxis(num * (float)i, impactNormal) * point;
 				ProjectileManager.instance.FireProjectile(this.meatballProjectile, impactPosition, Util.QuaternionSafeLookRotation(forward2), base.gameObject, this.characterBody.damage * this.meatballDamageCoefficient, meatballForce, Util.CheckRoll(this.characterBody.crit, this.characterBody.master), DamageColorIndex.Default, null, -1f);
 			}
+		}
+
+		// Token: 0x060015FC RID: 5628 RVA: 0x0005E580 File Offset: 0x0005C780
+		private void FireImpactBlastAttack(Vector3 impactPosition)
+		{
 			BlastAttack blastAttack = new BlastAttack();
 			blastAttack.baseDamage = this.characterBody.damage * this.blastAttackDamageCoefficient;
 			blastAttack.procCoefficient = this.blastAttackProcCoefficient;
@@ -467,7 +482,7 @@ namespace RoR2
 			blastAttack.bonusForce = Vector3.up * this.blastAttackBonusVerticalForce;
 			blastAttack.crit = Util.CheckRoll(this.characterBody.crit, this.characterBody.master);
 			blastAttack.radius = this.blastAttackRadius;
-			blastAttack.damageType = DamageType.IgniteOnHit;
+			blastAttack.damageType = DamageType.PercentIgniteOnHit;
 			blastAttack.falloffModel = BlastAttack.FalloffModel.SweetSpot;
 			blastAttack.attacker = base.gameObject;
 			blastAttack.teamIndex = TeamComponent.GetObjectTeam(blastAttack.attacker);
@@ -475,7 +490,7 @@ namespace RoR2
 			blastAttack.Fire();
 			if (NetworkServer.active)
 			{
-				EffectManager.instance.SpawnEffect(this.blastAttackEffect, new EffectData
+				EffectManager.SpawnEffect(this.blastAttackEffect, new EffectData
 				{
 					origin = impactPosition,
 					scale = this.blastAttackRadius
@@ -483,7 +498,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060017C2 RID: 6082 RVA: 0x00071338 File Offset: 0x0006F538
+		// Token: 0x060015FD RID: 5629 RVA: 0x0005E66C File Offset: 0x0005C86C
 		private void FixedUpdate()
 		{
 			if (NetworkServer.active)
@@ -491,7 +506,7 @@ namespace RoR2
 				this.enterTriggerCooldownTimer -= Time.fixedDeltaTime;
 				this.exitTriggerCooldownTimer -= Time.fixedDeltaTime;
 				Vector3 position = this.referenceTransform.position;
-				float d = this.characterBody.moveSpeed * this.speedMultiplier;
+				float d = this.speedMultiplier;
 				Vector3 normalized = (position - this.chasePosition).normalized;
 				float num = (this.underground ? this.maxTurnSpeed : (this.maxTurnSpeed * this.turnRateCoefficientAboveGround)) * 0.017453292f;
 				Vector3 vector = new Vector3(this.velocity.x, 0f, this.velocity.z);
@@ -501,7 +516,7 @@ namespace RoR2
 				float num2 = position.y - this.chasePosition.y;
 				float num3 = -this.velocity.y * this.yDamperConstant;
 				float num4 = num2 * this.ySpringConstant;
-				if (Mathf.Abs(this.velocity.y) < this.yShoveVelocityThreshold && Mathf.Abs(num2) < this.yShovePositionThreshold)
+				if (this.allowShoving && Mathf.Abs(this.velocity.y) < this.yShoveVelocityThreshold && num2 > this.yShovePositionThreshold)
 				{
 					this.velocity.y = this.velocity.y + this.yShoveForce * Time.fixedDeltaTime;
 				}
@@ -546,7 +561,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060017C3 RID: 6083 RVA: 0x00071668 File Offset: 0x0006F868
+		// Token: 0x060015FE RID: 5630 RVA: 0x0005E994 File Offset: 0x0005CB94
 		private void DrawKeyFrame(WormBodyPositions2.KeyFrame keyFrame)
 		{
 			Gizmos.color = Color.Lerp(Color.green, Color.black, 0.5f);
@@ -563,7 +578,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060017C4 RID: 6084 RVA: 0x0007173C File Offset: 0x0006F93C
+		// Token: 0x060015FF RID: 5631 RVA: 0x0005EA68 File Offset: 0x0005CC68
 		private void OnDrawGizmos()
 		{
 			foreach (WormBodyPositions2.KeyFrame keyFrame in this.keyFrames)
@@ -579,7 +594,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060017C5 RID: 6085 RVA: 0x00071840 File Offset: 0x0006FA40
+		// Token: 0x06001600 RID: 5632 RVA: 0x0005EB6C File Offset: 0x0005CD6C
 		public void OnTeleport(Vector3 oldPosition, Vector3 newPosition)
 		{
 			Vector3 b = newPosition - oldPosition;
@@ -598,7 +613,7 @@ namespace RoR2
 			this.previousSurfaceTestEnd += b;
 		}
 
-		// Token: 0x060017C6 RID: 6086 RVA: 0x00071920 File Offset: 0x0006FB20
+		// Token: 0x06001601 RID: 5633 RVA: 0x0005EC4C File Offset: 0x0005CE4C
 		private int FindNearestBone(Vector3 worldPosition)
 		{
 			int result = -1;
@@ -615,7 +630,7 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x060017C7 RID: 6087 RVA: 0x00071974 File Offset: 0x0006FB74
+		// Token: 0x06001602 RID: 5634 RVA: 0x0005ECA0 File Offset: 0x0005CEA0
 		private void UpdateBoneDisplacements(float deltaTime)
 		{
 			int i = 0;
@@ -627,7 +642,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060017C8 RID: 6088 RVA: 0x000719C0 File Offset: 0x0006FBC0
+		// Token: 0x06001603 RID: 5635 RVA: 0x0005ECEC File Offset: 0x0005CEEC
 		void IPainAnimationHandler.HandlePain(float damage, Vector3 damagePosition)
 		{
 			int num = this.FindNearestBone(damagePosition);
@@ -637,13 +652,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060017C9 RID: 6089 RVA: 0x000719F5 File Offset: 0x0006FBF5
+		// Token: 0x06001604 RID: 5636 RVA: 0x0005ED21 File Offset: 0x0005CF21
 		private static float GetSynchronizedTimeStamp()
 		{
 			return Run.instance.time;
 		}
 
-		// Token: 0x060017CA RID: 6090 RVA: 0x00071A04 File Offset: 0x0006FC04
+		// Token: 0x06001605 RID: 5637 RVA: 0x0005ED30 File Offset: 0x0005CF30
 		private static void WriteKeyFrame(NetworkWriter writer, WormBodyPositions2.KeyFrame keyFrame)
 		{
 			writer.Write(keyFrame.curve.a);
@@ -654,7 +669,7 @@ namespace RoR2
 			writer.Write(keyFrame.time);
 		}
 
-		// Token: 0x060017CB RID: 6091 RVA: 0x00071A70 File Offset: 0x0006FC70
+		// Token: 0x06001606 RID: 5638 RVA: 0x0005ED9C File Offset: 0x0005CF9C
 		private static WormBodyPositions2.KeyFrame ReadKeyFrame(NetworkReader reader)
 		{
 			WormBodyPositions2.KeyFrame result = default(WormBodyPositions2.KeyFrame);
@@ -667,7 +682,7 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x060017CC RID: 6092 RVA: 0x00071AE8 File Offset: 0x0006FCE8
+		// Token: 0x06001607 RID: 5639 RVA: 0x0005EE14 File Offset: 0x0005D014
 		public override bool OnSerialize(NetworkWriter writer, bool initialState)
 		{
 			uint syncVarDirtyBits = base.syncVarDirtyBits;
@@ -679,10 +694,10 @@ namespace RoR2
 					WormBodyPositions2.WriteKeyFrame(writer, this.keyFrames[i]);
 				}
 			}
-			return !initialState && syncVarDirtyBits > 0u;
+			return !initialState && syncVarDirtyBits > 0U;
 		}
 
-		// Token: 0x060017CD RID: 6093 RVA: 0x00071B44 File Offset: 0x0006FD44
+		// Token: 0x06001608 RID: 5640 RVA: 0x0005EE70 File Offset: 0x0005D070
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -696,7 +711,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060017CF RID: 6095 RVA: 0x00071C28 File Offset: 0x0006FE28
+		// Token: 0x0600160A RID: 5642 RVA: 0x0005EF60 File Offset: 0x0005D160
 		static WormBodyPositions2()
 		{
 			NetworkBehaviour.RegisterRpcDelegate(typeof(WormBodyPositions2), WormBodyPositions2.kRpcRpcSendKeyFrame, new NetworkBehaviour.CmdDelegate(WormBodyPositions2.InvokeRpcRpcSendKeyFrame));
@@ -705,12 +720,12 @@ namespace RoR2
 			NetworkCRC.RegisterBehaviour("WormBodyPositions2", 0);
 		}
 
-		// Token: 0x060017D0 RID: 6096 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x0600160B RID: 5643 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x060017D1 RID: 6097 RVA: 0x00071CB1 File Offset: 0x0006FEB1
+		// Token: 0x0600160C RID: 5644 RVA: 0x0005EFE9 File Offset: 0x0005D1E9
 		protected static void InvokeRpcRpcSendKeyFrame(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkClient.active)
@@ -721,7 +736,7 @@ namespace RoR2
 			((WormBodyPositions2)obj).RpcSendKeyFrame(GeneratedNetworkCode._ReadKeyFrame_WormBodyPositions2(reader));
 		}
 
-		// Token: 0x060017D2 RID: 6098 RVA: 0x00071CDA File Offset: 0x0006FEDA
+		// Token: 0x0600160D RID: 5645 RVA: 0x0005F012 File Offset: 0x0005D212
 		protected static void InvokeRpcRpcPlaySurfaceImpactSound(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkClient.active)
@@ -732,7 +747,7 @@ namespace RoR2
 			((WormBodyPositions2)obj).RpcPlaySurfaceImpactSound();
 		}
 
-		// Token: 0x060017D3 RID: 6099 RVA: 0x00071D00 File Offset: 0x0006FF00
+		// Token: 0x0600160E RID: 5646 RVA: 0x0005F038 File Offset: 0x0005D238
 		public void CallRpcSendKeyFrame(WormBodyPositions2.KeyFrame newKeyFrame)
 		{
 			if (!NetworkServer.active)
@@ -749,7 +764,7 @@ namespace RoR2
 			this.SendRPCInternal(networkWriter, 0, "RpcSendKeyFrame");
 		}
 
-		// Token: 0x060017D4 RID: 6100 RVA: 0x00071D74 File Offset: 0x0006FF74
+		// Token: 0x0600160F RID: 5647 RVA: 0x0005F0AC File Offset: 0x0005D2AC
 		public void CallRpcPlaySurfaceImpactSound()
 		{
 			if (!NetworkServer.active)
@@ -765,249 +780,258 @@ namespace RoR2
 			this.SendRPCInternal(networkWriter, 0, "RpcPlaySurfaceImpactSound");
 		}
 
-		// Token: 0x04001AE3 RID: 6883
+		// Token: 0x04001479 RID: 5241
 		private Vector3 velocity;
 
-		// Token: 0x04001AE4 RID: 6884
+		// Token: 0x0400147A RID: 5242
 		private Vector3 chasePosition;
 
-		// Token: 0x04001AE5 RID: 6885
+		// Token: 0x0400147B RID: 5243
 		public Transform referenceTransform;
 
-		// Token: 0x04001AE6 RID: 6886
+		// Token: 0x0400147C RID: 5244
 		public Transform[] bones;
 
-		// Token: 0x04001AE7 RID: 6887
+		// Token: 0x0400147D RID: 5245
 		private WormBodyPositions2.PositionRotationPair[] boneTransformationBuffer;
 
-		// Token: 0x04001AE8 RID: 6888
+		// Token: 0x0400147E RID: 5246
 		private Vector3[] boneDisplacements;
 
-		// Token: 0x04001AE9 RID: 6889
+		// Token: 0x0400147F RID: 5247
 		public float[] segmentLengths;
 
-		// Token: 0x04001AEA RID: 6890
+		// Token: 0x04001480 RID: 5248
 		private float headDistance;
 
-		// Token: 0x04001AEB RID: 6891
+		// Token: 0x04001481 RID: 5249
 		[Tooltip("How far behind the chaser the head is, in seconds.")]
 		public float followDelay = 2f;
 
-		// Token: 0x04001AEC RID: 6892
+		// Token: 0x04001482 RID: 5250
 		[Tooltip("Whether or not the jaw will close/open.")]
 		public bool animateJaws;
 
-		// Token: 0x04001AED RID: 6893
+		// Token: 0x04001483 RID: 5251
 		public Animator animator;
 
-		// Token: 0x04001AEE RID: 6894
+		// Token: 0x04001484 RID: 5252
 		public string jawMecanimCycleParameter;
 
-		// Token: 0x04001AEF RID: 6895
+		// Token: 0x04001485 RID: 5253
 		public float jawMecanimDampTime;
 
-		// Token: 0x04001AF0 RID: 6896
+		// Token: 0x04001486 RID: 5254
 		public float jawClosedDistance;
 
-		// Token: 0x04001AF1 RID: 6897
+		// Token: 0x04001487 RID: 5255
 		public float jawOpenDistance;
 
-		// Token: 0x04001AF2 RID: 6898
+		// Token: 0x04001488 RID: 5256
 		public GameObject warningEffectPrefab;
 
-		// Token: 0x04001AF3 RID: 6899
+		// Token: 0x04001489 RID: 5257
 		public GameObject burrowEffectPrefab;
 
-		// Token: 0x04001AF4 RID: 6900
+		// Token: 0x0400148A RID: 5258
 		public float maxPainDisplacementMagnitude = 2f;
 
-		// Token: 0x04001AF5 RID: 6901
+		// Token: 0x0400148B RID: 5259
 		public float painDisplacementRecoverySpeed = 8f;
 
-		// Token: 0x04001AF6 RID: 6902
+		// Token: 0x0400148C RID: 5260
+		public bool shouldFireMeatballsOnImpact = true;
+
+		// Token: 0x0400148D RID: 5261
+		public bool shouldFireBlastAttackOnImpact = true;
+
+		// Token: 0x0400148E RID: 5262
 		private float totalLength;
 
-		// Token: 0x04001AF7 RID: 6903
+		// Token: 0x0400148F RID: 5263
 		private const float endBonusLength = 4f;
 
-		// Token: 0x04001AF8 RID: 6904
+		// Token: 0x04001490 RID: 5264
 		private const float fakeEndSegmentLength = 2f;
 
-		// Token: 0x04001AF9 RID: 6905
+		// Token: 0x04001491 RID: 5265
 		private CharacterBody characterBody;
 
-		// Token: 0x04001AFA RID: 6906
+		// Token: 0x04001492 RID: 5266
 		private CharacterDirection characterDirection;
 
-		// Token: 0x04001AFB RID: 6907
+		// Token: 0x04001493 RID: 5267
 		private ModelLocator modelLocator;
 
-		// Token: 0x04001AFC RID: 6908
+		// Token: 0x04001494 RID: 5268
 		private readonly List<WormBodyPositions2.KeyFrame> keyFrames = new List<WormBodyPositions2.KeyFrame>();
 
-		// Token: 0x04001AFD RID: 6909
+		// Token: 0x04001495 RID: 5269
 		private float keyFramesTotalLength;
 
-		// Token: 0x04001AFE RID: 6910
+		// Token: 0x04001496 RID: 5270
 		private WormBodyPositions2.KeyFrame newestKeyFrame;
 
-		// Token: 0x04001AFF RID: 6911
+		// Token: 0x04001497 RID: 5271
 		public float spawnDepth = 30f;
 
-		// Token: 0x04001B00 RID: 6912
+		// Token: 0x04001498 RID: 5272
 		private static readonly Quaternion boneFixRotation = Quaternion.Euler(-90f, 0f, 0f);
 
-		// Token: 0x04001B01 RID: 6913
+		// Token: 0x04001499 RID: 5273
 		public float keyFrameGenerationInterval = 0.25f;
 
-		// Token: 0x04001B02 RID: 6914
+		// Token: 0x0400149A RID: 5274
 		private float keyFrameGenerationTimer;
 
-		// Token: 0x04001B03 RID: 6915
+		// Token: 0x0400149B RID: 5275
 		public bool underground;
 
-		// Token: 0x04001B04 RID: 6916
+		// Token: 0x0400149C RID: 5276
 		private Collider entranceCollider;
 
-		// Token: 0x04001B05 RID: 6917
+		// Token: 0x0400149D RID: 5277
 		private Collider exitCollider;
 
-		// Token: 0x04001B06 RID: 6918
+		// Token: 0x0400149E RID: 5278
 		private Vector3 previousSurfaceTestEnd;
 
-		// Token: 0x04001B07 RID: 6919
+		// Token: 0x0400149F RID: 5279
 		private List<WormBodyPositions2.TravelCallback> travelCallbacks;
 
-		// Token: 0x04001B08 RID: 6920
+		// Token: 0x040014A0 RID: 5280
 		private const float impactSoundPrestartDuration = 0.5f;
 
-		// Token: 0x04001B09 RID: 6921
+		// Token: 0x040014A1 RID: 5281
 		public float impactCooldownDuration = 0.1f;
 
-		// Token: 0x04001B0A RID: 6922
+		// Token: 0x040014A2 RID: 5282
 		private float enterTriggerCooldownTimer;
 
-		// Token: 0x04001B0B RID: 6923
+		// Token: 0x040014A3 RID: 5283
 		private float exitTriggerCooldownTimer;
 
-		// Token: 0x04001B0C RID: 6924
+		// Token: 0x040014A4 RID: 5284
 		private bool shouldTriggerDeathEffectOnNextImpact;
 
-		// Token: 0x04001B0D RID: 6925
+		// Token: 0x040014A5 RID: 5285
 		private float deathTime = float.NegativeInfinity;
 
-		// Token: 0x04001B0E RID: 6926
+		// Token: 0x040014A6 RID: 5286
 		public GameObject meatballProjectile;
 
-		// Token: 0x04001B0F RID: 6927
+		// Token: 0x040014A7 RID: 5287
 		public GameObject blastAttackEffect;
 
-		// Token: 0x04001B10 RID: 6928
+		// Token: 0x040014A8 RID: 5288
 		public int meatballCount;
 
-		// Token: 0x04001B11 RID: 6929
+		// Token: 0x040014A9 RID: 5289
 		public float meatballAngle;
 
-		// Token: 0x04001B12 RID: 6930
+		// Token: 0x040014AA RID: 5290
 		public float meatballDamageCoefficient;
 
-		// Token: 0x04001B13 RID: 6931
+		// Token: 0x040014AB RID: 5291
 		public float meatballProcCoefficient;
 
-		// Token: 0x04001B14 RID: 6932
+		// Token: 0x040014AC RID: 5292
 		public float meatballForce;
 
-		// Token: 0x04001B15 RID: 6933
+		// Token: 0x040014AD RID: 5293
 		public float blastAttackDamageCoefficient;
 
-		// Token: 0x04001B16 RID: 6934
+		// Token: 0x040014AE RID: 5294
 		public float blastAttackProcCoefficient;
 
-		// Token: 0x04001B17 RID: 6935
+		// Token: 0x040014AF RID: 5295
 		public float blastAttackRadius;
 
-		// Token: 0x04001B18 RID: 6936
+		// Token: 0x040014B0 RID: 5296
 		public float blastAttackForce;
 
-		// Token: 0x04001B19 RID: 6937
+		// Token: 0x040014B1 RID: 5297
 		public float blastAttackBonusVerticalForce;
 
-		// Token: 0x04001B1A RID: 6938
+		// Token: 0x040014B2 RID: 5298
 		public Transform chasePositionVisualizer;
 
-		// Token: 0x04001B1B RID: 6939
+		// Token: 0x040014B3 RID: 5299
 		public float maxTurnSpeed = 180f;
 
-		// Token: 0x04001B1C RID: 6940
+		// Token: 0x040014B4 RID: 5300
 		public float speedMultiplier = 2f;
 
-		// Token: 0x04001B1D RID: 6941
+		// Token: 0x040014B5 RID: 5301
 		public float verticalTurnSquashFactor = 2f;
 
-		// Token: 0x04001B1E RID: 6942
+		// Token: 0x040014B6 RID: 5302
 		public float ySpringConstant = 100f;
 
-		// Token: 0x04001B1F RID: 6943
+		// Token: 0x040014B7 RID: 5303
 		public float yDamperConstant = 1f;
 
-		// Token: 0x04001B20 RID: 6944
+		// Token: 0x040014B8 RID: 5304
+		public bool allowShoving;
+
+		// Token: 0x040014B9 RID: 5305
 		public float yShoveVelocityThreshold;
 
-		// Token: 0x04001B21 RID: 6945
+		// Token: 0x040014BA RID: 5306
 		public float yShovePositionThreshold;
 
-		// Token: 0x04001B22 RID: 6946
+		// Token: 0x040014BB RID: 5307
 		public float yShoveForce;
 
-		// Token: 0x04001B23 RID: 6947
+		// Token: 0x040014BC RID: 5308
 		public float turnRateCoefficientAboveGround;
 
-		// Token: 0x04001B24 RID: 6948
+		// Token: 0x040014BD RID: 5309
 		public float wormForceCoefficientAboveGround;
 
-		// Token: 0x04001B25 RID: 6949
+		// Token: 0x040014BE RID: 5310
 		public float undergroundTestYOffset;
 
-		// Token: 0x04001B26 RID: 6950
+		// Token: 0x040014BF RID: 5311
 		private bool playingBurrowSound;
 
-		// Token: 0x04001B27 RID: 6951
+		// Token: 0x040014C0 RID: 5312
 		private static int kRpcRpcSendKeyFrame = 874152969;
 
-		// Token: 0x04001B28 RID: 6952
+		// Token: 0x040014C1 RID: 5313
 		private static int kRpcRpcPlaySurfaceImpactSound;
 
-		// Token: 0x0200042A RID: 1066
+		// Token: 0x02000386 RID: 902
 		private struct PositionRotationPair
 		{
-			// Token: 0x04001B29 RID: 6953
+			// Token: 0x040014C2 RID: 5314
 			public Vector3 position;
 
-			// Token: 0x04001B2A RID: 6954
+			// Token: 0x040014C3 RID: 5315
 			public Quaternion rotation;
 		}
 
-		// Token: 0x0200042B RID: 1067
+		// Token: 0x02000387 RID: 903
 		[Serializable]
 		private struct KeyFrame
 		{
-			// Token: 0x04001B2B RID: 6955
+			// Token: 0x040014C4 RID: 5316
 			public CubicBezier3 curve;
 
-			// Token: 0x04001B2C RID: 6956
+			// Token: 0x040014C5 RID: 5317
 			public float length;
 
-			// Token: 0x04001B2D RID: 6957
+			// Token: 0x040014C6 RID: 5318
 			public float time;
 		}
 
-		// Token: 0x0200042C RID: 1068
+		// Token: 0x02000388 RID: 904
 		private struct TravelCallback
 		{
-			// Token: 0x04001B2E RID: 6958
+			// Token: 0x040014C7 RID: 5319
 			public float time;
 
-			// Token: 0x04001B2F RID: 6959
+			// Token: 0x040014C8 RID: 5320
 			public Action callback;
 		}
 	}

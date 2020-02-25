@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using EntityStates.Barrel;
 using RoR2.Networking;
 using UnityEngine;
@@ -6,22 +7,22 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000263 RID: 611
-	public class BarrelInteraction : NetworkBehaviour, IInteractable, IDisplayNameProvider
+	// Token: 0x02000159 RID: 345
+	public sealed class BarrelInteraction : NetworkBehaviour, IInteractable, IDisplayNameProvider
 	{
-		// Token: 0x06000B58 RID: 2904 RVA: 0x00037FA9 File Offset: 0x000361A9
+		// Token: 0x0600062E RID: 1582 RVA: 0x00019B4D File Offset: 0x00017D4D
 		public string GetContextString(Interactor activator)
 		{
 			return Language.GetString(this.contextToken);
 		}
 
-		// Token: 0x06000B59 RID: 2905 RVA: 0x00037FB6 File Offset: 0x000361B6
+		// Token: 0x0600062F RID: 1583 RVA: 0x00019B5A File Offset: 0x00017D5A
 		public override int GetNetworkChannel()
 		{
 			return QosChannelIndex.defaultReliable.intVal;
 		}
 
-		// Token: 0x06000B5A RID: 2906 RVA: 0x00037FC2 File Offset: 0x000361C2
+		// Token: 0x06000630 RID: 1584 RVA: 0x00019B66 File Offset: 0x00017D66
 		public Interactability GetInteractability(Interactor activator)
 		{
 			if (this.opened)
@@ -31,7 +32,7 @@ namespace RoR2
 			return Interactability.Available;
 		}
 
-		// Token: 0x06000B5B RID: 2907 RVA: 0x00037FD0 File Offset: 0x000361D0
+		// Token: 0x06000631 RID: 1585 RVA: 0x00019B74 File Offset: 0x00017D74
 		private void Start()
 		{
 			if (Run.instance)
@@ -41,7 +42,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000B5C RID: 2908 RVA: 0x0003801C File Offset: 0x0003621C
+		// Token: 0x06000632 RID: 1586 RVA: 0x00019BC0 File Offset: 0x00017DC0
 		[Server]
 		public void OnInteractionBegin(Interactor activator)
 		{
@@ -69,7 +70,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000B5D RID: 2909 RVA: 0x000380BC File Offset: 0x000362BC
+		// Token: 0x06000633 RID: 1587 RVA: 0x00019C60 File Offset: 0x00017E60
 		[Server]
 		private void CoinDrop()
 		{
@@ -78,46 +79,65 @@ namespace RoR2
 				Debug.LogWarning("[Server] function 'System.Void RoR2.BarrelInteraction::CoinDrop()' called on client");
 				return;
 			}
-			EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/CoinEmitter"), new EffectData
+			EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/CoinEmitter"), new EffectData
 			{
 				origin = base.transform.position,
 				genericFloat = (float)this.goldReward
 			}, true);
 		}
 
-		// Token: 0x06000B5E RID: 2910 RVA: 0x00038116 File Offset: 0x00036316
+		// Token: 0x06000634 RID: 1588 RVA: 0x00019CB5 File Offset: 0x00017EB5
 		public string GetDisplayName()
 		{
 			return Language.GetString(this.displayNameToken);
 		}
 
-		// Token: 0x06000B5F RID: 2911 RVA: 0x0000A1ED File Offset: 0x000083ED
+		// Token: 0x06000635 RID: 1589 RVA: 0x0000AC89 File Offset: 0x00008E89
 		public bool ShouldIgnoreSpherecastForInteractibility(Interactor activator)
 		{
 			return false;
 		}
 
-		// Token: 0x06000B61 RID: 2913 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000636 RID: 1590 RVA: 0x00019CC2 File Offset: 0x00017EC2
+		public void OnEnable()
+		{
+			InstanceTracker.Add<BarrelInteraction>(this);
+		}
+
+		// Token: 0x06000637 RID: 1591 RVA: 0x00019CCA File Offset: 0x00017ECA
+		public void OnDisable()
+		{
+			InstanceTracker.Remove<BarrelInteraction>(this);
+		}
+
+		// Token: 0x06000638 RID: 1592 RVA: 0x00019CD2 File Offset: 0x00017ED2
+		public bool ShouldShowOnScanner()
+		{
+			return !this.opened;
+		}
+
+		// Token: 0x0600063A RID: 1594 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x170000CA RID: 202
-		// (get) Token: 0x06000B62 RID: 2914 RVA: 0x00038138 File Offset: 0x00036338
-		// (set) Token: 0x06000B63 RID: 2915 RVA: 0x0003814B File Offset: 0x0003634B
+		// Token: 0x170000BB RID: 187
+		// (get) Token: 0x0600063B RID: 1595 RVA: 0x00019CF0 File Offset: 0x00017EF0
+		// (set) Token: 0x0600063C RID: 1596 RVA: 0x00019D03 File Offset: 0x00017F03
 		public bool Networkopened
 		{
 			get
 			{
 				return this.opened;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<bool>(value, ref this.opened, 1u);
+				base.SetSyncVar<bool>(value, ref this.opened, 1U);
 			}
 		}
 
-		// Token: 0x06000B64 RID: 2916 RVA: 0x00038160 File Offset: 0x00036360
+		// Token: 0x0600063D RID: 1597 RVA: 0x00019D18 File Offset: 0x00017F18
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -126,7 +146,7 @@ namespace RoR2
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -142,7 +162,7 @@ namespace RoR2
 			return flag;
 		}
 
-		// Token: 0x06000B65 RID: 2917 RVA: 0x000381CC File Offset: 0x000363CC
+		// Token: 0x0600063E RID: 1598 RVA: 0x00019D84 File Offset: 0x00017F84
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -157,19 +177,19 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04000F5D RID: 3933
+		// Token: 0x040006A3 RID: 1699
 		public int goldReward;
 
-		// Token: 0x04000F5E RID: 3934
+		// Token: 0x040006A4 RID: 1700
 		public uint expReward;
 
-		// Token: 0x04000F5F RID: 3935
+		// Token: 0x040006A5 RID: 1701
 		public string displayNameToken = "BARREL1_NAME";
 
-		// Token: 0x04000F60 RID: 3936
+		// Token: 0x040006A6 RID: 1702
 		public string contextToken;
 
-		// Token: 0x04000F61 RID: 3937
+		// Token: 0x040006A7 RID: 1703
 		[SyncVar]
 		private bool opened;
 	}

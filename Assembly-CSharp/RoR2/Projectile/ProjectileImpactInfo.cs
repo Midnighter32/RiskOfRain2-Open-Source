@@ -3,16 +3,16 @@ using UnityEngine;
 
 namespace RoR2.Projectile
 {
-	// Token: 0x0200053B RID: 1339
+	// Token: 0x020004F6 RID: 1270
 	public struct ProjectileImpactInfo
 	{
-		// Token: 0x04002053 RID: 8275
+		// Token: 0x04001B70 RID: 7024
 		public Collider collider;
 
-		// Token: 0x04002054 RID: 8276
+		// Token: 0x04001B71 RID: 7025
 		public Vector3 estimatedPointOfImpact;
 
-		// Token: 0x04002055 RID: 8277
+		// Token: 0x04001B72 RID: 7026
 		public Vector3 estimatedImpactNormal;
 	}
 }

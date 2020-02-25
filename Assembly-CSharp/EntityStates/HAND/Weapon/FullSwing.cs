@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.HAND.Weapon
 {
-	// Token: 0x02000165 RID: 357
+	// Token: 0x02000847 RID: 2119
 	public class FullSwing : BaseState
 	{
-		// Token: 0x060006EF RID: 1775 RVA: 0x00021080 File Offset: 0x0001F280
+		// Token: 0x06002FF4 RID: 12276 RVA: 0x000CD78C File Offset: 0x000CB98C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -53,7 +53,7 @@ namespace EntityStates.HAND.Weapon
 			}
 		}
 
-		// Token: 0x060006F0 RID: 1776 RVA: 0x000212BC File Offset: 0x0001F4BC
+		// Token: 0x06002FF5 RID: 12277 RVA: 0x000CD9C8 File Offset: 0x000CBBC8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -61,7 +61,7 @@ namespace EntityStates.HAND.Weapon
 			{
 				if (!this.hasSwung)
 				{
-					EffectManager.instance.SimpleMuzzleFlash(FullSwing.swingEffectPrefab, base.gameObject, "SwingCenter", true);
+					EffectManager.SimpleMuzzleFlash(FullSwing.swingEffectPrefab, base.gameObject, "SwingCenter", true);
 					this.hasSwung = true;
 				}
 				this.attack.forceVector = this.hammerChildTransform.right * -FullSwing.forceMagnitude;
@@ -74,13 +74,13 @@ namespace EntityStates.HAND.Weapon
 			}
 		}
 
-		// Token: 0x060006F1 RID: 1777 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06002FF6 RID: 12278 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x060006F2 RID: 1778 RVA: 0x00021374 File Offset: 0x0001F574
+		// Token: 0x06002FF7 RID: 12279 RVA: 0x000CDA7C File Offset: 0x000CBC7C
 		private static void PullEnemies(Vector3 position, Vector3 direction, float coneAngle, float maxDistance, float force, TeamIndex excludedTeam)
 		{
 			float num = Mathf.Cos(coneAngle * 0.5f * 0.017453292f);
@@ -99,7 +99,7 @@ namespace EntityStates.HAND.Weapon
 							CharacterMotor component2 = collider.GetComponent<CharacterMotor>();
 							if (component2)
 							{
-								component2.ApplyForce(normalized * force, false);
+								component2.ApplyForce(normalized * force, false, false);
 							}
 							Rigidbody component3 = collider.GetComponent<Rigidbody>();
 							if (component3)
@@ -112,40 +112,40 @@ namespace EntityStates.HAND.Weapon
 			}
 		}
 
-		// Token: 0x0400087D RID: 2173
+		// Token: 0x04002DC3 RID: 11715
 		public static float baseDuration = 3.5f;
 
-		// Token: 0x0400087E RID: 2174
+		// Token: 0x04002DC4 RID: 11716
 		public static float returnToIdlePercentage;
 
-		// Token: 0x0400087F RID: 2175
+		// Token: 0x04002DC5 RID: 11717
 		public static float damageCoefficient = 4f;
 
-		// Token: 0x04000880 RID: 2176
+		// Token: 0x04002DC6 RID: 11718
 		public static float forceMagnitude = 16f;
 
-		// Token: 0x04000881 RID: 2177
+		// Token: 0x04002DC7 RID: 11719
 		public static float radius = 3f;
 
-		// Token: 0x04000882 RID: 2178
+		// Token: 0x04002DC8 RID: 11720
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000883 RID: 2179
+		// Token: 0x04002DC9 RID: 11721
 		public static GameObject swingEffectPrefab;
 
-		// Token: 0x04000884 RID: 2180
+		// Token: 0x04002DCA RID: 11722
 		private Transform hammerChildTransform;
 
-		// Token: 0x04000885 RID: 2181
+		// Token: 0x04002DCB RID: 11723
 		private OverlapAttack attack;
 
-		// Token: 0x04000886 RID: 2182
+		// Token: 0x04002DCC RID: 11724
 		private Animator modelAnimator;
 
-		// Token: 0x04000887 RID: 2183
+		// Token: 0x04002DCD RID: 11725
 		private float duration;
 
-		// Token: 0x04000888 RID: 2184
+		// Token: 0x04002DCE RID: 11726
 		private bool hasSwung;
 	}
 }

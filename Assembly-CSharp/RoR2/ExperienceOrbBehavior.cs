@@ -3,10 +3,25 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020002EE RID: 750
+	// Token: 0x020001FC RID: 508
 	public class ExperienceOrbBehavior : MonoBehaviour
 	{
-		// Token: 0x06000F29 RID: 3881 RVA: 0x0004AE04 File Offset: 0x00049004
+		// Token: 0x1700015B RID: 347
+		// (get) Token: 0x06000AD1 RID: 2769 RVA: 0x0002FD41 File Offset: 0x0002DF41
+		// (set) Token: 0x06000AD2 RID: 2770 RVA: 0x0002FD49 File Offset: 0x0002DF49
+		public Transform targetTransform { get; set; }
+
+		// Token: 0x1700015C RID: 348
+		// (get) Token: 0x06000AD3 RID: 2771 RVA: 0x0002FD52 File Offset: 0x0002DF52
+		// (set) Token: 0x06000AD4 RID: 2772 RVA: 0x0002FD5A File Offset: 0x0002DF5A
+		public float travelTime { get; set; }
+
+		// Token: 0x1700015D RID: 349
+		// (get) Token: 0x06000AD5 RID: 2773 RVA: 0x0002FD63 File Offset: 0x0002DF63
+		// (set) Token: 0x06000AD6 RID: 2774 RVA: 0x0002FD6B File Offset: 0x0002DF6B
+		public ulong exp { get; set; }
+
+		// Token: 0x06000AD7 RID: 2775 RVA: 0x0002FD74 File Offset: 0x0002DF74
 		private void Awake()
 		{
 			this.transform = base.transform;
@@ -14,7 +29,7 @@ namespace RoR2
 			this.light = base.GetComponent<Light>();
 		}
 
-		// Token: 0x06000F2A RID: 3882 RVA: 0x0004AE2C File Offset: 0x0004902C
+		// Token: 0x06000AD8 RID: 2776 RVA: 0x0002FD9C File Offset: 0x0002DF9C
 		private void Start()
 		{
 			this.localTime = 0f;
@@ -31,7 +46,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F2B RID: 3883 RVA: 0x0004AF20 File Offset: 0x00049120
+		// Token: 0x06000AD9 RID: 2777 RVA: 0x0002FE90 File Offset: 0x0002E090
 		private void Update()
 		{
 			this.localTime += Time.deltaTime;
@@ -50,7 +65,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F2C RID: 3884 RVA: 0x0004AFB4 File Offset: 0x000491B4
+		// Token: 0x06000ADA RID: 2778 RVA: 0x0002FF24 File Offset: 0x0002E124
 		private static Vector3 CalculatePosition(Vector3 startPos, Vector3 initialVelocity, Vector3 targetPos, float t)
 		{
 			Vector3 a = startPos + initialVelocity * t;
@@ -58,7 +73,7 @@ namespace RoR2
 			return Vector3.LerpUnclamped(a, targetPos, t2);
 		}
 
-		// Token: 0x06000F2D RID: 3885 RVA: 0x0004AFDD File Offset: 0x000491DD
+		// Token: 0x06000ADB RID: 2779 RVA: 0x0002FF4D File Offset: 0x0002E14D
 		private void OnTriggerStay(Collider other)
 		{
 			if (other.transform == this.targetTransform)
@@ -67,7 +82,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F2E RID: 3886 RVA: 0x0004AFF8 File Offset: 0x000491F8
+		// Token: 0x06000ADC RID: 2780 RVA: 0x0002FF68 File Offset: 0x0002E168
 		private void OnHitTarget()
 		{
 			if (!this.consumed)
@@ -79,49 +94,37 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001339 RID: 4921
+		// Token: 0x04000B1B RID: 2843
 		public GameObject hitEffectPrefab;
 
-		// Token: 0x0400133A RID: 4922
-		private static string expSoundString = "Play_UI_xp_gain";
-
-		// Token: 0x0400133B RID: 4923
+		// Token: 0x04000B1C RID: 2844
 		private new Transform transform;
 
-		// Token: 0x0400133C RID: 4924
+		// Token: 0x04000B1D RID: 2845
 		private TrailRenderer trail;
 
-		// Token: 0x0400133D RID: 4925
+		// Token: 0x04000B1E RID: 2846
 		private Light light;
 
-		// Token: 0x0400133E RID: 4926
-		[HideInInspector]
-		public Transform targetTransform;
-
-		// Token: 0x0400133F RID: 4927
-		[HideInInspector]
-		public float travelTime;
-
-		// Token: 0x04001340 RID: 4928
-		[HideInInspector]
-		public ulong exp;
-
-		// Token: 0x04001341 RID: 4929
+		// Token: 0x04000B22 RID: 2850
 		private float localTime;
 
-		// Token: 0x04001342 RID: 4930
+		// Token: 0x04000B23 RID: 2851
 		private Vector3 startPos;
 
-		// Token: 0x04001343 RID: 4931
+		// Token: 0x04000B24 RID: 2852
 		private Vector3 previousPos;
 
-		// Token: 0x04001344 RID: 4932
+		// Token: 0x04000B25 RID: 2853
 		private Vector3 initialVelocity;
 
-		// Token: 0x04001345 RID: 4933
+		// Token: 0x04000B26 RID: 2854
 		private float scale;
 
-		// Token: 0x04001346 RID: 4934
+		// Token: 0x04000B27 RID: 2855
 		private bool consumed;
+
+		// Token: 0x04000B28 RID: 2856
+		private static readonly string expSoundString = "Play_UI_xp_gain";
 	}
 }

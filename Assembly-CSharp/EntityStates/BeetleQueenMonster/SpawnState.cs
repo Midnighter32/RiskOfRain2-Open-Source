@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.BeetleQueenMonster
 {
-	// Token: 0x020001D3 RID: 467
+	// Token: 0x020008EE RID: 2286
 	public class SpawnState : BaseState
 	{
-		// Token: 0x0600091B RID: 2331 RVA: 0x0002DC38 File Offset: 0x0002BE38
+		// Token: 0x0600331B RID: 13083 RVA: 0x000DD894 File Offset: 0x000DBA94
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -22,7 +22,7 @@ namespace EntityStates.BeetleQueenMonster
 			}
 		}
 
-		// Token: 0x0600091C RID: 2332 RVA: 0x0002DCAC File Offset: 0x0002BEAC
+		// Token: 0x0600331C RID: 13084 RVA: 0x000DD908 File Offset: 0x000DBB08
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -32,19 +32,19 @@ namespace EntityStates.BeetleQueenMonster
 			}
 		}
 
-		// Token: 0x0600091D RID: 2333 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x0600331D RID: 13085 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Death;
 		}
 
-		// Token: 0x04000C54 RID: 3156
+		// Token: 0x0400327C RID: 12924
 		public static float duration = 4f;
 
-		// Token: 0x04000C55 RID: 3157
+		// Token: 0x0400327D RID: 12925
 		public static GameObject burrowPrefab;
 
-		// Token: 0x04000C56 RID: 3158
+		// Token: 0x0400327E RID: 12926
 		public static string spawnSoundString;
 	}
 }

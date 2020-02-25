@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Destructible
 {
-	// Token: 0x0200019C RID: 412
+	// Token: 0x020008A3 RID: 2211
 	public class ExplosivePotDeath : BaseState
 	{
-		// Token: 0x060007FA RID: 2042 RVA: 0x00027862 File Offset: 0x00025A62
+		// Token: 0x06003196 RID: 12694 RVA: 0x000D58D1 File Offset: 0x000D3AD1
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -18,7 +18,7 @@ namespace EntityStates.Destructible
 			}
 		}
 
-		// Token: 0x060007FB RID: 2043 RVA: 0x00027887 File Offset: 0x00025A87
+		// Token: 0x06003197 RID: 12695 RVA: 0x000D58F6 File Offset: 0x000D3AF6
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -28,12 +28,12 @@ namespace EntityStates.Destructible
 			}
 		}
 
-		// Token: 0x060007FC RID: 2044 RVA: 0x000278AC File Offset: 0x00025AAC
+		// Token: 0x06003198 RID: 12696 RVA: 0x000D5918 File Offset: 0x000D3B18
 		private void Explode()
 		{
 			if (ExplosivePotDeath.explosionEffectPrefab)
 			{
-				EffectManager.instance.SpawnEffect(ExplosivePotDeath.explosionEffectPrefab, new EffectData
+				EffectManager.SpawnEffect(ExplosivePotDeath.explosionEffectPrefab, new EffectData
 				{
 					origin = base.transform.position,
 					scale = ExplosivePotDeath.explosionRadius,
@@ -56,31 +56,31 @@ namespace EntityStates.Destructible
 			EntityState.Destroy(base.gameObject);
 		}
 
-		// Token: 0x060007FD RID: 2045 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x06003199 RID: 12697 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Death;
 		}
 
-		// Token: 0x04000A6D RID: 2669
+		// Token: 0x0400300B RID: 12299
 		public static GameObject chargePrefab;
 
-		// Token: 0x04000A6E RID: 2670
+		// Token: 0x0400300C RID: 12300
 		public static float chargeDuration;
 
-		// Token: 0x04000A6F RID: 2671
+		// Token: 0x0400300D RID: 12301
 		public static GameObject explosionEffectPrefab;
 
-		// Token: 0x04000A70 RID: 2672
+		// Token: 0x0400300E RID: 12302
 		public static float explosionRadius;
 
-		// Token: 0x04000A71 RID: 2673
+		// Token: 0x0400300F RID: 12303
 		public static float explosionDamageCoefficient;
 
-		// Token: 0x04000A72 RID: 2674
+		// Token: 0x04003010 RID: 12304
 		public static float explosionProcCoefficient;
 
-		// Token: 0x04000A73 RID: 2675
+		// Token: 0x04003011 RID: 12305
 		public static float explosionForce;
 	}
 }

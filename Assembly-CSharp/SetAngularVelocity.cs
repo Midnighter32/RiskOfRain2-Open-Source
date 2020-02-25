@@ -1,17 +1,17 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x02000055 RID: 85
+// Token: 0x02000051 RID: 81
 [RequireComponent(typeof(Rigidbody))]
 public class SetAngularVelocity : MonoBehaviour
 {
-	// Token: 0x06000166 RID: 358 RVA: 0x00008173 File Offset: 0x00006373
+	// Token: 0x0600014B RID: 331 RVA: 0x00008087 File Offset: 0x00006287
 	private void Start()
 	{
 		this.rigidBody = base.GetComponent<Rigidbody>();
 	}
 
-	// Token: 0x06000167 RID: 359 RVA: 0x00008181 File Offset: 0x00006381
+	// Token: 0x0600014C RID: 332 RVA: 0x00008095 File Offset: 0x00006295
 	private void FixedUpdate()
 	{
 		this.rigidBody.maxAngularVelocity = this.angularVelocity.magnitude;

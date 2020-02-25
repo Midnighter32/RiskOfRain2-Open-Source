@@ -2,18 +2,24 @@
 
 namespace RoR2
 {
-	// Token: 0x0200023E RID: 574
+	// Token: 0x0200012B RID: 299
 	public enum EliteIndex
 	{
-		// Token: 0x04000E9F RID: 3743
+		// Token: 0x040005A4 RID: 1444
 		None = -1,
-		// Token: 0x04000EA0 RID: 3744
+		// Token: 0x040005A5 RID: 1445
 		Fire,
-		// Token: 0x04000EA1 RID: 3745
+		// Token: 0x040005A6 RID: 1446
 		Lightning,
-		// Token: 0x04000EA2 RID: 3746
+		// Token: 0x040005A7 RID: 1447
 		Ice,
-		// Token: 0x04000EA3 RID: 3747
+		// Token: 0x040005A8 RID: 1448
+		Poison,
+		// Token: 0x040005A9 RID: 1449
+		Haunted,
+		// Token: 0x040005AA RID: 1450
+		Gold,
+		// Token: 0x040005AB RID: 1451
 		Count
 	}
 }

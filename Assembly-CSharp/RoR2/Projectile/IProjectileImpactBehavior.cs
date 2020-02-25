@@ -2,10 +2,10 @@
 
 namespace RoR2.Projectile
 {
-	// Token: 0x0200053C RID: 1340
+	// Token: 0x020004F7 RID: 1271
 	public interface IProjectileImpactBehavior
 	{
-		// Token: 0x06001DF7 RID: 7671
+		// Token: 0x06001E3C RID: 7740
 		void OnProjectileImpact(ProjectileImpactInfo impactInfo);
 	}
 }

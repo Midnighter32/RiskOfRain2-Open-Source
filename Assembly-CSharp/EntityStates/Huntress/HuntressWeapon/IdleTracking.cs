@@ -3,13 +3,14 @@ using System.Linq;
 using RoR2;
 using RoR2.Orbs;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace EntityStates.Huntress.HuntressWeapon
 {
-	// Token: 0x02000156 RID: 342
-	internal class IdleTracking : BaseState
+	// Token: 0x02000838 RID: 2104
+	public class IdleTracking : BaseState
 	{
-		// Token: 0x0600069E RID: 1694 RVA: 0x0001F810 File Offset: 0x0001DA10
+		// Token: 0x06002F9F RID: 12191 RVA: 0x000CBEB8 File Offset: 0x000CA0B8
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -20,7 +21,7 @@ namespace EntityStates.Huntress.HuntressWeapon
 			}
 		}
 
-		// Token: 0x0600069F RID: 1695 RVA: 0x0001F83E File Offset: 0x0001DA3E
+		// Token: 0x06002FA0 RID: 12192 RVA: 0x000CBEE6 File Offset: 0x000CA0E6
 		public override void OnExit()
 		{
 			if (this.trackingIndicatorTransform)
@@ -30,10 +31,10 @@ namespace EntityStates.Huntress.HuntressWeapon
 			base.OnExit();
 		}
 
-		// Token: 0x060006A0 RID: 1696 RVA: 0x0001F864 File Offset: 0x0001DA64
+		// Token: 0x06002FA1 RID: 12193 RVA: 0x000CBF0C File Offset: 0x000CA10C
 		private void FireOrbArrow()
 		{
-			if (!base.isServer)
+			if (!NetworkServer.active)
 			{
 				return;
 			}
@@ -49,7 +50,7 @@ namespace EntityStates.Huntress.HuntressWeapon
 			if (hurtBox)
 			{
 				Transform transform = this.childLocator.FindChild(IdleTracking.muzzleString).transform;
-				EffectManager.instance.SimpleMuzzleFlash(IdleTracking.muzzleflashEffectPrefab, base.gameObject, IdleTracking.muzzleString, true);
+				EffectManager.SimpleMuzzleFlash(IdleTracking.muzzleflashEffectPrefab, base.gameObject, IdleTracking.muzzleString, true);
 				arrowOrb.origin = transform.position;
 				arrowOrb.target = hurtBox;
 				base.PlayAnimation("Gesture, Override", "FireSeekingArrow");
@@ -59,7 +60,7 @@ namespace EntityStates.Huntress.HuntressWeapon
 			}
 		}
 
-		// Token: 0x060006A1 RID: 1697 RVA: 0x0001F988 File Offset: 0x0001DB88
+		// Token: 0x06002FA2 RID: 12194 RVA: 0x000CC024 File Offset: 0x000CA224
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -103,46 +104,46 @@ namespace EntityStates.Huntress.HuntressWeapon
 			}
 		}
 
-		// Token: 0x060006A2 RID: 1698 RVA: 0x0000A1ED File Offset: 0x000083ED
+		// Token: 0x06002FA3 RID: 12195 RVA: 0x0000AC89 File Offset: 0x00008E89
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Any;
 		}
 
-		// Token: 0x04000812 RID: 2066
+		// Token: 0x04002D58 RID: 11608
 		public static float maxTrackingDistance = 20f;
 
-		// Token: 0x04000813 RID: 2067
+		// Token: 0x04002D59 RID: 11609
 		public static float maxTrackingAngle = 20f;
 
-		// Token: 0x04000814 RID: 2068
+		// Token: 0x04002D5A RID: 11610
 		public static float orbDamageCoefficient;
 
-		// Token: 0x04000815 RID: 2069
+		// Token: 0x04002D5B RID: 11611
 		public static float orbProcCoefficient;
 
-		// Token: 0x04000816 RID: 2070
+		// Token: 0x04002D5C RID: 11612
 		public static string muzzleString;
 
-		// Token: 0x04000817 RID: 2071
+		// Token: 0x04002D5D RID: 11613
 		public static GameObject muzzleflashEffectPrefab;
 
-		// Token: 0x04000818 RID: 2072
+		// Token: 0x04002D5E RID: 11614
 		public static string attackSoundString;
 
-		// Token: 0x04000819 RID: 2073
+		// Token: 0x04002D5F RID: 11615
 		public static float fireFrequency;
 
-		// Token: 0x0400081A RID: 2074
+		// Token: 0x04002D60 RID: 11616
 		private float fireTimer;
 
-		// Token: 0x0400081B RID: 2075
+		// Token: 0x04002D61 RID: 11617
 		private Transform trackingIndicatorTransform;
 
-		// Token: 0x0400081C RID: 2076
+		// Token: 0x04002D62 RID: 11618
 		private HurtBox trackingTarget;
 
-		// Token: 0x0400081D RID: 2077
+		// Token: 0x04002D63 RID: 11619
 		private ChildLocator childLocator;
 	}
 }

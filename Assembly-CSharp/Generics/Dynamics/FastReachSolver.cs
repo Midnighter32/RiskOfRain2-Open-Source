@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace Generics.Dynamics
 {
-	// Token: 0x020006DC RID: 1756
+	// Token: 0x02000927 RID: 2343
 	public static class FastReachSolver
 	{
-		// Token: 0x0600274F RID: 10063 RVA: 0x000B62EC File Offset: 0x000B44EC
+		// Token: 0x06003499 RID: 13465 RVA: 0x000E5734 File Offset: 0x000E3934
 		public static bool Process(Core.Chain chain)
 		{
 			if (chain.joints.Count <= 0)
@@ -27,7 +27,7 @@ namespace Generics.Dynamics
 			return true;
 		}
 
-		// Token: 0x06002750 RID: 10064 RVA: 0x000B6344 File Offset: 0x000B4544
+		// Token: 0x0600349A RID: 13466 RVA: 0x000E578C File Offset: 0x000E398C
 		public static void SolveInward(Core.Chain chain)
 		{
 			int count = chain.joints.Count;
@@ -42,7 +42,7 @@ namespace Generics.Dynamics
 			}
 		}
 
-		// Token: 0x06002751 RID: 10065 RVA: 0x000B6420 File Offset: 0x000B4620
+		// Token: 0x0600349B RID: 13467 RVA: 0x000E5868 File Offset: 0x000E3A68
 		public static void SolveOutward(Core.Chain chain)
 		{
 			chain.joints[0].pos = chain.joints[0].joint.position;
@@ -56,7 +56,7 @@ namespace Generics.Dynamics
 			}
 		}
 
-		// Token: 0x06002752 RID: 10066 RVA: 0x000B64F8 File Offset: 0x000B46F8
+		// Token: 0x0600349C RID: 13468 RVA: 0x000E5940 File Offset: 0x000E3B40
 		public static void MapSolverOutput(Core.Chain chain)
 		{
 			for (int i = 0; i < chain.joints.Count - 1; i++)

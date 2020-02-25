@@ -1,16 +1,16 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x02000054 RID: 84
+// Token: 0x02000050 RID: 80
 public class ScaleProjector : MonoBehaviour
 {
-	// Token: 0x06000163 RID: 355 RVA: 0x0000813B File Offset: 0x0000633B
+	// Token: 0x06000148 RID: 328 RVA: 0x0000804F File Offset: 0x0000624F
 	private void Start()
 	{
 		this.projector = base.GetComponent<Projector>();
 	}
 
-	// Token: 0x06000164 RID: 356 RVA: 0x00008149 File Offset: 0x00006349
+	// Token: 0x06000149 RID: 329 RVA: 0x0000805D File Offset: 0x0000625D
 	private void Update()
 	{
 		if (this.projector)

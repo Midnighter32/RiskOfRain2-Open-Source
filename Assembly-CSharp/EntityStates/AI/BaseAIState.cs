@@ -5,74 +5,67 @@ using UnityEngine;
 
 namespace EntityStates.AI
 {
-	// Token: 0x020001E3 RID: 483
+	// Token: 0x020008FE RID: 2302
 	public class BaseAIState : EntityState
 	{
-		// Token: 0x1700009E RID: 158
-		// (get) Token: 0x06000960 RID: 2400 RVA: 0x0002F1B9 File Offset: 0x0002D3B9
-		// (set) Token: 0x06000961 RID: 2401 RVA: 0x0002F1C1 File Offset: 0x0002D3C1
+		// Token: 0x17000465 RID: 1125
+		// (get) Token: 0x06003360 RID: 13152 RVA: 0x000DEDD9 File Offset: 0x000DCFD9
+		// (set) Token: 0x06003361 RID: 13153 RVA: 0x000DEDE1 File Offset: 0x000DCFE1
 		private protected CharacterMaster characterMaster { protected get; private set; }
 
-		// Token: 0x1700009F RID: 159
-		// (get) Token: 0x06000962 RID: 2402 RVA: 0x0002F1CA File Offset: 0x0002D3CA
-		// (set) Token: 0x06000963 RID: 2403 RVA: 0x0002F1D2 File Offset: 0x0002D3D2
+		// Token: 0x17000466 RID: 1126
+		// (get) Token: 0x06003362 RID: 13154 RVA: 0x000DEDEA File Offset: 0x000DCFEA
+		// (set) Token: 0x06003363 RID: 13155 RVA: 0x000DEDF2 File Offset: 0x000DCFF2
 		private protected BaseAI ai { protected get; private set; }
 
-		// Token: 0x170000A0 RID: 160
-		// (get) Token: 0x06000964 RID: 2404 RVA: 0x0002F1DB File Offset: 0x0002D3DB
-		// (set) Token: 0x06000965 RID: 2405 RVA: 0x0002F1E3 File Offset: 0x0002D3E3
+		// Token: 0x17000467 RID: 1127
+		// (get) Token: 0x06003364 RID: 13156 RVA: 0x000DEDFB File Offset: 0x000DCFFB
+		// (set) Token: 0x06003365 RID: 13157 RVA: 0x000DEE03 File Offset: 0x000DD003
 		private protected CharacterBody body { protected get; private set; }
 
-		// Token: 0x170000A1 RID: 161
-		// (get) Token: 0x06000966 RID: 2406 RVA: 0x0002F1EC File Offset: 0x0002D3EC
-		// (set) Token: 0x06000967 RID: 2407 RVA: 0x0002F1F4 File Offset: 0x0002D3F4
+		// Token: 0x17000468 RID: 1128
+		// (get) Token: 0x06003366 RID: 13158 RVA: 0x000DEE0C File Offset: 0x000DD00C
+		// (set) Token: 0x06003367 RID: 13159 RVA: 0x000DEE14 File Offset: 0x000DD014
 		private protected Transform bodyTransform { protected get; private set; }
 
-		// Token: 0x170000A2 RID: 162
-		// (get) Token: 0x06000968 RID: 2408 RVA: 0x0002F1FD File Offset: 0x0002D3FD
-		// (set) Token: 0x06000969 RID: 2409 RVA: 0x0002F205 File Offset: 0x0002D405
+		// Token: 0x17000469 RID: 1129
+		// (get) Token: 0x06003368 RID: 13160 RVA: 0x000DEE1D File Offset: 0x000DD01D
+		// (set) Token: 0x06003369 RID: 13161 RVA: 0x000DEE25 File Offset: 0x000DD025
 		private protected InputBankTest bodyInputBank { protected get; private set; }
 
-		// Token: 0x170000A3 RID: 163
-		// (get) Token: 0x0600096A RID: 2410 RVA: 0x0002F20E File Offset: 0x0002D40E
-		// (set) Token: 0x0600096B RID: 2411 RVA: 0x0002F216 File Offset: 0x0002D416
+		// Token: 0x1700046A RID: 1130
+		// (get) Token: 0x0600336A RID: 13162 RVA: 0x000DEE2E File Offset: 0x000DD02E
+		// (set) Token: 0x0600336B RID: 13163 RVA: 0x000DEE36 File Offset: 0x000DD036
 		private protected CharacterMotor bodyCharacterMotor { protected get; private set; }
 
-		// Token: 0x170000A4 RID: 164
-		// (get) Token: 0x0600096C RID: 2412 RVA: 0x0002F21F File Offset: 0x0002D41F
-		// (set) Token: 0x0600096D RID: 2413 RVA: 0x0002F227 File Offset: 0x0002D427
+		// Token: 0x1700046B RID: 1131
+		// (get) Token: 0x0600336C RID: 13164 RVA: 0x000DEE3F File Offset: 0x000DD03F
+		// (set) Token: 0x0600336D RID: 13165 RVA: 0x000DEE47 File Offset: 0x000DD047
 		private protected SkillLocator bodySkillLocator { protected get; private set; }
 
-		// Token: 0x0600096E RID: 2414 RVA: 0x0002F230 File Offset: 0x0002D430
+		// Token: 0x0600336E RID: 13166 RVA: 0x000DEE50 File Offset: 0x000DD050
 		public override void OnEnter()
 		{
 			base.OnEnter();
 			this.characterMaster = base.GetComponent<CharacterMaster>();
 			this.ai = base.GetComponent<BaseAI>();
-			if (this.characterMaster)
+			if (this.ai)
 			{
-				GameObject bodyObject = this.characterMaster.GetBodyObject();
-				if (bodyObject)
-				{
-					this.body = bodyObject.GetComponent<CharacterBody>();
-					if (this.body)
-					{
-						this.bodyTransform = this.body.transform;
-						this.bodyInputBank = this.body.GetComponent<InputBankTest>();
-						this.bodyCharacterMotor = this.body.GetComponent<CharacterMotor>();
-						this.bodySkillLocator = this.body.GetComponent<SkillLocator>();
-					}
-				}
+				this.body = this.ai.body;
+				this.bodyTransform = this.ai.bodyTransform;
+				this.bodyInputBank = this.ai.bodyInputBank;
+				this.bodyCharacterMotor = this.ai.bodyCharacterMotor;
+				this.bodySkillLocator = this.ai.bodySkillLocator;
 			}
 		}
 
-		// Token: 0x0600096F RID: 2415 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x0600336F RID: 13167 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000970 RID: 2416 RVA: 0x0000F633 File Offset: 0x0000D833
+		// Token: 0x06003370 RID: 13168 RVA: 0x000B23CF File Offset: 0x000B05CF
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();

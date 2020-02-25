@@ -2,16 +2,16 @@
 
 namespace EntityStates.Merc
 {
-	// Token: 0x0200010B RID: 267
+	// Token: 0x020007C9 RID: 1993
 	public class WhirlwindAir : WhirlwindBase
 	{
-		// Token: 0x06000527 RID: 1319 RVA: 0x00016C0A File Offset: 0x00014E0A
+		// Token: 0x06002D7C RID: 11644 RVA: 0x000C0F55 File Offset: 0x000BF155
 		protected override void PlayAnim()
 		{
 			base.PlayCrossfade("FullBody, Override", "WhirlwindAir", "Whirlwind.playbackRate", this.duration, 0.1f);
 		}
 
-		// Token: 0x06000528 RID: 1320 RVA: 0x00016C2C File Offset: 0x00014E2C
+		// Token: 0x06002D7D RID: 11645 RVA: 0x000C0F77 File Offset: 0x000BF177
 		public override void OnExit()
 		{
 			base.OnExit();

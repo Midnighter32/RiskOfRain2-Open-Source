@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x02000064 RID: 100
+// Token: 0x02000065 RID: 101
 public struct NetworkLerpedAngleNew
 {
-	// Token: 0x06000190 RID: 400 RVA: 0x00008B1C File Offset: 0x00006D1C
+	// Token: 0x060001B1 RID: 433 RVA: 0x00009240 File Offset: 0x00007440
 	public void SetValueImmediate(float value)
 	{
 		this.newestInterpPoint.time = Time.time;
@@ -14,7 +14,7 @@ public struct NetworkLerpedAngleNew
 		this.inverseLowHighTimespan = 0f;
 	}
 
-	// Token: 0x06000191 RID: 401 RVA: 0x00008B68 File Offset: 0x00006D68
+	// Token: 0x060001B2 RID: 434 RVA: 0x0000928C File Offset: 0x0000748C
 	public float GetCurrentValue(bool hasAuthority)
 	{
 		if (hasAuthority)
@@ -33,13 +33,13 @@ public struct NetworkLerpedAngleNew
 		return Mathf.LerpAngle(this.lowInterpPoint.value, this.highInterpPoint.value, t);
 	}
 
-	// Token: 0x06000192 RID: 402 RVA: 0x00008C1E File Offset: 0x00006E1E
+	// Token: 0x060001B3 RID: 435 RVA: 0x00009342 File Offset: 0x00007542
 	public float GetAuthoritativeValue()
 	{
 		return this.newestInterpPoint.value;
 	}
 
-	// Token: 0x06000193 RID: 403 RVA: 0x00008C2B File Offset: 0x00006E2B
+	// Token: 0x060001B4 RID: 436 RVA: 0x0000934F File Offset: 0x0000754F
 	public void PushValue(float value)
 	{
 		if (this.newestInterpPoint.value != value)
@@ -49,28 +49,28 @@ public struct NetworkLerpedAngleNew
 		}
 	}
 
-	// Token: 0x040001B5 RID: 437
+	// Token: 0x040001BA RID: 442
 	private const float interpDelay = 0.1f;
 
-	// Token: 0x040001B6 RID: 438
+	// Token: 0x040001BB RID: 443
 	private NetworkLerpedAngleNew.InterpPoint lowInterpPoint;
 
-	// Token: 0x040001B7 RID: 439
+	// Token: 0x040001BC RID: 444
 	private NetworkLerpedAngleNew.InterpPoint highInterpPoint;
 
-	// Token: 0x040001B8 RID: 440
+	// Token: 0x040001BD RID: 445
 	private NetworkLerpedAngleNew.InterpPoint newestInterpPoint;
 
-	// Token: 0x040001B9 RID: 441
+	// Token: 0x040001BE RID: 446
 	private float inverseLowHighTimespan;
 
-	// Token: 0x02000065 RID: 101
+	// Token: 0x02000066 RID: 102
 	private struct InterpPoint
 	{
-		// Token: 0x040001BA RID: 442
+		// Token: 0x040001BF RID: 447
 		public float time;
 
-		// Token: 0x040001BB RID: 443
+		// Token: 0x040001C0 RID: 448
 		public float value;
 	}
 }

@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003D7 RID: 983
+	// Token: 0x02000328 RID: 808
 	[RequireComponent(typeof(WheelCollider))]
 	public class SetWheelVisuals : MonoBehaviour
 	{
-		// Token: 0x0600154E RID: 5454 RVA: 0x000663CA File Offset: 0x000645CA
+		// Token: 0x06001312 RID: 4882 RVA: 0x00051BBA File Offset: 0x0004FDBA
 		private void Start()
 		{
 			this.wheelCollider = base.GetComponent<WheelCollider>();
 		}
 
-		// Token: 0x0600154F RID: 5455 RVA: 0x000663D8 File Offset: 0x000645D8
+		// Token: 0x06001313 RID: 4883 RVA: 0x00051BC8 File Offset: 0x0004FDC8
 		private void FixedUpdate()
 		{
 			Vector3 position;
@@ -23,10 +23,10 @@ namespace RoR2
 			this.visualTransform.rotation = rotation;
 		}
 
-		// Token: 0x040018A1 RID: 6305
+		// Token: 0x040011DC RID: 4572
 		public Transform visualTransform;
 
-		// Token: 0x040018A2 RID: 6306
+		// Token: 0x040011DD RID: 4573
 		private WheelCollider wheelCollider;
 	}
 }

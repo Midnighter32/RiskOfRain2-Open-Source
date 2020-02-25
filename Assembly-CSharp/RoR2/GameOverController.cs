@@ -8,16 +8,16 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020002F8 RID: 760
+	// Token: 0x02000207 RID: 519
 	[RequireComponent(typeof(VoteController))]
 	public class GameOverController : NetworkBehaviour
 	{
-		// Token: 0x1700014B RID: 331
-		// (get) Token: 0x06000F5B RID: 3931 RVA: 0x0004BE29 File Offset: 0x0004A029
-		// (set) Token: 0x06000F5C RID: 3932 RVA: 0x0004BE30 File Offset: 0x0004A030
+		// Token: 0x17000160 RID: 352
+		// (get) Token: 0x06000B12 RID: 2834 RVA: 0x00031285 File Offset: 0x0002F485
+		// (set) Token: 0x06000B13 RID: 2835 RVA: 0x0003128C File Offset: 0x0002F48C
 		public static GameOverController instance { get; private set; }
 
-		// Token: 0x06000F5D RID: 3933 RVA: 0x0004BE38 File Offset: 0x0004A038
+		// Token: 0x06000B14 RID: 2836 RVA: 0x00031294 File Offset: 0x0002F494
 		[Server]
 		public void SetRunReport([NotNull] RunReport newRunReport)
 		{
@@ -26,11 +26,11 @@ namespace RoR2
 				Debug.LogWarning("[Server] function 'System.Void RoR2.GameOverController::SetRunReport(RoR2.RunReport)' called on client");
 				return;
 			}
-			base.SetDirtyBit(1u);
+			base.SetDirtyBit(1U);
 			this.runReport = newRunReport;
 		}
 
-		// Token: 0x06000F5E RID: 3934 RVA: 0x0004BE60 File Offset: 0x0004A060
+		// Token: 0x06000B15 RID: 2837 RVA: 0x000312BC File Offset: 0x0002F4BC
 		private void GenerateReportScreens()
 		{
 			GameOverController.<>c__DisplayClass11_0 CS$<>8__locals1 = new GameOverController.<>c__DisplayClass11_0();
@@ -46,7 +46,7 @@ namespace RoR2
 					if (cameraRigController && cameraRigController.hud)
 					{
 						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.gameEndReportPanelPrefab, cameraRigController.hud.transform);
-						cameraRigController.hud.mainUIPanel.SetActive(false);
+						cameraRigController.hud.mainContainer.SetActive(false);
 						gameObject.transform.parent = cameraRigController.hud.transform;
 						gameObject.GetComponent<MPEventSystemProvider>().eventSystem = localUser.eventSystem;
 						GameEndReportPanelController component2 = gameObject.GetComponent<GameEndReportPanelController>();
@@ -71,25 +71,31 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F5F RID: 3935 RVA: 0x0004C014 File Offset: 0x0004A214
+		// Token: 0x06000B16 RID: 2838 RVA: 0x00031470 File Offset: 0x0002F670
+		private void Awake()
+		{
+			this.runReport = new RunReport();
+		}
+
+		// Token: 0x06000B17 RID: 2839 RVA: 0x0003147D File Offset: 0x0002F67D
 		private void Start()
 		{
 			this.appearanceTimer = this.appearanceDelay;
 		}
 
-		// Token: 0x06000F60 RID: 3936 RVA: 0x0004C022 File Offset: 0x0004A222
+		// Token: 0x06000B18 RID: 2840 RVA: 0x0003148B File Offset: 0x0002F68B
 		private void OnEnable()
 		{
 			GameOverController.instance = SingletonHelper.Assign<GameOverController>(GameOverController.instance, this);
 		}
 
-		// Token: 0x06000F61 RID: 3937 RVA: 0x0004C034 File Offset: 0x0004A234
+		// Token: 0x06000B19 RID: 2841 RVA: 0x0003149D File Offset: 0x0002F69D
 		private void OnDisable()
 		{
 			GameOverController.instance = SingletonHelper.Unassign<GameOverController>(GameOverController.instance, this);
 		}
 
-		// Token: 0x06000F62 RID: 3938 RVA: 0x0004C046 File Offset: 0x0004A246
+		// Token: 0x06000B1A RID: 2842 RVA: 0x000314AF File Offset: 0x0002F6AF
 		private void Update()
 		{
 			if (!this.reportScreensGenerated)
@@ -103,7 +109,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F63 RID: 3939 RVA: 0x0004C07C File Offset: 0x0004A27C
+		// Token: 0x06000B1B RID: 2843 RVA: 0x000314E5 File Offset: 0x0002F6E5
 		[Server]
 		private void EndRun()
 		{
@@ -115,15 +121,15 @@ namespace RoR2
 			UnityEngine.Object.Destroy(Run.instance);
 		}
 
-		// Token: 0x06000F64 RID: 3940 RVA: 0x0004C0A0 File Offset: 0x0004A2A0
+		// Token: 0x06000B1C RID: 2844 RVA: 0x00031508 File Offset: 0x0002F708
 		public override bool OnSerialize(NetworkWriter writer, bool initialState)
 		{
 			uint num = base.syncVarDirtyBits;
 			if (initialState)
 			{
-				num = 1u;
+				num = 1U;
 			}
-			bool flag = (num & 1u) > 0u;
+			bool flag = (num & 1U) > 0U;
 			if (!initialState)
 			{
 				writer.Write((byte)num);
@@ -132,10 +138,10 @@ namespace RoR2
 			{
 				this.runReport.Write(writer);
 			}
-			return !initialState && num > 0u;
+			return !initialState && num > 0U;
 		}
 
-		// Token: 0x06000F65 RID: 3941 RVA: 0x0004C0E1 File Offset: 0x0004A2E1
+		// Token: 0x06000B1D RID: 2845 RVA: 0x00031549 File Offset: 0x0002F749
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (((initialState ? 1 : reader.ReadByte()) & 1) > 0)
@@ -144,7 +150,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F66 RID: 3942 RVA: 0x0004C102 File Offset: 0x0004A302
+		// Token: 0x06000B1E RID: 2846 RVA: 0x0003156A File Offset: 0x0002F76A
 		[ClientRpc]
 		public void RpcClientGameOver()
 		{
@@ -154,12 +160,12 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F68 RID: 3944 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000B20 RID: 2848 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x06000F69 RID: 3945 RVA: 0x0004C13E File Offset: 0x0004A33E
+		// Token: 0x06000B21 RID: 2849 RVA: 0x0003159B File Offset: 0x0002F79B
 		protected static void InvokeRpcRpcClientGameOver(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkClient.active)
@@ -170,7 +176,7 @@ namespace RoR2
 			((GameOverController)obj).RpcClientGameOver();
 		}
 
-		// Token: 0x06000F6A RID: 3946 RVA: 0x0004C164 File Offset: 0x0004A364
+		// Token: 0x06000B22 RID: 2850 RVA: 0x000315C0 File Offset: 0x0002F7C0
 		public void CallRpcClientGameOver()
 		{
 			if (!NetworkServer.active)
@@ -186,39 +192,39 @@ namespace RoR2
 			this.SendRPCInternal(networkWriter, 0, "RpcClientGameOver");
 		}
 
-		// Token: 0x06000F6B RID: 3947 RVA: 0x0004C1CD File Offset: 0x0004A3CD
+		// Token: 0x06000B23 RID: 2851 RVA: 0x00031629 File Offset: 0x0002F829
 		static GameOverController()
 		{
 			NetworkBehaviour.RegisterRpcDelegate(typeof(GameOverController), GameOverController.kRpcRpcClientGameOver, new NetworkBehaviour.CmdDelegate(GameOverController.InvokeRpcRpcClientGameOver));
 			NetworkCRC.RegisterBehaviour("GameOverController", 0);
 		}
 
-		// Token: 0x04001384 RID: 4996
+		// Token: 0x04000B84 RID: 2948
 		[Tooltip("How long it takes after the first person has hit the continue button for the game to forcibly end.")]
 		public float timeoutDuration;
 
-		// Token: 0x04001385 RID: 4997
-		private const uint runReportDirtyBit = 1u;
+		// Token: 0x04000B85 RID: 2949
+		private const uint runReportDirtyBit = 1U;
 
-		// Token: 0x04001386 RID: 4998
-		private const uint allDirtyBits = 1u;
+		// Token: 0x04000B86 RID: 2950
+		private const uint allDirtyBits = 1U;
 
-		// Token: 0x04001387 RID: 4999
-		private RunReport runReport = new RunReport();
+		// Token: 0x04000B87 RID: 2951
+		private RunReport runReport;
 
-		// Token: 0x04001388 RID: 5000
+		// Token: 0x04000B88 RID: 2952
 		public GameObject gameEndReportPanelPrefab;
 
-		// Token: 0x04001389 RID: 5001
+		// Token: 0x04000B89 RID: 2953
 		private bool reportScreensGenerated;
 
-		// Token: 0x0400138A RID: 5002
+		// Token: 0x04000B8A RID: 2954
 		public float appearanceDelay = 1f;
 
-		// Token: 0x0400138B RID: 5003
+		// Token: 0x04000B8B RID: 2955
 		private float appearanceTimer;
 
-		// Token: 0x0400138C RID: 5004
+		// Token: 0x04000B8C RID: 2956
 		private static int kRpcRpcClientGameOver = 1518660169;
 	}
 }

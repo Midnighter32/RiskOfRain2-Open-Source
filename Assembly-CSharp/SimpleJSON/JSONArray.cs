@@ -6,11 +6,11 @@ using System.Text;
 
 namespace SimpleJSON
 {
-	// Token: 0x02000080 RID: 128
+	// Token: 0x02000085 RID: 133
 	public class JSONArray : JSONNode, IEnumerable
 	{
-		// Token: 0x17000048 RID: 72
-		// (get) Token: 0x06000267 RID: 615 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x1700004E RID: 78
+		// (get) Token: 0x060002A3 RID: 675 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override JSONNodeType Tag
 		{
 			get
@@ -19,8 +19,8 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x17000049 RID: 73
-		// (get) Token: 0x06000268 RID: 616 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x1700004F RID: 79
+		// (get) Token: 0x060002A4 RID: 676 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override bool IsArray
 		{
 			get
@@ -29,7 +29,7 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x1700004A RID: 74
+		// Token: 0x17000050 RID: 80
 		public override JSONNode this[int aIndex]
 		{
 			get
@@ -55,7 +55,7 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x1700004B RID: 75
+		// Token: 0x17000051 RID: 81
 		public override JSONNode this[string aKey]
 		{
 			get
@@ -72,8 +72,8 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x1700004C RID: 76
-		// (get) Token: 0x0600026D RID: 621 RVA: 0x0000AF19 File Offset: 0x00009119
+		// Token: 0x17000052 RID: 82
+		// (get) Token: 0x060002A9 RID: 681 RVA: 0x0000B9C1 File Offset: 0x00009BC1
 		public override int Count
 		{
 			get
@@ -82,7 +82,7 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x0600026E RID: 622 RVA: 0x0000AEFB File Offset: 0x000090FB
+		// Token: 0x060002AA RID: 682 RVA: 0x0000B9A3 File Offset: 0x00009BA3
 		public override void Add(string aKey, JSONNode aItem)
 		{
 			if (aItem == null)
@@ -92,7 +92,7 @@ namespace SimpleJSON
 			this.m_List.Add(aItem);
 		}
 
-		// Token: 0x0600026F RID: 623 RVA: 0x0000AF26 File Offset: 0x00009126
+		// Token: 0x060002AB RID: 683 RVA: 0x0000B9CE File Offset: 0x00009BCE
 		public override JSONNode Remove(int aIndex)
 		{
 			if (aIndex < 0 || aIndex >= this.m_List.Count)
@@ -104,15 +104,15 @@ namespace SimpleJSON
 			return result;
 		}
 
-		// Token: 0x06000270 RID: 624 RVA: 0x0000AF54 File Offset: 0x00009154
+		// Token: 0x060002AC RID: 684 RVA: 0x0000B9FC File Offset: 0x00009BFC
 		public override JSONNode Remove(JSONNode aNode)
 		{
 			this.m_List.Remove(aNode);
 			return aNode;
 		}
 
-		// Token: 0x1700004D RID: 77
-		// (get) Token: 0x06000271 RID: 625 RVA: 0x0000AF64 File Offset: 0x00009164
+		// Token: 0x17000053 RID: 83
+		// (get) Token: 0x060002AD RID: 685 RVA: 0x0000BA0C File Offset: 0x00009C0C
 		public override IEnumerable<JSONNode> Children
 		{
 			get
@@ -127,7 +127,7 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x06000272 RID: 626 RVA: 0x0000AF74 File Offset: 0x00009174
+		// Token: 0x060002AE RID: 686 RVA: 0x0000BA1C File Offset: 0x00009C1C
 		public IEnumerator GetEnumerator()
 		{
 			foreach (JSONNode jsonnode in this.m_List)
@@ -139,7 +139,7 @@ namespace SimpleJSON
 			yield break;
 		}
 
-		// Token: 0x06000273 RID: 627 RVA: 0x0000AF84 File Offset: 0x00009184
+		// Token: 0x060002AF RID: 687 RVA: 0x0000BA2C File Offset: 0x00009C2C
 		public override void Serialize(BinaryWriter aWriter)
 		{
 			aWriter.Write(1);
@@ -150,7 +150,7 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x06000274 RID: 628 RVA: 0x0000AFD4 File Offset: 0x000091D4
+		// Token: 0x060002B0 RID: 688 RVA: 0x0000BA7C File Offset: 0x00009C7C
 		internal override void WriteToStringBuilder(StringBuilder aSB, int aIndent, int aIndentInc, JSONTextMode aMode)
 		{
 			aSB.Append('[');
@@ -182,10 +182,10 @@ namespace SimpleJSON
 			aSB.Append(']');
 		}
 
-		// Token: 0x04000229 RID: 553
+		// Token: 0x04000234 RID: 564
 		private List<JSONNode> m_List = new List<JSONNode>();
 
-		// Token: 0x0400022A RID: 554
+		// Token: 0x04000235 RID: 565
 		public bool inline;
 	}
 }

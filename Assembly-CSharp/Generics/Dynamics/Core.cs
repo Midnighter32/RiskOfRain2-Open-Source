@@ -4,30 +4,30 @@ using UnityEngine;
 
 namespace Generics.Dynamics
 {
-	// Token: 0x020006D3 RID: 1747
+	// Token: 0x0200091E RID: 2334
 	public class Core
 	{
-		// Token: 0x020006D4 RID: 1748
+		// Token: 0x0200091F RID: 2335
 		public enum Solvers
 		{
-			// Token: 0x04002958 RID: 10584
+			// Token: 0x040033F1 RID: 13297
 			CyclicDescend,
-			// Token: 0x04002959 RID: 10585
+			// Token: 0x040033F2 RID: 13298
 			FastReach
 		}
 
-		// Token: 0x020006D5 RID: 1749
+		// Token: 0x02000920 RID: 2336
 		[Serializable]
 		public class Joint
 		{
-			// Token: 0x0600272C RID: 10028 RVA: 0x000B5847 File Offset: 0x000B3A47
+			// Token: 0x06003476 RID: 13430 RVA: 0x000E4C8F File Offset: 0x000E2E8F
 			public void MapVirtual()
 			{
 				this.pos = this.joint.position;
 				this.rot = this.joint.rotation;
 			}
 
-			// Token: 0x0600272D RID: 10029 RVA: 0x000B586B File Offset: 0x000B3A6B
+			// Token: 0x06003477 RID: 13431 RVA: 0x000E4CB3 File Offset: 0x000E2EB3
 			public void ApplyVirtualMap(bool applyPos, bool applyRot)
 			{
 				if (applyPos)
@@ -40,7 +40,7 @@ namespace Generics.Dynamics
 				}
 			}
 
-			// Token: 0x0600272E RID: 10030 RVA: 0x000B5898 File Offset: 0x000B3A98
+			// Token: 0x06003478 RID: 13432 RVA: 0x000E4CE0 File Offset: 0x000E2EE0
 			public Quaternion ApplyRestrictions()
 			{
 				switch (this.motionFreedom)
@@ -56,7 +56,7 @@ namespace Generics.Dynamics
 				}
 			}
 
-			// Token: 0x0600272F RID: 10031 RVA: 0x000B58E8 File Offset: 0x000B3AE8
+			// Token: 0x06003479 RID: 13433 RVA: 0x000E4D30 File Offset: 0x000E2F30
 			private Quaternion TwistAndSwing()
 			{
 				object obj = new Func<Quaternion, float, Quaternion>(delegate(Quaternion q, float x)
@@ -84,7 +84,7 @@ namespace Generics.Dynamics
 				return this.joint.localRotation;
 			}
 
-			// Token: 0x06002730 RID: 10032 RVA: 0x000B5A1C File Offset: 0x000B3C1C
+			// Token: 0x0600347A RID: 13434 RVA: 0x000E4E64 File Offset: 0x000E3064
 			private Quaternion SingleDegree()
 			{
 				Vector3 target = GenericMath.TransformVector(this.axis, this.joint.transform.localRotation);
@@ -99,73 +99,73 @@ namespace Generics.Dynamics
 				return this.joint.localRotation;
 			}
 
-			// Token: 0x0400295A RID: 10586
+			// Token: 0x040033F3 RID: 13299
 			public Core.Joint.MotionLimit motionFreedom;
 
-			// Token: 0x0400295B RID: 10587
+			// Token: 0x040033F4 RID: 13300
 			public Transform joint;
 
-			// Token: 0x0400295C RID: 10588
+			// Token: 0x040033F5 RID: 13301
 			[Range(0f, 1f)]
 			public float weight = 1f;
 
-			// Token: 0x0400295D RID: 10589
+			// Token: 0x040033F6 RID: 13302
 			public float length;
 
-			// Token: 0x0400295E RID: 10590
+			// Token: 0x040033F7 RID: 13303
 			public Vector3 pos;
 
-			// Token: 0x0400295F RID: 10591
+			// Token: 0x040033F8 RID: 13304
 			public Quaternion rot;
 
-			// Token: 0x04002960 RID: 10592
+			// Token: 0x040033F9 RID: 13305
 			public Vector3 localAxis = Vector3.up;
 
-			// Token: 0x04002961 RID: 10593
+			// Token: 0x040033FA RID: 13306
 			public Vector3 axis = Vector3.right;
 
-			// Token: 0x04002962 RID: 10594
+			// Token: 0x040033FB RID: 13307
 			public Vector2 hingLimit = Vector2.one * 180f;
 
-			// Token: 0x04002963 RID: 10595
+			// Token: 0x040033FC RID: 13308
 			public float maxAngle = 180f;
 
-			// Token: 0x04002964 RID: 10596
+			// Token: 0x040033FD RID: 13309
 			public float maxTwist = 180f;
 
-			// Token: 0x020006D6 RID: 1750
+			// Token: 0x02000921 RID: 2337
 			public enum MotionLimit
 			{
-				// Token: 0x04002966 RID: 10598
+				// Token: 0x040033FF RID: 13311
 				Full,
-				// Token: 0x04002967 RID: 10599
+				// Token: 0x04003400 RID: 13312
 				FullRestricted,
-				// Token: 0x04002968 RID: 10600
+				// Token: 0x04003401 RID: 13313
 				SingleDegree
 			}
 		}
 
-		// Token: 0x020006D8 RID: 1752
+		// Token: 0x02000923 RID: 2339
 		[Serializable]
 		public class Chain
 		{
-			// Token: 0x17000360 RID: 864
-			// (get) Token: 0x06002736 RID: 10038 RVA: 0x000B5B71 File Offset: 0x000B3D71
-			// (set) Token: 0x06002737 RID: 10039 RVA: 0x000B5B79 File Offset: 0x000B3D79
+			// Token: 0x1700049D RID: 1181
+			// (get) Token: 0x06003480 RID: 13440 RVA: 0x000E4FB9 File Offset: 0x000E31B9
+			// (set) Token: 0x06003481 RID: 13441 RVA: 0x000E4FC1 File Offset: 0x000E31C1
 			public bool initiated { get; private set; }
 
-			// Token: 0x17000361 RID: 865
-			// (get) Token: 0x06002738 RID: 10040 RVA: 0x000B5B82 File Offset: 0x000B3D82
-			// (set) Token: 0x06002739 RID: 10041 RVA: 0x000B5B8A File Offset: 0x000B3D8A
+			// Token: 0x1700049E RID: 1182
+			// (get) Token: 0x06003482 RID: 13442 RVA: 0x000E4FCA File Offset: 0x000E31CA
+			// (set) Token: 0x06003483 RID: 13443 RVA: 0x000E4FD2 File Offset: 0x000E31D2
 			public float chainLength { get; private set; }
 
-			// Token: 0x0600273A RID: 10042 RVA: 0x000B5B93 File Offset: 0x000B3D93
+			// Token: 0x06003484 RID: 13444 RVA: 0x000E4FDB File Offset: 0x000E31DB
 			public Chain()
 			{
 				this.iterations = 2;
 			}
 
-			// Token: 0x0600273B RID: 10043 RVA: 0x000B5BB0 File Offset: 0x000B3DB0
+			// Token: 0x06003485 RID: 13445 RVA: 0x000E4FF8 File Offset: 0x000E31F8
 			public void InitiateJoints()
 			{
 				this.MapVirtualJoints();
@@ -180,7 +180,7 @@ namespace Generics.Dynamics
 				this.initiated = true;
 			}
 
-			// Token: 0x0600273C RID: 10044 RVA: 0x000B5CEB File Offset: 0x000B3EEB
+			// Token: 0x06003486 RID: 13446 RVA: 0x000E5133 File Offset: 0x000E3333
 			public Transform GetEndEffector()
 			{
 				if (this.joints.Count <= 0)
@@ -190,7 +190,7 @@ namespace Generics.Dynamics
 				return this.joints[this.joints.Count - 1].joint;
 			}
 
-			// Token: 0x0600273D RID: 10045 RVA: 0x000B5D1A File Offset: 0x000B3F1A
+			// Token: 0x06003487 RID: 13447 RVA: 0x000E5162 File Offset: 0x000E3362
 			public Vector3 GetVirtualEE()
 			{
 				if (this.joints.Count <= 0)
@@ -200,7 +200,7 @@ namespace Generics.Dynamics
 				return this.joints[this.joints.Count - 1].pos;
 			}
 
-			// Token: 0x0600273E RID: 10046 RVA: 0x000B5D4D File Offset: 0x000B3F4D
+			// Token: 0x06003488 RID: 13448 RVA: 0x000E5195 File Offset: 0x000E3395
 			public Vector3 GetIKtarget()
 			{
 				if (!this.target)
@@ -210,21 +210,21 @@ namespace Generics.Dynamics
 				return this.target.position;
 			}
 
-			// Token: 0x0600273F RID: 10047 RVA: 0x000B5D6E File Offset: 0x000B3F6E
+			// Token: 0x06003489 RID: 13449 RVA: 0x000E51B6 File Offset: 0x000E33B6
 			public Vector3 SetIKTarget(Vector3 target)
 			{
 				this.IKpos = (this.target ? this.target.position : target);
 				return this.IKpos;
 			}
 
-			// Token: 0x06002740 RID: 10048 RVA: 0x000B5D98 File Offset: 0x000B3F98
+			// Token: 0x0600348A RID: 13450 RVA: 0x000E51E0 File Offset: 0x000E33E0
 			public Quaternion SetEERotation(Quaternion target)
 			{
 				this.joints[this.joints.Count - 1].joint.rotation = target;
 				return target;
 			}
 
-			// Token: 0x06002741 RID: 10049 RVA: 0x000B5DCC File Offset: 0x000B3FCC
+			// Token: 0x0600348B RID: 13451 RVA: 0x000E5214 File Offset: 0x000E3414
 			public void MapVirtualJoints()
 			{
 				for (int i = 0; i < this.joints.Count; i++)
@@ -233,50 +233,50 @@ namespace Generics.Dynamics
 				}
 			}
 
-			// Token: 0x0400296C RID: 10604
+			// Token: 0x04003405 RID: 13317
 			public Transform target;
 
-			// Token: 0x0400296D RID: 10605
+			// Token: 0x04003406 RID: 13318
 			[Range(0f, 1f)]
 			public float weight;
 
-			// Token: 0x0400296E RID: 10606
+			// Token: 0x04003407 RID: 13319
 			public int iterations;
 
-			// Token: 0x0400296F RID: 10607
+			// Token: 0x04003408 RID: 13320
 			public List<Core.Joint> joints = new List<Core.Joint>();
 
-			// Token: 0x04002970 RID: 10608
+			// Token: 0x04003409 RID: 13321
 			private Vector3 IKpos;
 		}
 
-		// Token: 0x020006D9 RID: 1753
+		// Token: 0x02000924 RID: 2340
 		[Serializable]
 		public class KinematicChain
 		{
-			// Token: 0x17000362 RID: 866
-			// (get) Token: 0x06002742 RID: 10050 RVA: 0x000B5E00 File Offset: 0x000B4000
-			// (set) Token: 0x06002743 RID: 10051 RVA: 0x000B5E08 File Offset: 0x000B4008
+			// Token: 0x1700049F RID: 1183
+			// (get) Token: 0x0600348C RID: 13452 RVA: 0x000E5248 File Offset: 0x000E3448
+			// (set) Token: 0x0600348D RID: 13453 RVA: 0x000E5250 File Offset: 0x000E3450
 			public bool initiated { get; private set; }
 
-			// Token: 0x17000363 RID: 867
-			// (get) Token: 0x06002744 RID: 10052 RVA: 0x000B5E11 File Offset: 0x000B4011
-			// (set) Token: 0x06002745 RID: 10053 RVA: 0x000B5E19 File Offset: 0x000B4019
+			// Token: 0x170004A0 RID: 1184
+			// (get) Token: 0x0600348E RID: 13454 RVA: 0x000E5259 File Offset: 0x000E3459
+			// (set) Token: 0x0600348F RID: 13455 RVA: 0x000E5261 File Offset: 0x000E3461
 			public Quaternion[] initLocalRot { get; private set; }
 
-			// Token: 0x17000364 RID: 868
-			// (get) Token: 0x06002746 RID: 10054 RVA: 0x000B5E22 File Offset: 0x000B4022
-			// (set) Token: 0x06002747 RID: 10055 RVA: 0x000B5E2A File Offset: 0x000B402A
+			// Token: 0x170004A1 RID: 1185
+			// (get) Token: 0x06003490 RID: 13456 RVA: 0x000E526A File Offset: 0x000E346A
+			// (set) Token: 0x06003491 RID: 13457 RVA: 0x000E5272 File Offset: 0x000E3472
 			public Vector3[] prevPos { get; private set; }
 
-			// Token: 0x06002748 RID: 10056 RVA: 0x000B5E34 File Offset: 0x000B4034
+			// Token: 0x06003492 RID: 13458 RVA: 0x000E527C File Offset: 0x000E347C
 			public KinematicChain()
 			{
 				this.momentOfInteria = 1000f;
 				this.stiffness = -0.1f;
 			}
 
-			// Token: 0x06002749 RID: 10057 RVA: 0x000B5E94 File Offset: 0x000B4094
+			// Token: 0x06003493 RID: 13459 RVA: 0x000E52DC File Offset: 0x000E34DC
 			public void InitiateJoints()
 			{
 				this.initLocalRot = new Quaternion[this.joints.Count];
@@ -297,7 +297,7 @@ namespace Generics.Dynamics
 				this.initiated = true;
 			}
 
-			// Token: 0x0600274A RID: 10058 RVA: 0x000B6060 File Offset: 0x000B4260
+			// Token: 0x06003494 RID: 13460 RVA: 0x000E54A8 File Offset: 0x000E36A8
 			public void MapVirtualJoints()
 			{
 				for (int i = 0; i < this.joints.Count; i++)
@@ -306,28 +306,28 @@ namespace Generics.Dynamics
 				}
 			}
 
-			// Token: 0x04002973 RID: 10611
+			// Token: 0x0400340C RID: 13324
 			[Range(0f, 1f)]
 			[Header("Chain")]
 			public float weight = 1f;
 
-			// Token: 0x04002974 RID: 10612
+			// Token: 0x0400340D RID: 13325
 			public List<Core.Joint> joints = new List<Core.Joint>();
 
-			// Token: 0x04002975 RID: 10613
+			// Token: 0x0400340E RID: 13326
 			[Header("Interafce")]
 			public AnimationCurve solverFallOff;
 
-			// Token: 0x04002976 RID: 10614
+			// Token: 0x0400340F RID: 13327
 			public Vector3 gravity = Vector3.down;
 
-			// Token: 0x04002977 RID: 10615
+			// Token: 0x04003410 RID: 13328
 			public float momentOfInteria = 1000f;
 
-			// Token: 0x04002978 RID: 10616
+			// Token: 0x04003411 RID: 13329
 			public float stiffness = -0.1f;
 
-			// Token: 0x04002979 RID: 10617
+			// Token: 0x04003412 RID: 13330
 			public float torsionDamping;
 		}
 	}

@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000379 RID: 889
+	// Token: 0x020002AD RID: 685
 	public class OnDestroyCallback : MonoBehaviour
 	{
-		// Token: 0x06001299 RID: 4761 RVA: 0x0005B1C3 File Offset: 0x000593C3
+		// Token: 0x06000F94 RID: 3988 RVA: 0x00044673 File Offset: 0x00042873
 		public void OnDestroy()
 		{
 			if (this.callback != null)
@@ -15,7 +15,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600129A RID: 4762 RVA: 0x0005B1D9 File Offset: 0x000593D9
+		// Token: 0x06000F95 RID: 3989 RVA: 0x00044689 File Offset: 0x00042889
 		public static OnDestroyCallback AddCallback(GameObject gameObject, Action<OnDestroyCallback> callback)
 		{
 			OnDestroyCallback onDestroyCallback = gameObject.AddComponent<OnDestroyCallback>();
@@ -23,14 +23,14 @@ namespace RoR2
 			return onDestroyCallback;
 		}
 
-		// Token: 0x0600129B RID: 4763 RVA: 0x0005B1E8 File Offset: 0x000593E8
+		// Token: 0x06000F96 RID: 3990 RVA: 0x00044698 File Offset: 0x00042898
 		public static void RemoveCallback(OnDestroyCallback callbackComponent)
 		{
 			callbackComponent.callback = null;
 			UnityEngine.Object.Destroy(callbackComponent);
 		}
 
-		// Token: 0x04001646 RID: 5702
+		// Token: 0x04000F01 RID: 3841
 		private Action<OnDestroyCallback> callback;
 	}
 }

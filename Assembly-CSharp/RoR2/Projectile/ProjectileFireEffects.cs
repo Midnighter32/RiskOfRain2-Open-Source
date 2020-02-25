@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2.Projectile
 {
-	// Token: 0x02000547 RID: 1351
+	// Token: 0x02000505 RID: 1285
 	public class ProjectileFireEffects : MonoBehaviour
 	{
-		// Token: 0x06001E2B RID: 7723 RVA: 0x0008E28C File Offset: 0x0008C48C
+		// Token: 0x06001E7E RID: 7806 RVA: 0x00083AD0 File Offset: 0x00081CD0
 		private void Update()
 		{
 			this.timer += Time.deltaTime;
@@ -21,27 +21,27 @@ namespace RoR2.Projectile
 				if (this.effectPrefab)
 				{
 					Vector3 b = new Vector3(UnityEngine.Random.Range(-this.randomOffset.x, this.randomOffset.x), UnityEngine.Random.Range(-this.randomOffset.y, this.randomOffset.y), UnityEngine.Random.Range(-this.randomOffset.z, this.randomOffset.z));
-					EffectManager.instance.SimpleImpactEffect(this.effectPrefab, base.transform.position + b, Vector3.forward, true);
+					EffectManager.SimpleImpactEffect(this.effectPrefab, base.transform.position + b, Vector3.forward, true);
 				}
 			}
 		}
 
-		// Token: 0x040020AD RID: 8365
+		// Token: 0x04001BE1 RID: 7137
 		public float duration = 5f;
 
-		// Token: 0x040020AE RID: 8366
+		// Token: 0x04001BE2 RID: 7138
 		public int count = 5;
 
-		// Token: 0x040020AF RID: 8367
+		// Token: 0x04001BE3 RID: 7139
 		public GameObject effectPrefab;
 
-		// Token: 0x040020B0 RID: 8368
+		// Token: 0x04001BE4 RID: 7140
 		public Vector3 randomOffset;
 
-		// Token: 0x040020B1 RID: 8369
+		// Token: 0x04001BE5 RID: 7141
 		private float timer;
 
-		// Token: 0x040020B2 RID: 8370
+		// Token: 0x04001BE6 RID: 7142
 		private float nextSpawnTimer;
 	}
 }

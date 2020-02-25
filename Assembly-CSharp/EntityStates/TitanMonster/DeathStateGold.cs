@@ -2,8 +2,8 @@
 
 namespace EntityStates.TitanMonster
 {
-	// Token: 0x0200016C RID: 364
-	internal class DeathStateGold : DeathState
+	// Token: 0x02000852 RID: 2130
+	public class DeathStateGold : DeathState
 	{
 	}
 }

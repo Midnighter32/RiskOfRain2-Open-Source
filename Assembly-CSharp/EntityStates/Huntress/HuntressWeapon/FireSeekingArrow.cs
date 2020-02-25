@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Huntress.HuntressWeapon
 {
-	// Token: 0x02000155 RID: 341
-	internal class FireSeekingArrow : BaseState
+	// Token: 0x02000837 RID: 2103
+	public class FireSeekingArrow : BaseState
 	{
-		// Token: 0x06000696 RID: 1686 RVA: 0x0001F55C File Offset: 0x0001D75C
+		// Token: 0x06002F97 RID: 12183 RVA: 0x000CBC18 File Offset: 0x000C9E18
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -34,20 +34,17 @@ namespace EntityStates.Huntress.HuntressWeapon
 			}
 		}
 
-		// Token: 0x06000697 RID: 1687 RVA: 0x0001F671 File Offset: 0x0001D871
+		// Token: 0x06002F98 RID: 12184 RVA: 0x000CBD2D File Offset: 0x000C9F2D
 		public override void OnExit()
 		{
 			base.OnExit();
-			if (!this.hasFiredArrow)
-			{
-				this.FireOrbArrow();
-			}
+			this.FireOrbArrow();
 		}
 
-		// Token: 0x06000698 RID: 1688 RVA: 0x0001F688 File Offset: 0x0001D888
+		// Token: 0x06002F99 RID: 12185 RVA: 0x000CBD3C File Offset: 0x000C9F3C
 		private void FireOrbArrow()
 		{
-			if (!NetworkServer.active || this.hasFiredArrow)
+			if (this.hasFiredArrow || !NetworkServer.active)
 			{
 				return;
 			}
@@ -62,19 +59,19 @@ namespace EntityStates.Huntress.HuntressWeapon
 			if (hurtBox)
 			{
 				Transform transform = this.childLocator.FindChild(FireSeekingArrow.muzzleString);
-				EffectManager.instance.SimpleMuzzleFlash(FireSeekingArrow.muzzleflashEffectPrefab, base.gameObject, FireSeekingArrow.muzzleString, true);
+				EffectManager.SimpleMuzzleFlash(FireSeekingArrow.muzzleflashEffectPrefab, base.gameObject, FireSeekingArrow.muzzleString, true);
 				arrowOrb.origin = transform.position;
 				arrowOrb.target = hurtBox;
 				OrbManager.instance.AddOrb(arrowOrb);
 			}
 		}
 
-		// Token: 0x06000699 RID: 1689 RVA: 0x0001F76C File Offset: 0x0001D96C
+		// Token: 0x06002F9A RID: 12186 RVA: 0x000CBE1C File Offset: 0x000CA01C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
 			this.stopwatch += Time.fixedDeltaTime;
-			if (this.animator.GetFloat("FireSeekingShot.fire") > 0f && !this.hasFiredArrow)
+			if (this.animator.GetFloat("FireSeekingShot.fire") > 0f)
 			{
 				this.FireOrbArrow();
 			}
@@ -85,61 +82,61 @@ namespace EntityStates.Huntress.HuntressWeapon
 			}
 		}
 
-		// Token: 0x0600069A RID: 1690 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002F9B RID: 12187 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x0600069B RID: 1691 RVA: 0x0001F7D8 File Offset: 0x0001D9D8
+		// Token: 0x06002F9C RID: 12188 RVA: 0x000CBE80 File Offset: 0x000CA080
 		public override void OnSerialize(NetworkWriter writer)
 		{
 			writer.Write(HurtBoxReference.FromHurtBox(this.initialOrbTarget));
 		}
 
-		// Token: 0x0600069C RID: 1692 RVA: 0x0001F7EC File Offset: 0x0001D9EC
+		// Token: 0x06002F9D RID: 12189 RVA: 0x000CBE94 File Offset: 0x000CA094
 		public override void OnDeserialize(NetworkReader reader)
 		{
 			this.initialOrbTarget = reader.ReadHurtBoxReference().ResolveHurtBox();
 		}
 
-		// Token: 0x04000805 RID: 2053
+		// Token: 0x04002D4B RID: 11595
 		public static float orbDamageCoefficient;
 
-		// Token: 0x04000806 RID: 2054
+		// Token: 0x04002D4C RID: 11596
 		public static float orbProcCoefficient;
 
-		// Token: 0x04000807 RID: 2055
+		// Token: 0x04002D4D RID: 11597
 		public static string muzzleString;
 
-		// Token: 0x04000808 RID: 2056
+		// Token: 0x04002D4E RID: 11598
 		public static GameObject muzzleflashEffectPrefab;
 
-		// Token: 0x04000809 RID: 2057
+		// Token: 0x04002D4F RID: 11599
 		public static string attackSoundString;
 
-		// Token: 0x0400080A RID: 2058
+		// Token: 0x04002D50 RID: 11600
 		public static float baseDuration;
 
-		// Token: 0x0400080B RID: 2059
+		// Token: 0x04002D51 RID: 11601
 		private float duration;
 
-		// Token: 0x0400080C RID: 2060
+		// Token: 0x04002D52 RID: 11602
 		private float stopwatch;
 
-		// Token: 0x0400080D RID: 2061
+		// Token: 0x04002D53 RID: 11603
 		private ChildLocator childLocator;
 
-		// Token: 0x0400080E RID: 2062
+		// Token: 0x04002D54 RID: 11604
 		private HuntressTracker huntressTracker;
 
-		// Token: 0x0400080F RID: 2063
+		// Token: 0x04002D55 RID: 11605
 		private Animator animator;
 
-		// Token: 0x04000810 RID: 2064
+		// Token: 0x04002D56 RID: 11606
 		private bool hasFiredArrow;
 
-		// Token: 0x04000811 RID: 2065
+		// Token: 0x04002D57 RID: 11607
 		private HurtBox initialOrbTarget;
 	}
 }

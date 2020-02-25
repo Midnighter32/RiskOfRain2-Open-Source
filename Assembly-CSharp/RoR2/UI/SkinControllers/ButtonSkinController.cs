@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 namespace RoR2.UI.SkinControllers
 {
-	// Token: 0x0200065F RID: 1631
+	// Token: 0x02000654 RID: 1620
 	[RequireComponent(typeof(Button))]
 	public class ButtonSkinController : BaseSkinController
 	{
-		// Token: 0x0600246C RID: 9324 RVA: 0x000AAC4E File Offset: 0x000A8E4E
+		// Token: 0x06002610 RID: 9744 RVA: 0x000A578A File Offset: 0x000A398A
 		protected new void Awake()
 		{
 			this.button = base.GetComponent<Button>();
@@ -18,26 +18,26 @@ namespace RoR2.UI.SkinControllers
 			base.Awake();
 		}
 
-		// Token: 0x0600246D RID: 9325 RVA: 0x000AAC6E File Offset: 0x000A8E6E
+		// Token: 0x06002611 RID: 9745 RVA: 0x000A57AA File Offset: 0x000A39AA
 		[RuntimeInitializeOnLoadMethod]
 		private static void Init()
 		{
 			RoR2Application.onUpdate += ButtonSkinController.StaticUpdate;
 		}
 
-		// Token: 0x0600246E RID: 9326 RVA: 0x000AAC81 File Offset: 0x000A8E81
+		// Token: 0x06002612 RID: 9746 RVA: 0x000A57BD File Offset: 0x000A39BD
 		private void OnEnable()
 		{
 			ButtonSkinController.instancesList.Add(this);
 		}
 
-		// Token: 0x0600246F RID: 9327 RVA: 0x000AAC8E File Offset: 0x000A8E8E
+		// Token: 0x06002613 RID: 9747 RVA: 0x000A57CA File Offset: 0x000A39CA
 		private void OnDisable()
 		{
 			ButtonSkinController.instancesList.Remove(this);
 		}
 
-		// Token: 0x06002470 RID: 9328 RVA: 0x000AAC9C File Offset: 0x000A8E9C
+		// Token: 0x06002614 RID: 9748 RVA: 0x000A57D8 File Offset: 0x000A39D8
 		private static void StaticUpdate()
 		{
 			foreach (ButtonSkinController buttonSkinController in ButtonSkinController.instancesList)
@@ -46,7 +46,7 @@ namespace RoR2.UI.SkinControllers
 			}
 		}
 
-		// Token: 0x06002471 RID: 9329 RVA: 0x000AACF8 File Offset: 0x000A8EF8
+		// Token: 0x06002615 RID: 9749 RVA: 0x000A5834 File Offset: 0x000A3A34
 		private void UpdateLabelStyle(ref UISkinData.ButtonStyle buttonStyle)
 		{
 			if (this.useRecommendedLabel)
@@ -64,13 +64,13 @@ namespace RoR2.UI.SkinControllers
 			}
 		}
 
-		// Token: 0x06002472 RID: 9330 RVA: 0x000AAD53 File Offset: 0x000A8F53
+		// Token: 0x06002616 RID: 9750 RVA: 0x000A588F File Offset: 0x000A3A8F
 		protected override void OnSkinUI()
 		{
 			this.ApplyButtonStyle(ref this.skinData.buttonStyle);
 		}
 
-		// Token: 0x06002473 RID: 9331 RVA: 0x000AAD68 File Offset: 0x000A8F68
+		// Token: 0x06002617 RID: 9751 RVA: 0x000A58A4 File Offset: 0x000A3AA4
 		private void ApplyButtonStyle(ref UISkinData.ButtonStyle buttonStyle)
 		{
 			if (this.useRecommendedMaterial)
@@ -104,31 +104,31 @@ namespace RoR2.UI.SkinControllers
 			this.UpdateLabelStyle(ref buttonStyle);
 		}
 
-		// Token: 0x04002768 RID: 10088
+		// Token: 0x040023CF RID: 9167
 		private static readonly List<ButtonSkinController> instancesList = new List<ButtonSkinController>();
 
-		// Token: 0x04002769 RID: 10089
+		// Token: 0x040023D0 RID: 9168
 		private Button button;
 
-		// Token: 0x0400276A RID: 10090
+		// Token: 0x040023D1 RID: 9169
 		public bool useRecommendedButtonWidth = true;
 
-		// Token: 0x0400276B RID: 10091
+		// Token: 0x040023D2 RID: 9170
 		public bool useRecommendedButtonHeight = true;
 
-		// Token: 0x0400276C RID: 10092
+		// Token: 0x040023D3 RID: 9171
 		public bool useRecommendedImage = true;
 
-		// Token: 0x0400276D RID: 10093
+		// Token: 0x040023D4 RID: 9172
 		public bool useRecommendedMaterial = true;
 
-		// Token: 0x0400276E RID: 10094
+		// Token: 0x040023D5 RID: 9173
 		public bool useRecommendedAlignment = true;
 
-		// Token: 0x0400276F RID: 10095
+		// Token: 0x040023D6 RID: 9174
 		public bool useRecommendedLabel = true;
 
-		// Token: 0x04002770 RID: 10096
+		// Token: 0x040023D7 RID: 9175
 		private LayoutElement layoutElement;
 	}
 }

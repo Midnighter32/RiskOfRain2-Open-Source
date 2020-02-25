@@ -6,12 +6,12 @@ using UnityEngine.EventSystems;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000652 RID: 1618
+	// Token: 0x02000647 RID: 1607
 	[RequireComponent(typeof(MPEventSystemLocator))]
 	public class UserProfileListController : MonoBehaviour
 	{
-		// Token: 0x17000323 RID: 803
-		// (get) Token: 0x06002435 RID: 9269 RVA: 0x000AA17D File Offset: 0x000A837D
+		// Token: 0x170003E2 RID: 994
+		// (get) Token: 0x060025D4 RID: 9684 RVA: 0x000A4C45 File Offset: 0x000A2E45
 		private EventSystem eventSystem
 		{
 			get
@@ -20,26 +20,26 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002436 RID: 9270 RVA: 0x000AA18A File Offset: 0x000A838A
+		// Token: 0x060025D5 RID: 9685 RVA: 0x000A4C52 File Offset: 0x000A2E52
 		private void Awake()
 		{
 			this.eventSystemLocator = base.GetComponent<MPEventSystemLocator>();
 		}
 
-		// Token: 0x06002437 RID: 9271 RVA: 0x000AA198 File Offset: 0x000A8398
+		// Token: 0x060025D6 RID: 9686 RVA: 0x000A4C60 File Offset: 0x000A2E60
 		private void OnEnable()
 		{
 			this.RebuildElements();
 			UserProfile.onAvailableUserProfilesChanged += this.RebuildElements;
 		}
 
-		// Token: 0x06002438 RID: 9272 RVA: 0x000AA1B1 File Offset: 0x000A83B1
+		// Token: 0x060025D7 RID: 9687 RVA: 0x000A4C79 File Offset: 0x000A2E79
 		private void OnDisable()
 		{
 			UserProfile.onAvailableUserProfilesChanged -= this.RebuildElements;
 		}
 
-		// Token: 0x06002439 RID: 9273 RVA: 0x000AA1C4 File Offset: 0x000A83C4
+		// Token: 0x060025D8 RID: 9688 RVA: 0x000A4C8C File Offset: 0x000A2E8C
 		private void RebuildElements()
 		{
 			foreach (object obj in this.contentRect)
@@ -74,18 +74,18 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600243A RID: 9274 RVA: 0x000AA310 File Offset: 0x000A8510
+		// Token: 0x060025D9 RID: 9689 RVA: 0x000A4DD8 File Offset: 0x000A2FD8
 		public ReadOnlyCollection<UserProfileListElementController> GetReadOnlyElementsList()
 		{
 			return new ReadOnlyCollection<UserProfileListElementController>(this.elementsList);
 		}
 
-		// Token: 0x1400005B RID: 91
-		// (add) Token: 0x0600243B RID: 9275 RVA: 0x000AA320 File Offset: 0x000A8520
-		// (remove) Token: 0x0600243C RID: 9276 RVA: 0x000AA358 File Offset: 0x000A8558
+		// Token: 0x14000088 RID: 136
+		// (add) Token: 0x060025DA RID: 9690 RVA: 0x000A4DE8 File Offset: 0x000A2FE8
+		// (remove) Token: 0x060025DB RID: 9691 RVA: 0x000A4E20 File Offset: 0x000A3020
 		public event UserProfileListController.ProfileSelectedDelegate onProfileSelected;
 
-		// Token: 0x0600243D RID: 9277 RVA: 0x000AA38D File Offset: 0x000A858D
+		// Token: 0x060025DC RID: 9692 RVA: 0x000A4E55 File Offset: 0x000A3055
 		public void SendProfileSelection(UserProfile userProfile)
 		{
 			UserProfileListController.ProfileSelectedDelegate profileSelectedDelegate = this.onProfileSelected;
@@ -96,32 +96,32 @@ namespace RoR2.UI
 			profileSelectedDelegate(userProfile);
 		}
 
-		// Token: 0x1400005C RID: 92
-		// (add) Token: 0x0600243E RID: 9278 RVA: 0x000AA3A0 File Offset: 0x000A85A0
-		// (remove) Token: 0x0600243F RID: 9279 RVA: 0x000AA3D8 File Offset: 0x000A85D8
+		// Token: 0x14000089 RID: 137
+		// (add) Token: 0x060025DD RID: 9693 RVA: 0x000A4E68 File Offset: 0x000A3068
+		// (remove) Token: 0x060025DE RID: 9694 RVA: 0x000A4EA0 File Offset: 0x000A30A0
 		public event Action onListRebuilt;
 
-		// Token: 0x04002736 RID: 10038
+		// Token: 0x0400239B RID: 9115
 		public GameObject elementPrefab;
 
-		// Token: 0x04002737 RID: 10039
+		// Token: 0x0400239C RID: 9116
 		public RectTransform contentRect;
 
-		// Token: 0x04002738 RID: 10040
+		// Token: 0x0400239D RID: 9117
 		[Tooltip("Whether or not \"default\" profile appears as a selectable option.")]
 		public bool allowDefault = true;
 
-		// Token: 0x04002739 RID: 10041
+		// Token: 0x0400239E RID: 9118
 		private MPEventSystemLocator eventSystemLocator;
 
-		// Token: 0x0400273A RID: 10042
+		// Token: 0x0400239F RID: 9119
 		private readonly List<UserProfileListElementController> elementsList = new List<UserProfileListElementController>();
 
-		// Token: 0x0400273B RID: 10043
+		// Token: 0x040023A0 RID: 9120
 		private int currentSelectionIndex;
 
-		// Token: 0x02000653 RID: 1619
-		// (Invoke) Token: 0x06002442 RID: 9282
+		// Token: 0x02000648 RID: 1608
+		// (Invoke) Token: 0x060025E1 RID: 9697
 		public delegate void ProfileSelectedDelegate(UserProfile userProfile);
 	}
 }

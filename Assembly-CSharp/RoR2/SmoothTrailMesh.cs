@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003E6 RID: 998
+	// Token: 0x0200033A RID: 826
 	public class SmoothTrailMesh : MonoBehaviour
 	{
-		// Token: 0x060015BF RID: 5567 RVA: 0x00068270 File Offset: 0x00066470
+		// Token: 0x060013AD RID: 5037 RVA: 0x00054070 File Offset: 0x00052270
 		private void Awake()
 		{
 			this.mesh = new Mesh();
@@ -19,7 +19,7 @@ namespace RoR2
 			this.meshRenderer.sharedMaterials = this.sharedMaterials;
 		}
 
-		// Token: 0x060015C0 RID: 5568 RVA: 0x000682D8 File Offset: 0x000664D8
+		// Token: 0x060013AE RID: 5038 RVA: 0x000540D8 File Offset: 0x000522D8
 		private void AddCurrentPoint()
 		{
 			float time = Time.time;
@@ -33,20 +33,20 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x060015C1 RID: 5569 RVA: 0x00068350 File Offset: 0x00066550
+		// Token: 0x060013AF RID: 5039 RVA: 0x00054150 File Offset: 0x00052350
 		private void OnEnable()
 		{
 			this.AddCurrentPoint();
 		}
 
-		// Token: 0x060015C2 RID: 5570 RVA: 0x00068358 File Offset: 0x00066558
+		// Token: 0x060013B0 RID: 5040 RVA: 0x00054158 File Offset: 0x00052358
 		private void OnDisable()
 		{
 			this.pointsQueue.Clear();
 			this.mesh.Clear();
 		}
 
-		// Token: 0x060015C3 RID: 5571 RVA: 0x00068370 File Offset: 0x00066570
+		// Token: 0x060013B1 RID: 5041 RVA: 0x00054170 File Offset: 0x00052370
 		private void OnDestroy()
 		{
 			if (this.meshFilter)
@@ -57,7 +57,7 @@ namespace RoR2
 			UnityEngine.Object.Destroy(this.mesh);
 		}
 
-		// Token: 0x060015C4 RID: 5572 RVA: 0x000683A8 File Offset: 0x000665A8
+		// Token: 0x060013B2 RID: 5042 RVA: 0x000541A8 File Offset: 0x000523A8
 		private void Simulate()
 		{
 			float time = Time.time;
@@ -90,14 +90,14 @@ namespace RoR2
 			this.previousUp = b;
 		}
 
-		// Token: 0x060015C5 RID: 5573 RVA: 0x000684DA File Offset: 0x000666DA
+		// Token: 0x060013B3 RID: 5043 RVA: 0x000542DA File Offset: 0x000524DA
 		private void LateUpdate()
 		{
 			this.Simulate();
 			this.GenerateMesh();
 		}
 
-		// Token: 0x060015C6 RID: 5574 RVA: 0x000684E8 File Offset: 0x000666E8
+		// Token: 0x060013B4 RID: 5044 RVA: 0x000542E8 File Offset: 0x000524E8
 		private void GenerateMesh()
 		{
 			Vector3[] array = new Vector3[this.pointsQueue.Count * 2];
@@ -147,53 +147,53 @@ namespace RoR2
 			this.mesh.UploadMeshData(false);
 		}
 
-		// Token: 0x04001922 RID: 6434
+		// Token: 0x04001278 RID: 4728
 		private MeshFilter meshFilter;
 
-		// Token: 0x04001923 RID: 6435
+		// Token: 0x04001279 RID: 4729
 		private MeshRenderer meshRenderer;
 
-		// Token: 0x04001924 RID: 6436
+		// Token: 0x0400127A RID: 4730
 		private Mesh mesh;
 
-		// Token: 0x04001925 RID: 6437
+		// Token: 0x0400127B RID: 4731
 		public float timeStep = 0.0055555557f;
 
-		// Token: 0x04001926 RID: 6438
+		// Token: 0x0400127C RID: 4732
 		public float width = 1f;
 
-		// Token: 0x04001927 RID: 6439
+		// Token: 0x0400127D RID: 4733
 		public Material[] sharedMaterials;
 
-		// Token: 0x04001928 RID: 6440
+		// Token: 0x0400127E RID: 4734
 		public float trailLifetime = 1f;
 
-		// Token: 0x04001929 RID: 6441
+		// Token: 0x0400127F RID: 4735
 		public bool fadeVertexAlpha = true;
 
-		// Token: 0x0400192A RID: 6442
+		// Token: 0x04001280 RID: 4736
 		private Vector3 previousPosition;
 
-		// Token: 0x0400192B RID: 6443
+		// Token: 0x04001281 RID: 4737
 		private Vector3 previousUp;
 
-		// Token: 0x0400192C RID: 6444
+		// Token: 0x04001282 RID: 4738
 		private float previousTime;
 
-		// Token: 0x0400192D RID: 6445
+		// Token: 0x04001283 RID: 4739
 		private Queue<SmoothTrailMesh.Point> pointsQueue = new Queue<SmoothTrailMesh.Point>();
 
-		// Token: 0x020003E7 RID: 999
+		// Token: 0x0200033B RID: 827
 		[Serializable]
 		private struct Point
 		{
-			// Token: 0x0400192E RID: 6446
+			// Token: 0x04001284 RID: 4740
 			public Vector3 vertex1;
 
-			// Token: 0x0400192F RID: 6447
+			// Token: 0x04001285 RID: 4741
 			public Vector3 vertex2;
 
-			// Token: 0x04001930 RID: 6448
+			// Token: 0x04001286 RID: 4742
 			public float time;
 		}
 	}

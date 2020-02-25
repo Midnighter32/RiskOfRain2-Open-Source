@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace EntityStates.AncientWispMonster
 {
-	// Token: 0x020000D2 RID: 210
-	internal class ChargeRHCannon : BaseState
+	// Token: 0x02000731 RID: 1841
+	public class ChargeRHCannon : BaseState
 	{
-		// Token: 0x0600041E RID: 1054 RVA: 0x00011214 File Offset: 0x0000F414
+		// Token: 0x06002AC7 RID: 10951 RVA: 0x000B4260 File Offset: 0x000B2460
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -32,7 +32,7 @@ namespace EntityStates.AncientWispMonster
 			}
 		}
 
-		// Token: 0x0600041F RID: 1055 RVA: 0x000112DD File Offset: 0x0000F4DD
+		// Token: 0x06002AC8 RID: 10952 RVA: 0x000B4329 File Offset: 0x000B2529
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -40,13 +40,13 @@ namespace EntityStates.AncientWispMonster
 			EntityState.Destroy(this.chargeEffectRight);
 		}
 
-		// Token: 0x06000420 RID: 1056 RVA: 0x0000DDD0 File Offset: 0x0000BFD0
+		// Token: 0x06002AC9 RID: 10953 RVA: 0x000B02F8 File Offset: 0x000AE4F8
 		public override void Update()
 		{
 			base.Update();
 		}
 
-		// Token: 0x06000421 RID: 1057 RVA: 0x000112FC File Offset: 0x0000F4FC
+		// Token: 0x06002ACA RID: 10954 RVA: 0x000B4348 File Offset: 0x000B2548
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -58,25 +58,25 @@ namespace EntityStates.AncientWispMonster
 			}
 		}
 
-		// Token: 0x06000422 RID: 1058 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002ACB RID: 10955 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x040003E0 RID: 992
+		// Token: 0x040026A6 RID: 9894
 		public static float baseDuration = 3f;
 
-		// Token: 0x040003E1 RID: 993
+		// Token: 0x040026A7 RID: 9895
 		public static GameObject effectPrefab;
 
-		// Token: 0x040003E2 RID: 994
+		// Token: 0x040026A8 RID: 9896
 		private float duration;
 
-		// Token: 0x040003E3 RID: 995
+		// Token: 0x040026A9 RID: 9897
 		private GameObject chargeEffectLeft;
 
-		// Token: 0x040003E4 RID: 996
+		// Token: 0x040026AA RID: 9898
 		private GameObject chargeEffectRight;
 	}
 }

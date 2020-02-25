@@ -3,41 +3,41 @@ using UnityEngine;
 
 namespace RoR2.Achievements
 {
-	// Token: 0x020006AF RID: 1711
+	// Token: 0x020006BC RID: 1724
 	[RegisterAchievement("MajorMultikill", "Items.BurnNearby", null, typeof(MajorMultikillAchievement.MajorMultikillServerAchievement))]
 	public class MajorMultikillAchievement : BaseAchievement
 	{
-		// Token: 0x06002603 RID: 9731 RVA: 0x000AF2C0 File Offset: 0x000AD4C0
+		// Token: 0x06002827 RID: 10279 RVA: 0x000AA636 File Offset: 0x000A8836
 		public override void OnInstall()
 		{
 			base.OnInstall();
 			base.SetServerTracked(true);
 		}
 
-		// Token: 0x06002604 RID: 9732 RVA: 0x000AF2CF File Offset: 0x000AD4CF
+		// Token: 0x06002828 RID: 10280 RVA: 0x000AA645 File Offset: 0x000A8845
 		public override void OnUninstall()
 		{
 			base.OnUninstall();
 		}
 
-		// Token: 0x020006B0 RID: 1712
+		// Token: 0x020006BD RID: 1725
 		private class MajorMultikillServerAchievement : BaseServerAchievement
 		{
-			// Token: 0x06002606 RID: 9734 RVA: 0x000B014A File Offset: 0x000AE34A
+			// Token: 0x0600282A RID: 10282 RVA: 0x000ABC36 File Offset: 0x000A9E36
 			public override void OnInstall()
 			{
 				base.OnInstall();
 				GlobalEventManager.onCharacterDeathGlobal += this.OnCharacterDeath;
 			}
 
-			// Token: 0x06002607 RID: 9735 RVA: 0x000B0163 File Offset: 0x000AE363
+			// Token: 0x0600282B RID: 10283 RVA: 0x000ABC4F File Offset: 0x000A9E4F
 			public override void OnUninstall()
 			{
 				GlobalEventManager.onCharacterDeathGlobal -= this.OnCharacterDeath;
 				base.OnUninstall();
 			}
 
-			// Token: 0x06002608 RID: 9736 RVA: 0x000B017C File Offset: 0x000AE37C
+			// Token: 0x0600282C RID: 10284 RVA: 0x000ABC68 File Offset: 0x000A9E68
 			private void OnCharacterDeath(DamageReport damageReport)
 			{
 				GameObject attacker = damageReport.damageInfo.attacker;
@@ -56,7 +56,7 @@ namespace RoR2.Achievements
 				}
 			}
 
-			// Token: 0x04002876 RID: 10358
+			// Token: 0x04002509 RID: 9481
 			private const int multiKillThreshold = 15;
 		}
 	}

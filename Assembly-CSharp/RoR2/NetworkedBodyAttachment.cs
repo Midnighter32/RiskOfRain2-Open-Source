@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000368 RID: 872
+	// Token: 0x02000299 RID: 665
 	public sealed class NetworkedBodyAttachment : NetworkBehaviour
 	{
-		// Token: 0x060011E7 RID: 4583 RVA: 0x00058B54 File Offset: 0x00056D54
+		// Token: 0x06000EC2 RID: 3778 RVA: 0x00041B90 File Offset: 0x0003FD90
 		private void OnSyncAttachedBodyObject(GameObject value)
 		{
 			if (NetworkServer.active)
@@ -19,8 +20,8 @@ namespace RoR2
 			this.OnAttachedBodyObjectAssigned();
 		}
 
-		// Token: 0x1700018A RID: 394
-		// (get) Token: 0x060011E8 RID: 4584 RVA: 0x00058B6B File Offset: 0x00056D6B
+		// Token: 0x170001D7 RID: 471
+		// (get) Token: 0x06000EC3 RID: 3779 RVA: 0x00041BA7 File Offset: 0x0003FDA7
 		public GameObject attachedBodyObject
 		{
 			get
@@ -29,12 +30,12 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x1700018B RID: 395
-		// (get) Token: 0x060011E9 RID: 4585 RVA: 0x00058B73 File Offset: 0x00056D73
-		// (set) Token: 0x060011EA RID: 4586 RVA: 0x00058B7B File Offset: 0x00056D7B
+		// Token: 0x170001D8 RID: 472
+		// (get) Token: 0x06000EC4 RID: 3780 RVA: 0x00041BAF File Offset: 0x0003FDAF
+		// (set) Token: 0x06000EC5 RID: 3781 RVA: 0x00041BB7 File Offset: 0x0003FDB7
 		public CharacterBody attachedBody { get; private set; }
 
-		// Token: 0x060011EB RID: 4587 RVA: 0x00058B84 File Offset: 0x00056D84
+		// Token: 0x06000EC6 RID: 3782 RVA: 0x00041BC0 File Offset: 0x0003FDC0
 		[Server]
 		public void AttachToGameObjectAndSpawn([NotNull] GameObject newAttachedBodyObject)
 		{
@@ -56,7 +57,7 @@ namespace RoR2
 			this.Network_attachedBodyObject = newAttachedBodyObject;
 			this.OnAttachedBodyObjectAssigned();
 			NetworkConnection clientAuthorityOwner = newAttachedBodyObject.GetComponent<NetworkIdentity>().clientAuthorityOwner;
-			if (clientAuthorityOwner == null)
+			if (clientAuthorityOwner == null || this.forceHostAuthority)
 			{
 				NetworkServer.Spawn(base.gameObject);
 				return;
@@ -64,7 +65,7 @@ namespace RoR2
 			NetworkServer.SpawnWithClientAuthority(base.gameObject, clientAuthorityOwner);
 		}
 
-		// Token: 0x060011EC RID: 4588 RVA: 0x00058C0C File Offset: 0x00056E0C
+		// Token: 0x06000EC7 RID: 3783 RVA: 0x00041C50 File Offset: 0x0003FE50
 		private void OnAttachedBodyObjectAssigned()
 		{
 			if (this.attached)
@@ -75,8 +76,11 @@ namespace RoR2
 			if (this._attachedBodyObject)
 			{
 				this.attachedBody = this._attachedBodyObject.GetComponent<CharacterBody>();
-				base.transform.SetParent(this._attachedBodyObject.transform);
-				base.transform.localPosition = Vector3.zero;
+				if (this.shouldParentToAttachedBody)
+				{
+					base.transform.SetParent(this._attachedBodyObject.transform, false);
+					base.transform.localPosition = Vector3.zero;
+				}
 			}
 			INetworkedBodyAttachmentListener[] components = base.GetComponents<INetworkedBodyAttachmentListener>();
 			for (int i = 0; i < components.Length; i++)
@@ -85,14 +89,14 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060011ED RID: 4589 RVA: 0x00058C8B File Offset: 0x00056E8B
+		// Token: 0x06000EC8 RID: 3784 RVA: 0x00041CD8 File Offset: 0x0003FED8
 		public override void OnStartClient()
 		{
 			base.OnStartClient();
 			this.OnSyncAttachedBodyObject(this.attachedBodyObject);
 		}
 
-		// Token: 0x060011EE RID: 4590 RVA: 0x00058C9F File Offset: 0x00056E9F
+		// Token: 0x06000EC9 RID: 3785 RVA: 0x00041CEC File Offset: 0x0003FEEC
 		private void FixedUpdate()
 		{
 			if (!this.attachedBodyObject)
@@ -105,10 +109,10 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060011EF RID: 4591 RVA: 0x00058CC1 File Offset: 0x00056EC1
+		// Token: 0x06000ECA RID: 3786 RVA: 0x00041D0E File Offset: 0x0003FF0E
 		private void OnValidate()
 		{
-			if (!base.GetComponent<NetworkIdentity>().localPlayerAuthority)
+			if (!base.GetComponent<NetworkIdentity>().localPlayerAuthority && !this.forceHostAuthority)
 			{
 				Debug.LogWarningFormat("NetworkedBodyAttachment: Object {0} NetworkIdentity needs localPlayerAuthority=true", new object[]
 				{
@@ -117,23 +121,24 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060011F1 RID: 4593 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000ECC RID: 3788 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x1700018C RID: 396
-		// (get) Token: 0x060011F2 RID: 4594 RVA: 0x00058CF0 File Offset: 0x00056EF0
-		// (set) Token: 0x060011F3 RID: 4595 RVA: 0x00058D04 File Offset: 0x00056F04
+		// Token: 0x170001D9 RID: 473
+		// (get) Token: 0x06000ECD RID: 3789 RVA: 0x00041D54 File Offset: 0x0003FF54
+		// (set) Token: 0x06000ECE RID: 3790 RVA: 0x00041D68 File Offset: 0x0003FF68
 		public GameObject Network_attachedBodyObject
 		{
 			get
 			{
 				return this._attachedBodyObject;
 			}
+			[param: In]
 			set
 			{
-				uint dirtyBit = 1u;
+				uint dirtyBit = 1U;
 				if (NetworkServer.localClientActive && !base.syncVarHookGuard)
 				{
 					base.syncVarHookGuard = true;
@@ -144,7 +149,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060011F4 RID: 4596 RVA: 0x00058D54 File Offset: 0x00056F54
+		// Token: 0x06000ECF RID: 3791 RVA: 0x00041DB8 File Offset: 0x0003FFB8
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -153,7 +158,7 @@ namespace RoR2
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -169,7 +174,7 @@ namespace RoR2
 			return flag;
 		}
 
-		// Token: 0x060011F5 RID: 4597 RVA: 0x00058DC0 File Offset: 0x00056FC0
+		// Token: 0x06000ED0 RID: 3792 RVA: 0x00041E24 File Offset: 0x00040024
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -184,7 +189,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060011F6 RID: 4598 RVA: 0x00058E01 File Offset: 0x00057001
+		// Token: 0x06000ED1 RID: 3793 RVA: 0x00041E65 File Offset: 0x00040065
 		public override void PreStartClient()
 		{
 			if (!this.____attachedBodyObjectNetId.IsEmpty())
@@ -193,14 +198,20 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001606 RID: 5638
+		// Token: 0x04000EB2 RID: 3762
 		[SyncVar(hook = "OnSyncAttachedBodyObject")]
 		private GameObject _attachedBodyObject;
 
-		// Token: 0x04001608 RID: 5640
+		// Token: 0x04000EB4 RID: 3764
+		public bool shouldParentToAttachedBody = true;
+
+		// Token: 0x04000EB5 RID: 3765
+		public bool forceHostAuthority;
+
+		// Token: 0x04000EB6 RID: 3766
 		private bool attached;
 
-		// Token: 0x04001609 RID: 5641
+		// Token: 0x04000EB7 RID: 3767
 		private NetworkInstanceId ____attachedBodyObjectNetId;
 	}
 }

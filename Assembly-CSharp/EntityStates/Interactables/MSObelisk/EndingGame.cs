@@ -6,17 +6,22 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Interactables.MSObelisk
 {
-	// Token: 0x02000139 RID: 313
+	// Token: 0x0200080F RID: 2063
 	public class EndingGame : BaseState
 	{
-		// Token: 0x06000604 RID: 1540 RVA: 0x0001BB64 File Offset: 0x00019D64
+		// Token: 0x06002EDB RID: 11995 RVA: 0x000C7812 File Offset: 0x000C5A12
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
-			if (!NetworkServer.active)
+			if (NetworkServer.active)
 			{
-				return;
+				this.FixedUpdateServer();
 			}
+		}
+
+		// Token: 0x06002EDC RID: 11996 RVA: 0x000C7828 File Offset: 0x000C5A28
+		private void FixedUpdateServer()
+		{
 			this.destroyTimer -= Time.fixedDeltaTime;
 			if (!this.beginEndingGame)
 			{
@@ -33,7 +38,7 @@ namespace EntityStates.Interactables.MSObelisk
 					CharacterBody component = gameObject.GetComponent<CharacterBody>();
 					if (component)
 					{
-						EffectManager.instance.SpawnEffect(EndingGame.destroyEffectPrefab, new EffectData
+						EffectManager.SpawnEffect(EndingGame.destroyEffectPrefab, new EffectData
 						{
 							origin = component.corePosition,
 							scale = component.radius
@@ -48,27 +53,48 @@ namespace EntityStates.Interactables.MSObelisk
 				this.endGameTimer += Time.fixedDeltaTime;
 				if (this.endGameTimer >= EndingGame.timeUntilEndGame && Run.instance)
 				{
-					Run.instance.BeginGameOver(GameResultType.Unknown);
+					this.DoFinalAction();
 				}
 			}
 		}
 
-		// Token: 0x04000701 RID: 1793
+		// Token: 0x06002EDD RID: 11997 RVA: 0x000C7908 File Offset: 0x000C5B08
+		private void DoFinalAction()
+		{
+			bool flag = false;
+			for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
+			{
+				if (CharacterMaster.readOnlyInstancesList[i].inventory.GetItemCount(ItemIndex.LunarTrinket) > 0)
+				{
+					flag = true;
+					break;
+				}
+			}
+			if (flag)
+			{
+				this.outer.SetNextState(new TransitionToNextStage());
+				return;
+			}
+			Run.instance.BeginGameOver(GameResultType.Unknown);
+			this.outer.SetNextState(new Idle());
+		}
+
+		// Token: 0x04002C25 RID: 11301
 		public static GameObject destroyEffectPrefab;
 
-		// Token: 0x04000702 RID: 1794
+		// Token: 0x04002C26 RID: 11302
 		public static float timeBetweenDestroy;
 
-		// Token: 0x04000703 RID: 1795
+		// Token: 0x04002C27 RID: 11303
 		public static float timeUntilEndGame;
 
-		// Token: 0x04000704 RID: 1796
+		// Token: 0x04002C28 RID: 11304
 		private float destroyTimer;
 
-		// Token: 0x04000705 RID: 1797
+		// Token: 0x04002C29 RID: 11305
 		private float endGameTimer;
 
-		// Token: 0x04000706 RID: 1798
+		// Token: 0x04002C2A RID: 11306
 		private bool beginEndingGame;
 	}
 }

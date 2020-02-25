@@ -11,10 +11,10 @@ using UnityEngine.SceneManagement;
 
 namespace RoR2
 {
-	// Token: 0x02000453 RID: 1107
+	// Token: 0x020003C6 RID: 966
 	public static class LocalUserManager
 	{
-		// Token: 0x060018BC RID: 6332 RVA: 0x00076F88 File Offset: 0x00075188
+		// Token: 0x06001782 RID: 6018 RVA: 0x000664C0 File Offset: 0x000646C0
 		public static bool UserExists(Player inputPlayer)
 		{
 			for (int i = 0; i < LocalUserManager.localUsersList.Count; i++)
@@ -27,7 +27,7 @@ namespace RoR2
 			return false;
 		}
 
-		// Token: 0x060018BD RID: 6333 RVA: 0x00076FC0 File Offset: 0x000751C0
+		// Token: 0x06001783 RID: 6019 RVA: 0x000664F8 File Offset: 0x000646F8
 		private static int FindUserIndex(int userId)
 		{
 			for (int i = 0; i < LocalUserManager.localUsersList.Count; i++)
@@ -40,7 +40,7 @@ namespace RoR2
 			return -1;
 		}
 
-		// Token: 0x060018BE RID: 6334 RVA: 0x00076FF8 File Offset: 0x000751F8
+		// Token: 0x06001784 RID: 6020 RVA: 0x00066530 File Offset: 0x00064730
 		public static LocalUser FindLocalUser(int userId)
 		{
 			for (int i = 0; i < LocalUserManager.localUsersList.Count; i++)
@@ -53,7 +53,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x060018BF RID: 6335 RVA: 0x0007703C File Offset: 0x0007523C
+		// Token: 0x06001785 RID: 6021 RVA: 0x00066574 File Offset: 0x00064774
 		public static LocalUser FindLocalUser(Player inputPlayer)
 		{
 			for (int i = 0; i < LocalUserManager.localUsersList.Count; i++)
@@ -66,7 +66,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x060018C0 RID: 6336 RVA: 0x0007707E File Offset: 0x0007527E
+		// Token: 0x06001786 RID: 6022 RVA: 0x000665B6 File Offset: 0x000647B6
 		public static LocalUser GetFirstLocalUser()
 		{
 			if (LocalUserManager.localUsersList.Count <= 0)
@@ -76,7 +76,7 @@ namespace RoR2
 			return LocalUserManager.localUsersList[0];
 		}
 
-		// Token: 0x060018C1 RID: 6337 RVA: 0x0007709C File Offset: 0x0007529C
+		// Token: 0x06001787 RID: 6023 RVA: 0x000665D4 File Offset: 0x000647D4
 		private static int FindUserIndex(Player inputPlayer)
 		{
 			for (int i = 0; i < LocalUserManager.localUsersList.Count; i++)
@@ -89,7 +89,7 @@ namespace RoR2
 			return -1;
 		}
 
-		// Token: 0x060018C2 RID: 6338 RVA: 0x000770D4 File Offset: 0x000752D4
+		// Token: 0x06001788 RID: 6024 RVA: 0x0006660C File Offset: 0x0006480C
 		private static int GetFirstAvailableId()
 		{
 			int i;
@@ -103,7 +103,7 @@ namespace RoR2
 			return i;
 		}
 
-		// Token: 0x060018C3 RID: 6339 RVA: 0x00077104 File Offset: 0x00075304
+		// Token: 0x06001789 RID: 6025 RVA: 0x0006663C File Offset: 0x0006483C
 		private static void AddUser(Player inputPlayer, UserProfile userProfile)
 		{
 			if (LocalUserManager.UserExists(inputPlayer))
@@ -130,13 +130,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060018C4 RID: 6340 RVA: 0x0007717C File Offset: 0x0007537C
+		// Token: 0x0600178A RID: 6026 RVA: 0x000666B4 File Offset: 0x000648B4
 		public static bool IsUserChangeSafe()
 		{
 			return SceneManager.GetActiveScene().name == "title";
 		}
 
-		// Token: 0x060018C5 RID: 6341 RVA: 0x000771A8 File Offset: 0x000753A8
+		// Token: 0x0600178B RID: 6027 RVA: 0x000666E0 File Offset: 0x000648E0
 		public static void SetLocalUsers(LocalUserManager.LocalUserInitializationInfo[] initializationInfo)
 		{
 			if (LocalUserManager.localUsersList.Count > 0)
@@ -159,19 +159,19 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060018C6 RID: 6342 RVA: 0x00077221 File Offset: 0x00075421
+		// Token: 0x0600178C RID: 6028 RVA: 0x00066759 File Offset: 0x00064959
 		private static Player GetRewiredMainPlayer()
 		{
 			return ReInput.players.GetPlayer("PlayerMain");
 		}
 
-		// Token: 0x060018C7 RID: 6343 RVA: 0x00077232 File Offset: 0x00075432
+		// Token: 0x0600178D RID: 6029 RVA: 0x0006676A File Offset: 0x0006496A
 		private static void AddMainUser(UserProfile userProfile)
 		{
 			LocalUserManager.AddUser(LocalUserManager.GetRewiredMainPlayer(), userProfile);
 		}
 
-		// Token: 0x060018C8 RID: 6344 RVA: 0x00077240 File Offset: 0x00075440
+		// Token: 0x0600178E RID: 6030 RVA: 0x00066778 File Offset: 0x00064978
 		private static void RemoveUser(Player inputPlayer)
 		{
 			int num = LocalUserManager.FindUserIndex(inputPlayer);
@@ -181,7 +181,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060018C9 RID: 6345 RVA: 0x00077260 File Offset: 0x00075460
+		// Token: 0x0600178F RID: 6031 RVA: 0x00066798 File Offset: 0x00064998
 		private static void RemoveUser(int userIndex)
 		{
 			LocalUser localUser = LocalUserManager.localUsersList[userIndex];
@@ -198,7 +198,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060018CA RID: 6346 RVA: 0x000772C4 File Offset: 0x000754C4
+		// Token: 0x06001790 RID: 6032 RVA: 0x000667FC File Offset: 0x000649FC
 		public static void ClearUsers()
 		{
 			if (!LocalUserManager.IsUserChangeSafe())
@@ -212,7 +212,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060018CB RID: 6347 RVA: 0x00077300 File Offset: 0x00075500
+		// Token: 0x06001791 RID: 6033 RVA: 0x00066838 File Offset: 0x00064A38
 		private static Player ListenForStartSignIn()
 		{
 			IList<Player> players = ReInput.players.Players;
@@ -227,14 +227,14 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x060018CC RID: 6348 RVA: 0x0007735B File Offset: 0x0007555B
+		// Token: 0x06001792 RID: 6034 RVA: 0x00066893 File Offset: 0x00064A93
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void Init()
 		{
 			RoR2Application.onUpdate += LocalUserManager.Update;
 		}
 
-		// Token: 0x060018CD RID: 6349 RVA: 0x00077370 File Offset: 0x00075570
+		// Token: 0x06001793 RID: 6035 RVA: 0x000668A8 File Offset: 0x00064AA8
 		private static void Update()
 		{
 			for (int i = 0; i < LocalUserManager.localUsersList.Count; i++)
@@ -243,24 +243,24 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x14000038 RID: 56
-		// (add) Token: 0x060018CE RID: 6350 RVA: 0x000773A4 File Offset: 0x000755A4
-		// (remove) Token: 0x060018CF RID: 6351 RVA: 0x000773D8 File Offset: 0x000755D8
+		// Token: 0x14000054 RID: 84
+		// (add) Token: 0x06001794 RID: 6036 RVA: 0x000668DC File Offset: 0x00064ADC
+		// (remove) Token: 0x06001795 RID: 6037 RVA: 0x00066910 File Offset: 0x00064B10
 		public static event Action<LocalUser> onUserSignIn;
 
-		// Token: 0x14000039 RID: 57
-		// (add) Token: 0x060018D0 RID: 6352 RVA: 0x0007740C File Offset: 0x0007560C
-		// (remove) Token: 0x060018D1 RID: 6353 RVA: 0x00077440 File Offset: 0x00075640
+		// Token: 0x14000055 RID: 85
+		// (add) Token: 0x06001796 RID: 6038 RVA: 0x00066944 File Offset: 0x00064B44
+		// (remove) Token: 0x06001797 RID: 6039 RVA: 0x00066978 File Offset: 0x00064B78
 		public static event Action<LocalUser> onUserSignOut;
 
-		// Token: 0x060018D2 RID: 6354 RVA: 0x00077473 File Offset: 0x00075673
+		// Token: 0x06001798 RID: 6040 RVA: 0x000669AB File Offset: 0x00064BAB
 		[ConCommand(commandName = "remove_all_local_users", flags = ConVarFlags.None, helpText = "Removes all local users.")]
 		private static void CCRemoveAllLocalUsers(ConCommandArgs args)
 		{
 			LocalUserManager.ClearUsers();
 		}
 
-		// Token: 0x060018D3 RID: 6355 RVA: 0x0007747C File Offset: 0x0007567C
+		// Token: 0x06001799 RID: 6041 RVA: 0x000669B4 File Offset: 0x00064BB4
 		[ConCommand(commandName = "print_local_users", flags = ConVarFlags.None, helpText = "Prints a list of all local users.")]
 		private static void CCPrintLocalUsers(ConCommandArgs args)
 		{
@@ -279,7 +279,7 @@ namespace RoR2
 			Debug.Log(string.Join("\n", array));
 		}
 
-		// Token: 0x060018D4 RID: 6356 RVA: 0x0007753C File Offset: 0x0007573C
+		// Token: 0x0600179A RID: 6042 RVA: 0x00066A74 File Offset: 0x00064C74
 		[ConCommand(commandName = "test_splitscreen", flags = ConVarFlags.None, helpText = "Logs in the specified number of guest users, or two by default.")]
 		private static void CCTestSplitscreen(ConCommandArgs args)
 		{
@@ -305,7 +305,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060018D5 RID: 6357 RVA: 0x000775C8 File Offset: 0x000757C8
+		// Token: 0x0600179B RID: 6043 RVA: 0x00066B00 File Offset: 0x00064D00
 		[ConCommand(commandName = "export_controller_maps", flags = ConVarFlags.None, helpText = "Prints all Rewired ControllerMaps of the first player as xml.")]
 		public static void CCExportControllerMaps(ConCommandArgs args)
 		{
@@ -320,39 +320,39 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x1400003A RID: 58
-		// (add) Token: 0x060018D6 RID: 6358 RVA: 0x00077660 File Offset: 0x00075860
-		// (remove) Token: 0x060018D7 RID: 6359 RVA: 0x00077694 File Offset: 0x00075894
+		// Token: 0x14000056 RID: 86
+		// (add) Token: 0x0600179C RID: 6044 RVA: 0x00066B98 File Offset: 0x00064D98
+		// (remove) Token: 0x0600179D RID: 6045 RVA: 0x00066BCC File Offset: 0x00064DCC
 		public static event Action onLocalUsersUpdated;
 
-		// Token: 0x04001C49 RID: 7241
+		// Token: 0x0400163C RID: 5692
 		private static readonly List<LocalUser> localUsersList = new List<LocalUser>();
 
-		// Token: 0x04001C4A RID: 7242
+		// Token: 0x0400163D RID: 5693
 		public static readonly ReadOnlyCollection<LocalUser> readOnlyLocalUsersList = LocalUserManager.localUsersList.AsReadOnly();
 
-		// Token: 0x04001C4B RID: 7243
+		// Token: 0x0400163E RID: 5694
 		public static Player startPlayer;
 
-		// Token: 0x02000454 RID: 1108
+		// Token: 0x020003C7 RID: 967
 		public struct LocalUserInitializationInfo
 		{
-			// Token: 0x04001C4F RID: 7247
+			// Token: 0x04001642 RID: 5698
 			public Player player;
 
-			// Token: 0x04001C50 RID: 7248
+			// Token: 0x04001643 RID: 5699
 			public UserProfile profile;
 		}
 
-		// Token: 0x02000455 RID: 1109
+		// Token: 0x020003C8 RID: 968
 		private class UserProfileMainConVar : BaseConVar
 		{
-			// Token: 0x060018D9 RID: 6361 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x0600179F RID: 6047 RVA: 0x0000972B File Offset: 0x0000792B
 			public UserProfileMainConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x060018DA RID: 6362 RVA: 0x000776E4 File Offset: 0x000758E4
+			// Token: 0x060017A0 RID: 6048 RVA: 0x00066C1C File Offset: 0x00064E1C
 			public override void SetString(string newValue)
 			{
 				if (LocalUserManager.readOnlyLocalUsersList.Count > 0)
@@ -367,7 +367,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x060018DB RID: 6363 RVA: 0x00077724 File Offset: 0x00075924
+			// Token: 0x060017A1 RID: 6049 RVA: 0x00066C5C File Offset: 0x00064E5C
 			public override string GetString()
 			{
 				int num = LocalUserManager.FindUserIndex(LocalUserManager.GetRewiredMainPlayer());
@@ -378,7 +378,7 @@ namespace RoR2
 				return LocalUserManager.localUsersList[num].userProfile.fileName;
 			}
 
-			// Token: 0x04001C51 RID: 7249
+			// Token: 0x04001644 RID: 5700
 			private static LocalUserManager.UserProfileMainConVar cvClCurrentUserProfile = new LocalUserManager.UserProfileMainConVar("user_profile_main", ConVarFlags.Archive, null, "The current user profile.");
 		}
 	}

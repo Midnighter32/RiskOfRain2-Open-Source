@@ -2,10 +2,10 @@
 
 namespace RoR2
 {
-	// Token: 0x02000329 RID: 809
+	// Token: 0x0200024A RID: 586
 	public interface IBarrier
 	{
-		// Token: 0x060010A4 RID: 4260
+		// Token: 0x06000CEE RID: 3310
 		void BlockedDamage(DamageInfo damageInfo, float actualDamageBlocked);
 	}
 }

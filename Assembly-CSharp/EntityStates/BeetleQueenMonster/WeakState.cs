@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.BeetleQueenMonster
 {
-	// Token: 0x020001D6 RID: 470
+	// Token: 0x020008F1 RID: 2289
 	public class WeakState : BaseState
 	{
-		// Token: 0x0600092D RID: 2349 RVA: 0x0002E240 File Offset: 0x0002C440
+		// Token: 0x0600332D RID: 13101 RVA: 0x000DDEAC File Offset: 0x000DC0AC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -33,7 +33,7 @@ namespace EntityStates.BeetleQueenMonster
 			}
 		}
 
-		// Token: 0x0600092E RID: 2350 RVA: 0x0002E310 File Offset: 0x0002C510
+		// Token: 0x0600332E RID: 13102 RVA: 0x000DDF7C File Offset: 0x000DC17C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -64,43 +64,43 @@ namespace EntityStates.BeetleQueenMonster
 			}
 		}
 
-		// Token: 0x0600092F RID: 2351 RVA: 0x0000BB2B File Offset: 0x00009D2B
+		// Token: 0x0600332F RID: 13103 RVA: 0x0000C5D3 File Offset: 0x0000A7D3
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Pain;
 		}
 
-		// Token: 0x04000C72 RID: 3186
+		// Token: 0x0400329A RID: 12954
 		private float stopwatch;
 
-		// Token: 0x04000C73 RID: 3187
+		// Token: 0x0400329B RID: 12955
 		private float grubStopwatch;
 
-		// Token: 0x04000C74 RID: 3188
+		// Token: 0x0400329C RID: 12956
 		public static float weakDuration;
 
-		// Token: 0x04000C75 RID: 3189
+		// Token: 0x0400329D RID: 12957
 		public static float weakToIdleTransitionDuration;
 
-		// Token: 0x04000C76 RID: 3190
+		// Token: 0x0400329E RID: 12958
 		public static string weakPointChildString;
 
-		// Token: 0x04000C77 RID: 3191
+		// Token: 0x0400329F RID: 12959
 		public static int maxGrubCount;
 
-		// Token: 0x04000C78 RID: 3192
+		// Token: 0x040032A0 RID: 12960
 		public static float grubSpawnFrequency;
 
-		// Token: 0x04000C79 RID: 3193
+		// Token: 0x040032A1 RID: 12961
 		public static float grubSpawnDelay;
 
-		// Token: 0x04000C7A RID: 3194
+		// Token: 0x040032A2 RID: 12962
 		private int grubCount;
 
-		// Token: 0x04000C7B RID: 3195
+		// Token: 0x040032A3 RID: 12963
 		private bool beginExitTransition;
 
-		// Token: 0x04000C7C RID: 3196
+		// Token: 0x040032A4 RID: 12964
 		private ChildLocator childLocator;
 	}
 }

@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.ClayBoss
 {
-	// Token: 0x020001B8 RID: 440
-	internal class FireTarball : BaseState
+	// Token: 0x020008D3 RID: 2259
+	public class FireTarball : BaseState
 	{
-		// Token: 0x0600089C RID: 2204 RVA: 0x0002B228 File Offset: 0x00029428
+		// Token: 0x0600329B RID: 12955 RVA: 0x000DAE44 File Offset: 0x000D9044
 		private void FireSingleTarball(string targetMuzzle)
 		{
 			base.PlayCrossfade("Body", "FireTarBall", 0.1f);
@@ -29,7 +29,7 @@ namespace EntityStates.ClayBoss
 			base.AddRecoil(-1f * FireTarball.recoilAmplitude, -2f * FireTarball.recoilAmplitude, -1f * FireTarball.recoilAmplitude, 1f * FireTarball.recoilAmplitude);
 			if (FireTarball.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireTarball.effectPrefab, base.gameObject, targetMuzzle, false);
+				EffectManager.SimpleMuzzleFlash(FireTarball.effectPrefab, base.gameObject, targetMuzzle, false);
 			}
 			if (base.isAuthority)
 			{
@@ -39,7 +39,7 @@ namespace EntityStates.ClayBoss
 			base.characterBody.AddSpreadBloom(FireTarball.spreadBloomValue);
 		}
 
-		// Token: 0x0600089D RID: 2205 RVA: 0x0002B380 File Offset: 0x00029580
+		// Token: 0x0600329C RID: 12956 RVA: 0x000DAF98 File Offset: 0x000D9198
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -52,13 +52,13 @@ namespace EntityStates.ClayBoss
 			}
 		}
 
-		// Token: 0x0600089E RID: 2206 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x0600329D RID: 12957 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x0600089F RID: 2207 RVA: 0x0002B3F0 File Offset: 0x000295F0
+		// Token: 0x0600329E RID: 12958 RVA: 0x000DB008 File Offset: 0x000D9208
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -84,55 +84,55 @@ namespace EntityStates.ClayBoss
 			}
 		}
 
-		// Token: 0x060008A0 RID: 2208 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x0600329F RID: 12959 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000B81 RID: 2945
+		// Token: 0x040031A9 RID: 12713
 		public static GameObject effectPrefab;
 
-		// Token: 0x04000B82 RID: 2946
+		// Token: 0x040031AA RID: 12714
 		public static GameObject projectilePrefab;
 
-		// Token: 0x04000B83 RID: 2947
+		// Token: 0x040031AB RID: 12715
 		public static int tarballCountMax = 3;
 
-		// Token: 0x04000B84 RID: 2948
+		// Token: 0x040031AC RID: 12716
 		public static float damageCoefficient;
 
-		// Token: 0x04000B85 RID: 2949
+		// Token: 0x040031AD RID: 12717
 		public static float baseTimeBetweenShots = 1f;
 
-		// Token: 0x04000B86 RID: 2950
+		// Token: 0x040031AE RID: 12718
 		public static float cooldownDuration = 2f;
 
-		// Token: 0x04000B87 RID: 2951
+		// Token: 0x040031AF RID: 12719
 		public static float recoilAmplitude = 1f;
 
-		// Token: 0x04000B88 RID: 2952
+		// Token: 0x040031B0 RID: 12720
 		public static string attackSoundString;
 
-		// Token: 0x04000B89 RID: 2953
+		// Token: 0x040031B1 RID: 12721
 		public static float spreadBloomValue = 0.3f;
 
-		// Token: 0x04000B8A RID: 2954
+		// Token: 0x040031B2 RID: 12722
 		private int tarballCount;
 
-		// Token: 0x04000B8B RID: 2955
+		// Token: 0x040031B3 RID: 12723
 		private Ray aimRay;
 
-		// Token: 0x04000B8C RID: 2956
+		// Token: 0x040031B4 RID: 12724
 		private Transform modelTransform;
 
-		// Token: 0x04000B8D RID: 2957
+		// Token: 0x040031B5 RID: 12725
 		private float duration;
 
-		// Token: 0x04000B8E RID: 2958
+		// Token: 0x040031B6 RID: 12726
 		private float fireTimer;
 
-		// Token: 0x04000B8F RID: 2959
+		// Token: 0x040031B7 RID: 12727
 		private float timeBetweenShots;
 	}
 }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.ImpBossMonster
 {
-	// Token: 0x02000142 RID: 322
+	// Token: 0x0200081E RID: 2078
 	public class SpawnState : BaseState
 	{
-		// Token: 0x0600062D RID: 1581 RVA: 0x0001CD44 File Offset: 0x0001AF44
+		// Token: 0x06002F1A RID: 12058 RVA: 0x000C90D8 File Offset: 0x000C72D8
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -18,7 +18,7 @@ namespace EntityStates.ImpBossMonster
 			{
 				EffectData effectData = new EffectData();
 				effectData.origin = base.transform.position;
-				EffectManager.instance.SpawnEffect(SpawnState.spawnEffectPrefab, effectData, false);
+				EffectManager.SpawnEffect(SpawnState.spawnEffectPrefab, effectData, false);
 			}
 			if (SpawnState.destealthMaterial)
 			{
@@ -32,7 +32,7 @@ namespace EntityStates.ImpBossMonster
 			}
 		}
 
-		// Token: 0x0600062E RID: 1582 RVA: 0x0001CE27 File Offset: 0x0001B027
+		// Token: 0x06002F1B RID: 12059 RVA: 0x000C91B6 File Offset: 0x000C73B6
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -43,25 +43,25 @@ namespace EntityStates.ImpBossMonster
 			}
 		}
 
-		// Token: 0x0600062F RID: 1583 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x06002F1C RID: 12060 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Death;
 		}
 
-		// Token: 0x0400074F RID: 1871
+		// Token: 0x04002C8F RID: 11407
 		private float stopwatch;
 
-		// Token: 0x04000750 RID: 1872
+		// Token: 0x04002C90 RID: 11408
 		public static float duration = 4f;
 
-		// Token: 0x04000751 RID: 1873
+		// Token: 0x04002C91 RID: 11409
 		public static string spawnSoundString;
 
-		// Token: 0x04000752 RID: 1874
+		// Token: 0x04002C92 RID: 11410
 		public static GameObject spawnEffectPrefab;
 
-		// Token: 0x04000753 RID: 1875
+		// Token: 0x04002C93 RID: 11411
 		public static Material destealthMaterial;
 	}
 }

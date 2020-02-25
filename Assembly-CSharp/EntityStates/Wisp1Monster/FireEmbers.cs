@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Wisp1Monster
 {
-	// Token: 0x020000C8 RID: 200
+	// Token: 0x02000724 RID: 1828
 	public class FireEmbers : BaseState
 	{
-		// Token: 0x060003E4 RID: 996 RVA: 0x00010100 File Offset: 0x0000E300
+		// Token: 0x06002A89 RID: 10889 RVA: 0x000B30EC File Offset: 0x000B12EC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -19,7 +19,7 @@ namespace EntityStates.Wisp1Monster
 			string muzzleName = "";
 			if (FireEmbers.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireEmbers.effectPrefab, base.gameObject, muzzleName, false);
+				EffectManager.SimpleMuzzleFlash(FireEmbers.effectPrefab, base.gameObject, muzzleName, false);
 			}
 			if (base.isAuthority)
 			{
@@ -46,13 +46,13 @@ namespace EntityStates.Wisp1Monster
 			}
 		}
 
-		// Token: 0x060003E5 RID: 997 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002A8A RID: 10890 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x060003E6 RID: 998 RVA: 0x00010290 File Offset: 0x0000E490
+		// Token: 0x06002A8B RID: 10891 RVA: 0x000B326F File Offset: 0x000B146F
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -63,43 +63,43 @@ namespace EntityStates.Wisp1Monster
 			}
 		}
 
-		// Token: 0x060003E7 RID: 999 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002A8C RID: 10892 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x040003A3 RID: 931
+		// Token: 0x04002667 RID: 9831
 		public static GameObject effectPrefab;
 
-		// Token: 0x040003A4 RID: 932
+		// Token: 0x04002668 RID: 9832
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x040003A5 RID: 933
+		// Token: 0x04002669 RID: 9833
 		public static GameObject tracerEffectPrefab;
 
-		// Token: 0x040003A6 RID: 934
+		// Token: 0x0400266A RID: 9834
 		public static float damageCoefficient;
 
-		// Token: 0x040003A7 RID: 935
+		// Token: 0x0400266B RID: 9835
 		public static float force;
 
-		// Token: 0x040003A8 RID: 936
+		// Token: 0x0400266C RID: 9836
 		public static float minSpread;
 
-		// Token: 0x040003A9 RID: 937
+		// Token: 0x0400266D RID: 9837
 		public static float maxSpread;
 
-		// Token: 0x040003AA RID: 938
+		// Token: 0x0400266E RID: 9838
 		public static int bulletCount;
 
-		// Token: 0x040003AB RID: 939
+		// Token: 0x0400266F RID: 9839
 		public static float baseDuration = 2f;
 
-		// Token: 0x040003AC RID: 940
+		// Token: 0x04002670 RID: 9840
 		public static string attackString;
 
-		// Token: 0x040003AD RID: 941
+		// Token: 0x04002671 RID: 9841
 		private float duration;
 	}
 }

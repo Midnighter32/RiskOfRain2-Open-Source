@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.ImpMonster
 {
-	// Token: 0x02000148 RID: 328
+	// Token: 0x02000824 RID: 2084
 	public class DoubleSlash : BaseState
 	{
-		// Token: 0x0600064C RID: 1612 RVA: 0x0001D694 File Offset: 0x0001B894
+		// Token: 0x06002F39 RID: 12089 RVA: 0x000C9A24 File Offset: 0x000C7C24
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -37,20 +37,20 @@ namespace EntityStates.ImpMonster
 			}
 		}
 
-		// Token: 0x0600064D RID: 1613 RVA: 0x0001C726 File Offset: 0x0001A926
+		// Token: 0x06002F3A RID: 12090 RVA: 0x000C8ACA File Offset: 0x000C6CCA
 		public override void OnExit()
 		{
 			base.characterMotor.walkSpeedPenaltyCoefficient = 1f;
 			base.OnExit();
 		}
 
-		// Token: 0x0600064E RID: 1614 RVA: 0x0001D810 File Offset: 0x0001BA10
+		// Token: 0x06002F3B RID: 12091 RVA: 0x000C9BA0 File Offset: 0x000C7DA0
 		private void HandleSlash(string animatorParamName, string muzzleName, string hitBoxGroupName)
 		{
 			if (this.modelAnimator.GetFloat(animatorParamName) > 0.1f)
 			{
 				Util.PlaySound(DoubleSlash.slashSoundString, base.gameObject);
-				EffectManager.instance.SimpleMuzzleFlash(DoubleSlash.swipeEffectPrefab, base.gameObject, muzzleName, true);
+				EffectManager.SimpleMuzzleFlash(DoubleSlash.swipeEffectPrefab, base.gameObject, muzzleName, true);
 				this.slashCount++;
 				if (this.modelTransform)
 				{
@@ -58,7 +58,7 @@ namespace EntityStates.ImpMonster
 				}
 				if (base.healthComponent)
 				{
-					base.healthComponent.TakeDamageForce(base.characterDirection.forward * DoubleSlash.selfForce, true);
+					base.healthComponent.TakeDamageForce(base.characterDirection.forward * DoubleSlash.selfForce, true, false);
 				}
 				this.attack.ResetIgnoredHealthComponents();
 				if (base.characterDirection)
@@ -69,7 +69,7 @@ namespace EntityStates.ImpMonster
 			}
 		}
 
-		// Token: 0x0600064F RID: 1615 RVA: 0x0001D920 File Offset: 0x0001BB20
+		// Token: 0x06002F3C RID: 12092 RVA: 0x000C9CAC File Offset: 0x000C7EAC
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -92,55 +92,55 @@ namespace EntityStates.ImpMonster
 			}
 		}
 
-		// Token: 0x06000650 RID: 1616 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06002F3D RID: 12093 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000777 RID: 1911
+		// Token: 0x04002CB7 RID: 11447
 		public static float baseDuration = 3.5f;
 
-		// Token: 0x04000778 RID: 1912
+		// Token: 0x04002CB8 RID: 11448
 		public static float damageCoefficient = 4f;
 
-		// Token: 0x04000779 RID: 1913
+		// Token: 0x04002CB9 RID: 11449
 		public static float procCoefficient;
 
-		// Token: 0x0400077A RID: 1914
+		// Token: 0x04002CBA RID: 11450
 		public static float selfForce;
 
-		// Token: 0x0400077B RID: 1915
+		// Token: 0x04002CBB RID: 11451
 		public static float forceMagnitude = 16f;
 
-		// Token: 0x0400077C RID: 1916
+		// Token: 0x04002CBC RID: 11452
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x0400077D RID: 1917
+		// Token: 0x04002CBD RID: 11453
 		public static GameObject swipeEffectPrefab;
 
-		// Token: 0x0400077E RID: 1918
+		// Token: 0x04002CBE RID: 11454
 		public static string enterSoundString;
 
-		// Token: 0x0400077F RID: 1919
+		// Token: 0x04002CBF RID: 11455
 		public static string slashSoundString;
 
-		// Token: 0x04000780 RID: 1920
+		// Token: 0x04002CC0 RID: 11456
 		public static float walkSpeedPenaltyCoefficient;
 
-		// Token: 0x04000781 RID: 1921
+		// Token: 0x04002CC1 RID: 11457
 		private OverlapAttack attack;
 
-		// Token: 0x04000782 RID: 1922
+		// Token: 0x04002CC2 RID: 11458
 		private Animator modelAnimator;
 
-		// Token: 0x04000783 RID: 1923
+		// Token: 0x04002CC3 RID: 11459
 		private float duration;
 
-		// Token: 0x04000784 RID: 1924
+		// Token: 0x04002CC4 RID: 11460
 		private int slashCount;
 
-		// Token: 0x04000785 RID: 1925
+		// Token: 0x04002CC5 RID: 11461
 		private Transform modelTransform;
 	}
 }

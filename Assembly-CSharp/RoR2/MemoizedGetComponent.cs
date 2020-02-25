@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200045A RID: 1114
+	// Token: 0x020003D0 RID: 976
 	public struct MemoizedGetComponent<TComponent> where TComponent : Component
 	{
-		// Token: 0x060018EB RID: 6379 RVA: 0x000778F4 File Offset: 0x00075AF4
+		// Token: 0x060017BD RID: 6077 RVA: 0x00067164 File Offset: 0x00065364
 		public TComponent Get(GameObject gameObject)
 		{
 			if (this.cachedGameObject != gameObject)
@@ -17,10 +17,10 @@ namespace RoR2
 			return this.cachedValue;
 		}
 
-		// Token: 0x04001C61 RID: 7265
+		// Token: 0x04001660 RID: 5728
 		private GameObject cachedGameObject;
 
-		// Token: 0x04001C62 RID: 7266
+		// Token: 0x04001661 RID: 5729
 		private TComponent cachedValue;
 	}
 }

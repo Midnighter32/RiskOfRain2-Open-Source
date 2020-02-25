@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.Pot.PotWeapon
 {
-	// Token: 0x020000F8 RID: 248
-	internal class FireCannon : BaseState
+	// Token: 0x020007A9 RID: 1961
+	public class FireCannon : BaseState
 	{
-		// Token: 0x060004C1 RID: 1217 RVA: 0x00013E24 File Offset: 0x00012024
+		// Token: 0x06002CD5 RID: 11477 RVA: 0x000BD06C File Offset: 0x000BB26C
 		private void FireBullet(string targetMuzzle)
 		{
 			this.aimRay = base.GetAimRay();
@@ -26,7 +26,7 @@ namespace EntityStates.Pot.PotWeapon
 			}
 			if (FireCannon.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireCannon.effectPrefab, base.gameObject, targetMuzzle, false);
+				EffectManager.SimpleMuzzleFlash(FireCannon.effectPrefab, base.gameObject, targetMuzzle, false);
 			}
 			if (base.isAuthority)
 			{
@@ -44,7 +44,7 @@ namespace EntityStates.Pot.PotWeapon
 			}
 		}
 
-		// Token: 0x060004C2 RID: 1218 RVA: 0x00013FF8 File Offset: 0x000121F8
+		// Token: 0x06002CD6 RID: 11478 RVA: 0x000BD23C File Offset: 0x000BB43C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -54,13 +54,13 @@ namespace EntityStates.Pot.PotWeapon
 			base.StartAimMode(this.aimRay, 2f, false);
 		}
 
-		// Token: 0x060004C3 RID: 1219 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002CD7 RID: 11479 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x060004C4 RID: 1220 RVA: 0x00014048 File Offset: 0x00012248
+		// Token: 0x06002CD8 RID: 11480 RVA: 0x000BD28C File Offset: 0x000BB48C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -91,58 +91,58 @@ namespace EntityStates.Pot.PotWeapon
 			}
 		}
 
-		// Token: 0x060004C5 RID: 1221 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002CD9 RID: 11481 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000485 RID: 1157
+		// Token: 0x040028EE RID: 10478
 		public static GameObject effectPrefab;
 
-		// Token: 0x04000486 RID: 1158
+		// Token: 0x040028EF RID: 10479
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000487 RID: 1159
+		// Token: 0x040028F0 RID: 10480
 		public static GameObject projectilePrefab;
 
-		// Token: 0x04000488 RID: 1160
+		// Token: 0x040028F1 RID: 10481
 		public static float selfForce = 1000f;
 
-		// Token: 0x04000489 RID: 1161
+		// Token: 0x040028F2 RID: 10482
 		public static int grenadeCountMax = 3;
 
-		// Token: 0x0400048A RID: 1162
+		// Token: 0x040028F3 RID: 10483
 		public static float damageCoefficient;
 
-		// Token: 0x0400048B RID: 1163
+		// Token: 0x040028F4 RID: 10484
 		public static float fireDuration = 1f;
 
-		// Token: 0x0400048C RID: 1164
+		// Token: 0x040028F5 RID: 10485
 		public static float baseDuration = 2f;
 
-		// Token: 0x0400048D RID: 1165
+		// Token: 0x040028F6 RID: 10486
 		public static float minSpread = 0f;
 
-		// Token: 0x0400048E RID: 1166
+		// Token: 0x040028F7 RID: 10487
 		public static float maxSpread = 5f;
 
-		// Token: 0x0400048F RID: 1167
+		// Token: 0x040028F8 RID: 10488
 		public static float arcAngle = 5f;
 
-		// Token: 0x04000490 RID: 1168
+		// Token: 0x040028F9 RID: 10489
 		private Ray aimRay;
 
-		// Token: 0x04000491 RID: 1169
+		// Token: 0x040028FA RID: 10490
 		private Transform modelTransform;
 
-		// Token: 0x04000492 RID: 1170
+		// Token: 0x040028FB RID: 10491
 		private float duration;
 
-		// Token: 0x04000493 RID: 1171
+		// Token: 0x040028FC RID: 10492
 		private float fireTimer;
 
-		// Token: 0x04000494 RID: 1172
+		// Token: 0x040028FD RID: 10493
 		private int grenadeCount;
 	}
 }

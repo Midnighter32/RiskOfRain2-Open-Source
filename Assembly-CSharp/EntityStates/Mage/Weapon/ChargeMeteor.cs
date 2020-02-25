@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Mage.Weapon
 {
-	// Token: 0x02000111 RID: 273
+	// Token: 0x020007CF RID: 1999
 	public class ChargeMeteor : BaseState
 	{
-		// Token: 0x06000536 RID: 1334 RVA: 0x0001717A File Offset: 0x0001537A
+		// Token: 0x06002D95 RID: 11669 RVA: 0x000C14BE File Offset: 0x000BF6BE
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -16,7 +16,7 @@ namespace EntityStates.Mage.Weapon
 			this.UpdateAreaIndicator();
 		}
 
-		// Token: 0x06000537 RID: 1335 RVA: 0x000171AC File Offset: 0x000153AC
+		// Token: 0x06002D96 RID: 11670 RVA: 0x000C14F0 File Offset: 0x000BF6F0
 		private void UpdateAreaIndicator()
 		{
 			if (this.areaIndicatorInstance)
@@ -37,14 +37,14 @@ namespace EntityStates.Mage.Weapon
 			this.areaIndicatorInstance.transform.localScale = new Vector3(this.radius, this.radius, this.radius);
 		}
 
-		// Token: 0x06000538 RID: 1336 RVA: 0x00017286 File Offset: 0x00015486
+		// Token: 0x06002D97 RID: 11671 RVA: 0x000C15CA File Offset: 0x000BF7CA
 		public override void Update()
 		{
 			base.Update();
 			this.UpdateAreaIndicator();
 		}
 
-		// Token: 0x06000539 RID: 1337 RVA: 0x00017294 File Offset: 0x00015494
+		// Token: 0x06002D98 RID: 11672 RVA: 0x000C15D8 File Offset: 0x000BF7D8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -56,16 +56,16 @@ namespace EntityStates.Mage.Weapon
 			}
 		}
 
-		// Token: 0x0600053A RID: 1338 RVA: 0x000172F4 File Offset: 0x000154F4
+		// Token: 0x06002D99 RID: 11673 RVA: 0x000C1638 File Offset: 0x000BF838
 		public override void OnExit()
 		{
-			EffectManager.instance.SimpleMuzzleFlash(ChargeMeteor.muzzleflashEffect, base.gameObject, "Muzzle", false);
+			EffectManager.SimpleMuzzleFlash(ChargeMeteor.muzzleflashEffect, base.gameObject, "Muzzle", false);
 			if (this.areaIndicatorInstance)
 			{
 				if (this.fireMeteor)
 				{
 					float num = Util.Remap(Mathf.Clamp01(this.stopwatch / this.chargeDuration), 0f, 1f, ChargeMeteor.minDamageCoefficient, ChargeMeteor.maxDamageCoefficient);
-					EffectManager.instance.SpawnEffect(ChargeMeteor.meteorEffect, new EffectData
+					EffectManager.SpawnEffect(ChargeMeteor.meteorEffect, new EffectData
 					{
 						origin = this.areaIndicatorInstance.transform.position,
 						scale = this.radius
@@ -87,55 +87,55 @@ namespace EntityStates.Mage.Weapon
 			base.OnExit();
 		}
 
-		// Token: 0x04000572 RID: 1394
+		// Token: 0x04002A2E RID: 10798
 		public static float baseChargeDuration;
 
-		// Token: 0x04000573 RID: 1395
+		// Token: 0x04002A2F RID: 10799
 		public static float baseDuration;
 
-		// Token: 0x04000574 RID: 1396
+		// Token: 0x04002A30 RID: 10800
 		public static GameObject areaIndicatorPrefab;
 
-		// Token: 0x04000575 RID: 1397
+		// Token: 0x04002A31 RID: 10801
 		public static float minMeteorRadius = 0f;
 
-		// Token: 0x04000576 RID: 1398
+		// Token: 0x04002A32 RID: 10802
 		public static float maxMeteorRadius = 10f;
 
-		// Token: 0x04000577 RID: 1399
+		// Token: 0x04002A33 RID: 10803
 		public static GameObject meteorEffect;
 
-		// Token: 0x04000578 RID: 1400
+		// Token: 0x04002A34 RID: 10804
 		public static float minDamageCoefficient;
 
-		// Token: 0x04000579 RID: 1401
+		// Token: 0x04002A35 RID: 10805
 		public static float maxDamageCoefficient;
 
-		// Token: 0x0400057A RID: 1402
+		// Token: 0x04002A36 RID: 10806
 		public static float procCoefficient;
 
-		// Token: 0x0400057B RID: 1403
+		// Token: 0x04002A37 RID: 10807
 		public static float force;
 
-		// Token: 0x0400057C RID: 1404
+		// Token: 0x04002A38 RID: 10808
 		public static GameObject muzzleflashEffect;
 
-		// Token: 0x0400057D RID: 1405
+		// Token: 0x04002A39 RID: 10809
 		private float stopwatch;
 
-		// Token: 0x0400057E RID: 1406
+		// Token: 0x04002A3A RID: 10810
 		private GameObject areaIndicatorInstance;
 
-		// Token: 0x0400057F RID: 1407
+		// Token: 0x04002A3B RID: 10811
 		private bool fireMeteor;
 
-		// Token: 0x04000580 RID: 1408
+		// Token: 0x04002A3C RID: 10812
 		private float radius;
 
-		// Token: 0x04000581 RID: 1409
+		// Token: 0x04002A3D RID: 10813
 		private float chargeDuration;
 
-		// Token: 0x04000582 RID: 1410
+		// Token: 0x04002A3E RID: 10814
 		private float duration;
 	}
 }

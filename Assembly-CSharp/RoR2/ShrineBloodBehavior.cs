@@ -5,23 +5,23 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020003DC RID: 988
+	// Token: 0x0200032D RID: 813
 	[RequireComponent(typeof(PurchaseInteraction))]
 	public class ShrineBloodBehavior : NetworkBehaviour
 	{
-		// Token: 0x06001575 RID: 5493 RVA: 0x00037FB6 File Offset: 0x000361B6
+		// Token: 0x0600133B RID: 4923 RVA: 0x00019B5A File Offset: 0x00017D5A
 		public override int GetNetworkChannel()
 		{
 			return QosChannelIndex.defaultReliable.intVal;
 		}
 
-		// Token: 0x06001576 RID: 5494 RVA: 0x00066E63 File Offset: 0x00065063
+		// Token: 0x0600133C RID: 4924 RVA: 0x0005263F File Offset: 0x0005083F
 		private void Start()
 		{
 			this.purchaseInteraction = base.GetComponent<PurchaseInteraction>();
 		}
 
-		// Token: 0x06001577 RID: 5495 RVA: 0x00066E74 File Offset: 0x00065074
+		// Token: 0x0600133D RID: 4925 RVA: 0x00052650 File Offset: 0x00050850
 		public void FixedUpdate()
 		{
 			if (this.waitingForRefresh)
@@ -36,7 +36,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001578 RID: 5496 RVA: 0x00066F04 File Offset: 0x00065104
+		// Token: 0x0600133E RID: 4926 RVA: 0x000526E0 File Offset: 0x000508E0
 		[Server]
 		public void AddShrineStack(Interactor interactor)
 		{
@@ -49,13 +49,13 @@ namespace RoR2
 			CharacterBody component = interactor.GetComponent<CharacterBody>();
 			if (component)
 			{
-				uint amount = (uint)(component.healthComponent.fullHealth * (float)this.purchaseInteraction.cost / 100f * this.goldToPaidHpRatio);
+				uint amount = (uint)(component.healthComponent.fullCombinedHealth * (float)this.purchaseInteraction.cost / 100f * this.goldToPaidHpRatio);
 				if (component.master)
 				{
 					component.master.GiveMoney(amount);
 					Chat.SendBroadcastChat(new Chat.SubjectFormatChatMessage
 					{
-						subjectCharacterBodyGameObject = interactor.gameObject,
+						subjectAsCharacterBody = component,
 						baseToken = "SHRINE_BLOOD_USE_MESSAGE",
 						paramTokens = new string[]
 						{
@@ -64,7 +64,7 @@ namespace RoR2
 					});
 				}
 			}
-			EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ShrineUseEffect"), new EffectData
+			EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ShrineUseEffect"), new EffectData
 			{
 				origin = base.transform.position,
 				rotation = Quaternion.identity,
@@ -79,48 +79,48 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600157A RID: 5498 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001340 RID: 4928 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x0600157B RID: 5499 RVA: 0x00067054 File Offset: 0x00065254
+		// Token: 0x06001341 RID: 4929 RVA: 0x00052824 File Offset: 0x00050A24
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			bool result;
 			return result;
 		}
 
-		// Token: 0x0600157C RID: 5500 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001342 RID: 4930 RVA: 0x0000409B File Offset: 0x0000229B
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 		}
 
-		// Token: 0x040018BE RID: 6334
+		// Token: 0x040011FC RID: 4604
 		public int maxPurchaseCount;
 
-		// Token: 0x040018BF RID: 6335
+		// Token: 0x040011FD RID: 4605
 		public float goldToPaidHpRatio = 0.5f;
 
-		// Token: 0x040018C0 RID: 6336
+		// Token: 0x040011FE RID: 4606
 		public float costMultiplierPerPurchase;
 
-		// Token: 0x040018C1 RID: 6337
+		// Token: 0x040011FF RID: 4607
 		public Transform symbolTransform;
 
-		// Token: 0x040018C2 RID: 6338
+		// Token: 0x04001200 RID: 4608
 		private PurchaseInteraction purchaseInteraction;
 
-		// Token: 0x040018C3 RID: 6339
+		// Token: 0x04001201 RID: 4609
 		private int purchaseCount;
 
-		// Token: 0x040018C4 RID: 6340
+		// Token: 0x04001202 RID: 4610
 		private float refreshTimer;
 
-		// Token: 0x040018C5 RID: 6341
+		// Token: 0x04001203 RID: 4611
 		private const float refreshDuration = 2f;
 
-		// Token: 0x040018C6 RID: 6342
+		// Token: 0x04001204 RID: 4612
 		private bool waitingForRefresh;
 	}
 }

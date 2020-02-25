@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Toolbot
 {
-	// Token: 0x020000DD RID: 221
+	// Token: 0x02000764 RID: 1892
 	public class FireSpear : GenericBulletBaseState
 	{
-		// Token: 0x06000454 RID: 1108 RVA: 0x00011F38 File Offset: 0x00010138
+		// Token: 0x06002BAF RID: 11183 RVA: 0x000B8800 File Offset: 0x000B6A00
 		protected override void ModifyBullet(BulletAttack bulletAttack)
 		{
 			base.ModifyBullet(bulletAttack);
@@ -15,7 +15,7 @@ namespace EntityStates.Toolbot
 			bulletAttack.falloffModel = BulletAttack.FalloffModel.None;
 		}
 
-		// Token: 0x06000455 RID: 1109 RVA: 0x00011F68 File Offset: 0x00010168
+		// Token: 0x06002BB0 RID: 11184 RVA: 0x000B8830 File Offset: 0x000B6A30
 		protected override void FireBullet(Ray aimRay)
 		{
 			base.FireBullet(aimRay);
@@ -24,10 +24,10 @@ namespace EntityStates.Toolbot
 			base.PlayAnimation("Gesture, Additive", "FireSpear", "FireSpear.playbackRate", this.duration);
 		}
 
-		// Token: 0x04000417 RID: 1047
+		// Token: 0x040027D2 RID: 10194
 		public float charge;
 
-		// Token: 0x04000418 RID: 1048
+		// Token: 0x040027D3 RID: 10195
 		public static float recoilAmplitude;
 	}
 }

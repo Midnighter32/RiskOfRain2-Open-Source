@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace EntityStates.BeetleQueenMonster
 {
-	// Token: 0x020001D0 RID: 464
-	internal class BeginBurrow : BaseState
+	// Token: 0x020008EB RID: 2283
+	public class BeginBurrow : BaseState
 	{
-		// Token: 0x06000908 RID: 2312 RVA: 0x0002D710 File Offset: 0x0002B910
+		// Token: 0x06003308 RID: 13064 RVA: 0x000DD378 File Offset: 0x000DB578
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -16,13 +16,13 @@ namespace EntityStates.BeetleQueenMonster
 			this.childLocator = this.modelTransform.GetComponent<ChildLocator>();
 		}
 
-		// Token: 0x06000909 RID: 2313 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06003309 RID: 13065 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x0600090A RID: 2314 RVA: 0x0002D76C File Offset: 0x0002B96C
+		// Token: 0x0600330A RID: 13066 RVA: 0x000DD3D4 File Offset: 0x000DB5D4
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -44,28 +44,28 @@ namespace EntityStates.BeetleQueenMonster
 			}
 		}
 
-		// Token: 0x0600090B RID: 2315 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x0600330B RID: 13067 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000C3C RID: 3132
+		// Token: 0x04003264 RID: 12900
 		public static GameObject burrowPrefab;
 
-		// Token: 0x04000C3D RID: 3133
+		// Token: 0x04003265 RID: 12901
 		public static float duration;
 
-		// Token: 0x04000C3E RID: 3134
+		// Token: 0x04003266 RID: 12902
 		private bool isBurrowing;
 
-		// Token: 0x04000C3F RID: 3135
+		// Token: 0x04003267 RID: 12903
 		private Animator animator;
 
-		// Token: 0x04000C40 RID: 3136
+		// Token: 0x04003268 RID: 12904
 		private Transform modelTransform;
 
-		// Token: 0x04000C41 RID: 3137
+		// Token: 0x04003269 RID: 12905
 		private ChildLocator childLocator;
 	}
 }

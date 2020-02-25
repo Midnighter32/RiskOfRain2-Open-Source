@@ -2,18 +2,18 @@
 
 namespace RoR2
 {
-	// Token: 0x0200023A RID: 570
+	// Token: 0x02000120 RID: 288
 	public enum DifficultyIndex
 	{
-		// Token: 0x04000E87 RID: 3719
+		// Token: 0x04000562 RID: 1378
 		Invalid = -1,
-		// Token: 0x04000E88 RID: 3720
+		// Token: 0x04000563 RID: 1379
 		Easy,
-		// Token: 0x04000E89 RID: 3721
+		// Token: 0x04000564 RID: 1380
 		Normal,
-		// Token: 0x04000E8A RID: 3722
+		// Token: 0x04000565 RID: 1381
 		Hard,
-		// Token: 0x04000E8B RID: 3723
+		// Token: 0x04000566 RID: 1382
 		Count
 	}
 }

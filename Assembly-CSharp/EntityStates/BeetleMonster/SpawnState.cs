@@ -2,7 +2,7 @@
 
 namespace EntityStates.BeetleMonster
 {
-	// Token: 0x020001CE RID: 462
+	// Token: 0x020008E9 RID: 2281
 	public class SpawnState : GenericCharacterSpawnState
 	{
 	}

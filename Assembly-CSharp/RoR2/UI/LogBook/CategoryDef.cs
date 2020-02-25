@@ -7,12 +7,12 @@ using UnityEngine.UI;
 
 namespace RoR2.UI.LogBook
 {
-	// Token: 0x0200066C RID: 1644
+	// Token: 0x02000661 RID: 1633
 	public class CategoryDef
 	{
-		// Token: 0x17000327 RID: 807
-		// (get) Token: 0x060024AF RID: 9391 RVA: 0x000ABA3E File Offset: 0x000A9C3E
-		// (set) Token: 0x060024B0 RID: 9392 RVA: 0x000ABA46 File Offset: 0x000A9C46
+		// Token: 0x170003E7 RID: 999
+		// (get) Token: 0x06002653 RID: 9811 RVA: 0x000A657A File Offset: 0x000A477A
+		// (set) Token: 0x06002654 RID: 9812 RVA: 0x000A6582 File Offset: 0x000A4782
 		public GameObject iconPrefab
 		{
 			get
@@ -27,7 +27,7 @@ namespace RoR2.UI.LogBook
 			}
 		}
 
-		// Token: 0x060024B1 RID: 9393 RVA: 0x000ABA6C File Offset: 0x000A9C6C
+		// Token: 0x06002655 RID: 9813 RVA: 0x000A65A8 File Offset: 0x000A47A8
 		public static void InitializeDefault(GameObject gameObject, Entry entry, EntryStatus status, UserProfile userProfile)
 		{
 			Texture texture = null;
@@ -96,7 +96,7 @@ namespace RoR2.UI.LogBook
 			}
 		}
 
-		// Token: 0x060024B2 RID: 9394 RVA: 0x000ABBD4 File Offset: 0x000A9DD4
+		// Token: 0x06002656 RID: 9814 RVA: 0x000A6710 File Offset: 0x000A4910
 		public static void InitializeChallenge(GameObject gameObject, Entry entry, EntryStatus status, UserProfile userProfile)
 		{
 			TextMeshProUGUI textMeshProUGUI = null;
@@ -129,7 +129,7 @@ namespace RoR2.UI.LogBook
 				texture = Resources.Load<Texture2D>("Textures/MiscIcons/texUnlockIcon");
 				color = Color.black;
 				textMeshProUGUI2.text = Language.GetString("UNIDENTIFIED");
-				textMeshProUGUI.text = Language.GetString("UNIDENTIFIED");
+				textMeshProUGUI.text = Language.GetString("UNIDENTIFIED_DESCRIPTION");
 				component.FindChild("CantBeAchieved").gameObject.SetActive(true);
 				break;
 			case EntryStatus.Unencountered:
@@ -159,27 +159,27 @@ namespace RoR2.UI.LogBook
 			rawImage.enabled = false;
 		}
 
-		// Token: 0x040027B3 RID: 10163
+		// Token: 0x0400241A RID: 9242
 		[NotNull]
 		public string nameToken = string.Empty;
 
-		// Token: 0x040027B4 RID: 10164
+		// Token: 0x0400241B RID: 9243
 		[NotNull]
 		public Entry[] entries = Array.Empty<Entry>();
 
-		// Token: 0x040027B5 RID: 10165
+		// Token: 0x0400241C RID: 9244
 		private GameObject _iconPrefab;
 
-		// Token: 0x040027B6 RID: 10166
+		// Token: 0x0400241D RID: 9245
 		public Vector2 iconSize = Vector2.one;
 
-		// Token: 0x040027B7 RID: 10167
+		// Token: 0x0400241E RID: 9246
 		public bool fullWidth;
 
-		// Token: 0x040027B8 RID: 10168
+		// Token: 0x0400241F RID: 9247
 		public Action<GameObject, Entry, EntryStatus, UserProfile> initializeElementGraphics = new Action<GameObject, Entry, EntryStatus, UserProfile>(CategoryDef.InitializeDefault);
 
-		// Token: 0x040027B9 RID: 10169
+		// Token: 0x04002420 RID: 9248
 		public ViewablesCatalog.Node viewableNode;
 	}
 }

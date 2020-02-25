@@ -3,30 +3,33 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200034C RID: 844
+	// Token: 0x02000277 RID: 631
 	public class LoopSound : MonoBehaviour
 	{
-		// Token: 0x06001175 RID: 4469 RVA: 0x00056BFC File Offset: 0x00054DFC
+		// Token: 0x06000E08 RID: 3592 RVA: 0x0003EBA8 File Offset: 0x0003CDA8
 		private void Update()
 		{
 			this.stopwatch += Time.deltaTime;
 			if (this.stopwatch > this.repeatInterval)
 			{
 				this.stopwatch -= this.repeatInterval;
-				Util.PlaySound(this.akSoundString, this.soundOwner.gameObject);
+				if (this.soundOwner)
+				{
+					Util.PlaySound(this.akSoundString, this.soundOwner.gameObject);
+				}
 			}
 		}
 
-		// Token: 0x0400157E RID: 5502
+		// Token: 0x04000DFC RID: 3580
 		public string akSoundString;
 
-		// Token: 0x0400157F RID: 5503
+		// Token: 0x04000DFD RID: 3581
 		public float repeatInterval;
 
-		// Token: 0x04001580 RID: 5504
+		// Token: 0x04000DFE RID: 3582
 		public Transform soundOwner;
 
-		// Token: 0x04001581 RID: 5505
+		// Token: 0x04000DFF RID: 3583
 		private float stopwatch;
 	}
 }

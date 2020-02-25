@@ -3,11 +3,16 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000244 RID: 580
+	// Token: 0x02000132 RID: 306
 	public class EquipmentDef
 	{
-		// Token: 0x170000BF RID: 191
-		// (get) Token: 0x06000AE6 RID: 2790 RVA: 0x00035B80 File Offset: 0x00033D80
+		// Token: 0x170000A6 RID: 166
+		// (get) Token: 0x0600057B RID: 1403 RVA: 0x0001627D File Offset: 0x0001447D
+		// (set) Token: 0x0600057C RID: 1404 RVA: 0x00016285 File Offset: 0x00014485
+		public EquipmentIndex equipmentIndex { get; set; } = EquipmentIndex.None;
+
+		// Token: 0x170000A7 RID: 167
+		// (get) Token: 0x0600057D RID: 1405 RVA: 0x0001628E File Offset: 0x0001448E
 		public Texture pickupIconTexture
 		{
 			get
@@ -16,8 +21,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x170000C0 RID: 192
-		// (get) Token: 0x06000AE7 RID: 2791 RVA: 0x00035B8D File Offset: 0x00033D8D
+		// Token: 0x170000A8 RID: 168
+		// (get) Token: 0x0600057E RID: 1406 RVA: 0x0001629B File Offset: 0x0001449B
 		public Sprite pickupIconSprite
 		{
 			get
@@ -26,8 +31,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x170000C1 RID: 193
-		// (get) Token: 0x06000AE8 RID: 2792 RVA: 0x00035B9A File Offset: 0x00033D9A
+		// Token: 0x170000A9 RID: 169
+		// (get) Token: 0x0600057F RID: 1407 RVA: 0x000162A8 File Offset: 0x000144A8
 		public Texture bgIconTexture
 		{
 			get
@@ -40,61 +45,71 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04000ECC RID: 3788
-		public EquipmentIndex equipmentIndex;
+		// Token: 0x170000AA RID: 170
+		// (get) Token: 0x06000580 RID: 1408 RVA: 0x000162C7 File Offset: 0x000144C7
+		public GameObject pickupModelPrefab
+		{
+			get
+			{
+				return Resources.Load<GameObject>(this.pickupModelPath);
+			}
+		}
 
-		// Token: 0x04000ECD RID: 3789
+		// Token: 0x040005E0 RID: 1504
+		public string name;
+
+		// Token: 0x040005E1 RID: 1505
 		public string pickupModelPath = "Prefabs/NullModel";
 
-		// Token: 0x04000ECE RID: 3790
+		// Token: 0x040005E2 RID: 1506
 		public float cooldown;
 
-		// Token: 0x04000ECF RID: 3791
+		// Token: 0x040005E3 RID: 1507
 		public string nameToken;
 
-		// Token: 0x04000ED0 RID: 3792
+		// Token: 0x040005E4 RID: 1508
 		public string pickupToken;
 
-		// Token: 0x04000ED1 RID: 3793
+		// Token: 0x040005E5 RID: 1509
 		public string descriptionToken;
 
-		// Token: 0x04000ED2 RID: 3794
+		// Token: 0x040005E6 RID: 1510
 		public string loreToken;
 
-		// Token: 0x04000ED3 RID: 3795
+		// Token: 0x040005E7 RID: 1511
 		public string addressToken;
 
-		// Token: 0x04000ED4 RID: 3796
+		// Token: 0x040005E8 RID: 1512
 		public string pickupIconPath = "Textures/ItemIcons/texNullIcon";
 
-		// Token: 0x04000ED5 RID: 3797
+		// Token: 0x040005E9 RID: 1513
 		public string unlockableName = "";
 
-		// Token: 0x04000ED6 RID: 3798
+		// Token: 0x040005EA RID: 1514
 		public ColorCatalog.ColorIndex colorIndex = ColorCatalog.ColorIndex.Equipment;
 
-		// Token: 0x04000ED7 RID: 3799
+		// Token: 0x040005EB RID: 1515
 		public bool canDrop;
 
-		// Token: 0x04000ED8 RID: 3800
+		// Token: 0x040005EC RID: 1516
 		public bool enigmaCompatible;
 
-		// Token: 0x04000ED9 RID: 3801
+		// Token: 0x040005ED RID: 1517
 		public bool isLunar;
 
-		// Token: 0x04000EDA RID: 3802
+		// Token: 0x040005EE RID: 1518
 		public bool isBoss;
 
-		// Token: 0x04000EDB RID: 3803
+		// Token: 0x040005EF RID: 1519
 		public BuffIndex passiveBuff = BuffIndex.None;
 
-		// Token: 0x04000EDC RID: 3804
+		// Token: 0x040005F0 RID: 1520
 		public bool appearsInSinglePlayer = true;
 
-		// Token: 0x04000EDD RID: 3805
+		// Token: 0x040005F1 RID: 1521
 		public bool appearsInMultiPlayer = true;
 
-		// Token: 0x04000EDE RID: 3806
+		// Token: 0x040005F2 RID: 1522
 		public MageElement mageElement;
 	}
 }

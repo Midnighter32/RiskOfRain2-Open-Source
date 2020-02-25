@@ -4,10 +4,10 @@ using UnityEngine.Networking;
 
 namespace RoR2.Networking
 {
-	// Token: 0x02000575 RID: 1397
+	// Token: 0x0200053E RID: 1342
 	public class GenericSceneSpawnPoint : MonoBehaviour
 	{
-		// Token: 0x06001F1C RID: 7964 RVA: 0x00092D5C File Offset: 0x00090F5C
+		// Token: 0x06001FAB RID: 8107 RVA: 0x00089A7C File Offset: 0x00087C7C
 		private void Start()
 		{
 			if (NetworkServer.active)
@@ -19,7 +19,7 @@ namespace RoR2.Networking
 			base.gameObject.SetActive(false);
 		}
 
-		// Token: 0x040021D3 RID: 8659
+		// Token: 0x04001D65 RID: 7525
 		public GameObject networkedObjectPrefab;
 	}
 }

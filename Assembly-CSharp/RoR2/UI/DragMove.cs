@@ -4,23 +4,23 @@ using UnityEngine.EventSystems;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005D8 RID: 1496
+	// Token: 0x020005B7 RID: 1463
 	[RequireComponent(typeof(RectTransform))]
 	public class DragMove : MonoBehaviour, IBeginDragHandler, IEventSystemHandler, IDragHandler
 	{
-		// Token: 0x06002186 RID: 8582 RVA: 0x0009DB69 File Offset: 0x0009BD69
+		// Token: 0x060022B6 RID: 8886 RVA: 0x00096ADD File Offset: 0x00094CDD
 		private void OnAwake()
 		{
 			this.rectTransform = (RectTransform)base.transform;
 		}
 
-		// Token: 0x06002187 RID: 8583 RVA: 0x0009DB7C File Offset: 0x0009BD7C
+		// Token: 0x060022B7 RID: 8887 RVA: 0x00096AF0 File Offset: 0x00094CF0
 		public void OnDrag(PointerEventData eventData)
 		{
 			this.UpdateDrag(eventData);
 		}
 
-		// Token: 0x06002188 RID: 8584 RVA: 0x0009DB85 File Offset: 0x0009BD85
+		// Token: 0x060022B8 RID: 8888 RVA: 0x00096AF9 File Offset: 0x00094CF9
 		public void OnBeginDrag(PointerEventData eventData)
 		{
 			if (this.targetTransform)
@@ -29,7 +29,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002189 RID: 8585 RVA: 0x0009DBB4 File Offset: 0x0009BDB4
+		// Token: 0x060022B9 RID: 8889 RVA: 0x00096B28 File Offset: 0x00094D28
 		private void UpdateDrag(PointerEventData eventData)
 		{
 			if (eventData.button != PointerEventData.InputButton.Left)
@@ -46,13 +46,13 @@ namespace RoR2.UI
 			this.targetTransform.localPosition += new Vector3(vector.x, vector.y, 0f);
 		}
 
-		// Token: 0x04002437 RID: 9271
+		// Token: 0x04002046 RID: 8262
 		public RectTransform targetTransform;
 
-		// Token: 0x04002438 RID: 9272
+		// Token: 0x04002047 RID: 8263
 		private Vector2 grabPoint;
 
-		// Token: 0x04002439 RID: 9273
+		// Token: 0x04002048 RID: 8264
 		private RectTransform rectTransform;
 	}
 }

@@ -3,16 +3,16 @@ using UnityEngine;
 
 namespace RoR2.Projectile
 {
-	// Token: 0x0200054B RID: 1355
+	// Token: 0x02000509 RID: 1289
 	public class ProjectileGhostController : MonoBehaviour
 	{
-		// Token: 0x06001E3D RID: 7741 RVA: 0x0008E727 File Offset: 0x0008C927
+		// Token: 0x06001E90 RID: 7824 RVA: 0x00083F5F File Offset: 0x0008215F
 		private void Awake()
 		{
 			this.transform = base.transform;
 		}
 
-		// Token: 0x06001E3E RID: 7742 RVA: 0x0008E738 File Offset: 0x0008C938
+		// Token: 0x06001E91 RID: 7825 RVA: 0x00083F70 File Offset: 0x00082170
 		private void Update()
 		{
 			if (this.authorityTransform ^ this.predictionTransform)
@@ -35,31 +35,31 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001E3F RID: 7743 RVA: 0x0008E7C5 File Offset: 0x0008C9C5
+		// Token: 0x06001E92 RID: 7826 RVA: 0x00083FFD File Offset: 0x000821FD
 		private void LerpTransform(Transform a, Transform b, float t)
 		{
 			this.transform.position = Vector3.LerpUnclamped(a.position, b.position, t);
 			this.transform.rotation = Quaternion.SlerpUnclamped(a.rotation, b.rotation, t);
 		}
 
-		// Token: 0x06001E40 RID: 7744 RVA: 0x0008E801 File Offset: 0x0008CA01
+		// Token: 0x06001E93 RID: 7827 RVA: 0x00084039 File Offset: 0x00082239
 		private void CopyTransform(Transform src)
 		{
 			this.transform.position = src.position;
 			this.transform.rotation = src.rotation;
 		}
 
-		// Token: 0x040020C1 RID: 8385
+		// Token: 0x04001BF5 RID: 7157
 		private new Transform transform;
 
-		// Token: 0x040020C2 RID: 8386
+		// Token: 0x04001BF6 RID: 7158
 		private float migration;
 
-		// Token: 0x040020C3 RID: 8387
+		// Token: 0x04001BF7 RID: 7159
 		[HideInInspector]
 		public Transform authorityTransform;
 
-		// Token: 0x040020C4 RID: 8388
+		// Token: 0x04001BF8 RID: 7160
 		[HideInInspector]
 		public Transform predictionTransform;
 	}

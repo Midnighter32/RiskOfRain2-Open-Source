@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005FC RID: 1532
+	// Token: 0x020005EA RID: 1514
 	public class LocalUserSignInCardController : MonoBehaviour
 	{
-		// Token: 0x0600224F RID: 8783 RVA: 0x000A2160 File Offset: 0x000A0360
+		// Token: 0x060023BA RID: 9146 RVA: 0x0009C0BC File Offset: 0x0009A2BC
 		private void Update()
 		{
 			if (this.requestedUserProfile != null != this.userProfileSelectionList)
@@ -49,9 +49,9 @@ namespace RoR2.UI
 			this.promptLabel.text = "";
 		}
 
-		// Token: 0x170002FF RID: 767
-		// (get) Token: 0x06002250 RID: 8784 RVA: 0x000A22DB File Offset: 0x000A04DB
-		// (set) Token: 0x06002251 RID: 8785 RVA: 0x000A22E3 File Offset: 0x000A04E3
+		// Token: 0x170003B5 RID: 949
+		// (get) Token: 0x060023BB RID: 9147 RVA: 0x0009C237 File Offset: 0x0009A437
+		// (set) Token: 0x060023BC RID: 9148 RVA: 0x0009C23F File Offset: 0x0009A43F
 		public Player rewiredPlayer
 		{
 			get
@@ -72,9 +72,9 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x17000300 RID: 768
-		// (get) Token: 0x06002252 RID: 8786 RVA: 0x000A2305 File Offset: 0x000A0505
-		// (set) Token: 0x06002253 RID: 8787 RVA: 0x000A230D File Offset: 0x000A050D
+		// Token: 0x170003B6 RID: 950
+		// (get) Token: 0x060023BD RID: 9149 RVA: 0x0009C261 File Offset: 0x0009A461
+		// (set) Token: 0x060023BE RID: 9150 RVA: 0x0009C269 File Offset: 0x0009A469
 		public UserProfile requestedUserProfile
 		{
 			get
@@ -99,46 +99,46 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002254 RID: 8788 RVA: 0x000A2348 File Offset: 0x000A0548
+		// Token: 0x060023BF RID: 9151 RVA: 0x0009C2A4 File Offset: 0x0009A4A4
 		private void OnUserSelectedUserProfile(UserProfile userProfile)
 		{
 			this.requestedUserProfile = userProfile;
 		}
 
-		// Token: 0x04002569 RID: 9577
+		// Token: 0x040021AF RID: 8623
 		public TextMeshProUGUI nameLabel;
 
-		// Token: 0x0400256A RID: 9578
+		// Token: 0x040021B0 RID: 8624
 		public TextMeshProUGUI promptLabel;
 
-		// Token: 0x0400256B RID: 9579
+		// Token: 0x040021B1 RID: 8625
 		public Image cardImage;
 
-		// Token: 0x0400256C RID: 9580
+		// Token: 0x040021B2 RID: 8626
 		public Sprite playerCardNone;
 
-		// Token: 0x0400256D RID: 9581
+		// Token: 0x040021B3 RID: 8627
 		public Sprite playerCardKBM;
 
-		// Token: 0x0400256E RID: 9582
+		// Token: 0x040021B4 RID: 8628
 		public Sprite playerCardController;
 
-		// Token: 0x0400256F RID: 9583
+		// Token: 0x040021B5 RID: 8629
 		public Color unselectedColor;
 
-		// Token: 0x04002570 RID: 9584
+		// Token: 0x040021B6 RID: 8630
 		public Color selectedColor;
 
-		// Token: 0x04002571 RID: 9585
+		// Token: 0x040021B7 RID: 8631
 		private UserProfileListController userProfileSelectionList;
 
-		// Token: 0x04002572 RID: 9586
+		// Token: 0x040021B8 RID: 8632
 		public GameObject userProfileSelectionListPrefab;
 
-		// Token: 0x04002573 RID: 9587
+		// Token: 0x040021B9 RID: 8633
 		private Player _rewiredPlayer;
 
-		// Token: 0x04002574 RID: 9588
+		// Token: 0x040021BA RID: 8634
 		private UserProfile _requestedUserProfile;
 	}
 }

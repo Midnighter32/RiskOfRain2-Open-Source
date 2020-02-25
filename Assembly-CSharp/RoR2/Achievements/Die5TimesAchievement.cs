@@ -3,41 +3,41 @@ using RoR2.Stats;
 
 namespace RoR2.Achievements
 {
-	// Token: 0x02000698 RID: 1688
+	// Token: 0x020006A0 RID: 1696
 	[RegisterAchievement("Die5Times", "Items.Bear", null, null)]
 	public class Die5TimesAchievement : BaseAchievement
 	{
-		// Token: 0x0600259D RID: 9629 RVA: 0x000AF77B File Offset: 0x000AD97B
+		// Token: 0x060027A8 RID: 10152 RVA: 0x000AAFBD File Offset: 0x000A91BD
 		public override void OnInstall()
 		{
 			base.OnInstall();
-			this.userProfile.onStatsReceived += this.Check;
+			base.userProfile.onStatsReceived += this.Check;
 			this.Check();
 		}
 
-		// Token: 0x0600259E RID: 9630 RVA: 0x000AF7A0 File Offset: 0x000AD9A0
+		// Token: 0x060027A9 RID: 10153 RVA: 0x000AAFE2 File Offset: 0x000A91E2
 		public override void OnUninstall()
 		{
-			this.userProfile.onStatsReceived -= this.Check;
+			base.userProfile.onStatsReceived -= this.Check;
 			base.OnUninstall();
 		}
 
-		// Token: 0x0600259F RID: 9631 RVA: 0x000AF7BF File Offset: 0x000AD9BF
+		// Token: 0x060027AA RID: 10154 RVA: 0x000AB001 File Offset: 0x000A9201
 		public override float ProgressForAchievement()
 		{
-			return this.userProfile.statSheet.GetStatValueULong(StatDef.totalDeaths) / 5f;
+			return base.userProfile.statSheet.GetStatValueULong(StatDef.totalDeaths) / 5f;
 		}
 
-		// Token: 0x060025A0 RID: 9632 RVA: 0x000AF7DE File Offset: 0x000AD9DE
+		// Token: 0x060027AB RID: 10155 RVA: 0x000AB020 File Offset: 0x000A9220
 		private void Check()
 		{
-			if (this.userProfile.statSheet.GetStatValueULong(StatDef.totalDeaths) >= 5UL)
+			if (base.userProfile.statSheet.GetStatValueULong(StatDef.totalDeaths) >= 5UL)
 			{
 				base.Grant();
 			}
 		}
 
-		// Token: 0x0400286B RID: 10347
+		// Token: 0x040024F9 RID: 9465
 		private const int requirement = 5;
 	}
 }

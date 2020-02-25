@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.ImpMonster
 {
-	// Token: 0x02000145 RID: 325
+	// Token: 0x02000821 RID: 2081
 	public class BlinkState : BaseState
 	{
-		// Token: 0x0600063A RID: 1594 RVA: 0x0001D0BC File Offset: 0x0001B2BC
+		// Token: 0x06002F27 RID: 12071 RVA: 0x000C9444 File Offset: 0x000C7644
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -44,16 +44,16 @@ namespace EntityStates.ImpMonster
 			this.CreateBlinkEffect(Util.GetCorePosition(base.gameObject));
 		}
 
-		// Token: 0x0600063B RID: 1595 RVA: 0x0001D238 File Offset: 0x0001B438
+		// Token: 0x06002F28 RID: 12072 RVA: 0x000C95C0 File Offset: 0x000C77C0
 		private void CreateBlinkEffect(Vector3 origin)
 		{
 			EffectData effectData = new EffectData();
 			effectData.rotation = Util.QuaternionSafeLookRotation(this.blinkDestination - this.blinkStart);
 			effectData.origin = origin;
-			EffectManager.instance.SpawnEffect(BlinkState.blinkPrefab, effectData, false);
+			EffectManager.SpawnEffect(BlinkState.blinkPrefab, effectData, false);
 		}
 
-		// Token: 0x0600063C RID: 1596 RVA: 0x0001C03B File Offset: 0x0001A23B
+		// Token: 0x06002F29 RID: 12073 RVA: 0x000C8384 File Offset: 0x000C6584
 		private void SetPosition(Vector3 newPosition)
 		{
 			if (base.characterMotor)
@@ -62,7 +62,7 @@ namespace EntityStates.ImpMonster
 			}
 		}
 
-		// Token: 0x0600063D RID: 1597 RVA: 0x0001D280 File Offset: 0x0001B480
+		// Token: 0x06002F2A RID: 12074 RVA: 0x000C9604 File Offset: 0x000C7804
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -78,7 +78,7 @@ namespace EntityStates.ImpMonster
 			}
 		}
 
-		// Token: 0x0600063E RID: 1598 RVA: 0x0001D314 File Offset: 0x0001B514
+		// Token: 0x06002F2B RID: 12075 RVA: 0x000C9698 File Offset: 0x000C7898
 		public override void OnExit()
 		{
 			Util.PlaySound(BlinkState.endSoundString, base.gameObject);
@@ -112,43 +112,43 @@ namespace EntityStates.ImpMonster
 			base.OnExit();
 		}
 
-		// Token: 0x04000760 RID: 1888
+		// Token: 0x04002CA0 RID: 11424
 		private Transform modelTransform;
 
-		// Token: 0x04000761 RID: 1889
+		// Token: 0x04002CA1 RID: 11425
 		public static GameObject blinkPrefab;
 
-		// Token: 0x04000762 RID: 1890
+		// Token: 0x04002CA2 RID: 11426
 		public static Material destealthMaterial;
 
-		// Token: 0x04000763 RID: 1891
+		// Token: 0x04002CA3 RID: 11427
 		private float stopwatch;
 
-		// Token: 0x04000764 RID: 1892
+		// Token: 0x04002CA4 RID: 11428
 		private Vector3 blinkDestination = Vector3.zero;
 
-		// Token: 0x04000765 RID: 1893
+		// Token: 0x04002CA5 RID: 11429
 		private Vector3 blinkStart = Vector3.zero;
 
-		// Token: 0x04000766 RID: 1894
+		// Token: 0x04002CA6 RID: 11430
 		public static float duration = 0.3f;
 
-		// Token: 0x04000767 RID: 1895
+		// Token: 0x04002CA7 RID: 11431
 		public static float blinkDistance = 25f;
 
-		// Token: 0x04000768 RID: 1896
+		// Token: 0x04002CA8 RID: 11432
 		public static string beginSoundString;
 
-		// Token: 0x04000769 RID: 1897
+		// Token: 0x04002CA9 RID: 11433
 		public static string endSoundString;
 
-		// Token: 0x0400076A RID: 1898
+		// Token: 0x04002CAA RID: 11434
 		private Animator animator;
 
-		// Token: 0x0400076B RID: 1899
+		// Token: 0x04002CAB RID: 11435
 		private CharacterModel characterModel;
 
-		// Token: 0x0400076C RID: 1900
+		// Token: 0x04002CAC RID: 11436
 		private HurtBoxGroup hurtboxGroup;
 	}
 }

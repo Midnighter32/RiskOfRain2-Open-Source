@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2.Orbs
 {
-	// Token: 0x02000518 RID: 1304
+	// Token: 0x020004D2 RID: 1234
 	public class LightningStrikeOrb : Orb, IOrbFixedUpdateBehavior
 	{
-		// Token: 0x06001D50 RID: 7504 RVA: 0x00088CA0 File Offset: 0x00086EA0
+		// Token: 0x06001D81 RID: 7553 RVA: 0x0007DFE3 File Offset: 0x0007C1E3
 		public override void Begin()
 		{
 			base.duration = 0.5f;
@@ -16,10 +16,10 @@ namespace RoR2.Orbs
 			}
 		}
 
-		// Token: 0x06001D51 RID: 7505 RVA: 0x00088CD0 File Offset: 0x00086ED0
+		// Token: 0x06001D82 RID: 7554 RVA: 0x0007E014 File Offset: 0x0007C214
 		public override void OnArrival()
 		{
-			EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/LightningStrikeImpact"), new EffectData
+			EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/LightningStrikeImpact"), new EffectData
 			{
 				origin = this.lastKnownTargetPosition
 			}, true);
@@ -46,7 +46,7 @@ namespace RoR2.Orbs
 			}
 		}
 
-		// Token: 0x06001D52 RID: 7506 RVA: 0x00088DC4 File Offset: 0x00086FC4
+		// Token: 0x06001D83 RID: 7555 RVA: 0x0007E104 File Offset: 0x0007C304
 		public void FixedUpdate()
 		{
 			if (this.target)
@@ -55,34 +55,34 @@ namespace RoR2.Orbs
 			}
 		}
 
-		// Token: 0x04001F96 RID: 8086
+		// Token: 0x04001AAE RID: 6830
 		private const float speed = 30f;
 
-		// Token: 0x04001F97 RID: 8087
+		// Token: 0x04001AAF RID: 6831
 		public float damageValue;
 
-		// Token: 0x04001F98 RID: 8088
+		// Token: 0x04001AB0 RID: 6832
 		public GameObject attacker;
 
-		// Token: 0x04001F99 RID: 8089
+		// Token: 0x04001AB1 RID: 6833
 		public TeamIndex teamIndex;
 
-		// Token: 0x04001F9A RID: 8090
+		// Token: 0x04001AB2 RID: 6834
 		public bool isCrit;
 
-		// Token: 0x04001F9B RID: 8091
+		// Token: 0x04001AB3 RID: 6835
 		public float scale;
 
-		// Token: 0x04001F9C RID: 8092
+		// Token: 0x04001AB4 RID: 6836
 		public ProcChainMask procChainMask;
 
-		// Token: 0x04001F9D RID: 8093
+		// Token: 0x04001AB5 RID: 6837
 		public float procCoefficient = 0.2f;
 
-		// Token: 0x04001F9E RID: 8094
+		// Token: 0x04001AB6 RID: 6838
 		public DamageColorIndex damageColorIndex;
 
-		// Token: 0x04001F9F RID: 8095
+		// Token: 0x04001AB7 RID: 6839
 		private Vector3 lastKnownTargetPosition;
 	}
 }

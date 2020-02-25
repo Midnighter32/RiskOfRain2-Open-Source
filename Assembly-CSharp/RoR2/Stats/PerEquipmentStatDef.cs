@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace RoR2.Stats
 {
-	// Token: 0x020004FA RID: 1274
+	// Token: 0x0200049E RID: 1182
 	public class PerEquipmentStatDef
 	{
-		// Token: 0x06001CCD RID: 7373 RVA: 0x00086478 File Offset: 0x00084678
+		// Token: 0x06001CAA RID: 7338 RVA: 0x0007AAAC File Offset: 0x00078CAC
 		public static void RegisterStatDefs()
 		{
 			foreach (PerEquipmentStatDef perEquipmentStatDef in PerEquipmentStatDef.instancesList)
@@ -19,7 +19,7 @@ namespace RoR2.Stats
 			}
 		}
 
-		// Token: 0x06001CCE RID: 7374 RVA: 0x00086548 File Offset: 0x00084748
+		// Token: 0x06001CAB RID: 7339 RVA: 0x0007AB7C File Offset: 0x00078D7C
 		private PerEquipmentStatDef(string prefix, StatRecordType recordType, StatDataType dataType, StatDef.DisplayValueFormatterDelegate displayValueFormatter)
 		{
 			this.prefix = prefix;
@@ -28,7 +28,7 @@ namespace RoR2.Stats
 			this.displayValueFormatter = (displayValueFormatter ?? new StatDef.DisplayValueFormatterDelegate(StatDef.DefaultDisplayValueFormatter));
 		}
 
-		// Token: 0x06001CCF RID: 7375 RVA: 0x00086598 File Offset: 0x00084798
+		// Token: 0x06001CAC RID: 7340 RVA: 0x0007ABBC File Offset: 0x00078DBC
 		private static PerEquipmentStatDef Register(string prefix, StatRecordType recordType, StatDataType dataType, StatDef.DisplayValueFormatterDelegate displayValueFormatter = null)
 		{
 			PerEquipmentStatDef perEquipmentStatDef = new PerEquipmentStatDef(prefix, recordType, dataType, displayValueFormatter);
@@ -36,34 +36,34 @@ namespace RoR2.Stats
 			return perEquipmentStatDef;
 		}
 
-		// Token: 0x06001CD0 RID: 7376 RVA: 0x000865BB File Offset: 0x000847BB
+		// Token: 0x06001CAD RID: 7341 RVA: 0x0007ABDF File Offset: 0x00078DDF
 		public StatDef FindStatDef(EquipmentIndex key)
 		{
 			return this.keyToStatDef[(int)key];
 		}
 
-		// Token: 0x04001F0C RID: 7948
+		// Token: 0x040019D9 RID: 6617
 		private readonly string prefix;
 
-		// Token: 0x04001F0D RID: 7949
+		// Token: 0x040019DA RID: 6618
 		private readonly StatRecordType recordType;
 
-		// Token: 0x04001F0E RID: 7950
+		// Token: 0x040019DB RID: 6619
 		private readonly StatDataType dataType;
 
-		// Token: 0x04001F0F RID: 7951
-		private readonly StatDef[] keyToStatDef = new StatDef[27];
+		// Token: 0x040019DC RID: 6620
+		private readonly StatDef[] keyToStatDef = EquipmentCatalog.GetPerEquipmentBuffer<StatDef>();
 
-		// Token: 0x04001F10 RID: 7952
+		// Token: 0x040019DD RID: 6621
 		private StatDef.DisplayValueFormatterDelegate displayValueFormatter;
 
-		// Token: 0x04001F11 RID: 7953
+		// Token: 0x040019DE RID: 6622
 		private static readonly List<PerEquipmentStatDef> instancesList = new List<PerEquipmentStatDef>();
 
-		// Token: 0x04001F12 RID: 7954
+		// Token: 0x040019DF RID: 6623
 		public static readonly PerEquipmentStatDef totalTimeHeld = PerEquipmentStatDef.Register("totalTimeHeld", StatRecordType.Sum, StatDataType.Double, new StatDef.DisplayValueFormatterDelegate(StatDef.TimeMMSSDisplayValueFormatter));
 
-		// Token: 0x04001F13 RID: 7955
+		// Token: 0x040019E0 RID: 6624
 		public static readonly PerEquipmentStatDef totalTimesFired = PerEquipmentStatDef.Register("totalTimesFired", StatRecordType.Sum, StatDataType.ULong, null);
 	}
 }

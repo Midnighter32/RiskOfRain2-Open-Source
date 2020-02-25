@@ -4,20 +4,20 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000625 RID: 1573
-	[RequireComponent(typeof(MPEventSystemLocator))]
+	// Token: 0x02000614 RID: 1556
 	[RequireComponent(typeof(TextMeshProUGUI))]
+	[RequireComponent(typeof(MPEventSystemLocator))]
 	public class ProfileNameLabel : MonoBehaviour
 	{
-		// Token: 0x06002351 RID: 9041 RVA: 0x000A653E File Offset: 0x000A473E
+		// Token: 0x060024D0 RID: 9424 RVA: 0x000A091E File Offset: 0x0009EB1E
 		private void Awake()
 		{
 			this.eventSystemLocator = base.GetComponent<MPEventSystemLocator>();
 			this.label = base.GetComponent<TextMeshProUGUI>();
 		}
 
-		// Token: 0x06002352 RID: 9042 RVA: 0x000A6558 File Offset: 0x000A4758
-		private void Update()
+		// Token: 0x060024D1 RID: 9425 RVA: 0x000A0938 File Offset: 0x0009EB38
+		private void LateUpdate()
 		{
 			MPEventSystem eventSystem = this.eventSystemLocator.eventSystem;
 			string text;
@@ -41,16 +41,16 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0400264E RID: 9806
+		// Token: 0x04002297 RID: 8855
 		public string token;
 
-		// Token: 0x0400264F RID: 9807
+		// Token: 0x04002298 RID: 8856
 		private MPEventSystemLocator eventSystemLocator;
 
-		// Token: 0x04002650 RID: 9808
+		// Token: 0x04002299 RID: 8857
 		private TextMeshProUGUI label;
 
-		// Token: 0x04002651 RID: 9809
+		// Token: 0x0400229A RID: 8858
 		private string currentUserName;
 	}
 }

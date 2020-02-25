@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.AncientWispMonster
 {
-	// Token: 0x020000D1 RID: 209
-	internal class ChargeRain : BaseState
+	// Token: 0x02000730 RID: 1840
+	public class ChargeRain : BaseState
 	{
-		// Token: 0x06000417 RID: 1047 RVA: 0x00011108 File Offset: 0x0000F308
+		// Token: 0x06002AC0 RID: 10944 RVA: 0x000B4154 File Offset: 0x000B2354
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -29,19 +29,19 @@ namespace EntityStates.AncientWispMonster
 			}
 		}
 
-		// Token: 0x06000418 RID: 1048 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002AC1 RID: 10945 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000419 RID: 1049 RVA: 0x0000DDD0 File Offset: 0x0000BFD0
+		// Token: 0x06002AC2 RID: 10946 RVA: 0x000B02F8 File Offset: 0x000AE4F8
 		public override void Update()
 		{
 			base.Update();
 		}
 
-		// Token: 0x0600041A RID: 1050 RVA: 0x000111D7 File Offset: 0x0000F3D7
+		// Token: 0x06002AC3 RID: 10947 RVA: 0x000B4223 File Offset: 0x000B2423
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -52,22 +52,22 @@ namespace EntityStates.AncientWispMonster
 			}
 		}
 
-		// Token: 0x0600041B RID: 1051 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002AC4 RID: 10948 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x040003DC RID: 988
+		// Token: 0x040026A2 RID: 9890
 		public static float baseDuration = 3f;
 
-		// Token: 0x040003DD RID: 989
+		// Token: 0x040026A3 RID: 9891
 		public static GameObject effectPrefab;
 
-		// Token: 0x040003DE RID: 990
+		// Token: 0x040026A4 RID: 9892
 		public static GameObject delayPrefab;
 
-		// Token: 0x040003DF RID: 991
+		// Token: 0x040026A5 RID: 9893
 		private float duration;
 	}
 }

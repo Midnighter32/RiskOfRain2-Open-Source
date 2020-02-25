@@ -4,17 +4,17 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020002B8 RID: 696
+	// Token: 0x020001C7 RID: 455
 	[RequireComponent(typeof(CharacterBody))]
 	public class ContactDamage : MonoBehaviour
 	{
-		// Token: 0x06000E27 RID: 3623 RVA: 0x00045B2C File Offset: 0x00043D2C
+		// Token: 0x060009C6 RID: 2502 RVA: 0x0002AAAC File Offset: 0x00028CAC
 		private void Awake()
 		{
 			this.characterBody = base.GetComponent<CharacterBody>();
 		}
 
-		// Token: 0x06000E28 RID: 3624 RVA: 0x00045B3C File Offset: 0x00043D3C
+		// Token: 0x060009C7 RID: 2503 RVA: 0x0002AABC File Offset: 0x00028CBC
 		private void FixedUpdate()
 		{
 			if (NetworkServer.active)
@@ -38,28 +38,28 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0400120B RID: 4619
+		// Token: 0x040009F3 RID: 2547
 		public float damagePerSecondCoefficient = 2f;
 
-		// Token: 0x0400120C RID: 4620
+		// Token: 0x040009F4 RID: 2548
 		public float damageInterval = 0.25f;
 
-		// Token: 0x0400120D RID: 4621
+		// Token: 0x040009F5 RID: 2549
 		public float pushForcePerSecond = 4000f;
 
-		// Token: 0x0400120E RID: 4622
+		// Token: 0x040009F6 RID: 2550
 		public HitBoxGroup hitBoxGroup;
 
-		// Token: 0x0400120F RID: 4623
+		// Token: 0x040009F7 RID: 2551
 		public DamageType damageType;
 
-		// Token: 0x04001210 RID: 4624
+		// Token: 0x040009F8 RID: 2552
 		private OverlapAttack overlapAttack;
 
-		// Token: 0x04001211 RID: 4625
+		// Token: 0x040009F9 RID: 2553
 		private CharacterBody characterBody;
 
-		// Token: 0x04001212 RID: 4626
+		// Token: 0x040009FA RID: 2554
 		private float refreshTimer;
 	}
 }

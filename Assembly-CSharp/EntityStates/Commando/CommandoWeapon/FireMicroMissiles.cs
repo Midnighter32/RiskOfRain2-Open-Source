@@ -7,10 +7,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Commando.CommandoWeapon
 {
-	// Token: 0x020001A8 RID: 424
-	internal class FireMicroMissiles : BaseState
+	// Token: 0x020008BB RID: 2235
+	public class FireMicroMissiles : BaseState
 	{
-		// Token: 0x06000842 RID: 2114 RVA: 0x00029550 File Offset: 0x00027750
+		// Token: 0x0600321B RID: 12827 RVA: 0x000D8644 File Offset: 0x000D6844
 		private void FireMissile(GameObject targetObject)
 		{
 			Ray aimRay = base.GetAimRay();
@@ -47,7 +47,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x06000843 RID: 2115 RVA: 0x00029714 File Offset: 0x00027914
+		// Token: 0x0600321C RID: 12828 RVA: 0x000D8808 File Offset: 0x000D6A08
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -59,13 +59,13 @@ namespace EntityStates.Commando.CommandoWeapon
 			base.StartAimMode(aimRay, 2f, false);
 		}
 
-		// Token: 0x06000844 RID: 2116 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x0600321D RID: 12829 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000845 RID: 2117 RVA: 0x00029784 File Offset: 0x00027984
+		// Token: 0x0600321E RID: 12830 RVA: 0x000D8878 File Offset: 0x000D6A78
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -86,13 +86,13 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x06000846 RID: 2118 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x0600321F RID: 12831 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x06000847 RID: 2119 RVA: 0x00029814 File Offset: 0x00027A14
+		// Token: 0x06003220 RID: 12832 RVA: 0x000D8908 File Offset: 0x000D6B08
 		public override void OnSerialize(NetworkWriter writer)
 		{
 			base.OnSerialize(writer);
@@ -103,7 +103,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x06000848 RID: 2120 RVA: 0x00029864 File Offset: 0x00027A64
+		// Token: 0x06003221 RID: 12833 RVA: 0x000D8958 File Offset: 0x000D6B58
 		public override void OnDeserialize(NetworkReader reader)
 		{
 			base.OnDeserialize(reader);
@@ -117,43 +117,43 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x04000AF1 RID: 2801
+		// Token: 0x040030DB RID: 12507
 		public static GameObject effectPrefab;
 
-		// Token: 0x04000AF2 RID: 2802
+		// Token: 0x040030DC RID: 12508
 		public static GameObject projectilePrefab;
 
-		// Token: 0x04000AF3 RID: 2803
+		// Token: 0x040030DD RID: 12509
 		public static float damageCoefficient = 1f;
 
-		// Token: 0x04000AF4 RID: 2804
+		// Token: 0x040030DE RID: 12510
 		public static float baseFireInterval = 0.1f;
 
-		// Token: 0x04000AF5 RID: 2805
+		// Token: 0x040030DF RID: 12511
 		public static float minSpread = 0f;
 
-		// Token: 0x04000AF6 RID: 2806
+		// Token: 0x040030E0 RID: 12512
 		public static float maxSpread = 5f;
 
-		// Token: 0x04000AF7 RID: 2807
+		// Token: 0x040030E1 RID: 12513
 		public static float arcAngle = 5f;
 
-		// Token: 0x04000AF8 RID: 2808
+		// Token: 0x040030E2 RID: 12514
 		public List<GameObject> targetsList;
 
-		// Token: 0x04000AF9 RID: 2809
+		// Token: 0x040030E3 RID: 12515
 		private Transform modelTransform;
 
-		// Token: 0x04000AFA RID: 2810
+		// Token: 0x040030E4 RID: 12516
 		private AimAnimator aimAnimator;
 
-		// Token: 0x04000AFB RID: 2811
+		// Token: 0x040030E5 RID: 12517
 		private float fireTimer;
 
-		// Token: 0x04000AFC RID: 2812
+		// Token: 0x040030E6 RID: 12518
 		private float fireInterval;
 
-		// Token: 0x04000AFD RID: 2813
+		// Token: 0x040030E7 RID: 12519
 		private int currentTargetIndex;
 	}
 }

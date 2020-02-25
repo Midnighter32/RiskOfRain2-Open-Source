@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.VagrantMonster.Weapon
 {
-	// Token: 0x02000130 RID: 304
+	// Token: 0x02000806 RID: 2054
 	public class JellyBarrage : BaseState
 	{
-		// Token: 0x060005DD RID: 1501 RVA: 0x0001AC78 File Offset: 0x00018E78
+		// Token: 0x06002EB4 RID: 11956 RVA: 0x000C6920 File Offset: 0x000C4B20
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -28,14 +28,14 @@ namespace EntityStates.VagrantMonster.Weapon
 			}
 		}
 
-		// Token: 0x060005DE RID: 1502 RVA: 0x0001AD18 File Offset: 0x00018F18
+		// Token: 0x06002EB5 RID: 11957 RVA: 0x000C69C0 File Offset: 0x000C4BC0
 		private void FireBlob(Ray projectileRay, float bonusPitch, float bonusYaw)
 		{
 			projectileRay.direction = Util.ApplySpread(projectileRay.direction, 0f, JellyBarrage.maxSpread, 1f, 1f, bonusYaw, bonusPitch);
 			ProjectileManager.instance.FireProjectile(JellyBarrage.projectilePrefab, projectileRay.origin, Util.QuaternionSafeLookRotation(projectileRay.direction), base.gameObject, this.damageStat * JellyBarrage.damageCoefficient, 0f, Util.CheckRoll(this.critStat, base.characterBody.master), DamageColorIndex.Default, null, -1f);
 		}
 
-		// Token: 0x060005DF RID: 1503 RVA: 0x0001ADA4 File Offset: 0x00018FA4
+		// Token: 0x06002EB6 RID: 11958 RVA: 0x000C6A4C File Offset: 0x000C4C4C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -65,37 +65,37 @@ namespace EntityStates.VagrantMonster.Weapon
 			}
 		}
 
-		// Token: 0x040006B8 RID: 1720
+		// Token: 0x04002BDC RID: 11228
 		private float stopwatch;
 
-		// Token: 0x040006B9 RID: 1721
+		// Token: 0x04002BDD RID: 11229
 		private float missileStopwatch;
 
-		// Token: 0x040006BA RID: 1722
+		// Token: 0x04002BDE RID: 11230
 		public static float baseDuration;
 
-		// Token: 0x040006BB RID: 1723
+		// Token: 0x04002BDF RID: 11231
 		public static string muzzleString;
 
-		// Token: 0x040006BC RID: 1724
+		// Token: 0x04002BE0 RID: 11232
 		public static float missileSpawnFrequency;
 
-		// Token: 0x040006BD RID: 1725
+		// Token: 0x04002BE1 RID: 11233
 		public static float missileSpawnDelay;
 
-		// Token: 0x040006BE RID: 1726
+		// Token: 0x04002BE2 RID: 11234
 		public static float damageCoefficient;
 
-		// Token: 0x040006BF RID: 1727
+		// Token: 0x04002BE3 RID: 11235
 		public static float maxSpread;
 
-		// Token: 0x040006C0 RID: 1728
+		// Token: 0x04002BE4 RID: 11236
 		public static GameObject projectilePrefab;
 
-		// Token: 0x040006C1 RID: 1729
+		// Token: 0x04002BE5 RID: 11237
 		public static GameObject muzzleflashPrefab;
 
-		// Token: 0x040006C2 RID: 1730
+		// Token: 0x04002BE6 RID: 11238
 		private ChildLocator childLocator;
 	}
 }

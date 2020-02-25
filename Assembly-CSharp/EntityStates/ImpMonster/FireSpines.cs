@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.ImpMonster
 {
-	// Token: 0x0200014A RID: 330
-	internal class FireSpines : BaseState
+	// Token: 0x02000826 RID: 2086
+	public class FireSpines : BaseState
 	{
-		// Token: 0x06000655 RID: 1621 RVA: 0x0001D9E3 File Offset: 0x0001BBE3
+		// Token: 0x06002F42 RID: 12098 RVA: 0x000C9D6F File Offset: 0x000C7F6F
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -16,13 +16,13 @@ namespace EntityStates.ImpMonster
 			base.PlayAnimation("Gesture", "FireSpines", "FireSpines.playbackRate", this.duration);
 		}
 
-		// Token: 0x06000656 RID: 1622 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002F43 RID: 12099 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000657 RID: 1623 RVA: 0x0001DA18 File Offset: 0x0001BC18
+		// Token: 0x06002F44 RID: 12100 RVA: 0x000C9DA4 File Offset: 0x000C7FA4
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -35,7 +35,7 @@ namespace EntityStates.ImpMonster
 				this.spineTimer -= FireSpines.durationBetweenThrows / this.attackSpeedStat;
 				if (FireSpines.effectPrefab)
 				{
-					EffectManager.instance.SimpleMuzzleFlash(FireSpines.effectPrefab, base.gameObject, muzzleName, false);
+					EffectManager.SimpleMuzzleFlash(FireSpines.effectPrefab, base.gameObject, muzzleName, false);
 				}
 				if (base.isAuthority)
 				{
@@ -49,40 +49,40 @@ namespace EntityStates.ImpMonster
 			}
 		}
 
-		// Token: 0x06000658 RID: 1624 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002F45 RID: 12101 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000787 RID: 1927
+		// Token: 0x04002CC7 RID: 11463
 		public static GameObject projectilePrefab;
 
-		// Token: 0x04000788 RID: 1928
+		// Token: 0x04002CC8 RID: 11464
 		public static GameObject effectPrefab;
 
-		// Token: 0x04000789 RID: 1929
+		// Token: 0x04002CC9 RID: 11465
 		public static float baseDuration = 2f;
 
-		// Token: 0x0400078A RID: 1930
+		// Token: 0x04002CCA RID: 11466
 		public static float durationBetweenThrows = 0.1f;
 
-		// Token: 0x0400078B RID: 1931
+		// Token: 0x04002CCB RID: 11467
 		public static int spineCountMax = 3;
 
-		// Token: 0x0400078C RID: 1932
+		// Token: 0x04002CCC RID: 11468
 		public static float damageCoefficient = 1.2f;
 
-		// Token: 0x0400078D RID: 1933
+		// Token: 0x04002CCD RID: 11469
 		public static float force = 20f;
 
-		// Token: 0x0400078E RID: 1934
+		// Token: 0x04002CCE RID: 11470
 		private int spineCount;
 
-		// Token: 0x0400078F RID: 1935
+		// Token: 0x04002CCF RID: 11471
 		private float spineTimer;
 
-		// Token: 0x04000790 RID: 1936
+		// Token: 0x04002CD0 RID: 11472
 		private float duration;
 	}
 }

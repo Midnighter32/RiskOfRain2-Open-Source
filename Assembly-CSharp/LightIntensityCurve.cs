@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x02000045 RID: 69
+// Token: 0x02000041 RID: 65
 public class LightIntensityCurve : MonoBehaviour
 {
-	// Token: 0x06000130 RID: 304 RVA: 0x00007634 File Offset: 0x00005834
+	// Token: 0x06000114 RID: 276 RVA: 0x0000758C File Offset: 0x0000578C
 	private void Start()
 	{
 		this.light = base.GetComponent<Light>();
@@ -16,7 +16,7 @@ public class LightIntensityCurve : MonoBehaviour
 		}
 	}
 
-	// Token: 0x06000131 RID: 305 RVA: 0x0000768C File Offset: 0x0000588C
+	// Token: 0x06000115 RID: 277 RVA: 0x000075E4 File Offset: 0x000057E4
 	private void Update()
 	{
 		this.time += Time.deltaTime;
@@ -27,24 +27,24 @@ public class LightIntensityCurve : MonoBehaviour
 		}
 	}
 
-	// Token: 0x0400013B RID: 315
+	// Token: 0x04000140 RID: 320
 	public AnimationCurve curve;
 
-	// Token: 0x0400013C RID: 316
+	// Token: 0x04000141 RID: 321
 	public float timeMax = 5f;
 
-	// Token: 0x0400013D RID: 317
+	// Token: 0x04000142 RID: 322
 	private float time;
 
-	// Token: 0x0400013E RID: 318
+	// Token: 0x04000143 RID: 323
 	private Light light;
 
-	// Token: 0x0400013F RID: 319
+	// Token: 0x04000144 RID: 324
 	private float maxIntensity;
 
-	// Token: 0x04000140 RID: 320
+	// Token: 0x04000145 RID: 325
 	public bool loop;
 
-	// Token: 0x04000141 RID: 321
+	// Token: 0x04000146 RID: 326
 	public bool randomStart;
 }

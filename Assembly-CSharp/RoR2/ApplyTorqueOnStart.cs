@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200025C RID: 604
+	// Token: 0x0200014D RID: 333
 	public class ApplyTorqueOnStart : MonoBehaviour
 	{
-		// Token: 0x06000B40 RID: 2880 RVA: 0x00037C10 File Offset: 0x00035E10
+		// Token: 0x060005E9 RID: 1513 RVA: 0x00018784 File Offset: 0x00016984
 		private void Start()
 		{
 			Rigidbody component = base.GetComponent<Rigidbody>();
@@ -23,10 +23,10 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04000F50 RID: 3920
+		// Token: 0x0400066D RID: 1645
 		public Vector3 localTorque;
 
-		// Token: 0x04000F51 RID: 3921
+		// Token: 0x0400066E RID: 1646
 		public bool randomize;
 	}
 }

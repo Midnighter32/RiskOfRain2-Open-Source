@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005B9 RID: 1465
+	// Token: 0x02000593 RID: 1427
 	public class CarouselController : BaseSettingsControl
 	{
-		// Token: 0x060020CF RID: 8399 RVA: 0x0009A148 File Offset: 0x00098348
+		// Token: 0x060021F1 RID: 8689 RVA: 0x00092934 File Offset: 0x00090B34
 		protected override void OnUpdateControls()
 		{
 			string currentValue = base.GetCurrentValue();
@@ -18,12 +18,6 @@ namespace RoR2.UI
 				if (this.choices[i].convarValue == currentValue)
 				{
 					flag = true;
-					Debug.LogFormat("Matching value {0}, carousel entry index {1} detected for setting {2}", new object[]
-					{
-						currentValue,
-						i,
-						this.settingName
-					});
 					this.selectionIndex = i;
 					this.UpdateFromSelectionIndex();
 					break;
@@ -40,7 +34,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060020D0 RID: 8400 RVA: 0x0009A1F8 File Offset: 0x000983F8
+		// Token: 0x060021F2 RID: 8690 RVA: 0x000929BC File Offset: 0x00090BBC
 		public void MoveCarousel(int direction)
 		{
 			this.selectionIndex = Mathf.Clamp(this.selectionIndex + direction, 0, this.choices.Length - 1);
@@ -48,7 +42,7 @@ namespace RoR2.UI
 			base.SubmitSetting(this.choices[this.selectionIndex].convarValue);
 		}
 
-		// Token: 0x060020D1 RID: 8401 RVA: 0x0009A245 File Offset: 0x00098445
+		// Token: 0x060021F3 RID: 8691 RVA: 0x00092A09 File Offset: 0x00090C09
 		public void BoolCarousel()
 		{
 			this.selectionIndex = ((this.selectionIndex == 0) ? 1 : 0);
@@ -56,7 +50,7 @@ namespace RoR2.UI
 			base.SubmitSetting(this.choices[this.selectionIndex].convarValue);
 		}
 
-		// Token: 0x060020D2 RID: 8402 RVA: 0x0009A27C File Offset: 0x0009847C
+		// Token: 0x060021F4 RID: 8692 RVA: 0x00092A40 File Offset: 0x00090C40
 		private void UpdateFromSelectionIndex()
 		{
 			CarouselController.Choice choice = this.choices[this.selectionIndex];
@@ -70,7 +64,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060020D3 RID: 8403 RVA: 0x0009A2DC File Offset: 0x000984DC
+		// Token: 0x060021F5 RID: 8693 RVA: 0x00092AA0 File Offset: 0x00090CA0
 		private void Update()
 		{
 			bool active = true;
@@ -93,38 +87,38 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x04002355 RID: 9045
+		// Token: 0x04001F4B RID: 8011
 		public GameObject leftArrowButton;
 
-		// Token: 0x04002356 RID: 9046
+		// Token: 0x04001F4C RID: 8012
 		public GameObject rightArrowButton;
 
-		// Token: 0x04002357 RID: 9047
+		// Token: 0x04001F4D RID: 8013
 		public GameObject boolButton;
 
-		// Token: 0x04002358 RID: 9048
+		// Token: 0x04001F4E RID: 8014
 		public Image optionalImage;
 
-		// Token: 0x04002359 RID: 9049
+		// Token: 0x04001F4F RID: 8015
 		public TextMeshProUGUI optionalText;
 
-		// Token: 0x0400235A RID: 9050
+		// Token: 0x04001F50 RID: 8016
 		public CarouselController.Choice[] choices;
 
-		// Token: 0x0400235B RID: 9051
+		// Token: 0x04001F51 RID: 8017
 		private int selectionIndex;
 
-		// Token: 0x020005BA RID: 1466
+		// Token: 0x02000594 RID: 1428
 		[Serializable]
 		public struct Choice
 		{
-			// Token: 0x0400235C RID: 9052
+			// Token: 0x04001F52 RID: 8018
 			public string suboptionDisplayToken;
 
-			// Token: 0x0400235D RID: 9053
+			// Token: 0x04001F53 RID: 8019
 			public string convarValue;
 
-			// Token: 0x0400235E RID: 9054
+			// Token: 0x04001F54 RID: 8020
 			public Sprite customSprite;
 		}
 	}

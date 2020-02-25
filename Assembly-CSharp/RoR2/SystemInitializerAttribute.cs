@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020004BD RID: 1213
+	// Token: 0x02000453 RID: 1107
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+	[MeansImplicitUse]
 	public class SystemInitializerAttribute : Attribute
 	{
-		// Token: 0x06001B57 RID: 6999 RVA: 0x0007FD1E File Offset: 0x0007DF1E
+		// Token: 0x06001AE9 RID: 6889 RVA: 0x0007233E File Offset: 0x0007053E
 		public SystemInitializerAttribute(params Type[] dependencies)
 		{
 			if (dependencies != null)
@@ -18,7 +21,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001B58 RID: 7000 RVA: 0x0007FD3C File Offset: 0x0007DF3C
+		// Token: 0x06001AEA RID: 6890 RVA: 0x0007235C File Offset: 0x0007055C
 		public static void Execute()
 		{
 			Queue<SystemInitializerAttribute> queue = new Queue<SystemInitializerAttribute>();
@@ -56,6 +59,7 @@ namespace RoR2
 				}
 				else
 				{
+					Debug.Log("Initializing system: " + systemInitializerAttribute.associatedType.Name);
 					systemInitializerAttribute.methodInfo.Invoke(null, Array.Empty<object>());
 					CS$<>8__locals1.initializedTypes.Add(systemInitializerAttribute.associatedType);
 					num = 0;
@@ -63,13 +67,27 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001DF1 RID: 7665
+		// Token: 0x06001AEB RID: 6891 RVA: 0x000724A4 File Offset: 0x000706A4
+		[CompilerGenerated]
+		internal static bool <Execute>g__InitializerDependenciesMet|4_0(SystemInitializerAttribute initializerAttribute, ref SystemInitializerAttribute.<>c__DisplayClass4_0 A_1)
+		{
+			foreach (Type item in initializerAttribute.dependencies)
+			{
+				if (!A_1.initializedTypes.Contains(item))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		// Token: 0x0400186C RID: 6252
 		public Type[] dependencies = Array.Empty<Type>();
 
-		// Token: 0x04001DF2 RID: 7666
+		// Token: 0x0400186D RID: 6253
 		private MethodInfo methodInfo;
 
-		// Token: 0x04001DF3 RID: 7667
+		// Token: 0x0400186E RID: 6254
 		private Type associatedType;
 	}
 }

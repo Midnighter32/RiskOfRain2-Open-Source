@@ -4,10 +4,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000254 RID: 596
+	// Token: 0x02000145 RID: 325
 	public class AmmoPickup : MonoBehaviour
 	{
-		// Token: 0x06000B1E RID: 2846 RVA: 0x0003738C File Offset: 0x0003558C
+		// Token: 0x060005C6 RID: 1478 RVA: 0x00017EB8 File Offset: 0x000160B8
 		private void OnTriggerStay(Collider other)
 		{
 			if (NetworkServer.active && this.alive && TeamComponent.GetObjectTeam(other.gameObject) == this.teamFilter.teamIndex)
@@ -17,24 +17,24 @@ namespace RoR2
 				{
 					this.alive = false;
 					component.ApplyAmmoPack();
-					EffectManager.instance.SimpleEffect(this.pickupEffect, base.transform.position, Quaternion.identity, true);
+					EffectManager.SimpleEffect(this.pickupEffect, base.transform.position, Quaternion.identity, true);
 					UnityEngine.Object.Destroy(this.baseObject);
 				}
 			}
 		}
 
-		// Token: 0x04000F24 RID: 3876
+		// Token: 0x04000641 RID: 1601
 		[Tooltip("The base object to destroy when this pickup is consumed.")]
 		public GameObject baseObject;
 
-		// Token: 0x04000F25 RID: 3877
+		// Token: 0x04000642 RID: 1602
 		[Tooltip("The team filter object which determines who can pick up this pack.")]
 		public TeamFilter teamFilter;
 
-		// Token: 0x04000F26 RID: 3878
+		// Token: 0x04000643 RID: 1603
 		public GameObject pickupEffect;
 
-		// Token: 0x04000F27 RID: 3879
+		// Token: 0x04000644 RID: 1604
 		private bool alive = true;
 	}
 }

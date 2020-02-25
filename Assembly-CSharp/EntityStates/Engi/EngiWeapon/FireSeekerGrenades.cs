@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.Engi.EngiWeapon
 {
-	// Token: 0x0200018A RID: 394
-	internal class FireSeekerGrenades : BaseState
+	// Token: 0x0200088A RID: 2186
+	public class FireSeekerGrenades : BaseState
 	{
-		// Token: 0x06000798 RID: 1944 RVA: 0x00025654 File Offset: 0x00023854
+		// Token: 0x06003129 RID: 12585 RVA: 0x000D38A4 File Offset: 0x000D1AA4
 		private void FireGrenade(string targetMuzzle)
 		{
 			Util.PlaySound(FireSeekerGrenades.attackSoundString, base.gameObject);
@@ -28,7 +28,7 @@ namespace EntityStates.Engi.EngiWeapon
 			base.AddRecoil(-1f * FireSeekerGrenades.recoilAmplitude, -2f * FireSeekerGrenades.recoilAmplitude, -1f * FireSeekerGrenades.recoilAmplitude, 1f * FireSeekerGrenades.recoilAmplitude);
 			if (FireSeekerGrenades.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireSeekerGrenades.effectPrefab, base.gameObject, targetMuzzle, false);
+				EffectManager.SimpleMuzzleFlash(FireSeekerGrenades.effectPrefab, base.gameObject, targetMuzzle, false);
 			}
 			if (base.isAuthority)
 			{
@@ -46,7 +46,7 @@ namespace EntityStates.Engi.EngiWeapon
 			}
 		}
 
-		// Token: 0x06000799 RID: 1945 RVA: 0x00025858 File Offset: 0x00023A58
+		// Token: 0x0600312A RID: 12586 RVA: 0x000D3AA4 File Offset: 0x000D1CA4
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -56,13 +56,13 @@ namespace EntityStates.Engi.EngiWeapon
 			base.StartAimMode(this.aimRay, 2f, false);
 		}
 
-		// Token: 0x0600079A RID: 1946 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x0600312B RID: 12587 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x0600079B RID: 1947 RVA: 0x000258A8 File Offset: 0x00023AA8
+		// Token: 0x0600312C RID: 12588 RVA: 0x000D3AF4 File Offset: 0x000D1CF4
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -93,61 +93,61 @@ namespace EntityStates.Engi.EngiWeapon
 			}
 		}
 
-		// Token: 0x0600079C RID: 1948 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x0600312D RID: 12589 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x040009BD RID: 2493
+		// Token: 0x04002F6B RID: 12139
 		public static GameObject effectPrefab;
 
-		// Token: 0x040009BE RID: 2494
+		// Token: 0x04002F6C RID: 12140
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x040009BF RID: 2495
+		// Token: 0x04002F6D RID: 12141
 		public static GameObject projectilePrefab;
 
-		// Token: 0x040009C0 RID: 2496
+		// Token: 0x04002F6E RID: 12142
 		public static int grenadeCountMax = 3;
 
-		// Token: 0x040009C1 RID: 2497
+		// Token: 0x04002F6F RID: 12143
 		public static float damageCoefficient;
 
-		// Token: 0x040009C2 RID: 2498
+		// Token: 0x04002F70 RID: 12144
 		public static float fireDuration = 1f;
 
-		// Token: 0x040009C3 RID: 2499
+		// Token: 0x04002F71 RID: 12145
 		public static float baseDuration = 2f;
 
-		// Token: 0x040009C4 RID: 2500
+		// Token: 0x04002F72 RID: 12146
 		public static float minSpread = 0f;
 
-		// Token: 0x040009C5 RID: 2501
+		// Token: 0x04002F73 RID: 12147
 		public static float maxSpread = 5f;
 
-		// Token: 0x040009C6 RID: 2502
+		// Token: 0x04002F74 RID: 12148
 		public static float arcAngle = 5f;
 
-		// Token: 0x040009C7 RID: 2503
+		// Token: 0x04002F75 RID: 12149
 		public static float recoilAmplitude = 1f;
 
-		// Token: 0x040009C8 RID: 2504
+		// Token: 0x04002F76 RID: 12150
 		public static string attackSoundString;
 
-		// Token: 0x040009C9 RID: 2505
+		// Token: 0x04002F77 RID: 12151
 		private Ray aimRay;
 
-		// Token: 0x040009CA RID: 2506
+		// Token: 0x04002F78 RID: 12152
 		private Transform modelTransform;
 
-		// Token: 0x040009CB RID: 2507
+		// Token: 0x04002F79 RID: 12153
 		private float duration;
 
-		// Token: 0x040009CC RID: 2508
+		// Token: 0x04002F7A RID: 12154
 		private float fireTimer;
 
-		// Token: 0x040009CD RID: 2509
+		// Token: 0x04002F7B RID: 12155
 		private int grenadeCount;
 	}
 }

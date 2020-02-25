@@ -2,12 +2,12 @@
 
 namespace RoR2.Stats
 {
-	// Token: 0x020004F4 RID: 1268
+	// Token: 0x02000499 RID: 1177
 	public enum StatDataType
 	{
-		// Token: 0x04001EC0 RID: 7872
+		// Token: 0x04001986 RID: 6534
 		ULong,
-		// Token: 0x04001EC1 RID: 7873
+		// Token: 0x04001987 RID: 6535
 		Double
 	}
 }

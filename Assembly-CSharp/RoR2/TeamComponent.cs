@@ -7,13 +7,18 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020003F4 RID: 1012
+	// Token: 0x0200034B RID: 843
 	[DisallowMultipleComponent]
 	public class TeamComponent : NetworkBehaviour, ILifeBehavior
 	{
-		// Token: 0x170001FF RID: 511
-		// (get) Token: 0x06001629 RID: 5673 RVA: 0x0006A1E5 File Offset: 0x000683E5
-		// (set) Token: 0x06001628 RID: 5672 RVA: 0x0006A1BD File Offset: 0x000683BD
+		// Token: 0x17000263 RID: 611
+		// (get) Token: 0x0600141D RID: 5149 RVA: 0x00056119 File Offset: 0x00054319
+		// (set) Token: 0x0600141E RID: 5150 RVA: 0x00056121 File Offset: 0x00054321
+		public CharacterBody body { get; private set; }
+
+		// Token: 0x17000264 RID: 612
+		// (get) Token: 0x06001420 RID: 5152 RVA: 0x00056152 File Offset: 0x00054352
+		// (set) Token: 0x0600141F RID: 5151 RVA: 0x0005612A File Offset: 0x0005432A
 		public TeamIndex teamIndex
 		{
 			get
@@ -27,28 +32,28 @@ namespace RoR2
 					return;
 				}
 				this._teamIndex = value;
-				base.SetDirtyBit(1u);
 				if (Application.isPlaying)
 				{
+					base.SetDirtyBit(1U);
 					this.OnChangeTeam(value);
 				}
 			}
 		}
 
-		// Token: 0x0600162A RID: 5674 RVA: 0x0006A1ED File Offset: 0x000683ED
+		// Token: 0x06001421 RID: 5153 RVA: 0x0005615A File Offset: 0x0005435A
 		private static bool TeamIsValid(TeamIndex teamIndex)
 		{
 			return teamIndex >= TeamIndex.Neutral && teamIndex < TeamIndex.Count;
 		}
 
-		// Token: 0x0600162B RID: 5675 RVA: 0x0006A1F9 File Offset: 0x000683F9
+		// Token: 0x06001422 RID: 5154 RVA: 0x00056166 File Offset: 0x00054366
 		private void OnChangeTeam(TeamIndex newTeamIndex)
 		{
 			this.OnLeaveTeam(this.oldTeamIndex);
 			this.OnJoinTeam(newTeamIndex);
 		}
 
-		// Token: 0x0600162C RID: 5676 RVA: 0x0006A20E File Offset: 0x0006840E
+		// Token: 0x06001423 RID: 5155 RVA: 0x0005617B File Offset: 0x0005437B
 		private void OnLeaveTeam(TeamIndex oldTeamIndex)
 		{
 			if (TeamComponent.TeamIsValid(oldTeamIndex))
@@ -57,7 +62,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600162D RID: 5677 RVA: 0x0006A228 File Offset: 0x00068428
+		// Token: 0x06001424 RID: 5156 RVA: 0x00056194 File Offset: 0x00054394
 		private void OnJoinTeam(TeamIndex newTeamIndex)
 		{
 			if (TeamComponent.TeamIsValid(newTeamIndex))
@@ -65,88 +70,67 @@ namespace RoR2
 				TeamComponent.teamsList[(int)newTeamIndex].Add(this);
 			}
 			this.SetupIndicator();
-			HurtBoxGroup hurtBoxGroup = this.hurtBoxGroup;
-			HurtBox[] array = (hurtBoxGroup != null) ? hurtBoxGroup.hurtBoxes : null;
-			if (array != null)
+			HurtBox[] array;
+			if (!this.body)
 			{
-				HurtBox[] array2 = array;
-				for (int i = 0; i < array2.Length; i++)
+				array = null;
+			}
+			else
+			{
+				HurtBoxGroup hurtBoxGroup = this.body.hurtBoxGroup;
+				array = ((hurtBoxGroup != null) ? hurtBoxGroup.hurtBoxes : null);
+			}
+			HurtBox[] array2 = array;
+			if (array2 != null)
+			{
+				HurtBox[] array3 = array2;
+				for (int i = 0; i < array3.Length; i++)
 				{
-					array2[i].teamIndex = newTeamIndex;
+					array3[i].teamIndex = newTeamIndex;
 				}
 			}
 			this.oldTeamIndex = newTeamIndex;
 		}
 
-		// Token: 0x0600162E RID: 5678 RVA: 0x0006A288 File Offset: 0x00068488
+		// Token: 0x06001425 RID: 5157 RVA: 0x00056208 File Offset: 0x00054408
 		private void SetupIndicator()
 		{
 			if (this.indicator)
 			{
 				return;
 			}
-			CharacterBody component = base.GetComponent<CharacterBody>();
-			if (component)
+			if (this.body)
 			{
-				TeamComponent component2 = component.GetComponent<TeamComponent>();
-				if (component2)
+				CharacterMaster master = this.body.master;
+				bool flag = master && master.isBoss;
+				GameObject gameObject = null;
+				if (master && this.teamIndex == TeamIndex.Player)
 				{
-					CharacterMaster master = component.master;
-					bool flag = master && master.isBoss;
-					GameObject gameObject = null;
-					if (master && component2.teamIndex == TeamIndex.Player)
+					gameObject = Resources.Load<GameObject>(this.body.isPlayerControlled ? "Prefabs/PositionIndicators/PlayerPositionIndicator" : "Prefabs/PositionIndicators/NPCPositionIndicator");
+				}
+				else if (flag)
+				{
+					gameObject = Resources.Load<GameObject>("Prefabs/PositionIndicators/BossPositionIndicator");
+				}
+				if (this.indicator)
+				{
+					UnityEngine.Object.Destroy(this.indicator);
+					this.indicator = null;
+				}
+				if (gameObject)
+				{
+					this.indicator = UnityEngine.Object.Instantiate<GameObject>(gameObject, base.transform);
+					this.indicator.GetComponent<PositionIndicator>().targetTransform = this.body.coreTransform;
+					Nameplate component = this.indicator.GetComponent<Nameplate>();
+					if (component)
 					{
-						bool flag2 = false;
-						PlayerCharacterMasterController component3 = master.GetComponent<PlayerCharacterMasterController>();
-						if (component3)
-						{
-							flag2 = true;
-							GameObject networkUserObject = component3.networkUserObject;
-							if (networkUserObject)
-							{
-								NetworkIdentity component4 = networkUserObject.GetComponent<NetworkIdentity>();
-								if (component4)
-								{
-									bool isLocalPlayer = component4.isLocalPlayer;
-								}
-							}
-						}
-						Vector3 position = component.transform.position;
-						component.GetComponent<Collider>();
-						if (flag2)
-						{
-							gameObject = Resources.Load<GameObject>("Prefabs/PositionIndicators/PlayerPositionIndicator");
-						}
-						else
-						{
-							gameObject = Resources.Load<GameObject>("Prefabs/PositionIndicators/NPCPositionIndicator");
-						}
-						this.indicator = UnityEngine.Object.Instantiate<GameObject>(gameObject, position, Quaternion.identity, component.transform);
-					}
-					else if (flag)
-					{
-						gameObject = Resources.Load<GameObject>("Prefabs/PositionIndicators/BossPositionIndicator");
-					}
-					if (this.indicator)
-					{
-						UnityEngine.Object.Destroy(this.indicator);
-						this.indicator = null;
-					}
-					if (gameObject)
-					{
-						this.indicator = UnityEngine.Object.Instantiate<GameObject>(gameObject, base.transform);
-						this.indicator.GetComponent<PositionIndicator>().targetTransform = component.coreTransform;
-						Nameplate component5 = this.indicator.GetComponent<Nameplate>();
-						if (component5)
-						{
-							component5.SetBody(component);
-						}
+						component.SetBody(this.body);
 					}
 				}
 			}
 		}
 
-		// Token: 0x0600162F RID: 5679 RVA: 0x0006A410 File Offset: 0x00068610
+		// Token: 0x06001426 RID: 5158 RVA: 0x00056308 File Offset: 0x00054508
 		static TeamComponent()
 		{
 			TeamComponent.teamsList = new List<TeamComponent>[3];
@@ -158,24 +142,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001630 RID: 5680 RVA: 0x0006A479 File Offset: 0x00068679
+		// Token: 0x06001427 RID: 5159 RVA: 0x00056371 File Offset: 0x00054571
 		private void Awake()
 		{
-			ModelLocator component = base.GetComponent<ModelLocator>();
-			HurtBoxGroup hurtBoxGroup;
-			if (component == null)
-			{
-				hurtBoxGroup = null;
-			}
-			else
-			{
-				Transform modelTransform = component.modelTransform;
-				hurtBoxGroup = ((modelTransform != null) ? modelTransform.GetComponent<HurtBoxGroup>() : null);
-			}
-			this.hurtBoxGroup = hurtBoxGroup;
+			this.body = base.GetComponent<CharacterBody>();
 		}
 
-		// Token: 0x06001631 RID: 5681 RVA: 0x0006A49F File Offset: 0x0006869F
+		// Token: 0x06001428 RID: 5160 RVA: 0x0005637F File Offset: 0x0005457F
 		public void Start()
 		{
 			this.SetupIndicator();
@@ -185,32 +158,32 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001632 RID: 5682 RVA: 0x0006A4C1 File Offset: 0x000686C1
+		// Token: 0x06001429 RID: 5161 RVA: 0x000563A1 File Offset: 0x000545A1
 		private void OnDestroy()
 		{
 			this.teamIndex = TeamIndex.None;
 		}
 
-		// Token: 0x06001633 RID: 5683 RVA: 0x0003F5D8 File Offset: 0x0003D7D8
+		// Token: 0x0600142A RID: 5162 RVA: 0x00022B74 File Offset: 0x00020D74
 		public void OnDeathStart()
 		{
 			base.enabled = false;
 		}
 
-		// Token: 0x06001634 RID: 5684 RVA: 0x0006A4CA File Offset: 0x000686CA
+		// Token: 0x0600142B RID: 5163 RVA: 0x000563AA File Offset: 0x000545AA
 		public override bool OnSerialize(NetworkWriter writer, bool initialState)
 		{
 			writer.Write(this.teamIndex);
-			return initialState || base.syncVarDirtyBits > 0u;
+			return initialState || base.syncVarDirtyBits > 0U;
 		}
 
-		// Token: 0x06001635 RID: 5685 RVA: 0x0006A4E6 File Offset: 0x000686E6
+		// Token: 0x0600142C RID: 5164 RVA: 0x000563C6 File Offset: 0x000545C6
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			this.teamIndex = reader.ReadTeamIndex();
 		}
 
-		// Token: 0x06001636 RID: 5686 RVA: 0x0006A4F4 File Offset: 0x000686F4
+		// Token: 0x0600142D RID: 5165 RVA: 0x000563D4 File Offset: 0x000545D4
 		public static ReadOnlyCollection<TeamComponent> GetTeamMembers(TeamIndex teamIndex)
 		{
 			if (!TeamComponent.TeamIsValid(teamIndex))
@@ -220,7 +193,7 @@ namespace RoR2
 			return TeamComponent.readonlyTeamsList[(int)teamIndex];
 		}
 
-		// Token: 0x06001637 RID: 5687 RVA: 0x0006A50C File Offset: 0x0006870C
+		// Token: 0x0600142E RID: 5166 RVA: 0x000563EC File Offset: 0x000545EC
 		public static TeamIndex GetObjectTeam(GameObject gameObject)
 		{
 			if (gameObject)
@@ -231,34 +204,34 @@ namespace RoR2
 					return component.teamIndex;
 				}
 			}
-			return TeamIndex.Neutral;
+			return TeamIndex.None;
 		}
 
-		// Token: 0x06001639 RID: 5689 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001430 RID: 5168 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x0400198D RID: 6541
+		// Token: 0x040012EB RID: 4843
+		public bool hideAllyCardDisplay;
+
+		// Token: 0x040012EC RID: 4844
 		[SerializeField]
 		private TeamIndex _teamIndex = TeamIndex.None;
 
-		// Token: 0x0400198E RID: 6542
+		// Token: 0x040012EE RID: 4846
 		private TeamIndex oldTeamIndex = TeamIndex.None;
 
-		// Token: 0x0400198F RID: 6543
+		// Token: 0x040012EF RID: 4847
 		private GameObject indicator;
 
-		// Token: 0x04001990 RID: 6544
+		// Token: 0x040012F0 RID: 4848
 		private static List<TeamComponent>[] teamsList;
 
-		// Token: 0x04001991 RID: 6545
+		// Token: 0x040012F1 RID: 4849
 		private static ReadOnlyCollection<TeamComponent>[] readonlyTeamsList;
 
-		// Token: 0x04001992 RID: 6546
-		private HurtBoxGroup hurtBoxGroup;
-
-		// Token: 0x04001993 RID: 6547
+		// Token: 0x040012F2 RID: 4850
 		private static ReadOnlyCollection<TeamComponent> emptyTeamMembers = new List<TeamComponent>().AsReadOnly();
 	}
 }

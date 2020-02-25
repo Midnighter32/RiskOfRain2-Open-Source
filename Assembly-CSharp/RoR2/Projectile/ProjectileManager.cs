@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using RoR2.Networking;
 using Unity;
 using UnityEngine;
@@ -8,67 +7,33 @@ using UnityEngine.Networking;
 
 namespace RoR2.Projectile
 {
-	// Token: 0x02000555 RID: 1365
+	// Token: 0x0200051C RID: 1308
 	public class ProjectileManager : MonoBehaviour
 	{
-		// Token: 0x06001E60 RID: 7776 RVA: 0x0008F4A4 File Offset: 0x0008D6A4
-		[RuntimeInitializeOnLoadMethod]
-		private static void Init()
-		{
-			ProjectileManager.projectilePrefabs = Resources.LoadAll<GameObject>("Prefabs/Projectiles/");
-			Array.Sort<GameObject>(ProjectileManager.projectilePrefabs, (GameObject a, GameObject b) => string.CompareOrdinal(a.name, b.name));
-			ProjectileManager.projectilePrefabProjectileControllers = (from prefab in ProjectileManager.projectilePrefabs
-			select prefab.GetComponent<ProjectileController>()).ToArray<ProjectileController>();
-			int num = 256;
-			if (ProjectileManager.projectilePrefabs.Length > num)
-			{
-				Debug.LogErrorFormat("Cannot have more than {0} projectile prefabs defined, which is over the limit for {1}. Check comments at error source for details.", new object[]
-				{
-					num,
-					typeof(byte).Name
-				});
-				for (int i = num; i < ProjectileManager.projectilePrefabs.Length; i++)
-				{
-					Debug.LogErrorFormat("Could not register projectile [{0}/{1}]=\"{2}\"", new object[]
-					{
-						i,
-						num - 1,
-						ProjectileManager.projectilePrefabs[i].name
-					});
-				}
-			}
-		}
+		// Token: 0x17000343 RID: 835
+		// (get) Token: 0x06001ED8 RID: 7896 RVA: 0x0008599D File Offset: 0x00083B9D
+		// (set) Token: 0x06001ED9 RID: 7897 RVA: 0x000859A4 File Offset: 0x00083BA4
+		public static ProjectileManager instance { get; private set; }
 
-		// Token: 0x06001E61 RID: 7777 RVA: 0x0008F59C File Offset: 0x0008D79C
+		// Token: 0x06001EDA RID: 7898 RVA: 0x000859AC File Offset: 0x00083BAC
 		private void Awake()
 		{
 			this.predictionManager = new ProjectileManager.PredictionManager();
 		}
 
-		// Token: 0x06001E62 RID: 7778 RVA: 0x0008F5A9 File Offset: 0x0008D7A9
-		private void OnDisable()
-		{
-			if (ProjectileManager.instance == this)
-			{
-				ProjectileManager.instance = null;
-			}
-		}
-
-		// Token: 0x06001E63 RID: 7779 RVA: 0x0008F5BE File Offset: 0x0008D7BE
+		// Token: 0x06001EDB RID: 7899 RVA: 0x000859B9 File Offset: 0x00083BB9
 		private void OnEnable()
 		{
-			if (ProjectileManager.instance == null)
-			{
-				ProjectileManager.instance = this;
-				return;
-			}
-			Debug.LogErrorFormat(this, "Duplicate instance of singleton class {0}. Only one should exist at a time", new object[]
-			{
-				base.GetType().Name
-			});
+			ProjectileManager.instance = SingletonHelper.Assign<ProjectileManager>(ProjectileManager.instance, this);
 		}
 
-		// Token: 0x06001E64 RID: 7780 RVA: 0x0008F5F3 File Offset: 0x0008D7F3
+		// Token: 0x06001EDC RID: 7900 RVA: 0x000859CB File Offset: 0x00083BCB
+		private void OnDisable()
+		{
+			ProjectileManager.instance = SingletonHelper.Unassign<ProjectileManager>(ProjectileManager.instance, this);
+		}
+
+		// Token: 0x06001EDD RID: 7901 RVA: 0x000859DD File Offset: 0x00083BDD
 		[NetworkMessageHandler(msgType = 49, server = true)]
 		private static void HandlePlayerFireProjectile(NetworkMessage netMsg)
 		{
@@ -78,7 +43,7 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001E65 RID: 7781 RVA: 0x0008F60C File Offset: 0x0008D80C
+		// Token: 0x06001EDE RID: 7902 RVA: 0x000859F6 File Offset: 0x00083BF6
 		[NetworkMessageHandler(msgType = 50, client = true)]
 		private static void HandleReleaseProjectilePredictionId(NetworkMessage netMsg)
 		{
@@ -88,24 +53,7 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001E66 RID: 7782 RVA: 0x0008F625 File Offset: 0x0008D825
-		private int FindProjectilePrefabIndex(GameObject prefab)
-		{
-			return Array.IndexOf<GameObject>(ProjectileManager.projectilePrefabs, prefab);
-		}
-
-		// Token: 0x06001E67 RID: 7783 RVA: 0x0008F632 File Offset: 0x0008D832
-		private GameObject FindProjectilePrefabFromIndex(int projectilePrefabIndex)
-		{
-			if (projectilePrefabIndex < ProjectileManager.projectilePrefabs.Length)
-			{
-				return ProjectileManager.projectilePrefabs[projectilePrefabIndex];
-			}
-			return null;
-		}
-
-		// Token: 0x06001E68 RID: 7784 RVA: 0x0008F648 File Offset: 0x0008D848
-		[Obsolete("Use the FireProjectileInfo overload of FireProjectile instead.")]
+		// Token: 0x06001EDF RID: 7903 RVA: 0x00085A10 File Offset: 0x00083C10
 		public void FireProjectile(GameObject prefab, Vector3 position, Quaternion rotation, GameObject owner, float damage, float force, bool crit, DamageColorIndex damageColorIndex = DamageColorIndex.Default, GameObject target = null, float speedOverride = -1f)
 		{
 			FireProjectileInfo fireProjectileInfo = new FireProjectileInfo
@@ -125,7 +73,7 @@ namespace RoR2.Projectile
 			this.FireProjectile(fireProjectileInfo);
 		}
 
-		// Token: 0x06001E69 RID: 7785 RVA: 0x0008F6C9 File Offset: 0x0008D8C9
+		// Token: 0x06001EE0 RID: 7904 RVA: 0x00085A91 File Offset: 0x00083C91
 		public void FireProjectile(FireProjectileInfo fireProjectileInfo)
 		{
 			if (NetworkServer.active)
@@ -136,11 +84,11 @@ namespace RoR2.Projectile
 			this.FireProjectileClient(fireProjectileInfo, NetworkManager.singleton.client);
 		}
 
-		// Token: 0x06001E6A RID: 7786 RVA: 0x0008F6F8 File Offset: 0x0008D8F8
+		// Token: 0x06001EE1 RID: 7905 RVA: 0x00085AC0 File Offset: 0x00083CC0
 		private void FireProjectileClient(FireProjectileInfo fireProjectileInfo, NetworkClient client)
 		{
-			int num = this.FindProjectilePrefabIndex(fireProjectileInfo.projectilePrefab);
-			if (num == -1)
+			int projectileIndex = ProjectileCatalog.GetProjectileIndex(fireProjectileInfo.projectilePrefab);
+			if (projectileIndex == -1)
 			{
 				Debug.LogErrorFormat(fireProjectileInfo.projectilePrefab, "Prefab {0} is not a registered projectile prefab.", new object[]
 				{
@@ -148,7 +96,7 @@ namespace RoR2.Projectile
 				});
 				return;
 			}
-			bool allowPrediction = ProjectileManager.projectilePrefabProjectileControllers[num].allowPrediction;
+			bool allowPrediction = ProjectileCatalog.GetProjectilePrefabProjectileControllerComponent(projectileIndex).allowPrediction;
 			ushort predictionId = 0;
 			if (allowPrediction)
 			{
@@ -158,7 +106,7 @@ namespace RoR2.Projectile
 				predictionId = component.predictionId;
 			}
 			this.fireMsg.sendTime = (double)Run.instance.time;
-			this.fireMsg.prefabIndex = (byte)num;
+			this.fireMsg.prefabIndex = (byte)projectileIndex;
 			this.fireMsg.position = fireProjectileInfo.position;
 			this.fireMsg.rotation = fireProjectileInfo.rotation;
 			this.fireMsg.owner = fireProjectileInfo.owner;
@@ -177,14 +125,14 @@ namespace RoR2.Projectile
 			client.SendWriter(networkWriter, 0);
 		}
 
-		// Token: 0x06001E6B RID: 7787 RVA: 0x0008F888 File Offset: 0x0008DA88
+		// Token: 0x06001EE2 RID: 7906 RVA: 0x00085C4C File Offset: 0x00083E4C
 		private static void InitializeProjectile(ProjectileController projectileController, FireProjectileInfo fireProjectileInfo)
 		{
 			GameObject gameObject = projectileController.gameObject;
 			ProjectileDamage component = gameObject.GetComponent<ProjectileDamage>();
 			TeamFilter component2 = gameObject.GetComponent<TeamFilter>();
 			ProjectileNetworkTransform component3 = gameObject.GetComponent<ProjectileNetworkTransform>();
-			MissileController component4 = gameObject.GetComponent<MissileController>();
+			ProjectileTargetComponent component4 = gameObject.GetComponent<ProjectileTargetComponent>();
 			ProjectileSimple component5 = gameObject.GetComponent<ProjectileSimple>();
 			projectileController.Networkowner = fireProjectileInfo.owner;
 			projectileController.procChainMask = fireProjectileInfo.procChainMask;
@@ -226,14 +174,15 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001E6C RID: 7788 RVA: 0x0008F9C8 File Offset: 0x0008DBC8
+		// Token: 0x06001EE3 RID: 7907 RVA: 0x00085D8C File Offset: 0x00083F8C
 		private void FireProjectileServer(FireProjectileInfo fireProjectileInfo, NetworkConnection clientAuthorityOwner = null, ushort predictionId = 0, double fastForwardTime = 0.0)
 		{
 			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(fireProjectileInfo.projectilePrefab, fireProjectileInfo.position, fireProjectileInfo.rotation);
 			ProjectileController component = gameObject.GetComponent<ProjectileController>();
 			component.NetworkpredictionId = predictionId;
 			ProjectileManager.InitializeProjectile(component, fireProjectileInfo);
-			if (clientAuthorityOwner != null)
+			NetworkIdentity component2 = gameObject.GetComponent<NetworkIdentity>();
+			if (clientAuthorityOwner != null && component2.localPlayerAuthority)
 			{
 				NetworkServer.SpawnWithClientAuthority(gameObject, clientAuthorityOwner);
 				return;
@@ -241,7 +190,7 @@ namespace RoR2.Projectile
 			NetworkServer.Spawn(gameObject);
 		}
 
-		// Token: 0x06001E6D RID: 7789 RVA: 0x0008FA14 File Offset: 0x0008DC14
+		// Token: 0x06001EE4 RID: 7908 RVA: 0x00085DE8 File Offset: 0x00083FE8
 		public void OnServerProjectileDestroyed(ProjectileController projectile)
 		{
 			if (projectile.predictionId != 0)
@@ -254,7 +203,7 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001E6E RID: 7790 RVA: 0x0008FA40 File Offset: 0x0008DC40
+		// Token: 0x06001EE5 RID: 7909 RVA: 0x00085E14 File Offset: 0x00084014
 		public void OnClientProjectileReceived(ProjectileController projectile)
 		{
 			if (projectile.predictionId != 0 && projectile.hasAuthority)
@@ -263,7 +212,7 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001E6F RID: 7791 RVA: 0x0008FA60 File Offset: 0x0008DC60
+		// Token: 0x06001EE6 RID: 7910 RVA: 0x00085E34 File Offset: 0x00084034
 		private void ReleasePredictionId(NetworkConnection owner, ushort predictionId)
 		{
 			this.releasePredictionIdMsg.predictionId = predictionId;
@@ -274,73 +223,52 @@ namespace RoR2.Projectile
 			owner.SendWriter(networkWriter, 0);
 		}
 
-		// Token: 0x06001E70 RID: 7792 RVA: 0x0008FAA4 File Offset: 0x0008DCA4
+		// Token: 0x06001EE7 RID: 7911 RVA: 0x00085E78 File Offset: 0x00084078
 		private void HandlePlayerFireProjectileInternal(NetworkMessage netMsg)
 		{
 			netMsg.ReadMessage<ProjectileManager.PlayerFireProjectileMessage>(this.fireMsg);
-			GameObject gameObject = this.FindProjectilePrefabFromIndex((int)this.fireMsg.prefabIndex);
-			if (gameObject == null)
+			GameObject projectilePrefab = ProjectileCatalog.GetProjectilePrefab((int)this.fireMsg.prefabIndex);
+			if (projectilePrefab == null)
 			{
 				this.ReleasePredictionId(netMsg.conn, this.fireMsg.predictionId);
 				return;
 			}
 			FireProjectileInfo fireProjectileInfo = default(FireProjectileInfo);
-			fireProjectileInfo.projectilePrefab = gameObject;
+			fireProjectileInfo.projectilePrefab = projectilePrefab;
 			fireProjectileInfo.position = this.fireMsg.position;
 			fireProjectileInfo.rotation = this.fireMsg.rotation;
 			fireProjectileInfo.owner = this.fireMsg.owner;
 			fireProjectileInfo.damage = this.fireMsg.damage;
 			fireProjectileInfo.force = this.fireMsg.force;
 			fireProjectileInfo.crit = this.fireMsg.crit;
-			GameObject gameObject2 = this.fireMsg.target.ResolveGameObject();
-			fireProjectileInfo.target = ((gameObject2 != null) ? gameObject2.gameObject : null);
+			GameObject gameObject = this.fireMsg.target.ResolveGameObject();
+			fireProjectileInfo.target = ((gameObject != null) ? gameObject.gameObject : null);
 			fireProjectileInfo.damageColorIndex = this.fireMsg.damageColorIndex;
 			fireProjectileInfo.speedOverride = this.fireMsg.speedOverride;
 			fireProjectileInfo.fuseOverride = this.fireMsg.fuseOverride;
 			this.FireProjectileServer(fireProjectileInfo, netMsg.conn, this.fireMsg.predictionId, (double)Run.instance.time - this.fireMsg.sendTime);
 		}
 
-		// Token: 0x06001E71 RID: 7793 RVA: 0x0008FBF4 File Offset: 0x0008DDF4
+		// Token: 0x06001EE8 RID: 7912 RVA: 0x00085FC7 File Offset: 0x000841C7
 		private void HandleReleaseProjectilePredictionIdInternal(NetworkMessage netMsg)
 		{
 			netMsg.ReadMessage<ProjectileManager.ReleasePredictionIdMessage>(this.releasePredictionIdMsg);
 			this.predictionManager.ReleasePredictionId(this.releasePredictionIdMsg.predictionId);
 		}
 
-		// Token: 0x06001E72 RID: 7794 RVA: 0x0008FC18 File Offset: 0x0008DE18
-		[ConCommand(commandName = "dump_projectile_map", flags = ConVarFlags.None, helpText = "Dumps the map between indices and projectile prefabs.")]
-		private static void DumpProjectileMap(ConCommandArgs args)
-		{
-			string[] array = new string[ProjectileManager.projectilePrefabs.Length];
-			for (int i = 0; i < ProjectileManager.projectilePrefabs.Length; i++)
-			{
-				array[i] = string.Format("[{0}] = {1}", i, ProjectileManager.projectilePrefabs[i].name);
-			}
-			Debug.Log(string.Join("\n", array));
-		}
-
-		// Token: 0x0400210E RID: 8462
-		public static ProjectileManager instance;
-
-		// Token: 0x0400210F RID: 8463
-		private static GameObject[] projectilePrefabs;
-
-		// Token: 0x04002110 RID: 8464
-		private static ProjectileController[] projectilePrefabProjectileControllers;
-
-		// Token: 0x04002111 RID: 8465
+		// Token: 0x04001C74 RID: 7284
 		private ProjectileManager.PredictionManager predictionManager;
 
-		// Token: 0x04002112 RID: 8466
+		// Token: 0x04001C75 RID: 7285
 		private ProjectileManager.PlayerFireProjectileMessage fireMsg = new ProjectileManager.PlayerFireProjectileMessage();
 
-		// Token: 0x04002113 RID: 8467
+		// Token: 0x04001C76 RID: 7286
 		private ProjectileManager.ReleasePredictionIdMessage releasePredictionIdMsg = new ProjectileManager.ReleasePredictionIdMessage();
 
-		// Token: 0x02000556 RID: 1366
+		// Token: 0x0200051D RID: 1309
 		private class PlayerFireProjectileMessage : MessageBase
 		{
-			// Token: 0x06001E76 RID: 7798 RVA: 0x0008FC94 File Offset: 0x0008DE94
+			// Token: 0x06001EEB RID: 7915 RVA: 0x0008600C File Offset: 0x0008420C
 			public override void Serialize(NetworkWriter writer)
 			{
 				writer.Write(this.sendTime);
@@ -358,7 +286,7 @@ namespace RoR2.Projectile
 				writer.Write(this.fuseOverride);
 			}
 
-			// Token: 0x06001E77 RID: 7799 RVA: 0x0008FD40 File Offset: 0x0008DF40
+			// Token: 0x06001EEC RID: 7916 RVA: 0x000860B8 File Offset: 0x000842B8
 			public override void Deserialize(NetworkReader reader)
 			{
 				this.sendTime = reader.ReadDouble();
@@ -376,75 +304,75 @@ namespace RoR2.Projectile
 				this.fuseOverride = reader.ReadSingle();
 			}
 
-			// Token: 0x04002114 RID: 8468
+			// Token: 0x04001C77 RID: 7287
 			public double sendTime;
 
-			// Token: 0x04002115 RID: 8469
+			// Token: 0x04001C78 RID: 7288
 			public byte prefabIndex;
 
-			// Token: 0x04002116 RID: 8470
+			// Token: 0x04001C79 RID: 7289
 			public Vector3 position;
 
-			// Token: 0x04002117 RID: 8471
+			// Token: 0x04001C7A RID: 7290
 			public Quaternion rotation;
 
-			// Token: 0x04002118 RID: 8472
+			// Token: 0x04001C7B RID: 7291
 			public GameObject owner;
 
-			// Token: 0x04002119 RID: 8473
+			// Token: 0x04001C7C RID: 7292
 			public HurtBoxReference target;
 
-			// Token: 0x0400211A RID: 8474
+			// Token: 0x04001C7D RID: 7293
 			public float damage;
 
-			// Token: 0x0400211B RID: 8475
+			// Token: 0x04001C7E RID: 7294
 			public float force;
 
-			// Token: 0x0400211C RID: 8476
+			// Token: 0x04001C7F RID: 7295
 			public bool crit;
 
-			// Token: 0x0400211D RID: 8477
+			// Token: 0x04001C80 RID: 7296
 			public ushort predictionId;
 
-			// Token: 0x0400211E RID: 8478
+			// Token: 0x04001C81 RID: 7297
 			public DamageColorIndex damageColorIndex;
 
-			// Token: 0x0400211F RID: 8479
+			// Token: 0x04001C82 RID: 7298
 			public float speedOverride;
 
-			// Token: 0x04002120 RID: 8480
+			// Token: 0x04001C83 RID: 7299
 			public float fuseOverride;
 		}
 
-		// Token: 0x02000557 RID: 1367
+		// Token: 0x0200051E RID: 1310
 		private class ReleasePredictionIdMessage : MessageBase
 		{
-			// Token: 0x06001E79 RID: 7801 RVA: 0x0008FDE9 File Offset: 0x0008DFE9
+			// Token: 0x06001EEE RID: 7918 RVA: 0x00086161 File Offset: 0x00084361
 			public override void Serialize(NetworkWriter writer)
 			{
 				writer.WritePackedUInt32((uint)this.predictionId);
 			}
 
-			// Token: 0x06001E7A RID: 7802 RVA: 0x0008FDF7 File Offset: 0x0008DFF7
+			// Token: 0x06001EEF RID: 7919 RVA: 0x0008616F File Offset: 0x0008436F
 			public override void Deserialize(NetworkReader reader)
 			{
 				this.predictionId = (ushort)reader.ReadPackedUInt32();
 			}
 
-			// Token: 0x04002121 RID: 8481
+			// Token: 0x04001C84 RID: 7300
 			public ushort predictionId;
 		}
 
-		// Token: 0x02000558 RID: 1368
+		// Token: 0x0200051F RID: 1311
 		private class PredictionManager
 		{
-			// Token: 0x06001E7B RID: 7803 RVA: 0x0008FE05 File Offset: 0x0008E005
+			// Token: 0x06001EF0 RID: 7920 RVA: 0x0008617D File Offset: 0x0008437D
 			public ProjectileController FindPredictedProjectileController(ushort predictionId)
 			{
 				return this.predictions[predictionId];
 			}
 
-			// Token: 0x06001E7C RID: 7804 RVA: 0x0008FE14 File Offset: 0x0008E014
+			// Token: 0x06001EF1 RID: 7921 RVA: 0x0008618C File Offset: 0x0008438C
 			public void OnAuthorityProjectileReceived(ProjectileController authoritativeProjectile)
 			{
 				ProjectileController projectileController;
@@ -458,7 +386,7 @@ namespace RoR2.Projectile
 				}
 			}
 
-			// Token: 0x06001E7D RID: 7805 RVA: 0x0008FE70 File Offset: 0x0008E070
+			// Token: 0x06001EF2 RID: 7922 RVA: 0x000861E8 File Offset: 0x000843E8
 			public void ReleasePredictionId(ushort predictionId)
 			{
 				ProjectileController projectileController = this.predictions[predictionId];
@@ -469,7 +397,7 @@ namespace RoR2.Projectile
 				}
 			}
 
-			// Token: 0x06001E7E RID: 7806 RVA: 0x0008FEB7 File Offset: 0x0008E0B7
+			// Token: 0x06001EF3 RID: 7923 RVA: 0x0008622F File Offset: 0x0008442F
 			public void RegisterPrediction(ProjectileController predictedProjectile)
 			{
 				predictedProjectile.NetworkpredictionId = this.RequestPredictionId();
@@ -477,7 +405,7 @@ namespace RoR2.Projectile
 				predictedProjectile.isPrediction = true;
 			}
 
-			// Token: 0x06001E7F RID: 7807 RVA: 0x0008FEE0 File Offset: 0x0008E0E0
+			// Token: 0x06001EF4 RID: 7924 RVA: 0x00086258 File Offset: 0x00084458
 			private ushort RequestPredictionId()
 			{
 				for (ushort num = 1; num < 32767; num += 1)
@@ -490,7 +418,7 @@ namespace RoR2.Projectile
 				return 0;
 			}
 
-			// Token: 0x04002122 RID: 8482
+			// Token: 0x04001C85 RID: 7301
 			private Dictionary<ushort, ProjectileController> predictions = new Dictionary<ushort, ProjectileController>();
 		}
 	}

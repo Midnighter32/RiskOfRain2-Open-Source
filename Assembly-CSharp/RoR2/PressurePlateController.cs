@@ -4,15 +4,15 @@ using UnityEngine.Events;
 
 namespace RoR2
 {
-	// Token: 0x02000398 RID: 920
+	// Token: 0x020002D5 RID: 725
 	public class PressurePlateController : MonoBehaviour
 	{
-		// Token: 0x06001368 RID: 4968 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001086 RID: 4230 RVA: 0x0000409B File Offset: 0x0000229B
 		private void Start()
 		{
 		}
 
-		// Token: 0x06001369 RID: 4969 RVA: 0x0005EC08 File Offset: 0x0005CE08
+		// Token: 0x06001087 RID: 4231 RVA: 0x000486D0 File Offset: 0x000468D0
 		private void FixedUpdate()
 		{
 			if (this.enableOverlapSphere)
@@ -27,13 +27,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600136A RID: 4970 RVA: 0x0005ECA7 File Offset: 0x0005CEA7
+		// Token: 0x06001088 RID: 4232 RVA: 0x0004876F File Offset: 0x0004696F
 		public void EnableOverlapSphere(bool input)
 		{
 			this.enableOverlapSphere = input;
 		}
 
-		// Token: 0x0600136B RID: 4971 RVA: 0x0005ECB0 File Offset: 0x0005CEB0
+		// Token: 0x06001089 RID: 4233 RVA: 0x00048778 File Offset: 0x00046978
 		public void SetSwitch(bool switchIsDown)
 		{
 			if (switchIsDown != this.switchDown)
@@ -62,7 +62,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600136C RID: 4972 RVA: 0x0005ED30 File Offset: 0x0005CF30
+		// Token: 0x0600108A RID: 4234 RVA: 0x000487F8 File Offset: 0x000469F8
 		private void Update()
 		{
 			this.animationStopwatch += Time.deltaTime;
@@ -85,49 +85,49 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600136D RID: 4973 RVA: 0x0005EDB9 File Offset: 0x0005CFB9
+		// Token: 0x0600108B RID: 4235 RVA: 0x00048881 File Offset: 0x00046A81
 		private void OnDrawGizmos()
 		{
 			Gizmos.DrawWireSphere(base.transform.position, this.overlapSphereRadius);
 		}
 
-		// Token: 0x04001706 RID: 5894
+		// Token: 0x04000FD6 RID: 4054
 		public bool enableOverlapSphere = true;
 
-		// Token: 0x04001707 RID: 5895
+		// Token: 0x04000FD7 RID: 4055
 		public float overlapSphereRadius;
 
-		// Token: 0x04001708 RID: 5896
+		// Token: 0x04000FD8 RID: 4056
 		public float overlapSphereFrequency;
 
-		// Token: 0x04001709 RID: 5897
+		// Token: 0x04000FD9 RID: 4057
 		public string switchDownSoundString;
 
-		// Token: 0x0400170A RID: 5898
+		// Token: 0x04000FDA RID: 4058
 		public string switchUpSoundString;
 
-		// Token: 0x0400170B RID: 5899
+		// Token: 0x04000FDB RID: 4059
 		public UnityEvent OnSwitchDown;
 
-		// Token: 0x0400170C RID: 5900
+		// Token: 0x04000FDC RID: 4060
 		public UnityEvent OnSwitchUp;
 
-		// Token: 0x0400170D RID: 5901
+		// Token: 0x04000FDD RID: 4061
 		public AnimationCurve switchVisualPositionFromUpToDown;
 
-		// Token: 0x0400170E RID: 5902
+		// Token: 0x04000FDE RID: 4062
 		public AnimationCurve switchVisualPositionFromDownToUp;
 
-		// Token: 0x0400170F RID: 5903
+		// Token: 0x04000FDF RID: 4063
 		public Transform switchVisualTransform;
 
-		// Token: 0x04001710 RID: 5904
+		// Token: 0x04000FE0 RID: 4064
 		private float overlapSphereStopwatch;
 
-		// Token: 0x04001711 RID: 5905
+		// Token: 0x04000FE1 RID: 4065
 		private float animationStopwatch;
 
-		// Token: 0x04001712 RID: 5906
+		// Token: 0x04000FE2 RID: 4066
 		private bool switchDown;
 	}
 }

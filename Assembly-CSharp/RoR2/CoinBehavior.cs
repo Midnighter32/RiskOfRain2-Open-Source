@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200029F RID: 671
+	// Token: 0x020001AB RID: 427
 	[RequireComponent(typeof(EffectComponent))]
 	public class CoinBehavior : MonoBehaviour
 	{
-		// Token: 0x06000DB1 RID: 3505 RVA: 0x00043364 File Offset: 0x00041564
+		// Token: 0x06000920 RID: 2336 RVA: 0x00027618 File Offset: 0x00025818
 		private void Start()
 		{
 			this.originalCoinCount = (int)base.GetComponent<EffectComponent>().effectData.genericFloat;
@@ -34,20 +34,20 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x040011A5 RID: 4517
+		// Token: 0x04000977 RID: 2423
 		public int originalCoinCount;
 
-		// Token: 0x040011A6 RID: 4518
+		// Token: 0x04000978 RID: 2424
 		public CoinBehavior.CoinTier[] coinTiers;
 
-		// Token: 0x020002A0 RID: 672
+		// Token: 0x020001AC RID: 428
 		[Serializable]
 		public struct CoinTier
 		{
-			// Token: 0x040011A7 RID: 4519
+			// Token: 0x04000979 RID: 2425
 			public ParticleSystem particleSystem;
 
-			// Token: 0x040011A8 RID: 4520
+			// Token: 0x0400097A RID: 2426
 			public int valuePerCoin;
 		}
 	}

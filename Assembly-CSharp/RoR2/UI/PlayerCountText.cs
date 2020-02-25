@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000621 RID: 1569
+	// Token: 0x02000610 RID: 1552
 	public class PlayerCountText : MonoBehaviour
 	{
-		// Token: 0x06002346 RID: 9030 RVA: 0x000A6430 File Offset: 0x000A4630
+		// Token: 0x060024C5 RID: 9413 RVA: 0x000A0810 File Offset: 0x0009EA10
 		private void Update()
 		{
 			if (this.targetText)
@@ -17,7 +17,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x04002644 RID: 9796
+		// Token: 0x0400228D RID: 8845
 		public Text targetText;
 	}
 }

@@ -5,113 +5,123 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000208 RID: 520
+	// Token: 0x020000D1 RID: 209
 	[Serializable]
 	public struct BuffMask : IEquatable<BuffMask>
 	{
-		// Token: 0x06000A1D RID: 2589 RVA: 0x0003269E File Offset: 0x0003089E
-		private BuffMask(uint mask)
+		// Token: 0x06000405 RID: 1029 RVA: 0x0000FECF File Offset: 0x0000E0CF
+		private BuffMask(ulong mask)
 		{
 			this.mask = mask;
 		}
 
-		// Token: 0x06000A1E RID: 2590 RVA: 0x000326A7 File Offset: 0x000308A7
+		// Token: 0x06000406 RID: 1030 RVA: 0x0000FED8 File Offset: 0x0000E0D8
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public BuffMask GetBuffAdded(BuffIndex buffIndex)
 		{
-			return new BuffMask(this.mask | 1u << (int)buffIndex);
+			return new BuffMask(this.mask | 1UL << (int)buffIndex);
 		}
 
-		// Token: 0x06000A1F RID: 2591 RVA: 0x000326BB File Offset: 0x000308BB
+		// Token: 0x06000407 RID: 1031 RVA: 0x0000FEED File Offset: 0x0000E0ED
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public BuffMask GetBuffRemoved(BuffIndex buffIndex)
 		{
-			return new BuffMask(this.mask & ~(1u << (int)buffIndex));
+			return new BuffMask(this.mask & ~(1UL << (int)buffIndex));
 		}
 
-		// Token: 0x06000A20 RID: 2592 RVA: 0x000326D0 File Offset: 0x000308D0
+		// Token: 0x06000408 RID: 1032 RVA: 0x0000FF03 File Offset: 0x0000E103
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool HasBuff(BuffIndex buffIndex)
 		{
-			return (this.mask & 1u << (int)buffIndex) > 0u;
+			return (this.mask & 1UL << (int)buffIndex) > 0UL;
 		}
 
-		// Token: 0x06000A21 RID: 2593 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06000409 RID: 1033 RVA: 0x0000B933 File Offset: 0x00009B33
 		private static bool StaticCheck()
 		{
 			return true;
 		}
 
-		// Token: 0x06000A22 RID: 2594 RVA: 0x000326E2 File Offset: 0x000308E2
+		// Token: 0x0600040A RID: 1034 RVA: 0x0000FF17 File Offset: 0x0000E117
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool Equals(BuffMask other)
 		{
 			return this.mask == other.mask;
 		}
 
-		// Token: 0x06000A23 RID: 2595 RVA: 0x000326F2 File Offset: 0x000308F2
+		// Token: 0x0600040B RID: 1035 RVA: 0x0000FF27 File Offset: 0x0000E127
 		public override bool Equals(object obj)
 		{
 			return obj != null && obj is BuffMask && this.Equals((BuffMask)obj);
 		}
 
-		// Token: 0x06000A24 RID: 2596 RVA: 0x0003270F File Offset: 0x0003090F
+		// Token: 0x0600040C RID: 1036 RVA: 0x0000FF44 File Offset: 0x0000E144
 		public override int GetHashCode()
 		{
 			return (int)this.mask;
 		}
 
-		// Token: 0x06000A25 RID: 2597 RVA: 0x000326E2 File Offset: 0x000308E2
+		// Token: 0x0600040D RID: 1037 RVA: 0x0000FF17 File Offset: 0x0000E117
 		public static bool operator ==(BuffMask a, BuffMask b)
 		{
 			return a.mask == b.mask;
 		}
 
-		// Token: 0x06000A26 RID: 2598 RVA: 0x00032717 File Offset: 0x00030917
+		// Token: 0x0600040E RID: 1038 RVA: 0x0000FF4D File Offset: 0x0000E14D
 		public static bool operator !=(BuffMask a, BuffMask b)
 		{
 			return a.mask != b.mask;
 		}
 
-		// Token: 0x06000A27 RID: 2599 RVA: 0x0003272A File Offset: 0x0003092A
+		// Token: 0x0600040F RID: 1039 RVA: 0x0000FF60 File Offset: 0x0000E160
 		public static void WriteBuffMask(NetworkWriter writer, BuffMask buffMask)
 		{
-			writer.WritePackedUInt32(buffMask.mask);
+			writer.WritePackedUInt64(buffMask.mask);
 		}
 
-		// Token: 0x06000A28 RID: 2600 RVA: 0x00032738 File Offset: 0x00030938
+		// Token: 0x06000410 RID: 1040 RVA: 0x0000FF6E File Offset: 0x0000E16E
 		public static BuffMask ReadBuffMask(NetworkReader reader)
 		{
-			return new BuffMask(reader.ReadPackedUInt32());
+			return new BuffMask(reader.ReadPackedUInt64());
 		}
 
-		// Token: 0x06000A29 RID: 2601 RVA: 0x00032748 File Offset: 0x00030948
-		static BuffMask()
+		// Token: 0x06000411 RID: 1041 RVA: 0x0000FF7C File Offset: 0x0000E17C
+		[SystemInitializer(new Type[]
 		{
-			for (BuffIndex buffIndex = BuffIndex.Slow50; buffIndex < BuffIndex.Count; buffIndex++)
+			typeof(BuffCatalog)
+		})]
+		private static void Init()
+		{
+			BuffIndex buffIndex = BuffIndex.Slow50;
+			BuffIndex buffCount = (BuffIndex)BuffCatalog.buffCount;
+			while (buffIndex < buffCount)
 			{
 				if (BuffCatalog.GetBuffDef(buffIndex).isElite)
 				{
-					BuffMask.eliteMask |= 1u << (int)buffIndex;
+					BuffMask.eliteMask |= 1UL << (int)buffIndex;
 				}
+				buffIndex++;
 			}
 		}
 
-		// Token: 0x170000AF RID: 175
-		// (get) Token: 0x06000A2A RID: 2602 RVA: 0x00032780 File Offset: 0x00030980
+		// Token: 0x1700008A RID: 138
+		// (get) Token: 0x06000412 RID: 1042 RVA: 0x0000FFBA File Offset: 0x0000E1BA
 		public bool containsEliteBuff
 		{
 			get
 			{
-				return (this.mask & BuffMask.eliteMask) > 0u;
+				return (this.mask & BuffMask.eliteMask) > 0UL;
 			}
 		}
 
-		// Token: 0x04000D8D RID: 3469
+		// Token: 0x040003DA RID: 986
 		[SerializeField]
-		public readonly uint mask;
+		public readonly ulong mask;
 
-		// Token: 0x04000D8E RID: 3470
-		private static readonly uint eliteMask;
+		// Token: 0x040003DB RID: 987
+		private const ulong maskOne = 1UL;
+
+		// Token: 0x040003DC RID: 988
+		private static ulong eliteMask;
 	}
 }

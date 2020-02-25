@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020001FF RID: 511
+	// Token: 0x020000C0 RID: 192
 	public class ArtifactDef
 	{
-		// Token: 0x170000A9 RID: 169
-		// (get) Token: 0x060009FF RID: 2559 RVA: 0x00031BA3 File Offset: 0x0002FDA3
+		// Token: 0x17000081 RID: 129
+		// (get) Token: 0x060003C4 RID: 964 RVA: 0x0000E86F File Offset: 0x0000CA6F
 		public Sprite smallIconSelectedSprite
 		{
 			get
@@ -20,8 +20,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x170000AA RID: 170
-		// (get) Token: 0x06000A00 RID: 2560 RVA: 0x00031BBF File Offset: 0x0002FDBF
+		// Token: 0x17000082 RID: 130
+		// (get) Token: 0x060003C5 RID: 965 RVA: 0x0000E88B File Offset: 0x0000CA8B
 		public Sprite smallIconDeselectedSprite
 		{
 			get
@@ -34,19 +34,19 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04000D40 RID: 3392
+		// Token: 0x04000350 RID: 848
 		public string nameToken;
 
-		// Token: 0x04000D41 RID: 3393
+		// Token: 0x04000351 RID: 849
 		public string unlockableName = "";
 
-		// Token: 0x04000D42 RID: 3394
+		// Token: 0x04000352 RID: 850
 		public string smallIconSelectedPath;
 
-		// Token: 0x04000D43 RID: 3395
+		// Token: 0x04000353 RID: 851
 		public string smallIconDeselectedPath;
 
-		// Token: 0x04000D44 RID: 3396
+		// Token: 0x04000354 RID: 852
 		public string descriptionToken;
 	}
 }

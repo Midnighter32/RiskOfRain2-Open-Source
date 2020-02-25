@@ -1,28 +1,28 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x02000049 RID: 73
+// Token: 0x02000044 RID: 68
 public class PhysicsController : MonoBehaviour
 {
-	// Token: 0x0600013F RID: 319 RVA: 0x00007898 File Offset: 0x00005A98
+	// Token: 0x06000121 RID: 289 RVA: 0x00007738 File Offset: 0x00005938
 	private void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.red;
 		Gizmos.DrawSphere(base.transform.TransformPoint(this.centerOfMass), 0.5f);
 	}
 
-	// Token: 0x06000140 RID: 320 RVA: 0x000078BF File Offset: 0x00005ABF
+	// Token: 0x06000122 RID: 290 RVA: 0x0000775F File Offset: 0x0000595F
 	private void Awake()
 	{
 		this.carRigidbody = base.GetComponent<Rigidbody>();
 	}
 
-	// Token: 0x06000141 RID: 321 RVA: 0x00004507 File Offset: 0x00002707
+	// Token: 0x06000123 RID: 291 RVA: 0x0000409B File Offset: 0x0000229B
 	private void Update()
 	{
 	}
 
-	// Token: 0x06000142 RID: 322 RVA: 0x000078D0 File Offset: 0x00005AD0
+	// Token: 0x06000124 RID: 292 RVA: 0x00007770 File Offset: 0x00005970
 	private void FixedUpdate()
 	{
 		if (!this.turnOnInput || Input.GetAxis("Vertical") > 0f || Input.GetAxis("Vertical") > 0f)
@@ -44,30 +44,30 @@ public class PhysicsController : MonoBehaviour
 		this.carRigidbody.AddTorque(a * this.PID.x + this.errorSum * this.PID.y + this.deltaError * this.PID.z, ForceMode.Acceleration);
 	}
 
-	// Token: 0x0400014E RID: 334
+	// Token: 0x0400014B RID: 331
 	public Vector3 centerOfMass = Vector3.zero;
 
-	// Token: 0x0400014F RID: 335
+	// Token: 0x0400014C RID: 332
 	private Rigidbody carRigidbody;
 
-	// Token: 0x04000150 RID: 336
+	// Token: 0x0400014D RID: 333
 	public Transform cameraTransform;
 
-	// Token: 0x04000151 RID: 337
+	// Token: 0x0400014E RID: 334
 	public Vector3 PID = new Vector3(1f, 0f, 0f);
 
-	// Token: 0x04000152 RID: 338
+	// Token: 0x0400014F RID: 335
 	public bool turnOnInput;
 
-	// Token: 0x04000153 RID: 339
+	// Token: 0x04000150 RID: 336
 	private Vector3 errorSum = Vector3.zero;
 
-	// Token: 0x04000154 RID: 340
+	// Token: 0x04000151 RID: 337
 	private Vector3 deltaError = Vector3.zero;
 
-	// Token: 0x04000155 RID: 341
+	// Token: 0x04000152 RID: 338
 	private Vector3 lastError = Vector3.zero;
 
-	// Token: 0x04000156 RID: 342
+	// Token: 0x04000153 RID: 339
 	private Vector3 desiredHeading;
 }

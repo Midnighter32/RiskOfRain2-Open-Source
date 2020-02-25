@@ -6,10 +6,10 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x0200065C RID: 1628
+	// Token: 0x02000651 RID: 1617
 	public class UIElementAllocator<T> where T : Component
 	{
-		// Token: 0x06002462 RID: 9314 RVA: 0x000AAB28 File Offset: 0x000A8D28
+		// Token: 0x06002606 RID: 9734 RVA: 0x000A5664 File Offset: 0x000A3864
 		public UIElementAllocator([NotNull] RectTransform containerTransform, [NotNull] GameObject elementPrefab)
 		{
 			this.containerTransform = containerTransform;
@@ -18,7 +18,7 @@ namespace RoR2.UI
 			this.elements = new ReadOnlyCollection<T>(this.elementControllerComponentsList);
 		}
 
-		// Token: 0x06002463 RID: 9315 RVA: 0x000AAB5C File Offset: 0x000A8D5C
+		// Token: 0x06002607 RID: 9735 RVA: 0x000A5698 File Offset: 0x000A3898
 		public void AllocateElements(int desiredCount)
 		{
 			if (desiredCount < 0)
@@ -49,30 +49,30 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x04002761 RID: 10081
+		// Token: 0x040023C8 RID: 9160
 		public readonly RectTransform containerTransform;
 
-		// Token: 0x04002762 RID: 10082
+		// Token: 0x040023C9 RID: 9161
 		public readonly GameObject elementPrefab;
 
-		// Token: 0x04002763 RID: 10083
+		// Token: 0x040023CA RID: 9162
 		[NotNull]
 		private List<T> elementControllerComponentsList;
 
-		// Token: 0x04002764 RID: 10084
+		// Token: 0x040023CB RID: 9163
 		[NotNull]
 		public readonly ReadOnlyCollection<T> elements;
 
-		// Token: 0x04002765 RID: 10085
+		// Token: 0x040023CC RID: 9164
 		[CanBeNull]
 		public UIElementAllocator<T>.ElementOperationDelegate onCreateElement;
 
-		// Token: 0x04002766 RID: 10086
+		// Token: 0x040023CD RID: 9165
 		[CanBeNull]
 		public UIElementAllocator<T>.ElementOperationDelegate onDestroyElement;
 
-		// Token: 0x0200065D RID: 1629
-		// (Invoke) Token: 0x06002465 RID: 9317
+		// Token: 0x02000652 RID: 1618
+		// (Invoke) Token: 0x06002609 RID: 9737
 		public delegate void ElementOperationDelegate(int index, T element);
 	}
 }

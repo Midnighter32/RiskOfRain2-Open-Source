@@ -1,15 +1,14 @@
 ﻿using System;
 using RoR2;
-using RoR2.Projectile;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace EntityStates.Toolbot
 {
-	// Token: 0x020000E2 RID: 226
+	// Token: 0x02000769 RID: 1897
 	public class DroneProjectileHover : BaseState
 	{
-		// Token: 0x0600046A RID: 1130 RVA: 0x000128BC File Offset: 0x00010ABC
+		// Token: 0x06002BC5 RID: 11205 RVA: 0x000B91B4 File Offset: 0x000B73B4
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -18,24 +17,20 @@ namespace EntityStates.Toolbot
 				base.rigidbody.velocity = Vector3.zero;
 				base.rigidbody.useGravity = false;
 			}
-			if (NetworkServer.active)
+			if (NetworkServer.active && base.projectileController)
 			{
-				this.projectileController = base.GetComponent<ProjectileController>();
-				if (this.projectileController)
-				{
-					this.teamFilter = this.projectileController.teamFilter;
-				}
+				this.teamFilter = base.projectileController.teamFilter;
 			}
-			this.interval = DroneProjectileHover.duration / (float)(DroneProjectileHover.pulseCount + 1);
+			this.interval = this.duration / (float)(this.pulseCount + 1);
 		}
 
-		// Token: 0x0600046B RID: 1131 RVA: 0x00012940 File Offset: 0x00010B40
+		// Token: 0x06002BC6 RID: 11206 RVA: 0x000B922C File Offset: 0x000B742C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
 			if (NetworkServer.active)
 			{
-				if (base.age >= DroneProjectileHover.duration)
+				if (base.age >= this.duration)
 				{
 					EntityState.Destroy(base.gameObject);
 					return;
@@ -48,30 +43,30 @@ namespace EntityStates.Toolbot
 			}
 		}
 
-		// Token: 0x0600046C RID: 1132 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06002BC7 RID: 11207 RVA: 0x0000409B File Offset: 0x0000229B
 		protected virtual void Pulse()
 		{
 		}
 
-		// Token: 0x04000436 RID: 1078
-		public static float duration;
+		// Token: 0x040027F1 RID: 10225
+		[SerializeField]
+		public float duration;
 
-		// Token: 0x04000437 RID: 1079
-		public static int pulseCount = 3;
+		// Token: 0x040027F2 RID: 10226
+		[SerializeField]
+		public int pulseCount = 3;
 
-		// Token: 0x04000438 RID: 1080
-		public static float pulseRadius = 7f;
+		// Token: 0x040027F3 RID: 10227
+		[SerializeField]
+		public float pulseRadius = 7f;
 
-		// Token: 0x04000439 RID: 1081
-		protected ProjectileController projectileController;
-
-		// Token: 0x0400043A RID: 1082
+		// Token: 0x040027F4 RID: 10228
 		protected TeamFilter teamFilter;
 
-		// Token: 0x0400043B RID: 1083
+		// Token: 0x040027F5 RID: 10229
 		protected float interval;
 
-		// Token: 0x0400043C RID: 1084
+		// Token: 0x040027F6 RID: 10230
 		protected int pulses;
 	}
 }

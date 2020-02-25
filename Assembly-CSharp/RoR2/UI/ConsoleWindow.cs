@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text;
 using Rewired;
 using RoR2.ConVar;
 using TMPro;
@@ -10,16 +11,16 @@ using UnityEngine.EventSystems;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005C6 RID: 1478
+	// Token: 0x020005A4 RID: 1444
 	[RequireComponent(typeof(MPEventSystemProvider))]
 	public class ConsoleWindow : MonoBehaviour
 	{
-		// Token: 0x170002EA RID: 746
-		// (get) Token: 0x0600212C RID: 8492 RVA: 0x0009BACC File Offset: 0x00099CCC
-		// (set) Token: 0x0600212D RID: 8493 RVA: 0x0009BAD3 File Offset: 0x00099CD3
+		// Token: 0x1700039E RID: 926
+		// (get) Token: 0x0600225B RID: 8795 RVA: 0x00094884 File Offset: 0x00092A84
+		// (set) Token: 0x0600225C RID: 8796 RVA: 0x0009488B File Offset: 0x00092A8B
 		public static ConsoleWindow instance { get; private set; }
 
-		// Token: 0x0600212E RID: 8494 RVA: 0x0009BADC File Offset: 0x00099CDC
+		// Token: 0x0600225D RID: 8797 RVA: 0x00094894 File Offset: 0x00092A94
 		public void Start()
 		{
 			base.GetComponent<MPEventSystemProvider>().eventSystem = MPEventSystemManager.kbmEventSystem;
@@ -30,7 +31,7 @@ namespace RoR2.UI
 			this.outputField.textComponent.gameObject.AddComponent<RectTransformDimensionsChangeEvent>().onRectTransformDimensionsChange += this.OnOutputFieldRectTransformDimensionsChange;
 		}
 
-		// Token: 0x0600212F RID: 8495 RVA: 0x0009BB46 File Offset: 0x00099D46
+		// Token: 0x0600225E RID: 8798 RVA: 0x000948FE File Offset: 0x00092AFE
 		private void OnOutputFieldRectTransformDimensionsChange()
 		{
 			if (this.outputField.verticalScrollbar)
@@ -40,7 +41,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002130 RID: 8496 RVA: 0x0009BB84 File Offset: 0x00099D84
+		// Token: 0x0600225F RID: 8799 RVA: 0x0009493C File Offset: 0x00092B3C
 		public void OnEnable()
 		{
 			Console.onLogReceived += this.OnLogReceived;
@@ -51,13 +52,13 @@ namespace RoR2.UI
 			ConsoleWindow.instance = this;
 		}
 
-		// Token: 0x06002131 RID: 8497 RVA: 0x0009BBF7 File Offset: 0x00099DF7
+		// Token: 0x06002260 RID: 8800 RVA: 0x000949AF File Offset: 0x00092BAF
 		public void SubmitInputField()
 		{
 			this.inputField.onSubmit.Invoke(this.inputField.text);
 		}
 
-		// Token: 0x06002132 RID: 8498 RVA: 0x0009BC14 File Offset: 0x00099E14
+		// Token: 0x06002261 RID: 8801 RVA: 0x000949CC File Offset: 0x00092BCC
 		public void Submit(string text)
 		{
 			if (this.inputField.text == "")
@@ -82,8 +83,8 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x170002EB RID: 747
-		// (get) Token: 0x06002133 RID: 8499 RVA: 0x0009BCAC File Offset: 0x00099EAC
+		// Token: 0x1700039F RID: 927
+		// (get) Token: 0x06002262 RID: 8802 RVA: 0x00094A64 File Offset: 0x00092C64
 		private bool autoCompleteInUse
 		{
 			get
@@ -92,7 +93,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002134 RID: 8500 RVA: 0x0009BCC8 File Offset: 0x00099EC8
+		// Token: 0x06002263 RID: 8803 RVA: 0x00094A80 File Offset: 0x00092C80
 		private void OnInputFieldValueChanged(string text)
 		{
 			if (!this.preventHistoryReset)
@@ -129,7 +130,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002135 RID: 8501 RVA: 0x0009BDD0 File Offset: 0x00099FD0
+		// Token: 0x06002264 RID: 8804 RVA: 0x00094B88 File Offset: 0x00092D88
 		public void Update()
 		{
 			EventSystem eventSystem = MPEventSystemManager.FindEventSystem(ReInput.players.GetPlayer(0));
@@ -225,7 +226,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002136 RID: 8502 RVA: 0x0009C008 File Offset: 0x0009A208
+		// Token: 0x06002265 RID: 8805 RVA: 0x00094DC0 File Offset: 0x00092FC0
 		private void ApplyAutoComplete(int optionIndex)
 		{
 			if (this.autoCompleteDropdown && this.autoCompleteDropdown.options.Count > optionIndex)
@@ -237,7 +238,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002137 RID: 8503 RVA: 0x0009C074 File Offset: 0x0009A274
+		// Token: 0x06002266 RID: 8806 RVA: 0x00094E2C File Offset: 0x0009302C
 		public void OnDisable()
 		{
 			Console.onLogReceived -= this.OnLogReceived;
@@ -250,19 +251,19 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002138 RID: 8504 RVA: 0x0009C0EE File Offset: 0x0009A2EE
+		// Token: 0x06002267 RID: 8807 RVA: 0x00094EA6 File Offset: 0x000930A6
 		private void OnLogReceived(Console.Log log)
 		{
 			this.RebuildOutput();
 		}
 
-		// Token: 0x06002139 RID: 8505 RVA: 0x0009C0EE File Offset: 0x0009A2EE
+		// Token: 0x06002268 RID: 8808 RVA: 0x00094EA6 File Offset: 0x000930A6
 		private void OnClear()
 		{
 			this.RebuildOutput();
 		}
 
-		// Token: 0x0600213A RID: 8506 RVA: 0x0009C0F8 File Offset: 0x0009A2F8
+		// Token: 0x06002269 RID: 8809 RVA: 0x00094EB0 File Offset: 0x000930B0
 		private void RebuildOutput()
 		{
 			float value = 0f;
@@ -271,11 +272,12 @@ namespace RoR2.UI
 				value = this.outputField.verticalScrollbar.value;
 			}
 			string[] array = new string[Console.logs.Count];
+			this.stringBuilder.Clear();
 			for (int i = 0; i < array.Length; i++)
 			{
-				array[i] = Console.logs[i].message;
+				this.stringBuilder.AppendLine(Console.logs[i].message);
 			}
-			this.outputField.text = string.Join("\n", array);
+			this.outputField.text = this.stringBuilder.ToString();
 			if (this.outputField.verticalScrollbar)
 			{
 				this.outputField.verticalScrollbar.value = 0f;
@@ -284,7 +286,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600213B RID: 8507 RVA: 0x0009C1C4 File Offset: 0x0009A3C4
+		// Token: 0x0600226A RID: 8810 RVA: 0x00094F90 File Offset: 0x00093190
 		private static void CheckConsoleKey()
 		{
 			bool keyDown = Input.GetKeyDown(KeyCode.BackQuote);
@@ -309,48 +311,51 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600213C RID: 8508 RVA: 0x0009C27A File Offset: 0x0009A47A
+		// Token: 0x0600226B RID: 8811 RVA: 0x00095046 File Offset: 0x00093246
 		[RuntimeInitializeOnLoadMethod]
 		public static void Init()
 		{
 			RoR2Application.onUpdate += ConsoleWindow.CheckConsoleKey;
 		}
 
-		// Token: 0x040023B8 RID: 9144
+		// Token: 0x04001FBF RID: 8127
 		public TMP_InputField inputField;
 
-		// Token: 0x040023B9 RID: 9145
+		// Token: 0x04001FC0 RID: 8128
 		public TMP_InputField outputField;
 
-		// Token: 0x040023BA RID: 9146
+		// Token: 0x04001FC1 RID: 8129
 		private TMP_Dropdown autoCompleteDropdown;
 
-		// Token: 0x040023BB RID: 9147
+		// Token: 0x04001FC2 RID: 8130
 		private Console.AutoComplete autoComplete;
 
-		// Token: 0x040023BC RID: 9148
+		// Token: 0x04001FC3 RID: 8131
 		private bool preventAutoCompleteUpdate;
 
-		// Token: 0x040023BD RID: 9149
+		// Token: 0x04001FC4 RID: 8132
 		private bool preventHistoryReset;
 
-		// Token: 0x040023BE RID: 9150
+		// Token: 0x04001FC5 RID: 8133
 		private int historyIndex = -1;
 
-		// Token: 0x040023BF RID: 9151
+		// Token: 0x04001FC6 RID: 8134
+		private readonly StringBuilder stringBuilder = new StringBuilder();
+
+		// Token: 0x04001FC7 RID: 8135
 		private const string consoleEnabledDefaultValue = "0";
 
-		// Token: 0x040023C0 RID: 9152
+		// Token: 0x04001FC8 RID: 8136
 		private static BoolConVar cvConsoleEnabled = new BoolConVar("console_enabled", ConVarFlags.None, "0", "Enables/Disables the console.");
 
-		// Token: 0x020005C7 RID: 1479
+		// Token: 0x020005A5 RID: 1445
 		private enum InputFieldState
 		{
-			// Token: 0x040023C2 RID: 9154
+			// Token: 0x04001FCA RID: 8138
 			Neutral,
-			// Token: 0x040023C3 RID: 9155
+			// Token: 0x04001FCB RID: 8139
 			History,
-			// Token: 0x040023C4 RID: 9156
+			// Token: 0x04001FCC RID: 8140
 			AutoComplete
 		}
 	}

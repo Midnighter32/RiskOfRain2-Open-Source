@@ -4,11 +4,11 @@ using System.Text;
 
 namespace SimpleJSON
 {
-	// Token: 0x02000089 RID: 137
+	// Token: 0x0200008E RID: 142
 	public class JSONNumber : JSONNode
 	{
-		// Token: 0x17000062 RID: 98
-		// (get) Token: 0x060002BB RID: 699 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x17000068 RID: 104
+		// (get) Token: 0x060002F7 RID: 759 RVA: 0x0000C68F File Offset: 0x0000A88F
 		public override JSONNodeType Tag
 		{
 			get
@@ -17,8 +17,8 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x17000063 RID: 99
-		// (get) Token: 0x060002BC RID: 700 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x17000069 RID: 105
+		// (get) Token: 0x060002F8 RID: 760 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override bool IsNumber
 		{
 			get
@@ -27,9 +27,9 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x17000064 RID: 100
-		// (get) Token: 0x060002BD RID: 701 RVA: 0x0000BBEA File Offset: 0x00009DEA
-		// (set) Token: 0x060002BE RID: 702 RVA: 0x0000BBF8 File Offset: 0x00009DF8
+		// Token: 0x1700006A RID: 106
+		// (get) Token: 0x060002F9 RID: 761 RVA: 0x0000C692 File Offset: 0x0000A892
+		// (set) Token: 0x060002FA RID: 762 RVA: 0x0000C6A0 File Offset: 0x0000A8A0
 		public override string Value
 		{
 			get
@@ -46,9 +46,9 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x17000065 RID: 101
-		// (get) Token: 0x060002BF RID: 703 RVA: 0x0000BC16 File Offset: 0x00009E16
-		// (set) Token: 0x060002C0 RID: 704 RVA: 0x0000BC1E File Offset: 0x00009E1E
+		// Token: 0x1700006B RID: 107
+		// (get) Token: 0x060002FB RID: 763 RVA: 0x0000C6BE File Offset: 0x0000A8BE
+		// (set) Token: 0x060002FC RID: 764 RVA: 0x0000C6C6 File Offset: 0x0000A8C6
 		public override double AsDouble
 		{
 			get
@@ -61,38 +61,38 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x060002C1 RID: 705 RVA: 0x0000BC27 File Offset: 0x00009E27
+		// Token: 0x060002FD RID: 765 RVA: 0x0000C6CF File Offset: 0x0000A8CF
 		public JSONNumber(double aData)
 		{
 			this.m_Data = aData;
 		}
 
-		// Token: 0x060002C2 RID: 706 RVA: 0x0000BC36 File Offset: 0x00009E36
+		// Token: 0x060002FE RID: 766 RVA: 0x0000C6DE File Offset: 0x0000A8DE
 		public JSONNumber(string aData)
 		{
 			this.Value = aData;
 		}
 
-		// Token: 0x060002C3 RID: 707 RVA: 0x0000BC45 File Offset: 0x00009E45
+		// Token: 0x060002FF RID: 767 RVA: 0x0000C6ED File Offset: 0x0000A8ED
 		public override void Serialize(BinaryWriter aWriter)
 		{
 			aWriter.Write(4);
 			aWriter.Write(this.m_Data);
 		}
 
-		// Token: 0x060002C4 RID: 708 RVA: 0x0000BC5A File Offset: 0x00009E5A
+		// Token: 0x06000300 RID: 768 RVA: 0x0000C702 File Offset: 0x0000A902
 		internal override void WriteToStringBuilder(StringBuilder aSB, int aIndent, int aIndentInc, JSONTextMode aMode)
 		{
 			aSB.Append(this.m_Data);
 		}
 
-		// Token: 0x060002C5 RID: 709 RVA: 0x0000BC6C File Offset: 0x00009E6C
+		// Token: 0x06000301 RID: 769 RVA: 0x0000C714 File Offset: 0x0000A914
 		private static bool IsNumeric(object value)
 		{
 			return value is int || value is uint || value is float || value is double || value is decimal || value is long || value is ulong || value is short || value is ushort || value is sbyte || value is byte;
 		}
 
-		// Token: 0x060002C6 RID: 710 RVA: 0x0000BCD4 File Offset: 0x00009ED4
+		// Token: 0x06000302 RID: 770 RVA: 0x0000C77C File Offset: 0x0000A97C
 		public override bool Equals(object obj)
 		{
 			if (obj == null)
@@ -111,13 +111,13 @@ namespace SimpleJSON
 			return JSONNumber.IsNumeric(obj) && Convert.ToDouble(obj) == this.m_Data;
 		}
 
-		// Token: 0x060002C7 RID: 711 RVA: 0x0000BD28 File Offset: 0x00009F28
+		// Token: 0x06000303 RID: 771 RVA: 0x0000C7D0 File Offset: 0x0000A9D0
 		public override int GetHashCode()
 		{
 			return this.m_Data.GetHashCode();
 		}
 
-		// Token: 0x04000246 RID: 582
+		// Token: 0x04000251 RID: 593
 		private double m_Data;
 	}
 }

@@ -1,22 +1,22 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x02000053 RID: 83
+// Token: 0x0200004F RID: 79
 public class ScaleLineRenderer : MonoBehaviour
 {
-	// Token: 0x0600015F RID: 351 RVA: 0x00008091 File Offset: 0x00006291
+	// Token: 0x06000144 RID: 324 RVA: 0x00007FA5 File Offset: 0x000061A5
 	private void Start()
 	{
 		this.line = base.GetComponent<LineRenderer>();
 		this.SetScale();
 	}
 
-	// Token: 0x06000160 RID: 352 RVA: 0x00004507 File Offset: 0x00002707
+	// Token: 0x06000145 RID: 325 RVA: 0x0000409B File Offset: 0x0000229B
 	private void Update()
 	{
 	}
 
-	// Token: 0x06000161 RID: 353 RVA: 0x000080A8 File Offset: 0x000062A8
+	// Token: 0x06000146 RID: 326 RVA: 0x00007FBC File Offset: 0x000061BC
 	private void SetScale()
 	{
 		this.line.SetPosition(0, this.positions[0]);

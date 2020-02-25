@@ -5,16 +5,16 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005BB RID: 1467
+	// Token: 0x02000595 RID: 1429
 	public class CarouselNavigationController : MonoBehaviour
 	{
-		// Token: 0x060020D5 RID: 8405 RVA: 0x0009A347 File Offset: 0x00098547
+		// Token: 0x060021F7 RID: 8695 RVA: 0x00092B0B File Offset: 0x00090D0B
 		private void Awake()
 		{
 			this.buttonAllocator = new UIElementAllocator<MPButton>(this.container, this.buttonPrefab);
 		}
 
-		// Token: 0x060020D6 RID: 8406 RVA: 0x0009A360 File Offset: 0x00098560
+		// Token: 0x060021F8 RID: 8696 RVA: 0x00092B24 File Offset: 0x00090D24
 		private void Start()
 		{
 			if (this.leftButton)
@@ -27,13 +27,13 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060020D7 RID: 8407 RVA: 0x0009A3BF File Offset: 0x000985BF
+		// Token: 0x060021F9 RID: 8697 RVA: 0x00092B83 File Offset: 0x00090D83
 		private void OnEnable()
 		{
 			this.Rebuild();
 		}
 
-		// Token: 0x060020D8 RID: 8408 RVA: 0x0009A3C7 File Offset: 0x000985C7
+		// Token: 0x060021FA RID: 8698 RVA: 0x00092B8B File Offset: 0x00090D8B
 		public void SetDisplayData(CarouselNavigationController.DisplayData newDisplayData)
 		{
 			if (newDisplayData.Equals(this.displayData))
@@ -44,7 +44,7 @@ namespace RoR2.UI
 			this.Rebuild();
 		}
 
-		// Token: 0x060020D9 RID: 8409 RVA: 0x0009A3E8 File Offset: 0x000985E8
+		// Token: 0x060021FB RID: 8699 RVA: 0x00092BAC File Offset: 0x00090DAC
 		private void Rebuild()
 		{
 			this.buttonAllocator.AllocateElements(this.displayData.pageCount);
@@ -92,7 +92,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060020DA RID: 8410 RVA: 0x0009A5AC File Offset: 0x000987AC
+		// Token: 0x060021FC RID: 8700 RVA: 0x00092D70 File Offset: 0x00090F70
 		public void NavigateNextPage()
 		{
 			if (this.displayData.pageCount <= 0)
@@ -131,7 +131,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060020DB RID: 8411 RVA: 0x0009A658 File Offset: 0x00098858
+		// Token: 0x060021FD RID: 8701 RVA: 0x00092E1C File Offset: 0x0009101C
 		public void NavigatePreviousPage()
 		{
 			if (this.displayData.pageCount <= 0)
@@ -170,62 +170,62 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x14000057 RID: 87
-		// (add) Token: 0x060020DC RID: 8412 RVA: 0x0009A704 File Offset: 0x00098904
-		// (remove) Token: 0x060020DD RID: 8413 RVA: 0x0009A73C File Offset: 0x0009893C
+		// Token: 0x14000082 RID: 130
+		// (add) Token: 0x060021FE RID: 8702 RVA: 0x00092EC8 File Offset: 0x000910C8
+		// (remove) Token: 0x060021FF RID: 8703 RVA: 0x00092F00 File Offset: 0x00091100
 		public event Action<int> onPageChangeSubmitted;
 
-		// Token: 0x14000058 RID: 88
-		// (add) Token: 0x060020DE RID: 8414 RVA: 0x0009A774 File Offset: 0x00098974
-		// (remove) Token: 0x060020DF RID: 8415 RVA: 0x0009A7AC File Offset: 0x000989AC
+		// Token: 0x14000083 RID: 131
+		// (add) Token: 0x06002200 RID: 8704 RVA: 0x00092F38 File Offset: 0x00091138
+		// (remove) Token: 0x06002201 RID: 8705 RVA: 0x00092F70 File Offset: 0x00091170
 		public event Action onUnderflow;
 
-		// Token: 0x14000059 RID: 89
-		// (add) Token: 0x060020E0 RID: 8416 RVA: 0x0009A7E4 File Offset: 0x000989E4
-		// (remove) Token: 0x060020E1 RID: 8417 RVA: 0x0009A81C File Offset: 0x00098A1C
+		// Token: 0x14000084 RID: 132
+		// (add) Token: 0x06002202 RID: 8706 RVA: 0x00092FA8 File Offset: 0x000911A8
+		// (remove) Token: 0x06002203 RID: 8707 RVA: 0x00092FE0 File Offset: 0x000911E0
 		public event Action onOverflow;
 
-		// Token: 0x0400235F RID: 9055
+		// Token: 0x04001F55 RID: 8021
 		public GameObject buttonPrefab;
 
-		// Token: 0x04002360 RID: 9056
+		// Token: 0x04001F56 RID: 8022
 		public RectTransform container;
 
-		// Token: 0x04002361 RID: 9057
+		// Token: 0x04001F57 RID: 8023
 		public MPButton leftButton;
 
-		// Token: 0x04002362 RID: 9058
+		// Token: 0x04001F58 RID: 8024
 		public MPButton rightButton;
 
-		// Token: 0x04002363 RID: 9059
+		// Token: 0x04001F59 RID: 8025
 		public bool allowLooping;
 
-		// Token: 0x04002364 RID: 9060
+		// Token: 0x04001F5A RID: 8026
 		public UIElementAllocator<MPButton> buttonAllocator;
 
-		// Token: 0x04002365 RID: 9061
+		// Token: 0x04001F5B RID: 8027
 		private int currentPageIndex;
 
-		// Token: 0x04002366 RID: 9062
+		// Token: 0x04001F5C RID: 8028
 		private CarouselNavigationController.DisplayData displayData = new CarouselNavigationController.DisplayData(0, 0);
 
-		// Token: 0x020005BC RID: 1468
+		// Token: 0x02000596 RID: 1430
 		public struct DisplayData : IEquatable<CarouselNavigationController.DisplayData>
 		{
-			// Token: 0x060020E3 RID: 8419 RVA: 0x0009A866 File Offset: 0x00098A66
+			// Token: 0x06002205 RID: 8709 RVA: 0x0009302A File Offset: 0x0009122A
 			public DisplayData(int pageCount, int pageIndex)
 			{
 				this.pageCount = pageCount;
 				this.pageIndex = pageIndex;
 			}
 
-			// Token: 0x060020E4 RID: 8420 RVA: 0x0009A876 File Offset: 0x00098A76
+			// Token: 0x06002206 RID: 8710 RVA: 0x0009303A File Offset: 0x0009123A
 			public bool Equals(CarouselNavigationController.DisplayData other)
 			{
 				return this.pageCount == other.pageCount && this.pageIndex == other.pageIndex;
 			}
 
-			// Token: 0x060020E5 RID: 8421 RVA: 0x0009A898 File Offset: 0x00098A98
+			// Token: 0x06002207 RID: 8711 RVA: 0x0009305C File Offset: 0x0009125C
 			public override bool Equals(object obj)
 			{
 				if (obj == null)
@@ -240,16 +240,16 @@ namespace RoR2.UI
 				return false;
 			}
 
-			// Token: 0x060020E6 RID: 8422 RVA: 0x0009A8C4 File Offset: 0x00098AC4
+			// Token: 0x06002208 RID: 8712 RVA: 0x00093088 File Offset: 0x00091288
 			public override int GetHashCode()
 			{
 				return this.pageCount * 397 ^ this.pageIndex;
 			}
 
-			// Token: 0x0400236A RID: 9066
+			// Token: 0x04001F60 RID: 8032
 			public readonly int pageCount;
 
-			// Token: 0x0400236B RID: 9067
+			// Token: 0x04001F61 RID: 8033
 			public readonly int pageIndex;
 		}
 	}

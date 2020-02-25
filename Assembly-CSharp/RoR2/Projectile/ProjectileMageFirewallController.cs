@@ -3,19 +3,19 @@ using UnityEngine;
 
 namespace RoR2.Projectile
 {
-	// Token: 0x02000552 RID: 1362
+	// Token: 0x02000519 RID: 1305
 	[RequireComponent(typeof(ProjectileDamage))]
 	[RequireComponent(typeof(ProjectileController))]
 	public class ProjectileMageFirewallController : MonoBehaviour, IProjectileImpactBehavior
 	{
-		// Token: 0x06001E53 RID: 7763 RVA: 0x0008F07B File Offset: 0x0008D27B
+		// Token: 0x06001ECB RID: 7883 RVA: 0x0008555B File Offset: 0x0008375B
 		private void Awake()
 		{
 			this.projectileController = base.GetComponent<ProjectileController>();
 			this.projectileDamage = base.GetComponent<ProjectileDamage>();
 		}
 
-		// Token: 0x06001E54 RID: 7764 RVA: 0x0008F095 File Offset: 0x0008D295
+		// Token: 0x06001ECC RID: 7884 RVA: 0x00085575 File Offset: 0x00083775
 		void IProjectileImpactBehavior.OnProjectileImpact(ProjectileImpactInfo impactInfo)
 		{
 			if (this.consumed)
@@ -27,7 +27,7 @@ namespace RoR2.Projectile
 			UnityEngine.Object.Destroy(base.gameObject);
 		}
 
-		// Token: 0x06001E55 RID: 7765 RVA: 0x0008F0B8 File Offset: 0x0008D2B8
+		// Token: 0x06001ECD RID: 7885 RVA: 0x00085598 File Offset: 0x00083798
 		private void CreateWalkers()
 		{
 			Vector3 forward = base.transform.forward;
@@ -38,16 +38,16 @@ namespace RoR2.Projectile
 			ProjectileManager.instance.FireProjectile(this.walkerPrefab, base.transform.position + Vector3.up, Util.QuaternionSafeLookRotation(-vector), this.projectileController.owner, this.projectileDamage.damage, this.projectileDamage.force, this.projectileDamage.crit, this.projectileDamage.damageColorIndex, null, -1f);
 		}
 
-		// Token: 0x040020F2 RID: 8434
+		// Token: 0x04001C57 RID: 7255
 		public GameObject walkerPrefab;
 
-		// Token: 0x040020F3 RID: 8435
+		// Token: 0x04001C58 RID: 7256
 		private ProjectileController projectileController;
 
-		// Token: 0x040020F4 RID: 8436
+		// Token: 0x04001C59 RID: 7257
 		private ProjectileDamage projectileDamage;
 
-		// Token: 0x040020F5 RID: 8437
+		// Token: 0x04001C5A RID: 7258
 		private bool consumed;
 	}
 }

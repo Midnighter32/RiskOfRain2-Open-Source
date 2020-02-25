@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005D4 RID: 1492
+	// Token: 0x020005B3 RID: 1459
 	[ExecuteInEditMode]
 	public class DifficultyBarController : MonoBehaviour
 	{
-		// Token: 0x06002170 RID: 8560 RVA: 0x0009CFEC File Offset: 0x0009B1EC
+		// Token: 0x060022A0 RID: 8864 RVA: 0x00095F60 File Offset: 0x00094160
 		private static Color ColorMultiplySaturationAndValue(ref Color col, float saturationMultiplier, float valueMultiplier)
 		{
 			float h;
@@ -20,7 +20,7 @@ namespace RoR2.UI
 			return Color.HSVToRGB(h, num * saturationMultiplier, num2 * valueMultiplier);
 		}
 
-		// Token: 0x06002171 RID: 8561 RVA: 0x0009D018 File Offset: 0x0009B218
+		// Token: 0x060022A1 RID: 8865 RVA: 0x00095F8C File Offset: 0x0009418C
 		private void OnCurrentSegmentIndexChanged(int newSegmentIndex)
 		{
 			if (!Application.isPlaying)
@@ -86,7 +86,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002172 RID: 8562 RVA: 0x0009D2E4 File Offset: 0x0009B4E4
+		// Token: 0x060022A2 RID: 8866 RVA: 0x00096258 File Offset: 0x00094458
 		private void SetSegmentScroll(float segmentScroll)
 		{
 			float num = (float)(this.segmentDefs.Length + 2);
@@ -131,19 +131,19 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002173 RID: 8563 RVA: 0x0009D4C7 File Offset: 0x0009B6C7
+		// Token: 0x060022A3 RID: 8867 RVA: 0x0009643B File Offset: 0x0009463B
 		private float CalcSegmentStartX(int i)
 		{
 			return (float)i * this.elementWidth;
 		}
 
-		// Token: 0x06002174 RID: 8564 RVA: 0x0009D4D2 File Offset: 0x0009B6D2
+		// Token: 0x060022A4 RID: 8868 RVA: 0x00096446 File Offset: 0x00094646
 		private float CalcSegmentEndX(int i)
 		{
 			return (float)(i + 1) * this.elementWidth;
 		}
 
-		// Token: 0x06002175 RID: 8565 RVA: 0x0009D4E0 File Offset: 0x0009B6E0
+		// Token: 0x060022A5 RID: 8869 RVA: 0x00096454 File Offset: 0x00094654
 		private void SetLabelDefaultDimensions(RectTransform labelRectTransform)
 		{
 			labelRectTransform.anchorMin = new Vector2(0f, 0f);
@@ -153,7 +153,7 @@ namespace RoR2.UI
 			labelRectTransform.offsetMax = new Vector2(0f, 0f);
 		}
 
-		// Token: 0x06002176 RID: 8566 RVA: 0x0009D558 File Offset: 0x0009B758
+		// Token: 0x060022A6 RID: 8870 RVA: 0x000964CC File Offset: 0x000946CC
 		private void SetSegmentCount(uint desiredCount)
 		{
 			if (!this.segmentContainer || !this.segmentPrefab)
@@ -177,8 +177,8 @@ namespace RoR2.UI
 			}
 			while (num > desiredCount)
 			{
-				UnityEngine.Object.DestroyImmediate(this.segmentContainer.GetChild((int)(num - 1u)).gameObject);
-				num -= 1u;
+				UnityEngine.Object.DestroyImmediate(this.segmentContainer.GetChild((int)(num - 1U)).gameObject);
+				num -= 1U;
 			}
 			while (num < desiredCount)
 			{
@@ -187,11 +187,11 @@ namespace RoR2.UI
 				this.images[i] = gameObject.GetComponent<Image>();
 				this.labels[i] = gameObject.transform.Find("Label").GetComponent<TextMeshProUGUI>();
 				i++;
-				num += 1u;
+				num += 1U;
 			}
 		}
 
-		// Token: 0x06002177 RID: 8567 RVA: 0x0009D68C File Offset: 0x0009B88C
+		// Token: 0x060022A7 RID: 8871 RVA: 0x00096600 File Offset: 0x00094800
 		private void SetupSegments()
 		{
 			if (!this.segmentContainer || !this.segmentPrefab)
@@ -206,7 +206,7 @@ namespace RoR2.UI
 			this.SetupFinalSegment((RectTransform)this.segmentContainer.GetChild(this.segmentContainer.childCount - 1));
 		}
 
-		// Token: 0x06002178 RID: 8568 RVA: 0x0009D720 File Offset: 0x0009B920
+		// Token: 0x060022A8 RID: 8872 RVA: 0x00096694 File Offset: 0x00094894
 		private static void ScaleLabelToWidth(TextMeshProUGUI label, float width)
 		{
 			RectTransform rectTransform = (RectTransform)label.transform;
@@ -216,7 +216,7 @@ namespace RoR2.UI
 			rectTransform.localScale = localScale;
 		}
 
-		// Token: 0x06002179 RID: 8569 RVA: 0x0009D764 File Offset: 0x0009B964
+		// Token: 0x060022A9 RID: 8873 RVA: 0x000966D8 File Offset: 0x000948D8
 		private void SetupFinalSegment(RectTransform segmentTransform)
 		{
 			TextMeshProUGUI[] array = segmentTransform.GetComponentsInChildren<TextMeshProUGUI>();
@@ -252,7 +252,7 @@ namespace RoR2.UI
 			segmentTransform.GetComponent<Image>().sprite = this.finalSegmentSprite;
 		}
 
-		// Token: 0x0600217A RID: 8570 RVA: 0x0009D860 File Offset: 0x0009BA60
+		// Token: 0x060022AA RID: 8874 RVA: 0x000967D4 File Offset: 0x000949D4
 		private void SetupSegment(RectTransform segmentTransform, ref DifficultyBarController.SegmentDef segmentDef, int i)
 		{
 			Vector2 offsetMin = segmentTransform.offsetMin;
@@ -265,13 +265,13 @@ namespace RoR2.UI
 			((RectTransform)segmentTransform.Find("Label")).GetComponent<LanguageTextMeshController>().token = segmentDef.token;
 		}
 
-		// Token: 0x0600217B RID: 8571 RVA: 0x0009D8D6 File Offset: 0x0009BAD6
+		// Token: 0x060022AB RID: 8875 RVA: 0x0009684A File Offset: 0x00094A4A
 		private void Awake()
 		{
 			this.SetupSegments();
 		}
 
-		// Token: 0x0600217C RID: 8572 RVA: 0x0009D8E0 File Offset: 0x0009BAE0
+		// Token: 0x060022AC RID: 8876 RVA: 0x00096854 File Offset: 0x00094A54
 		private void Update()
 		{
 			if (Run.instance)
@@ -285,7 +285,7 @@ namespace RoR2.UI
 			this.UpdateGears();
 		}
 
-		// Token: 0x0600217D RID: 8573 RVA: 0x0009D930 File Offset: 0x0009BB30
+		// Token: 0x060022AD RID: 8877 RVA: 0x000968A4 File Offset: 0x00094AA4
 		private void UpdateGears()
 		{
 			foreach (RawImage rawImage in this.wormGearImages)
@@ -297,7 +297,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600217E RID: 8574 RVA: 0x0009D99C File Offset: 0x0009BB9C
+		// Token: 0x060022AE RID: 8878 RVA: 0x00096910 File Offset: 0x00094B10
 		private void RunAnimations(float deltaTime)
 		{
 			for (int i = this.playingAnimations.Count - 1; i >= 0; i--)
@@ -313,151 +313,151 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x04002407 RID: 9223
+		// Token: 0x04002016 RID: 8214
 		[Header("Component References")]
 		public RectTransform viewPort;
 
-		// Token: 0x04002408 RID: 9224
+		// Token: 0x04002017 RID: 8215
 		public RectTransform segmentContainer;
 
-		// Token: 0x04002409 RID: 9225
-		[Tooltip("How wide each segment should be.")]
+		// Token: 0x04002018 RID: 8216
 		[Header("Layout")]
+		[Tooltip("How wide each segment should be.")]
 		public float elementWidth;
 
-		// Token: 0x0400240A RID: 9226
+		// Token: 0x04002019 RID: 8217
 		public float levelsPerSegment;
 
-		// Token: 0x0400240B RID: 9227
+		// Token: 0x0400201A RID: 8218
 		public float debugTime;
 
-		// Token: 0x0400240C RID: 9228
+		// Token: 0x0400201B RID: 8219
 		[Header("Segment Parameters")]
 		public DifficultyBarController.SegmentDef[] segmentDefs;
 
-		// Token: 0x0400240D RID: 9229
+		// Token: 0x0400201C RID: 8220
 		[Tooltip("The prefab to instantiate for each segment.")]
 		public GameObject segmentPrefab;
 
-		// Token: 0x0400240E RID: 9230
+		// Token: 0x0400201D RID: 8221
 		[Header("Colors")]
 		public float pastSaturationMultiplier;
 
-		// Token: 0x0400240F RID: 9231
+		// Token: 0x0400201E RID: 8222
 		public float pastValueMultiplier;
 
-		// Token: 0x04002410 RID: 9232
+		// Token: 0x0400201F RID: 8223
 		public Color pastLabelColor;
 
-		// Token: 0x04002411 RID: 9233
+		// Token: 0x04002020 RID: 8224
 		public float currentSaturationMultiplier;
 
-		// Token: 0x04002412 RID: 9234
+		// Token: 0x04002021 RID: 8225
 		public float currentValueMultiplier;
 
-		// Token: 0x04002413 RID: 9235
+		// Token: 0x04002022 RID: 8226
 		public Color currentLabelColor;
 
-		// Token: 0x04002414 RID: 9236
+		// Token: 0x04002023 RID: 8227
 		public float upcomingSaturationMultiplier;
 
-		// Token: 0x04002415 RID: 9237
+		// Token: 0x04002024 RID: 8228
 		public float upcomingValueMultiplier;
 
-		// Token: 0x04002416 RID: 9238
+		// Token: 0x04002025 RID: 8229
 		public Color upcomingLabelColor;
 
-		// Token: 0x04002417 RID: 9239
+		// Token: 0x04002026 RID: 8230
 		[Header("Animations")]
 		public AnimationCurve fadeAnimationCurve;
 
-		// Token: 0x04002418 RID: 9240
+		// Token: 0x04002027 RID: 8231
 		public float fadeAnimationDuration = 1f;
 
-		// Token: 0x04002419 RID: 9241
+		// Token: 0x04002028 RID: 8232
 		public AnimationCurve flashAnimationCurve;
 
-		// Token: 0x0400241A RID: 9242
+		// Token: 0x04002029 RID: 8233
 		public float flashAnimationDuration = 0.5f;
 
-		// Token: 0x0400241B RID: 9243
+		// Token: 0x0400202A RID: 8234
 		private int currentSegmentIndex = -1;
 
-		// Token: 0x0400241C RID: 9244
+		// Token: 0x0400202B RID: 8235
 		private static readonly Color labelFadedColor = Color.Lerp(Color.gray, Color.white, 0.5f);
 
-		// Token: 0x0400241D RID: 9245
+		// Token: 0x0400202C RID: 8236
 		[Header("Final Segment")]
 		public Sprite finalSegmentSprite;
 
-		// Token: 0x0400241E RID: 9246
+		// Token: 0x0400202D RID: 8237
 		private float scrollX;
 
-		// Token: 0x0400241F RID: 9247
+		// Token: 0x0400202E RID: 8238
 		private float scrollXRaw;
 
-		// Token: 0x04002420 RID: 9248
+		// Token: 0x0400202F RID: 8239
 		[Tooltip("Do not set this manually. Regenerate the children instead.")]
 		public Image[] images;
 
-		// Token: 0x04002421 RID: 9249
+		// Token: 0x04002030 RID: 8240
 		[Tooltip("Do not set this manually. Regenerate the children instead.")]
 		public TextMeshProUGUI[] labels;
 
-		// Token: 0x04002422 RID: 9250
+		// Token: 0x04002031 RID: 8241
 		public RawImage[] wormGearImages;
 
-		// Token: 0x04002423 RID: 9251
+		// Token: 0x04002032 RID: 8242
 		public float UVScaleToScrollX;
 
-		// Token: 0x04002424 RID: 9252
+		// Token: 0x04002033 RID: 8243
 		public float gearUVOffset;
 
-		// Token: 0x04002425 RID: 9253
+		// Token: 0x04002034 RID: 8244
 		private readonly List<DifficultyBarController.SegmentImageAnimation> playingAnimations = new List<DifficultyBarController.SegmentImageAnimation>();
 
-		// Token: 0x020005D5 RID: 1493
+		// Token: 0x020005B4 RID: 1460
 		[Serializable]
 		public struct SegmentDef
 		{
-			// Token: 0x04002426 RID: 9254
+			// Token: 0x04002035 RID: 8245
 			[Tooltip("The default English string to use for the element at design time.")]
 			public string debugString;
 
-			// Token: 0x04002427 RID: 9255
+			// Token: 0x04002036 RID: 8246
 			[Tooltip("The final language token to use for this element at runtime.")]
 			public string token;
 
-			// Token: 0x04002428 RID: 9256
+			// Token: 0x04002037 RID: 8247
 			[Tooltip("The color to use for the panel.")]
 			public Color color;
 		}
 
-		// Token: 0x020005D6 RID: 1494
+		// Token: 0x020005B5 RID: 1461
 		private class SegmentImageAnimation
 		{
-			// Token: 0x06002181 RID: 8577 RVA: 0x0009DA55 File Offset: 0x0009BC55
+			// Token: 0x060022B1 RID: 8881 RVA: 0x000969C9 File Offset: 0x00094BC9
 			public void Update(float t)
 			{
 				this.segmentImage.color = Color.Lerp(this.color0, this.color1, this.colorCurve.Evaluate(t));
 			}
 
-			// Token: 0x04002429 RID: 9257
+			// Token: 0x04002038 RID: 8248
 			public Image segmentImage;
 
-			// Token: 0x0400242A RID: 9258
+			// Token: 0x04002039 RID: 8249
 			public float age;
 
-			// Token: 0x0400242B RID: 9259
+			// Token: 0x0400203A RID: 8250
 			public float duration;
 
-			// Token: 0x0400242C RID: 9260
+			// Token: 0x0400203B RID: 8251
 			public AnimationCurve colorCurve;
 
-			// Token: 0x0400242D RID: 9261
+			// Token: 0x0400203C RID: 8252
 			public Color color0;
 
-			// Token: 0x0400242E RID: 9262
+			// Token: 0x0400203D RID: 8253
 			public Color color1;
 		}
 	}

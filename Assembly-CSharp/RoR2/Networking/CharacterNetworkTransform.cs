@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using KinematicCharacterController;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RoR2.Networking
 {
-	// Token: 0x02000570 RID: 1392
+	// Token: 0x02000539 RID: 1337
 	public class CharacterNetworkTransform : NetworkBehaviour
 	{
-		// Token: 0x170002B2 RID: 690
-		// (get) Token: 0x06001EF3 RID: 7923 RVA: 0x00092168 File Offset: 0x00090368
+		// Token: 0x17000350 RID: 848
+		// (get) Token: 0x06001F7F RID: 8063 RVA: 0x00088C6C File Offset: 0x00086E6C
 		public static ReadOnlyCollection<CharacterNetworkTransform> readOnlyInstancesList
 		{
 			get
@@ -20,32 +19,32 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x170002B3 RID: 691
-		// (get) Token: 0x06001EF5 RID: 7925 RVA: 0x00092178 File Offset: 0x00090378
-		// (set) Token: 0x06001EF4 RID: 7924 RVA: 0x0009216F File Offset: 0x0009036F
+		// Token: 0x17000351 RID: 849
+		// (get) Token: 0x06001F81 RID: 8065 RVA: 0x00088C7C File Offset: 0x00086E7C
+		// (set) Token: 0x06001F80 RID: 8064 RVA: 0x00088C73 File Offset: 0x00086E73
 		public new Transform transform { get; private set; }
 
-		// Token: 0x170002B4 RID: 692
-		// (get) Token: 0x06001EF7 RID: 7927 RVA: 0x00092189 File Offset: 0x00090389
-		// (set) Token: 0x06001EF6 RID: 7926 RVA: 0x00092180 File Offset: 0x00090380
+		// Token: 0x17000352 RID: 850
+		// (get) Token: 0x06001F83 RID: 8067 RVA: 0x00088C8D File Offset: 0x00086E8D
+		// (set) Token: 0x06001F82 RID: 8066 RVA: 0x00088C84 File Offset: 0x00086E84
 		public InputBankTest inputBank { get; private set; }
 
-		// Token: 0x170002B5 RID: 693
-		// (get) Token: 0x06001EF9 RID: 7929 RVA: 0x0009219A File Offset: 0x0009039A
-		// (set) Token: 0x06001EF8 RID: 7928 RVA: 0x00092191 File Offset: 0x00090391
+		// Token: 0x17000353 RID: 851
+		// (get) Token: 0x06001F85 RID: 8069 RVA: 0x00088C9E File Offset: 0x00086E9E
+		// (set) Token: 0x06001F84 RID: 8068 RVA: 0x00088C95 File Offset: 0x00086E95
 		public CharacterMotor characterMotor { get; set; }
 
-		// Token: 0x170002B6 RID: 694
-		// (get) Token: 0x06001EFB RID: 7931 RVA: 0x000921AB File Offset: 0x000903AB
-		// (set) Token: 0x06001EFA RID: 7930 RVA: 0x000921A2 File Offset: 0x000903A2
+		// Token: 0x17000354 RID: 852
+		// (get) Token: 0x06001F87 RID: 8071 RVA: 0x00088CAF File Offset: 0x00086EAF
+		// (set) Token: 0x06001F86 RID: 8070 RVA: 0x00088CA6 File Offset: 0x00086EA6
 		public CharacterDirection characterDirection { get; private set; }
 
-		// Token: 0x170002B7 RID: 695
-		// (get) Token: 0x06001EFD RID: 7933 RVA: 0x000921BC File Offset: 0x000903BC
-		// (set) Token: 0x06001EFC RID: 7932 RVA: 0x000921B3 File Offset: 0x000903B3
+		// Token: 0x17000355 RID: 853
+		// (get) Token: 0x06001F89 RID: 8073 RVA: 0x00088CC0 File Offset: 0x00086EC0
+		// (set) Token: 0x06001F88 RID: 8072 RVA: 0x00088CB7 File Offset: 0x00086EB7
 		private Rigidbody rigidbody { get; set; }
 
-		// Token: 0x06001EFE RID: 7934 RVA: 0x000921C4 File Offset: 0x000903C4
+		// Token: 0x06001F8A RID: 8074 RVA: 0x00088CC8 File Offset: 0x00086EC8
 		private CharacterNetworkTransform.Snapshot CalcCurrentSnapshot(float time, float interpolationDelay)
 		{
 			float num = time - interpolationDelay;
@@ -63,21 +62,22 @@ namespace RoR2.Networking
 			return CharacterNetworkTransform.Snapshot.Interpolate(this.snapshots[num2], this.snapshots[num2 + 1], num);
 		}
 
-		// Token: 0x06001EFF RID: 7935 RVA: 0x00092274 File Offset: 0x00090474
+		// Token: 0x06001F8B RID: 8075 RVA: 0x00088D78 File Offset: 0x00086F78
 		private CharacterNetworkTransform.Snapshot BuildSnapshot()
 		{
 			return new CharacterNetworkTransform.Snapshot
 			{
-				serverTime = ((GameNetworkManager)NetworkManager.singleton).serverFixedTime,
+				serverTime = GameNetworkManager.singleton.serverFixedTime,
 				position = this.transform.position,
 				moveVector = (this.inputBank ? this.inputBank.moveVector : Vector3.zero),
 				aimDirection = (this.inputBank ? this.inputBank.aimDirection : Vector3.zero),
 				rotation = (this.characterDirection ? Quaternion.Euler(0f, this.characterDirection.yaw, 0f) : this.transform.rotation),
-				isGrounded = (this.characterMotor && this.characterMotor.isGrounded)
+				isGrounded = (this.characterMotor && this.characterMotor.isGrounded),
+				groundNormal = (this.characterMotor ? this.characterMotor.estimatedGroundNormal : Vector3.zero)
 			};
 		}
 
-		// Token: 0x06001F00 RID: 7936 RVA: 0x0009235C File Offset: 0x0009055C
+		// Token: 0x06001F8C RID: 8076 RVA: 0x00088E80 File Offset: 0x00087080
 		public void PushSnapshot(CharacterNetworkTransform.Snapshot newSnapshot)
 		{
 			if (this.debugSnapshotReceived)
@@ -108,7 +108,7 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F01 RID: 7937 RVA: 0x000924DC File Offset: 0x000906DC
+		// Token: 0x06001F8D RID: 8077 RVA: 0x00089000 File Offset: 0x00087200
 		private void Awake()
 		{
 			this.transform = base.transform;
@@ -122,8 +122,8 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x170002B8 RID: 696
-		// (get) Token: 0x06001F02 RID: 7938 RVA: 0x00092543 File Offset: 0x00090743
+		// Token: 0x17000356 RID: 854
+		// (get) Token: 0x06001F8E RID: 8078 RVA: 0x00089067 File Offset: 0x00087267
 		public float interpolationDelay
 		{
 			get
@@ -132,19 +132,19 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x170002B9 RID: 697
-		// (get) Token: 0x06001F04 RID: 7940 RVA: 0x0009255B File Offset: 0x0009075B
-		// (set) Token: 0x06001F03 RID: 7939 RVA: 0x00092552 File Offset: 0x00090752
+		// Token: 0x17000357 RID: 855
+		// (get) Token: 0x06001F90 RID: 8080 RVA: 0x0008907F File Offset: 0x0008727F
+		// (set) Token: 0x06001F8F RID: 8079 RVA: 0x00089076 File Offset: 0x00087276
 		public bool hasEffectiveAuthority { get; private set; }
 
-		// Token: 0x06001F05 RID: 7941 RVA: 0x00092563 File Offset: 0x00090763
+		// Token: 0x06001F91 RID: 8081 RVA: 0x00089087 File Offset: 0x00087287
 		private void Start()
 		{
 			this.newestNetSnapshot = this.BuildSnapshot();
 			this.UpdateAuthority();
 		}
 
-		// Token: 0x06001F06 RID: 7942 RVA: 0x00092577 File Offset: 0x00090777
+		// Token: 0x06001F92 RID: 8082 RVA: 0x0008909B File Offset: 0x0008729B
 		private void OnEnable()
 		{
 			bool flag = CharacterNetworkTransform.instancesList.Contains(this);
@@ -155,7 +155,7 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F07 RID: 7943 RVA: 0x0009259B File Offset: 0x0009079B
+		// Token: 0x06001F93 RID: 8083 RVA: 0x000890BF File Offset: 0x000872BF
 		private void OnDisable()
 		{
 			CharacterNetworkTransform.instancesList.Remove(this);
@@ -165,7 +165,7 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F08 RID: 7944 RVA: 0x000925C0 File Offset: 0x000907C0
+		// Token: 0x06001F94 RID: 8084 RVA: 0x000890E4 File Offset: 0x000872E4
 		private void UpdateAuthority()
 		{
 			this.hasEffectiveAuthority = Util.HasEffectiveAuthority(base.gameObject);
@@ -175,27 +175,22 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F09 RID: 7945 RVA: 0x000925FC File Offset: 0x000907FC
+		// Token: 0x06001F95 RID: 8085 RVA: 0x00089120 File Offset: 0x00087320
 		public override void OnStartAuthority()
 		{
 			this.UpdateAuthority();
 		}
 
-		// Token: 0x06001F0A RID: 7946 RVA: 0x000925FC File Offset: 0x000907FC
+		// Token: 0x06001F96 RID: 8086 RVA: 0x00089120 File Offset: 0x00087320
 		public override void OnStopAuthority()
 		{
 			this.UpdateAuthority();
 		}
 
-		// Token: 0x06001F0B RID: 7947 RVA: 0x00092604 File Offset: 0x00090804
-		private void FixedUpdate()
+		// Token: 0x06001F97 RID: 8087 RVA: 0x00089128 File Offset: 0x00087328
+		private void ApplyCurrentSnapshot(float currentTime)
 		{
-			if (this.hasEffectiveAuthority)
-			{
-				this.newestNetSnapshot = this.BuildSnapshot();
-				return;
-			}
-			CharacterNetworkTransform.Snapshot snapshot = this.CalcCurrentSnapshot(GameNetworkManager.singleton.serverFixedTime, this.interpolationDelay);
+			CharacterNetworkTransform.Snapshot snapshot = this.CalcCurrentSnapshot(currentTime, this.interpolationDelay);
 			if (!this.characterMotor)
 			{
 				if (this.rigidbodyStartedKinematic)
@@ -215,10 +210,14 @@ namespace RoR2.Networking
 			if (this.characterMotor)
 			{
 				this.characterMotor.netIsGrounded = snapshot.isGrounded;
-				KinematicCharacterMotor motor = this.characterMotor.Motor;
-				if (motor != null)
+				this.characterMotor.netGroundNormal = snapshot.groundNormal;
+				if (this.characterMotor.Motor.enabled)
 				{
-					motor.MoveCharacter(snapshot.position);
+					this.characterMotor.Motor.MoveCharacter(snapshot.position);
+				}
+				else
+				{
+					this.characterMotor.Motor.SetPosition(snapshot.position, true);
 				}
 			}
 			if (this.characterDirection)
@@ -234,107 +233,149 @@ namespace RoR2.Networking
 			this.rigidbody.MoveRotation(snapshot.rotation);
 		}
 
-		// Token: 0x06001F0E RID: 7950 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001F98 RID: 8088 RVA: 0x00089270 File Offset: 0x00087470
+		private void FixedUpdate()
+		{
+			if (!this.hasEffectiveAuthority)
+			{
+				this.ApplyCurrentSnapshot(GameNetworkManager.singleton.serverFixedTime);
+				return;
+			}
+			this.newestNetSnapshot = this.BuildSnapshot();
+		}
+
+		// Token: 0x06001F9B RID: 8091 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x06001F0F RID: 7951 RVA: 0x00092790 File Offset: 0x00090990
+		// Token: 0x06001F9C RID: 8092 RVA: 0x000892F0 File Offset: 0x000874F0
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			bool result;
 			return result;
 		}
 
-		// Token: 0x06001F10 RID: 7952 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001F9D RID: 8093 RVA: 0x0000409B File Offset: 0x0000229B
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 		}
 
-		// Token: 0x040021AD RID: 8621
+		// Token: 0x04001D36 RID: 7478
 		private static List<CharacterNetworkTransform> instancesList = new List<CharacterNetworkTransform>();
 
-		// Token: 0x040021AE RID: 8622
+		// Token: 0x04001D37 RID: 7479
 		private static ReadOnlyCollection<CharacterNetworkTransform> _readOnlyInstancesList = new ReadOnlyCollection<CharacterNetworkTransform>(CharacterNetworkTransform.instancesList);
 
-		// Token: 0x040021B4 RID: 8628
+		// Token: 0x04001D3D RID: 7485
 		[Tooltip("The delay in seconds between position network updates.")]
 		public float positionTransmitInterval = 0.1f;
 
-		// Token: 0x040021B5 RID: 8629
+		// Token: 0x04001D3E RID: 7486
 		[HideInInspector]
 		public float lastPositionTransmitTime = float.NegativeInfinity;
 
-		// Token: 0x040021B6 RID: 8630
+		// Token: 0x04001D3F RID: 7487
 		[Tooltip("The number of packets of buffers to have.")]
 		public float interpolationFactor = 2f;
 
-		// Token: 0x040021B7 RID: 8631
+		// Token: 0x04001D40 RID: 7488
 		public CharacterNetworkTransform.Snapshot newestNetSnapshot;
 
-		// Token: 0x040021B8 RID: 8632
+		// Token: 0x04001D41 RID: 7489
 		private List<CharacterNetworkTransform.Snapshot> snapshots = new List<CharacterNetworkTransform.Snapshot>();
 
-		// Token: 0x040021B9 RID: 8633
+		// Token: 0x04001D42 RID: 7490
 		public bool debugDuplicatePositions;
 
-		// Token: 0x040021BA RID: 8634
+		// Token: 0x04001D43 RID: 7491
 		public bool debugSnapshotReceived;
 
-		// Token: 0x040021BB RID: 8635
+		// Token: 0x04001D44 RID: 7492
 		private bool rigidbodyStartedKinematic = true;
 
-		// Token: 0x02000571 RID: 1393
+		// Token: 0x0200053A RID: 1338
 		public struct Snapshot
 		{
-			// Token: 0x06001F11 RID: 7953 RVA: 0x000927A0 File Offset: 0x000909A0
+			// Token: 0x06001F9E RID: 8094 RVA: 0x00089300 File Offset: 0x00087500
+			private static bool LerpGroundNormal(ref CharacterNetworkTransform.Snapshot a, ref CharacterNetworkTransform.Snapshot b, float t, out Vector3 groundNormal)
+			{
+				groundNormal = Vector3.zero;
+				bool flag = (t > 0f) ? b.isGrounded : a.isGrounded;
+				if (flag)
+				{
+					if (b.isGrounded)
+					{
+						if (a.isGrounded)
+						{
+							groundNormal = Vector3.Slerp(a.groundNormal, b.groundNormal, t);
+							return flag;
+						}
+						groundNormal = b.groundNormal;
+						return flag;
+					}
+					else
+					{
+						groundNormal = a.groundNormal;
+					}
+				}
+				return flag;
+			}
+
+			// Token: 0x06001F9F RID: 8095 RVA: 0x00089374 File Offset: 0x00087574
 			public static CharacterNetworkTransform.Snapshot Lerp(CharacterNetworkTransform.Snapshot a, CharacterNetworkTransform.Snapshot b, float t)
 			{
+				Vector3 vector;
+				bool flag = CharacterNetworkTransform.Snapshot.LerpGroundNormal(ref a, ref b, t, out vector);
 				return new CharacterNetworkTransform.Snapshot
 				{
 					position = Vector3.Lerp(a.position, b.position, t),
 					moveVector = Vector3.Lerp(a.moveVector, b.moveVector, t),
 					aimDirection = Vector3.Slerp(a.aimDirection, b.moveVector, t),
 					rotation = Quaternion.Lerp(a.rotation, b.rotation, t),
-					isGrounded = ((t > 0.5f) ? b.isGrounded : a.isGrounded)
+					isGrounded = flag,
+					groundNormal = vector
 				};
 			}
 
-			// Token: 0x06001F12 RID: 7954 RVA: 0x00092838 File Offset: 0x00090A38
+			// Token: 0x06001FA0 RID: 8096 RVA: 0x0008940C File Offset: 0x0008760C
 			public static CharacterNetworkTransform.Snapshot Interpolate(CharacterNetworkTransform.Snapshot a, CharacterNetworkTransform.Snapshot b, float serverTime)
 			{
-				float num = (serverTime - a.serverTime) / (b.serverTime - a.serverTime);
+				float t = (serverTime - a.serverTime) / (b.serverTime - a.serverTime);
+				Vector3 vector;
+				bool flag = CharacterNetworkTransform.Snapshot.LerpGroundNormal(ref a, ref b, t, out vector);
 				return new CharacterNetworkTransform.Snapshot
 				{
 					serverTime = serverTime,
-					position = Vector3.LerpUnclamped(a.position, b.position, num),
-					moveVector = Vector3.Lerp(a.moveVector, b.moveVector, num),
-					aimDirection = Vector3.Slerp(a.aimDirection, b.aimDirection, num),
-					rotation = Quaternion.Lerp(a.rotation, b.rotation, num),
-					isGrounded = ((num > 0.5f) ? b.isGrounded : a.isGrounded)
+					position = Vector3.LerpUnclamped(a.position, b.position, t),
+					moveVector = Vector3.Lerp(a.moveVector, b.moveVector, t),
+					aimDirection = Vector3.Slerp(a.aimDirection, b.aimDirection, t),
+					rotation = Quaternion.Lerp(a.rotation, b.rotation, t),
+					isGrounded = flag,
+					groundNormal = vector
 				};
 			}
 
-			// Token: 0x040021BD RID: 8637
+			// Token: 0x04001D46 RID: 7494
 			public float serverTime;
 
-			// Token: 0x040021BE RID: 8638
+			// Token: 0x04001D47 RID: 7495
 			public Vector3 position;
 
-			// Token: 0x040021BF RID: 8639
+			// Token: 0x04001D48 RID: 7496
 			public Vector3 moveVector;
 
-			// Token: 0x040021C0 RID: 8640
+			// Token: 0x04001D49 RID: 7497
 			public Vector3 aimDirection;
 
-			// Token: 0x040021C1 RID: 8641
+			// Token: 0x04001D4A RID: 7498
 			public Quaternion rotation;
 
-			// Token: 0x040021C2 RID: 8642
+			// Token: 0x04001D4B RID: 7499
 			public bool isGrounded;
 
-			// Token: 0x040021C3 RID: 8643
-			public const int maxNetworkSize = 57;
+			// Token: 0x04001D4C RID: 7500
+			public Vector3 groundNormal;
 		}
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace RoR2.UI
 {
-	// Token: 0x02000644 RID: 1604
+	// Token: 0x02000639 RID: 1593
 	public class SteamUsernameLabel : SocialUsernameLabel
 	{
 	}

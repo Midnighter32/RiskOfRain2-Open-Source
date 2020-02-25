@@ -3,16 +3,16 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003FC RID: 1020
+	// Token: 0x02000354 RID: 852
 	public class TemporaryVisualEffect : MonoBehaviour
 	{
-		// Token: 0x060016BC RID: 5820 RVA: 0x0006C58A File Offset: 0x0006A78A
+		// Token: 0x060014BB RID: 5307 RVA: 0x00058851 File Offset: 0x00056A51
 		private void Start()
 		{
 			this.RebuildVisualComponents();
 		}
 
-		// Token: 0x060016BD RID: 5821 RVA: 0x0006C592 File Offset: 0x0006A792
+		// Token: 0x060014BC RID: 5308 RVA: 0x00058859 File Offset: 0x00056A59
 		private void FixedUpdate()
 		{
 			if (this.previousVisualState != this.visualState)
@@ -22,7 +22,7 @@ namespace RoR2
 			this.previousVisualState = this.visualState;
 		}
 
-		// Token: 0x060016BE RID: 5822 RVA: 0x0006C5B4 File Offset: 0x0006A7B4
+		// Token: 0x060014BD RID: 5309 RVA: 0x0005887C File Offset: 0x00056A7C
 		private void RebuildVisualComponents()
 		{
 			TemporaryVisualEffect.VisualState visualState = this.visualState;
@@ -57,7 +57,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060016BF RID: 5823 RVA: 0x0006C64C File Offset: 0x0006A84C
+		// Token: 0x060014BE RID: 5310 RVA: 0x00058914 File Offset: 0x00056B14
 		private void LateUpdate()
 		{
 			bool flag = this.healthComponent;
@@ -79,37 +79,37 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x040019E3 RID: 6627
+		// Token: 0x0400134A RID: 4938
 		public float radius = 1f;
 
-		// Token: 0x040019E4 RID: 6628
+		// Token: 0x0400134B RID: 4939
 		public Transform parentTransform;
 
-		// Token: 0x040019E5 RID: 6629
+		// Token: 0x0400134C RID: 4940
 		public Transform visualTransform;
 
-		// Token: 0x040019E6 RID: 6630
+		// Token: 0x0400134D RID: 4941
 		public MonoBehaviour[] enterComponents;
 
-		// Token: 0x040019E7 RID: 6631
+		// Token: 0x0400134E RID: 4942
 		public MonoBehaviour[] exitComponents;
 
-		// Token: 0x040019E8 RID: 6632
+		// Token: 0x0400134F RID: 4943
 		public TemporaryVisualEffect.VisualState visualState;
 
-		// Token: 0x040019E9 RID: 6633
+		// Token: 0x04001350 RID: 4944
 		private TemporaryVisualEffect.VisualState previousVisualState;
 
-		// Token: 0x040019EA RID: 6634
+		// Token: 0x04001351 RID: 4945
 		[HideInInspector]
 		public HealthComponent healthComponent;
 
-		// Token: 0x020003FD RID: 1021
+		// Token: 0x02000355 RID: 853
 		public enum VisualState
 		{
-			// Token: 0x040019EC RID: 6636
+			// Token: 0x04001353 RID: 4947
 			Enter,
-			// Token: 0x040019ED RID: 6637
+			// Token: 0x04001354 RID: 4948
 			Exit
 		}
 	}

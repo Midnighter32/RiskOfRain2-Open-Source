@@ -1,26 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200031A RID: 794
+	// Token: 0x02000239 RID: 569
 	[RequireComponent(typeof(Collider))]
 	public class HurtBox : MonoBehaviour
 	{
-		// Token: 0x17000167 RID: 359
-		// (get) Token: 0x06001060 RID: 4192 RVA: 0x00052425 File Offset: 0x00050625
-		// (set) Token: 0x06001061 RID: 4193 RVA: 0x0005242D File Offset: 0x0005062D
+		// Token: 0x1700019F RID: 415
+		// (get) Token: 0x06000C9F RID: 3231 RVA: 0x000391A3 File Offset: 0x000373A3
+		// (set) Token: 0x06000CA0 RID: 3232 RVA: 0x000391AB File Offset: 0x000373AB
+		public TeamIndex teamIndex { get; set; } = TeamIndex.None;
+
+		// Token: 0x170001A0 RID: 416
+		// (get) Token: 0x06000CA1 RID: 3233 RVA: 0x000391B4 File Offset: 0x000373B4
+		// (set) Token: 0x06000CA2 RID: 3234 RVA: 0x000391BC File Offset: 0x000373BC
 		public Collider collider { get; private set; }
 
-		// Token: 0x17000168 RID: 360
-		// (get) Token: 0x06001062 RID: 4194 RVA: 0x00052436 File Offset: 0x00050636
-		// (set) Token: 0x06001063 RID: 4195 RVA: 0x0005243E File Offset: 0x0005063E
+		// Token: 0x170001A1 RID: 417
+		// (get) Token: 0x06000CA3 RID: 3235 RVA: 0x000391C5 File Offset: 0x000373C5
+		// (set) Token: 0x06000CA4 RID: 3236 RVA: 0x000391CD File Offset: 0x000373CD
 		public float volume { get; private set; }
 
-		// Token: 0x17000169 RID: 361
-		// (get) Token: 0x06001064 RID: 4196 RVA: 0x00052447 File Offset: 0x00050647
+		// Token: 0x170001A2 RID: 418
+		// (get) Token: 0x06000CA5 RID: 3237 RVA: 0x000391D6 File Offset: 0x000373D6
 		public Vector3 randomVolumePoint
 		{
 			get
@@ -29,7 +35,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001065 RID: 4197 RVA: 0x00052454 File Offset: 0x00050654
+		// Token: 0x06000CA6 RID: 3238 RVA: 0x000391E4 File Offset: 0x000373E4
 		private void Awake()
 		{
 			this.collider = base.GetComponent<Collider>();
@@ -44,7 +50,7 @@ namespace RoR2
 			this.volume = lossyScale.x * 2f * (lossyScale.y * 2f) * (lossyScale.z * 2f);
 		}
 
-		// Token: 0x06001066 RID: 4198 RVA: 0x000524D3 File Offset: 0x000506D3
+		// Token: 0x06000CA7 RID: 3239 RVA: 0x00039263 File Offset: 0x00037463
 		private void OnEnable()
 		{
 			if (this.isBullseye)
@@ -53,7 +59,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001067 RID: 4199 RVA: 0x000524E8 File Offset: 0x000506E8
+		// Token: 0x06000CA8 RID: 3240 RVA: 0x00039278 File Offset: 0x00037478
 		private void OnDisable()
 		{
 			if (this.isBullseye)
@@ -62,48 +68,76 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0400147C RID: 5244
+		// Token: 0x06000CA9 RID: 3241 RVA: 0x0003928E File Offset: 0x0003748E
+		public static GameObject FindEntityObject([NotNull] HurtBox hurtBox)
+		{
+			if (!hurtBox.healthComponent)
+			{
+				return null;
+			}
+			return hurtBox.healthComponent.gameObject;
+		}
+
+		// Token: 0x06000CAA RID: 3242 RVA: 0x000392AA File Offset: 0x000374AA
+		public static bool HurtBoxesShareEntity([NotNull] HurtBox a, [NotNull] HurtBox b)
+		{
+			return HurtBox.FindEntityObject(a) == HurtBox.FindEntityObject(b);
+		}
+
+		// Token: 0x04000CB9 RID: 3257
 		[Tooltip("The health component to which this hurtbox belongs.")]
 		public HealthComponent healthComponent;
 
-		// Token: 0x0400147D RID: 5245
+		// Token: 0x04000CBA RID: 3258
 		[Tooltip("Whether or not this hurtbox is considered a bullseye. Do not change this at runtime!")]
 		public bool isBullseye;
 
-		// Token: 0x0400147E RID: 5246
+		// Token: 0x04000CBB RID: 3259
 		public HurtBox.DamageModifier damageModifier;
 
-		// Token: 0x0400147F RID: 5247
-		[NonSerialized]
-		public TeamIndex teamIndex = TeamIndex.None;
-
-		// Token: 0x04001480 RID: 5248
+		// Token: 0x04000CBD RID: 3261
 		[SerializeField]
 		[HideInInspector]
 		public HurtBoxGroup hurtBoxGroup;
 
-		// Token: 0x04001481 RID: 5249
+		// Token: 0x04000CBE RID: 3262
 		[SerializeField]
 		[HideInInspector]
 		public short indexInGroup = -1;
 
-		// Token: 0x04001484 RID: 5252
+		// Token: 0x04000CC1 RID: 3265
 		private static readonly List<HurtBox> bullseyesList = new List<HurtBox>();
 
-		// Token: 0x04001485 RID: 5253
+		// Token: 0x04000CC2 RID: 3266
 		public static readonly ReadOnlyCollection<HurtBox> readOnlyBullseyesList = HurtBox.bullseyesList.AsReadOnly();
 
-		// Token: 0x0200031B RID: 795
+		// Token: 0x0200023A RID: 570
 		public enum DamageModifier
 		{
-			// Token: 0x04001487 RID: 5255
+			// Token: 0x04000CC4 RID: 3268
 			Normal,
-			// Token: 0x04001488 RID: 5256
+			// Token: 0x04000CC5 RID: 3269
 			SniperTarget,
-			// Token: 0x04001489 RID: 5257
+			// Token: 0x04000CC6 RID: 3270
 			Weak,
-			// Token: 0x0400148A RID: 5258
+			// Token: 0x04000CC7 RID: 3271
 			Barrier
+		}
+
+		// Token: 0x0200023B RID: 571
+		public struct EntityEqualityComparer : IEqualityComparer<HurtBox>
+		{
+			// Token: 0x06000CAD RID: 3245 RVA: 0x000392EB File Offset: 0x000374EB
+			public bool Equals(HurtBox a, HurtBox b)
+			{
+				return HurtBox.HurtBoxesShareEntity(a, b);
+			}
+
+			// Token: 0x06000CAE RID: 3246 RVA: 0x000392F4 File Offset: 0x000374F4
+			public int GetHashCode(HurtBox hurtBox)
+			{
+				return HurtBox.FindEntityObject(hurtBox).GetHashCode();
+			}
 		}
 	}
 }

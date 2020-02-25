@@ -4,10 +4,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x0200033B RID: 827
+	// Token: 0x0200025F RID: 607
 	public class Interactor : NetworkBehaviour
 	{
-		// Token: 0x060010EC RID: 4332 RVA: 0x000546C4 File Offset: 0x000528C4
+		// Token: 0x06000D41 RID: 3393 RVA: 0x0003B944 File Offset: 0x00039B44
 		public GameObject FindBestInteractableObject(Ray raycastRay, float maxRaycastDistance, Vector3 overlapPosition, float overlapRadius)
 		{
 			LayerMask mask = LayerIndex.defaultLayer.mask | LayerIndex.world.mask | LayerIndex.pickups.mask;
@@ -18,7 +18,7 @@ namespace RoR2
 				if (entity)
 				{
 					IInteractable component = entity.GetComponent<IInteractable>();
-					if (component != null && component.GetInteractability(this) != Interactability.Disabled)
+					if (component != null && ((MonoBehaviour)component).isActiveAndEnabled && component.GetInteractability(this) != Interactability.Disabled)
 					{
 						return entity;
 					}
@@ -35,7 +35,7 @@ namespace RoR2
 				if (entity2)
 				{
 					IInteractable component2 = entity2.GetComponent<IInteractable>();
-					if (component2 != null && component2.GetInteractability(this) != Interactability.Disabled && !component2.ShouldIgnoreSpherecastForInteractibility(this))
+					if (component2 != null && ((MonoBehaviour)component2).isActiveAndEnabled && component2.GetInteractability(this) != Interactability.Disabled && !component2.ShouldIgnoreSpherecastForInteractibility(this))
 					{
 						float num3 = Vector3.Dot((collider.transform.position - overlapPosition).normalized, raycastRay.direction);
 						if (num3 > num2)
@@ -49,14 +49,14 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x060010ED RID: 4333 RVA: 0x00054808 File Offset: 0x00052A08
+		// Token: 0x06000D42 RID: 3394 RVA: 0x0003BAA4 File Offset: 0x00039CA4
 		[Command]
 		public void CmdInteract(GameObject interactableObject)
 		{
 			this.PerformInteraction(interactableObject);
 		}
 
-		// Token: 0x060010EE RID: 4334 RVA: 0x00054814 File Offset: 0x00052A14
+		// Token: 0x06000D43 RID: 3395 RVA: 0x0003BAB0 File Offset: 0x00039CB0
 		[Server]
 		private void PerformInteraction(GameObject interactableObject)
 		{
@@ -88,7 +88,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060010EF RID: 4335 RVA: 0x00054896 File Offset: 0x00052A96
+		// Token: 0x06000D44 RID: 3396 RVA: 0x0003BB32 File Offset: 0x00039D32
 		[ClientRpc]
 		private void RpcInteractionResult(bool anyInteractionSucceeded)
 		{
@@ -98,7 +98,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060010F0 RID: 4336 RVA: 0x000548BD File Offset: 0x00052ABD
+		// Token: 0x06000D45 RID: 3397 RVA: 0x0003BB59 File Offset: 0x00039D59
 		public void AttemptInteraction(GameObject interactableObject)
 		{
 			if (NetworkServer.active)
@@ -109,12 +109,12 @@ namespace RoR2
 			this.CallCmdInteract(interactableObject);
 		}
 
-		// Token: 0x060010F2 RID: 4338 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000D47 RID: 3399 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x060010F3 RID: 4339 RVA: 0x000548E8 File Offset: 0x00052AE8
+		// Token: 0x06000D48 RID: 3400 RVA: 0x0003BB84 File Offset: 0x00039D84
 		protected static void InvokeCmdCmdInteract(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkServer.active)
@@ -125,7 +125,7 @@ namespace RoR2
 			((Interactor)obj).CmdInteract(reader.ReadGameObject());
 		}
 
-		// Token: 0x060010F4 RID: 4340 RVA: 0x00054914 File Offset: 0x00052B14
+		// Token: 0x06000D49 RID: 3401 RVA: 0x0003BBB0 File Offset: 0x00039DB0
 		public void CallCmdInteract(GameObject interactableObject)
 		{
 			if (!NetworkClient.active)
@@ -147,7 +147,7 @@ namespace RoR2
 			base.SendCommandInternal(networkWriter, 0, "CmdInteract");
 		}
 
-		// Token: 0x060010F5 RID: 4341 RVA: 0x0005499E File Offset: 0x00052B9E
+		// Token: 0x06000D4A RID: 3402 RVA: 0x0003BC3A File Offset: 0x00039E3A
 		protected static void InvokeRpcRpcInteractionResult(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkClient.active)
@@ -158,7 +158,7 @@ namespace RoR2
 			((Interactor)obj).RpcInteractionResult(reader.ReadBoolean());
 		}
 
-		// Token: 0x060010F6 RID: 4342 RVA: 0x000549C8 File Offset: 0x00052BC8
+		// Token: 0x06000D4B RID: 3403 RVA: 0x0003BC64 File Offset: 0x00039E64
 		public void CallRpcInteractionResult(bool anyInteractionSucceeded)
 		{
 			if (!NetworkServer.active)
@@ -175,7 +175,7 @@ namespace RoR2
 			this.SendRPCInternal(networkWriter, 0, "RpcInteractionResult");
 		}
 
-		// Token: 0x060010F7 RID: 4343 RVA: 0x00054A3C File Offset: 0x00052C3C
+		// Token: 0x06000D4C RID: 3404 RVA: 0x0003BCD8 File Offset: 0x00039ED8
 		static Interactor()
 		{
 			NetworkBehaviour.RegisterCommandDelegate(typeof(Interactor), Interactor.kCmdCmdInteract, new NetworkBehaviour.CmdDelegate(Interactor.InvokeCmdCmdInteract));
@@ -184,25 +184,25 @@ namespace RoR2
 			NetworkCRC.RegisterBehaviour("Interactor", 0);
 		}
 
-		// Token: 0x060010F8 RID: 4344 RVA: 0x00054AAC File Offset: 0x00052CAC
+		// Token: 0x06000D4D RID: 3405 RVA: 0x0003BD48 File Offset: 0x00039F48
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			bool result;
 			return result;
 		}
 
-		// Token: 0x060010F9 RID: 4345 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000D4E RID: 3406 RVA: 0x0000409B File Offset: 0x0000229B
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 		}
 
-		// Token: 0x0400152F RID: 5423
+		// Token: 0x04000D7E RID: 3454
 		public float maxInteractionDistance = 1f;
 
-		// Token: 0x04001530 RID: 5424
+		// Token: 0x04000D7F RID: 3455
 		private static int kCmdCmdInteract = 591229007;
 
-		// Token: 0x04001531 RID: 5425
+		// Token: 0x04000D80 RID: 3456
 		private static int kRpcRpcInteractionResult;
 	}
 }

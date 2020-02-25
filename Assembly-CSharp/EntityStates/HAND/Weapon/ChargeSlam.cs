@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace EntityStates.HAND.Weapon
 {
-	// Token: 0x02000163 RID: 355
+	// Token: 0x02000845 RID: 2117
 	public class ChargeSlam : BaseState
 	{
-		// Token: 0x060006E4 RID: 1764 RVA: 0x00020EB8 File Offset: 0x0001F0B8
+		// Token: 0x06002FE9 RID: 12265 RVA: 0x000CD5C8 File Offset: 0x000CB7C8
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -22,7 +22,7 @@ namespace EntityStates.HAND.Weapon
 			}
 		}
 
-		// Token: 0x060006E5 RID: 1765 RVA: 0x00020F2E File Offset: 0x0001F12E
+		// Token: 0x06002FEA RID: 12266 RVA: 0x000CD63E File Offset: 0x000CB83E
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -33,19 +33,19 @@ namespace EntityStates.HAND.Weapon
 			}
 		}
 
-		// Token: 0x060006E6 RID: 1766 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06002FEB RID: 12267 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000874 RID: 2164
+		// Token: 0x04002DBA RID: 11706
 		public static float baseDuration = 3.5f;
 
-		// Token: 0x04000875 RID: 2165
+		// Token: 0x04002DBB RID: 11707
 		private float duration;
 
-		// Token: 0x04000876 RID: 2166
+		// Token: 0x04002DBC RID: 11708
 		private Animator modelAnimator;
 	}
 }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.TitanMonster
 {
-	// Token: 0x02000171 RID: 369
-	internal class FireGoldFist : FireFist
+	// Token: 0x02000857 RID: 2135
+	public class FireGoldFist : FireFist
 	{
-		// Token: 0x0600071E RID: 1822 RVA: 0x00022558 File Offset: 0x00020758
+		// Token: 0x06003039 RID: 12345 RVA: 0x000CF348 File Offset: 0x000CD548
 		protected override void PlacePredictedAttack()
 		{
 			int num = 0;
@@ -27,13 +27,13 @@ namespace EntityStates.TitanMonster
 			}
 		}
 
-		// Token: 0x040008D8 RID: 2264
+		// Token: 0x04002E44 RID: 11844
 		public static int fistCount;
 
-		// Token: 0x040008D9 RID: 2265
+		// Token: 0x04002E45 RID: 11845
 		public static float distanceBetweenFists;
 
-		// Token: 0x040008DA RID: 2266
+		// Token: 0x04002E46 RID: 11846
 		public static float delayBetweenFists;
 	}
 }

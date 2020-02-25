@@ -2,10 +2,10 @@
 
 namespace RoR2
 {
-	// Token: 0x020004C3 RID: 1219
+	// Token: 0x0200045B RID: 1115
 	public class TimerQueue
 	{
-		// Token: 0x06001B67 RID: 7015 RVA: 0x00080158 File Offset: 0x0007E358
+		// Token: 0x06001AFE RID: 6910 RVA: 0x00072854 File Offset: 0x00070A54
 		public TimerQueue.TimerHandle CreateTimer(float time, Action action)
 		{
 			time += this.internalTime;
@@ -29,7 +29,7 @@ namespace RoR2
 			return timerHandle;
 		}
 
-		// Token: 0x06001B68 RID: 7016 RVA: 0x000801EC File Offset: 0x0007E3EC
+		// Token: 0x06001AFF RID: 6911 RVA: 0x000728E8 File Offset: 0x00070AE8
 		public void RemoveTimer(TimerQueue.TimerHandle timerHandle)
 		{
 			for (int i = 0; i < this.count; i++)
@@ -42,14 +42,14 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001B69 RID: 7017 RVA: 0x0008022B File Offset: 0x0007E42B
+		// Token: 0x06001B00 RID: 6912 RVA: 0x00072927 File Offset: 0x00070B27
 		private void RemoveTimerAt(int i)
 		{
 			this.indexAllocator.FreeIndex(this.timers[i].handle.uid);
 			HGArrayUtilities.ArrayRemoveAt<TimerQueue.Timer>(ref this.timers, ref this.count, i, 1);
 		}
 
-		// Token: 0x06001B6A RID: 7018 RVA: 0x00080264 File Offset: 0x0007E464
+		// Token: 0x06001B01 RID: 6913 RVA: 0x00072960 File Offset: 0x00070B60
 		public void Update(float deltaTime)
 		{
 			this.internalTime += deltaTime;
@@ -71,68 +71,68 @@ namespace RoR2
 			this.actionsToCallCount = 0;
 		}
 
-		// Token: 0x04001E03 RID: 7683
+		// Token: 0x04001881 RID: 6273
 		private float internalTime;
 
-		// Token: 0x04001E04 RID: 7684
+		// Token: 0x04001882 RID: 6274
 		private int count;
 
-		// Token: 0x04001E05 RID: 7685
+		// Token: 0x04001883 RID: 6275
 		private TimerQueue.Timer[] timers = Array.Empty<TimerQueue.Timer>();
 
-		// Token: 0x04001E06 RID: 7686
+		// Token: 0x04001884 RID: 6276
 		private readonly IndexAllocator indexAllocator = new IndexAllocator();
 
-		// Token: 0x04001E07 RID: 7687
+		// Token: 0x04001885 RID: 6277
 		private Action[] actionsToCall = Array.Empty<Action>();
 
-		// Token: 0x04001E08 RID: 7688
+		// Token: 0x04001886 RID: 6278
 		private int actionsToCallCount;
 
-		// Token: 0x020004C4 RID: 1220
+		// Token: 0x0200045C RID: 1116
 		public struct TimerHandle : IEquatable<TimerQueue.TimerHandle>
 		{
-			// Token: 0x06001B6C RID: 7020 RVA: 0x00080342 File Offset: 0x0007E542
+			// Token: 0x06001B03 RID: 6915 RVA: 0x00072A3E File Offset: 0x00070C3E
 			public TimerHandle(int uid)
 			{
 				this.uid = uid;
 			}
 
-			// Token: 0x06001B6D RID: 7021 RVA: 0x0008034B File Offset: 0x0007E54B
+			// Token: 0x06001B04 RID: 6916 RVA: 0x00072A47 File Offset: 0x00070C47
 			public bool Equals(TimerQueue.TimerHandle other)
 			{
 				return this.uid == other.uid;
 			}
 
-			// Token: 0x06001B6E RID: 7022 RVA: 0x0008035B File Offset: 0x0007E55B
+			// Token: 0x06001B05 RID: 6917 RVA: 0x00072A57 File Offset: 0x00070C57
 			public override bool Equals(object obj)
 			{
 				return obj != null && obj is TimerQueue.TimerHandle && this.Equals((TimerQueue.TimerHandle)obj);
 			}
 
-			// Token: 0x06001B6F RID: 7023 RVA: 0x00080378 File Offset: 0x0007E578
+			// Token: 0x06001B06 RID: 6918 RVA: 0x00072A74 File Offset: 0x00070C74
 			public override int GetHashCode()
 			{
 				return this.uid;
 			}
 
-			// Token: 0x04001E09 RID: 7689
+			// Token: 0x04001887 RID: 6279
 			public static readonly TimerQueue.TimerHandle invalid = new TimerQueue.TimerHandle(-1);
 
-			// Token: 0x04001E0A RID: 7690
+			// Token: 0x04001888 RID: 6280
 			public readonly int uid;
 		}
 
-		// Token: 0x020004C5 RID: 1221
+		// Token: 0x0200045D RID: 1117
 		private struct Timer
 		{
-			// Token: 0x04001E0B RID: 7691
+			// Token: 0x04001889 RID: 6281
 			public float time;
 
-			// Token: 0x04001E0C RID: 7692
+			// Token: 0x0400188A RID: 6282
 			public Action action;
 
-			// Token: 0x04001E0D RID: 7693
+			// Token: 0x0400188B RID: 6283
 			public TimerQueue.TimerHandle handle;
 		}
 	}

@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace RoR2.Projectile
 {
-	// Token: 0x0200053D RID: 1341
+	// Token: 0x020004F8 RID: 1272
 	public class MineProximityDetonator : MonoBehaviour
 	{
-		// Token: 0x06001DF8 RID: 7672 RVA: 0x0008D2B0 File Offset: 0x0008B4B0
+		// Token: 0x06001E3D RID: 7741 RVA: 0x0008274C File Offset: 0x0008094C
 		public void OnTriggerEnter(Collider collider)
 		{
 			if (NetworkServer.active)
@@ -18,27 +18,31 @@ namespace RoR2.Projectile
 					HurtBox component = collider.GetComponent<HurtBox>();
 					if (component)
 					{
-						TeamComponent component2 = component.healthComponent.GetComponent<TeamComponent>();
-						if (component2 && component2.teamIndex == this.myTeamFilter.teamIndex)
+						HealthComponent healthComponent = component.healthComponent;
+						if (healthComponent)
 						{
-							return;
+							TeamComponent component2 = healthComponent.GetComponent<TeamComponent>();
+							if (component2 && component2.teamIndex == this.myTeamFilter.teamIndex)
+							{
+								return;
+							}
+							UnityEvent unityEvent = this.triggerEvents;
+							if (unityEvent == null)
+							{
+								return;
+							}
+							unityEvent.Invoke();
 						}
-						UnityEvent unityEvent = this.triggerEvents;
-						if (unityEvent == null)
-						{
-							return;
-						}
-						unityEvent.Invoke();
 					}
 				}
 				return;
 			}
 		}
 
-		// Token: 0x04002056 RID: 8278
+		// Token: 0x04001B73 RID: 7027
 		public TeamFilter myTeamFilter;
 
-		// Token: 0x04002057 RID: 8279
+		// Token: 0x04001B74 RID: 7028
 		public UnityEvent triggerEvents;
 	}
 }

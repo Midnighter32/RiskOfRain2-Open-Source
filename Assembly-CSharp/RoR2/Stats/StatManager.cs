@@ -5,15 +5,16 @@ using UnityEngine;
 
 namespace RoR2.Stats
 {
-	// Token: 0x02000500 RID: 1280
+	// Token: 0x020004A4 RID: 1188
 	internal class StatManager
 	{
-		// Token: 0x06001CF2 RID: 7410 RVA: 0x00086BC8 File Offset: 0x00084DC8
+		// Token: 0x06001CD0 RID: 7376 RVA: 0x0007B250 File Offset: 0x00079450
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void Init()
 		{
 			GlobalEventManager.onServerDamageDealt += StatManager.OnDamageDealt;
 			GlobalEventManager.onCharacterDeathGlobal += StatManager.OnCharacterDeath;
+			GlobalEventManager.onServerCharacterExecuted += StatManager.OnCharacterExecute;
 			HealthComponent.onCharacterHealServer += StatManager.OnCharacterHeal;
 			Run.onPlayerFirstCreatedServer += StatManager.OnPlayerFirstCreatedServer;
 			Run.OnServerGameOver += StatManager.OnServerGameOver;
@@ -24,7 +25,7 @@ namespace RoR2.Stats
 			EquipmentSlot.onServerEquipmentActivated += StatManager.OnEquipmentActivated;
 		}
 
-		// Token: 0x06001CF3 RID: 7411 RVA: 0x00086C80 File Offset: 0x00084E80
+		// Token: 0x06001CD1 RID: 7377 RVA: 0x0007B318 File Offset: 0x00079518
 		private static void OnServerGameOver(Run run, GameResultType result)
 		{
 			if (result != GameResultType.Lost)
@@ -42,13 +43,13 @@ namespace RoR2.Stats
 			}
 		}
 
-		// Token: 0x06001CF4 RID: 7412 RVA: 0x00086D14 File Offset: 0x00084F14
+		// Token: 0x06001CD2 RID: 7378 RVA: 0x0007B3AC File Offset: 0x000795AC
 		private static void OnPlayerFirstCreatedServer(Run run, PlayerCharacterMasterController playerCharacterMasterController)
 		{
 			playerCharacterMasterController.master.onBodyStart += StatManager.OnBodyFirstStart;
 		}
 
-		// Token: 0x06001CF5 RID: 7413 RVA: 0x00086D30 File Offset: 0x00084F30
+		// Token: 0x06001CD3 RID: 7379 RVA: 0x0007B3C8 File Offset: 0x000795C8
 		private static void OnBodyFirstStart(CharacterBody body)
 		{
 			CharacterMaster master = body.master;
@@ -69,7 +70,7 @@ namespace RoR2.Stats
 			}
 		}
 
-		// Token: 0x06001CF6 RID: 7414 RVA: 0x00086DA6 File Offset: 0x00084FA6
+		// Token: 0x06001CD4 RID: 7380 RVA: 0x0007B43E File Offset: 0x0007963E
 		private static void ProcessEvents()
 		{
 			StatManager.ProcessDamageEvents();
@@ -80,7 +81,7 @@ namespace RoR2.Stats
 			StatManager.ProcessCharacterUpdateEvents();
 		}
 
-		// Token: 0x06001CF7 RID: 7415 RVA: 0x00086DC8 File Offset: 0x00084FC8
+		// Token: 0x06001CD5 RID: 7381 RVA: 0x0007B460 File Offset: 0x00079660
 		public static void OnCharacterHeal(HealthComponent healthComponent, float amount)
 		{
 			StatManager.healingEvents.Enqueue(new StatManager.HealingEvent
@@ -90,37 +91,57 @@ namespace RoR2.Stats
 			});
 		}
 
-		// Token: 0x06001CF8 RID: 7416 RVA: 0x00086E00 File Offset: 0x00085000
+		// Token: 0x06001CD6 RID: 7382 RVA: 0x0007B498 File Offset: 0x00079698
 		public static void OnDamageDealt(DamageReport damageReport)
 		{
-			DamageInfo damageInfo = damageReport.damageInfo;
 			StatManager.damageEvents.Enqueue(new StatManager.DamageEvent
 			{
-				attacker = damageInfo.attacker,
-				attackerName = (damageInfo.attacker ? damageInfo.attacker.name : null),
-				victim = damageReport.victim.gameObject,
-				victimName = damageReport.victim.gameObject.name,
-				victimIsElite = (damageReport.victimBody && damageReport.victimBody.isElite),
-				damageDealt = damageReport.damageInfo.damage
+				attackerMaster = damageReport.attackerMaster,
+				attackerBodyIndex = damageReport.attackerBodyIndex,
+				attackerOwnerMaster = damageReport.attackerOwnerMaster,
+				attackerOwnerBodyIndex = damageReport.attackerOwnerBodyIndex,
+				victimMaster = damageReport.victimMaster,
+				victimBodyIndex = damageReport.victimBodyIndex,
+				victimIsElite = damageReport.victimIsElite,
+				damageDealt = damageReport.damageDealt,
+				dotType = damageReport.dotType
 			});
 		}
 
-		// Token: 0x06001CF9 RID: 7417 RVA: 0x00086EB4 File Offset: 0x000850B4
+		// Token: 0x06001CD7 RID: 7383 RVA: 0x0007B530 File Offset: 0x00079730
+		public static void OnCharacterExecute(DamageReport damageReport, float executionHealthLost)
+		{
+			StatManager.damageEvents.Enqueue(new StatManager.DamageEvent
+			{
+				attackerMaster = damageReport.attackerMaster,
+				attackerBodyIndex = damageReport.attackerBodyIndex,
+				attackerOwnerMaster = damageReport.attackerOwnerMaster,
+				attackerOwnerBodyIndex = damageReport.attackerOwnerBodyIndex,
+				victimMaster = damageReport.victimMaster,
+				victimBodyIndex = damageReport.victimBodyIndex,
+				victimIsElite = damageReport.victimIsElite,
+				damageDealt = executionHealthLost,
+				dotType = damageReport.dotType
+			});
+		}
+
+		// Token: 0x06001CD8 RID: 7384 RVA: 0x0007B5C0 File Offset: 0x000797C0
 		public static void OnCharacterDeath(DamageReport damageReport)
 		{
-			DamageInfo damageInfo = damageReport.damageInfo;
-			StatManager.deathEvents.Enqueue(new StatManager.DamageEvent
+			DotController dotController = DotController.FindDotController(damageReport.victim.gameObject);
+			bool victimWasBurning = false;
+			if (dotController)
 			{
-				attacker = damageInfo.attacker,
-				attackerName = (damageInfo.attacker ? damageInfo.attacker.name : null),
-				victim = damageReport.victim.gameObject,
-				victimName = damageReport.victim.gameObject.name,
-				victimIsElite = (damageReport.victimBody && damageReport.victimBody.isElite),
-				damageDealt = damageReport.damageInfo.damage
+				victimWasBurning = (dotController.HasDotActive(DotController.DotIndex.Burn) | dotController.HasDotActive(DotController.DotIndex.PercentBurn) | dotController.HasDotActive(DotController.DotIndex.Helfire));
+			}
+			StatManager.deathEvents.Enqueue(new StatManager.DeathEvent
+			{
+				damageReport = damageReport,
+				victimWasBurning = victimWasBurning
 			});
 		}
 
-		// Token: 0x06001CFA RID: 7418 RVA: 0x00086F68 File Offset: 0x00085168
+		// Token: 0x06001CD9 RID: 7385 RVA: 0x0007B624 File Offset: 0x00079824
 		private static void ProcessHealingEvents()
 		{
 			while (StatManager.healingEvents.Count > 0)
@@ -135,77 +156,123 @@ namespace RoR2.Stats
 			}
 		}
 
-		// Token: 0x06001CFB RID: 7419 RVA: 0x00086FB0 File Offset: 0x000851B0
+		// Token: 0x06001CDA RID: 7386 RVA: 0x0007B66C File Offset: 0x0007986C
 		private static void ProcessDamageEvents()
 		{
 			while (StatManager.damageEvents.Count > 0)
 			{
 				StatManager.DamageEvent damageEvent = StatManager.damageEvents.Dequeue();
 				ulong statValue = (ulong)damageEvent.damageDealt;
-				StatSheet statSheet = PlayerStatsComponent.FindBodyStatSheet(damageEvent.victim);
-				StatSheet statSheet2 = PlayerStatsComponent.FindBodyStatSheet(damageEvent.attacker);
+				StatSheet statSheet = PlayerStatsComponent.FindMasterStatSheet(damageEvent.victimMaster);
+				StatSheet statSheet2 = PlayerStatsComponent.FindMasterStatSheet(damageEvent.attackerMaster);
+				StatSheet statSheet3 = PlayerStatsComponent.FindMasterStatSheet(damageEvent.attackerOwnerMaster);
 				if (statSheet != null)
 				{
 					statSheet.PushStatValue(StatDef.totalDamageTaken, statValue);
-					if (damageEvent.attackerName != null)
+					if (damageEvent.attackerBodyIndex != -1)
 					{
-						statSheet.PushStatValue(PerBodyStatDef.damageTakenFrom, damageEvent.attackerName, statValue);
+						statSheet.PushStatValue(PerBodyStatDef.damageTakenFrom, damageEvent.attackerBodyIndex, statValue);
 					}
-					if (damageEvent.victimName != null)
+					if (damageEvent.victimBodyIndex != -1)
 					{
-						statSheet.PushStatValue(PerBodyStatDef.damageTakenAs, damageEvent.victimName, statValue);
+						statSheet.PushStatValue(PerBodyStatDef.damageTakenAs, damageEvent.victimBodyIndex, statValue);
 					}
 				}
 				if (statSheet2 != null)
 				{
 					statSheet2.PushStatValue(StatDef.totalDamageDealt, statValue);
 					statSheet2.PushStatValue(StatDef.highestDamageDealt, statValue);
-					if (damageEvent.attackerName != null)
+					if (damageEvent.attackerBodyIndex != -1)
 					{
-						statSheet2.PushStatValue(PerBodyStatDef.damageDealtAs, damageEvent.attackerName, statValue);
+						statSheet2.PushStatValue(PerBodyStatDef.damageDealtAs, damageEvent.attackerBodyIndex, statValue);
 					}
-					if (damageEvent.victimName != null)
+					if (damageEvent.victimBodyIndex != -1)
 					{
-						statSheet2.PushStatValue(PerBodyStatDef.damageDealtTo, damageEvent.victimName, statValue);
+						statSheet2.PushStatValue(PerBodyStatDef.damageDealtTo, damageEvent.victimBodyIndex, statValue);
+					}
+				}
+				if (statSheet3 != null)
+				{
+					statSheet3.PushStatValue(StatDef.totalMinionDamageDealt, statValue);
+					if (damageEvent.attackerOwnerBodyIndex != -1)
+					{
+						statSheet3.PushStatValue(PerBodyStatDef.minionDamageDealtAs, damageEvent.attackerOwnerBodyIndex, statValue);
 					}
 				}
 			}
 		}
 
-		// Token: 0x06001CFC RID: 7420 RVA: 0x00087090 File Offset: 0x00085290
+		// Token: 0x06001CDB RID: 7387 RVA: 0x0007B78C File Offset: 0x0007998C
 		private static void ProcessDeathEvents()
 		{
 			while (StatManager.deathEvents.Count > 0)
 			{
-				StatManager.DamageEvent damageEvent = StatManager.deathEvents.Dequeue();
-				StatSheet statSheet = PlayerStatsComponent.FindBodyStatSheet(damageEvent.victim);
-				StatSheet statSheet2 = PlayerStatsComponent.FindBodyStatSheet(damageEvent.attacker);
+				StatManager.DeathEvent deathEvent = StatManager.deathEvents.Dequeue();
+				DamageReport damageReport = deathEvent.damageReport;
+				StatSheet statSheet = PlayerStatsComponent.FindMasterStatSheet(damageReport.victimMaster);
+				StatSheet statSheet2 = PlayerStatsComponent.FindMasterStatSheet(damageReport.attackerMaster);
+				StatSheet statSheet3 = PlayerStatsComponent.FindMasterStatSheet(damageReport.attackerOwnerMaster);
 				if (statSheet != null)
 				{
 					statSheet.PushStatValue(StatDef.totalDeaths, 1UL);
-					statSheet.PushStatValue(PerBodyStatDef.deathsAs, damageEvent.victimName, 1UL);
-					if (damageEvent.attackerName != null)
+					statSheet.PushStatValue(PerBodyStatDef.deathsAs, damageReport.victimBodyIndex, 1UL);
+					if (damageReport.attackerBodyIndex != -1)
 					{
-						statSheet.PushStatValue(PerBodyStatDef.deathsFrom, damageEvent.attackerName, 1UL);
+						statSheet.PushStatValue(PerBodyStatDef.deathsFrom, damageReport.attackerBodyIndex, 1UL);
+					}
+					if (damageReport.dotType != DotController.DotIndex.None)
+					{
+						DotController.DotIndex dotType = damageReport.dotType;
+						if (dotType - DotController.DotIndex.Burn <= 2)
+						{
+							statSheet.PushStatValue(StatDef.totalBurnDeaths, 1UL);
+						}
+					}
+					if (deathEvent.victimWasBurning)
+					{
+						statSheet.PushStatValue(StatDef.totalDeathsWhileBurning, 1UL);
 					}
 				}
 				if (statSheet2 != null)
 				{
 					statSheet2.PushStatValue(StatDef.totalKills, 1UL);
-					statSheet2.PushStatValue(PerBodyStatDef.killsAs, damageEvent.attackerName, 1UL);
-					if (damageEvent.victimName != null)
+					statSheet2.PushStatValue(PerBodyStatDef.killsAs, damageReport.attackerBodyIndex, 1UL);
+					if (damageReport.victimBodyIndex != -1)
 					{
-						statSheet2.PushStatValue(PerBodyStatDef.killsAgainst, damageEvent.victimName, 1UL);
-						if (damageEvent.victimIsElite)
+						statSheet2.PushStatValue(PerBodyStatDef.killsAgainst, damageReport.victimBodyIndex, 1UL);
+						if (damageReport.victimIsElite)
 						{
-							statSheet2.PushStatValue(PerBodyStatDef.killsAgainstElite, damageEvent.victimName, 1UL);
+							statSheet2.PushStatValue(StatDef.totalEliteKills, 1UL);
+							statSheet2.PushStatValue(PerBodyStatDef.killsAgainstElite, damageReport.victimBodyIndex, 1UL);
 						}
+					}
+				}
+				if (statSheet3 != null)
+				{
+					statSheet3.PushStatValue(StatDef.totalMinionKills, 1UL);
+					if (damageReport.attackerOwnerBodyIndex != -1)
+					{
+						statSheet3.PushStatValue(PerBodyStatDef.minionKillsAs, damageReport.attackerOwnerBodyIndex, 1UL);
+					}
+				}
+				if (damageReport.victimIsBoss)
+				{
+					int i = 0;
+					int count = PlayerStatsComponent.instancesList.Count;
+					while (i < count)
+					{
+						PlayerStatsComponent playerStatsComponent = PlayerStatsComponent.instancesList[i];
+						if (playerStatsComponent.characterMaster.alive)
+						{
+							playerStatsComponent.currentStats.PushStatValue(StatDef.totalTeleporterBossKillsWitnessed, 1UL);
+						}
+						i++;
 					}
 				}
 			}
 		}
 
-		// Token: 0x06001CFD RID: 7421 RVA: 0x0008716C File Offset: 0x0008536C
+		// Token: 0x06001CDC RID: 7388 RVA: 0x0007B948 File Offset: 0x00079B48
 		public static void OnGoldCollected(CharacterMaster characterMaster, ulong amount)
 		{
 			StatManager.goldCollectedEvents.Enqueue(new StatManager.GoldEvent
@@ -215,7 +282,7 @@ namespace RoR2.Stats
 			});
 		}
 
-		// Token: 0x06001CFE RID: 7422 RVA: 0x0008719C File Offset: 0x0008539C
+		// Token: 0x06001CDD RID: 7389 RVA: 0x0007B978 File Offset: 0x00079B78
 		private static void ProcessGoldEvents()
 		{
 			while (StatManager.goldCollectedEvents.Count > 0)
@@ -241,8 +308,8 @@ namespace RoR2.Stats
 			}
 		}
 
-		// Token: 0x06001CFF RID: 7423 RVA: 0x0008720C File Offset: 0x0008540C
-		public static void OnPurchase<T>(CharacterBody characterBody, CostType costType, T statDefsToIncrement) where T : IEnumerable<StatDef>
+		// Token: 0x06001CDE RID: 7390 RVA: 0x0007B9E8 File Offset: 0x00079BE8
+		public static void OnPurchase<T>(CharacterBody characterBody, CostTypeIndex costType, T statDefsToIncrement) where T : IEnumerable<StatDef>
 		{
 			StatSheet statSheet = PlayerStatsComponent.FindBodyStatSheet(characterBody);
 			if (statSheet == null)
@@ -253,27 +320,27 @@ namespace RoR2.Stats
 			StatDef statDef2 = null;
 			switch (costType)
 			{
-			case CostType.Money:
+			case CostTypeIndex.Money:
 				statDef = StatDef.totalGoldPurchases;
 				statDef2 = StatDef.highestGoldPurchases;
 				break;
-			case CostType.PercentHealth:
+			case CostTypeIndex.PercentHealth:
 				statDef = StatDef.totalBloodPurchases;
 				statDef2 = StatDef.highestBloodPurchases;
 				break;
-			case CostType.Lunar:
+			case CostTypeIndex.LunarCoin:
 				statDef = StatDef.totalLunarPurchases;
 				statDef2 = StatDef.highestLunarPurchases;
 				break;
-			case CostType.WhiteItem:
+			case CostTypeIndex.WhiteItem:
 				statDef = StatDef.totalTier1Purchases;
 				statDef2 = StatDef.highestTier1Purchases;
 				break;
-			case CostType.GreenItem:
+			case CostTypeIndex.GreenItem:
 				statDef = StatDef.totalTier2Purchases;
 				statDef2 = StatDef.highestTier2Purchases;
 				break;
-			case CostType.RedItem:
+			case CostTypeIndex.RedItem:
 				statDef = StatDef.totalTier3Purchases;
 				statDef2 = StatDef.highestTier3Purchases;
 				break;
@@ -300,7 +367,7 @@ namespace RoR2.Stats
 			}
 		}
 
-		// Token: 0x06001D00 RID: 7424 RVA: 0x00087330 File Offset: 0x00085530
+		// Token: 0x06001CDF RID: 7391 RVA: 0x0007BB0C File Offset: 0x00079D0C
 		public static void OnEquipmentActivated(EquipmentSlot activator, EquipmentIndex equipmentIndex)
 		{
 			StatSheet statSheet = PlayerStatsComponent.FindBodyStatSheet(activator.characterBody);
@@ -311,13 +378,13 @@ namespace RoR2.Stats
 			statSheet.PushStatValue(PerEquipmentStatDef.totalTimesFired.FindStatDef(equipmentIndex), 1UL);
 		}
 
-		// Token: 0x06001D01 RID: 7425 RVA: 0x00087354 File Offset: 0x00085554
+		// Token: 0x06001CE0 RID: 7392 RVA: 0x0007BB30 File Offset: 0x00079D30
 		public static void PushCharacterUpdateEvent(StatManager.CharacterUpdateEvent e)
 		{
 			StatManager.characterUpdateEvents.Enqueue(e);
 		}
 
-		// Token: 0x06001D02 RID: 7426 RVA: 0x00087364 File Offset: 0x00085564
+		// Token: 0x06001CE1 RID: 7393 RVA: 0x0007BB40 File Offset: 0x00079D40
 		private static void ProcessCharacterUpdateEvents()
 		{
 			while (StatManager.characterUpdateEvents.Count > 0)
@@ -328,19 +395,15 @@ namespace RoR2.Stats
 					StatSheet currentStats = characterUpdateEvent.statsComponent.currentStats;
 					if (currentStats != null)
 					{
-						GameObject bodyObject = characterUpdateEvent.statsComponent.characterMaster.GetBodyObject();
-						string text = null;
-						if (bodyObject)
-						{
-							text = bodyObject.name;
-						}
+						CharacterBody body = characterUpdateEvent.statsComponent.characterMaster.GetBody();
+						int num = (body != null) ? body.bodyIndex : -1;
 						currentStats.PushStatValue(StatDef.totalTimeAlive, (double)characterUpdateEvent.additionalTimeAlive);
 						currentStats.PushStatValue(StatDef.highestLevel, (ulong)((long)characterUpdateEvent.level));
 						currentStats.PushStatValue(StatDef.totalDistanceTraveled, (double)characterUpdateEvent.additionalDistanceTraveled);
-						if (text != null)
+						if (num != -1)
 						{
-							currentStats.PushStatValue(PerBodyStatDef.totalTimeAlive, text, (double)characterUpdateEvent.additionalTimeAlive);
-							currentStats.PushStatValue(PerBodyStatDef.longestRun, text, (double)characterUpdateEvent.runTime);
+							currentStats.PushStatValue(PerBodyStatDef.totalTimeAlive, num, (double)characterUpdateEvent.additionalTimeAlive);
+							currentStats.PushStatValue(PerBodyStatDef.longestRun, num, (double)characterUpdateEvent.runTime);
 						}
 						EquipmentIndex currentEquipmentIndex = characterUpdateEvent.statsComponent.characterMaster.inventory.currentEquipmentIndex;
 						if (currentEquipmentIndex != EquipmentIndex.None)
@@ -352,7 +415,7 @@ namespace RoR2.Stats
 			}
 		}
 
-		// Token: 0x06001D03 RID: 7427 RVA: 0x0008746C File Offset: 0x0008566C
+		// Token: 0x06001CE2 RID: 7394 RVA: 0x0007BC40 File Offset: 0x00079E40
 		private static void OnServerItemGiven(Inventory inventory, ItemIndex itemIndex, int quantity)
 		{
 			StatManager.itemCollectedEvents.Enqueue(new StatManager.ItemCollectedEvent
@@ -364,7 +427,7 @@ namespace RoR2.Stats
 			});
 		}
 
-		// Token: 0x06001D04 RID: 7428 RVA: 0x000874B4 File Offset: 0x000856B4
+		// Token: 0x06001CE3 RID: 7395 RVA: 0x0007BC88 File Offset: 0x00079E88
 		private static void ProcessItemCollectedEvents()
 		{
 			while (StatManager.itemCollectedEvents.Count > 0)
@@ -385,7 +448,7 @@ namespace RoR2.Stats
 			}
 		}
 
-		// Token: 0x06001D05 RID: 7429 RVA: 0x0008756C File Offset: 0x0008576C
+		// Token: 0x06001CE4 RID: 7396 RVA: 0x0007BD40 File Offset: 0x00079F40
 		private static void OnServerStageBegin(Stage stage)
 		{
 			foreach (PlayerStatsComponent playerStatsComponent in PlayerStatsComponent.instancesList)
@@ -393,7 +456,7 @@ namespace RoR2.Stats
 				if (playerStatsComponent.playerCharacterMasterController.isConnected)
 				{
 					StatSheet currentStats = playerStatsComponent.currentStats;
-					StatDef statDef = PerStageStatDef.totalTimesVisited.FindStatDef(stage.sceneDef ? stage.sceneDef.sceneName : string.Empty);
+					StatDef statDef = PerStageStatDef.totalTimesVisited.FindStatDef(stage.sceneDef ? stage.sceneDef.baseSceneName : string.Empty);
 					if (statDef != null)
 					{
 						currentStats.PushStatValue(statDef, 1UL);
@@ -402,7 +465,7 @@ namespace RoR2.Stats
 			}
 		}
 
-		// Token: 0x06001D06 RID: 7430 RVA: 0x00087604 File Offset: 0x00085804
+		// Token: 0x06001CE5 RID: 7397 RVA: 0x0007BDD8 File Offset: 0x00079FD8
 		private static void OnServerStageComplete(Stage stage)
 		{
 			foreach (PlayerStatsComponent playerStatsComponent in PlayerStatsComponent.instancesList)
@@ -410,9 +473,12 @@ namespace RoR2.Stats
 				if (playerStatsComponent.playerCharacterMasterController.isConnected)
 				{
 					StatSheet currentStats = playerStatsComponent.currentStats;
-					currentStats.PushStatValue(StatDef.totalStagesCompleted, 1UL);
-					currentStats.PushStatValue(StatDef.highestStagesCompleted, currentStats.GetStatValueULong(StatDef.totalStagesCompleted));
-					StatDef statDef = PerStageStatDef.totalTimesCleared.FindStatDef(stage.sceneDef ? stage.sceneDef.sceneName : string.Empty);
+					if (SceneInfo.instance.countsAsStage)
+					{
+						currentStats.PushStatValue(StatDef.totalStagesCompleted, 1UL);
+						currentStats.PushStatValue(StatDef.highestStagesCompleted, currentStats.GetStatValueULong(StatDef.totalStagesCompleted));
+					}
+					StatDef statDef = PerStageStatDef.totalTimesCleared.FindStatDef(stage.sceneDef ? stage.sceneDef.baseSceneName : string.Empty);
 					if (statDef != null)
 					{
 						currentStats.PushStatValue(statDef, 1UL);
@@ -421,113 +487,131 @@ namespace RoR2.Stats
 			}
 		}
 
-		// Token: 0x04001F2A RID: 7978
+		// Token: 0x040019F7 RID: 6647
 		private static readonly Queue<StatManager.DamageEvent> damageEvents = new Queue<StatManager.DamageEvent>();
 
-		// Token: 0x04001F2B RID: 7979
-		private static readonly Queue<StatManager.DamageEvent> deathEvents = new Queue<StatManager.DamageEvent>();
+		// Token: 0x040019F8 RID: 6648
+		private static readonly Queue<StatManager.DeathEvent> deathEvents = new Queue<StatManager.DeathEvent>();
 
-		// Token: 0x04001F2C RID: 7980
+		// Token: 0x040019F9 RID: 6649
 		private static readonly Queue<StatManager.HealingEvent> healingEvents = new Queue<StatManager.HealingEvent>();
 
-		// Token: 0x04001F2D RID: 7981
+		// Token: 0x040019FA RID: 6650
 		private static readonly Queue<StatManager.GoldEvent> goldCollectedEvents = new Queue<StatManager.GoldEvent>();
 
-		// Token: 0x04001F2E RID: 7982
+		// Token: 0x040019FB RID: 6651
 		private static readonly Queue<StatManager.PurchaseStatEvent> purchaseStatEvents = new Queue<StatManager.PurchaseStatEvent>();
 
-		// Token: 0x04001F2F RID: 7983
+		// Token: 0x040019FC RID: 6652
 		private static readonly Queue<StatManager.CharacterUpdateEvent> characterUpdateEvents = new Queue<StatManager.CharacterUpdateEvent>();
 
-		// Token: 0x04001F30 RID: 7984
+		// Token: 0x040019FD RID: 6653
 		private static readonly Queue<StatManager.ItemCollectedEvent> itemCollectedEvents = new Queue<StatManager.ItemCollectedEvent>();
 
-		// Token: 0x02000501 RID: 1281
+		// Token: 0x020004A5 RID: 1189
 		private struct DamageEvent
 		{
-			// Token: 0x04001F31 RID: 7985
+			// Token: 0x040019FE RID: 6654
 			[CanBeNull]
-			public GameObject attacker;
+			public CharacterMaster attackerMaster;
 
-			// Token: 0x04001F32 RID: 7986
+			// Token: 0x040019FF RID: 6655
+			public int attackerBodyIndex;
+
+			// Token: 0x04001A00 RID: 6656
 			[CanBeNull]
-			public string attackerName;
+			public CharacterMaster attackerOwnerMaster;
 
-			// Token: 0x04001F33 RID: 7987
+			// Token: 0x04001A01 RID: 6657
+			public int attackerOwnerBodyIndex;
+
+			// Token: 0x04001A02 RID: 6658
 			[CanBeNull]
-			public GameObject victim;
+			public CharacterMaster victimMaster;
 
-			// Token: 0x04001F34 RID: 7988
-			[NotNull]
-			public string victimName;
+			// Token: 0x04001A03 RID: 6659
+			public int victimBodyIndex;
 
-			// Token: 0x04001F35 RID: 7989
+			// Token: 0x04001A04 RID: 6660
 			public bool victimIsElite;
 
-			// Token: 0x04001F36 RID: 7990
+			// Token: 0x04001A05 RID: 6661
 			public float damageDealt;
+
+			// Token: 0x04001A06 RID: 6662
+			public DotController.DotIndex dotType;
 		}
 
-		// Token: 0x02000502 RID: 1282
+		// Token: 0x020004A6 RID: 1190
+		private struct DeathEvent
+		{
+			// Token: 0x04001A07 RID: 6663
+			public DamageReport damageReport;
+
+			// Token: 0x04001A08 RID: 6664
+			public bool victimWasBurning;
+		}
+
+		// Token: 0x020004A7 RID: 1191
 		private struct HealingEvent
 		{
-			// Token: 0x04001F37 RID: 7991
+			// Token: 0x04001A09 RID: 6665
 			[CanBeNull]
 			public GameObject healee;
 
-			// Token: 0x04001F38 RID: 7992
+			// Token: 0x04001A0A RID: 6666
 			public float healAmount;
 		}
 
-		// Token: 0x02000503 RID: 1283
+		// Token: 0x020004A8 RID: 1192
 		private struct GoldEvent
 		{
-			// Token: 0x04001F39 RID: 7993
+			// Token: 0x04001A0B RID: 6667
 			[CanBeNull]
 			public CharacterMaster characterMaster;
 
-			// Token: 0x04001F3A RID: 7994
+			// Token: 0x04001A0C RID: 6668
 			public ulong amount;
 		}
 
-		// Token: 0x02000504 RID: 1284
+		// Token: 0x020004A9 RID: 1193
 		private struct PurchaseStatEvent
 		{
 		}
 
-		// Token: 0x02000505 RID: 1285
+		// Token: 0x020004AA RID: 1194
 		public struct CharacterUpdateEvent
 		{
-			// Token: 0x04001F3B RID: 7995
+			// Token: 0x04001A0D RID: 6669
 			public PlayerStatsComponent statsComponent;
 
-			// Token: 0x04001F3C RID: 7996
+			// Token: 0x04001A0E RID: 6670
 			public float additionalDistanceTraveled;
 
-			// Token: 0x04001F3D RID: 7997
+			// Token: 0x04001A0F RID: 6671
 			public float additionalTimeAlive;
 
-			// Token: 0x04001F3E RID: 7998
+			// Token: 0x04001A10 RID: 6672
 			public int level;
 
-			// Token: 0x04001F3F RID: 7999
+			// Token: 0x04001A11 RID: 6673
 			public float runTime;
 		}
 
-		// Token: 0x02000506 RID: 1286
+		// Token: 0x020004AB RID: 1195
 		private struct ItemCollectedEvent
 		{
-			// Token: 0x04001F40 RID: 8000
+			// Token: 0x04001A12 RID: 6674
 			[CanBeNull]
 			public Inventory inventory;
 
-			// Token: 0x04001F41 RID: 8001
+			// Token: 0x04001A13 RID: 6675
 			public ItemIndex itemIndex;
 
-			// Token: 0x04001F42 RID: 8002
+			// Token: 0x04001A14 RID: 6676
 			public int quantity;
 
-			// Token: 0x04001F43 RID: 8003
+			// Token: 0x04001A15 RID: 6677
 			public int newCount;
 		}
 	}

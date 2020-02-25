@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.ImpMonster
 {
-	// Token: 0x02000143 RID: 323
+	// Token: 0x0200081F RID: 2079
 	public class Backstab : BaseState
 	{
-		// Token: 0x06000632 RID: 1586 RVA: 0x0001CE70 File Offset: 0x0001B070
+		// Token: 0x06002F1F RID: 12063 RVA: 0x000C91FC File Offset: 0x000C73FC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -36,7 +36,7 @@ namespace EntityStates.ImpMonster
 			}
 		}
 
-		// Token: 0x06000633 RID: 1587 RVA: 0x0001CFBC File Offset: 0x0001B1BC
+		// Token: 0x06002F20 RID: 12064 RVA: 0x000C9348 File Offset: 0x000C7548
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -44,7 +44,7 @@ namespace EntityStates.ImpMonster
 			{
 				if (!this.hasBit)
 				{
-					EffectManager.instance.SimpleMuzzleFlash(Backstab.biteEffectPrefab, base.gameObject, "MuzzleMouth", true);
+					EffectManager.SimpleMuzzleFlash(Backstab.biteEffectPrefab, base.gameObject, "MuzzleMouth", true);
 					this.hasBit = true;
 				}
 				this.attack.forceVector = base.transform.forward * Backstab.forceMagnitude;
@@ -57,40 +57,40 @@ namespace EntityStates.ImpMonster
 			}
 		}
 
-		// Token: 0x06000634 RID: 1588 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06002F21 RID: 12065 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000754 RID: 1876
+		// Token: 0x04002C94 RID: 11412
 		public static float baseDuration = 3.5f;
 
-		// Token: 0x04000755 RID: 1877
+		// Token: 0x04002C95 RID: 11413
 		public static float damageCoefficient = 4f;
 
-		// Token: 0x04000756 RID: 1878
+		// Token: 0x04002C96 RID: 11414
 		public static float forceMagnitude = 16f;
 
-		// Token: 0x04000757 RID: 1879
+		// Token: 0x04002C97 RID: 11415
 		public static float radius = 3f;
 
-		// Token: 0x04000758 RID: 1880
+		// Token: 0x04002C98 RID: 11416
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000759 RID: 1881
+		// Token: 0x04002C99 RID: 11417
 		public static GameObject biteEffectPrefab;
 
-		// Token: 0x0400075A RID: 1882
+		// Token: 0x04002C9A RID: 11418
 		private OverlapAttack attack;
 
-		// Token: 0x0400075B RID: 1883
+		// Token: 0x04002C9B RID: 11419
 		private Animator modelAnimator;
 
-		// Token: 0x0400075C RID: 1884
+		// Token: 0x04002C9C RID: 11420
 		private float duration;
 
-		// Token: 0x0400075D RID: 1885
+		// Token: 0x04002C9D RID: 11421
 		private bool hasBit;
 	}
 }

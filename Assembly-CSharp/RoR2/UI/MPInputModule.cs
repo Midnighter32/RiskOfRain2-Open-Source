@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Rewired.Integration.UnityUI;
 using Rewired.UI;
 using UnityEngine;
@@ -9,12 +10,12 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x0200060D RID: 1549
+	// Token: 0x020005FC RID: 1532
 	[RequireComponent(typeof(MPInput))]
 	public class MPInputModule : RewiredStandaloneInputModule
 	{
-		// Token: 0x17000314 RID: 788
-		// (get) Token: 0x060022E6 RID: 8934 RVA: 0x000A48BB File Offset: 0x000A2ABB
+		// Token: 0x170003CA RID: 970
+		// (get) Token: 0x06002456 RID: 9302 RVA: 0x0009EA2B File Offset: 0x0009CC2B
 		private bool useCursor
 		{
 			get
@@ -23,7 +24,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060022E7 RID: 8935 RVA: 0x000A48CD File Offset: 0x000A2ACD
+		// Token: 0x06002457 RID: 9303 RVA: 0x0009EA3D File Offset: 0x0009CC3D
 		protected override void Awake()
 		{
 			this.m_InputOverride = base.GetComponent<MPInput>();
@@ -31,7 +32,7 @@ namespace RoR2.UI
 			base.Awake();
 		}
 
-		// Token: 0x060022E8 RID: 8936 RVA: 0x000A48F7 File Offset: 0x000A2AF7
+		// Token: 0x06002458 RID: 9304 RVA: 0x0009EA67 File Offset: 0x0009CC67
 		protected override void Start()
 		{
 			base.Start();
@@ -39,7 +40,7 @@ namespace RoR2.UI
 			base.AddMouseInputSource((MPInput)this.m_InputOverride);
 		}
 
-		// Token: 0x060022E9 RID: 8937 RVA: 0x000A4918 File Offset: 0x000A2B18
+		// Token: 0x06002459 RID: 9305 RVA: 0x0009EA88 File Offset: 0x0009CC88
 		protected void UpdateHover(List<RaycastResult> raycastResults)
 		{
 			this.isHovering = false;
@@ -61,7 +62,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060022EA RID: 8938 RVA: 0x000A49A8 File Offset: 0x000A2BA8
+		// Token: 0x0600245A RID: 9306 RVA: 0x0009EB18 File Offset: 0x0009CD18
 		protected override RewiredPointerInputModule.MouseState GetMousePointerEventData(int playerId, int mouseIndex)
 		{
 			IMouseInputSource mouseInputSource = base.GetMouseInputSource(playerId, mouseIndex);
@@ -121,14 +122,14 @@ namespace RoR2.UI
 			return this.m_MouseState;
 		}
 
-		// Token: 0x060022EB RID: 8939 RVA: 0x000A4B90 File Offset: 0x000A2D90
+		// Token: 0x0600245B RID: 9307 RVA: 0x0009ED00 File Offset: 0x0009CF00
 		protected override void ProcessMove(PlayerPointerEventData pointerEvent)
 		{
 			GameObject newEnterTarget = (!this.useCursor) ? null : pointerEvent.pointerCurrentRaycast.gameObject;
 			base.HandlePointerExitAndEnter(pointerEvent, newEnterTarget);
 		}
 
-		// Token: 0x060022EC RID: 8940 RVA: 0x000A4BC0 File Offset: 0x000A2DC0
+		// Token: 0x0600245C RID: 9308 RVA: 0x0009ED30 File Offset: 0x0009CF30
 		protected override void ProcessDrag(PlayerPointerEventData pointerEvent)
 		{
 			if (!pointerEvent.IsPointerMoving() || !this.useCursor || pointerEvent.pointerDrag == null)
@@ -153,20 +154,28 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x040025E8 RID: 9704
+		// Token: 0x0600245F RID: 9311 RVA: 0x0009EE5C File Offset: 0x0009D05C
+		[CompilerGenerated]
+		private bool <UpdateHover>g__IsHoverable|9_0(Selectable selectable)
+		{
+			MPButton mpbutton = selectable as MPButton;
+			return !mpbutton || mpbutton.InputModuleIsAllowed(this);
+		}
+
+		// Token: 0x0400222C RID: 8748
 		private RewiredPointerInputModule.MouseState m_MouseState;
 
-		// Token: 0x040025E9 RID: 9705
+		// Token: 0x0400222D RID: 8749
 		private static readonly FieldInfo m_MouseStateField = typeof(RewiredPointerInputModule).GetField("m_MouseState", BindingFlags.Instance | BindingFlags.NonPublic);
 
-		// Token: 0x040025EA RID: 9706
+		// Token: 0x0400222E RID: 8750
 		private static readonly MPInputModule.ShouldStartDragDelegate ShouldStartDrag = (MPInputModule.ShouldStartDragDelegate)typeof(RewiredPointerInputModule).GetMethod("ShouldStartDrag", BindingFlags.Static | BindingFlags.NonPublic).CreateDelegate(typeof(MPInputModule.ShouldStartDragDelegate));
 
-		// Token: 0x040025EB RID: 9707
+		// Token: 0x0400222F RID: 8751
 		public bool isHovering;
 
-		// Token: 0x0200060E RID: 1550
-		// (Invoke) Token: 0x060022F1 RID: 8945
+		// Token: 0x020005FD RID: 1533
+		// (Invoke) Token: 0x06002461 RID: 9313
 		private delegate bool ShouldStartDragDelegate(Vector2 pressPos, Vector2 currentPos, float threshold, bool useDragThreshold);
 	}
 }

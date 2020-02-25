@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000406 RID: 1030
+	// Token: 0x0200035F RID: 863
 	[RequireComponent(typeof(MPEventSystemLocator))]
 	public class InputBindingDisplayController : MonoBehaviour
 	{
-		// Token: 0x060016EC RID: 5868 RVA: 0x0006D350 File Offset: 0x0006B550
+		// Token: 0x060014F2 RID: 5362 RVA: 0x00059700 File Offset: 0x00057900
 		private void Awake()
 		{
 			this.eventSystemLocator = base.GetComponent<MPEventSystemLocator>();
@@ -18,7 +18,7 @@ namespace RoR2
 			this.label = base.GetComponent<TextMeshPro>();
 		}
 
-		// Token: 0x060016ED RID: 5869 RVA: 0x0006D378 File Offset: 0x0006B578
+		// Token: 0x060014F3 RID: 5363 RVA: 0x00059728 File Offset: 0x00057928
 		private void Refresh()
 		{
 			string glyphString;
@@ -41,31 +41,31 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060016EE RID: 5870 RVA: 0x0006D3FD File Offset: 0x0006B5FD
+		// Token: 0x060014F4 RID: 5364 RVA: 0x000597AD File Offset: 0x000579AD
 		private void Update()
 		{
 			this.Refresh();
 		}
 
-		// Token: 0x04001A20 RID: 6688
+		// Token: 0x04001390 RID: 5008
 		public string actionName;
 
-		// Token: 0x04001A21 RID: 6689
+		// Token: 0x04001391 RID: 5009
 		public AxisRange axisRange;
 
-		// Token: 0x04001A22 RID: 6690
+		// Token: 0x04001392 RID: 5010
 		public bool useExplicitInputSource;
 
-		// Token: 0x04001A23 RID: 6691
+		// Token: 0x04001393 RID: 5011
 		public MPEventSystem.InputSource explicitInputSource;
 
-		// Token: 0x04001A24 RID: 6692
+		// Token: 0x04001394 RID: 5012
 		private MPEventSystemLocator eventSystemLocator;
 
-		// Token: 0x04001A25 RID: 6693
+		// Token: 0x04001395 RID: 5013
 		private TextMeshProUGUI guiLabel;
 
-		// Token: 0x04001A26 RID: 6694
+		// Token: 0x04001396 RID: 5014
 		private TextMeshPro label;
 	}
 }

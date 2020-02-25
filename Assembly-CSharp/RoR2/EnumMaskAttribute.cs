@@ -3,16 +3,16 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000241 RID: 577
+	// Token: 0x0200012F RID: 303
 	public class EnumMaskAttribute : PropertyAttribute
 	{
-		// Token: 0x06000AE0 RID: 2784 RVA: 0x00035AB8 File Offset: 0x00033CB8
+		// Token: 0x06000575 RID: 1397 RVA: 0x000161AD File Offset: 0x000143AD
 		public EnumMaskAttribute(Type enumType)
 		{
 			this.enumType = enumType;
 		}
 
-		// Token: 0x04000EAA RID: 3754
+		// Token: 0x040005B5 RID: 1461
 		public Type enumType;
 	}
 }

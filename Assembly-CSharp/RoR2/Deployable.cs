@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020002CB RID: 715
+	// Token: 0x020001DA RID: 474
 	public class Deployable : MonoBehaviour
 	{
-		// Token: 0x06000E6D RID: 3693 RVA: 0x00047378 File Offset: 0x00045578
+		// Token: 0x06000A10 RID: 2576 RVA: 0x0002C154 File Offset: 0x0002A354
 		private void OnDestroy()
 		{
 			if (NetworkServer.active && this.ownerMaster)
@@ -17,11 +17,11 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001276 RID: 4726
+		// Token: 0x04000A64 RID: 2660
 		[NonSerialized]
 		public CharacterMaster ownerMaster;
 
-		// Token: 0x04001277 RID: 4727
+		// Token: 0x04000A65 RID: 2661
 		public UnityEvent onUndeploy;
 	}
 }

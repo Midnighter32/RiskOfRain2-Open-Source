@@ -2,17 +2,17 @@
 
 namespace RoR2
 {
-	// Token: 0x0200043A RID: 1082
+	// Token: 0x0200039D RID: 925
 	[Flags]
 	public enum HullMask
 	{
-		// Token: 0x04001B71 RID: 7025
+		// Token: 0x0400151E RID: 5406
 		None = 0,
-		// Token: 0x04001B72 RID: 7026
+		// Token: 0x0400151F RID: 5407
 		Human = 1,
-		// Token: 0x04001B73 RID: 7027
+		// Token: 0x04001520 RID: 5408
 		Golem = 2,
-		// Token: 0x04001B74 RID: 7028
+		// Token: 0x04001521 RID: 5409
 		BeetleQueen = 4
 	}
 }

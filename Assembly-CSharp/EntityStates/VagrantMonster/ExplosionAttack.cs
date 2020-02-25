@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.VagrantMonster
 {
-	// Token: 0x0200012C RID: 300
+	// Token: 0x02000802 RID: 2050
 	public class ExplosionAttack : BaseState
 	{
-		// Token: 0x060005C6 RID: 1478 RVA: 0x0001A60E File Offset: 0x0001880E
+		// Token: 0x06002E9D RID: 11933 RVA: 0x000C634D File Offset: 0x000C454D
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -16,7 +16,7 @@ namespace EntityStates.VagrantMonster
 			this.explosionIndex = 0;
 		}
 
-		// Token: 0x060005C7 RID: 1479 RVA: 0x0001A630 File Offset: 0x00018830
+		// Token: 0x06002E9E RID: 11934 RVA: 0x000C6370 File Offset: 0x000C4570
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -40,18 +40,18 @@ namespace EntityStates.VagrantMonster
 			}
 		}
 
-		// Token: 0x060005C8 RID: 1480 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002E9F RID: 11935 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x060005C9 RID: 1481 RVA: 0x0001A6AC File Offset: 0x000188AC
+		// Token: 0x06002EA0 RID: 11936 RVA: 0x000C63EC File Offset: 0x000C45EC
 		private void Explode()
 		{
 			float t = (float)this.explosionIndex / (float)(ExplosionAttack.explosionCount - 1);
 			float num = Mathf.Lerp(ExplosionAttack.minRadius, ExplosionAttack.maxRadius, t);
-			EffectManager.instance.SpawnEffect(ExplosionAttack.novaEffectPrefab, new EffectData
+			EffectManager.SpawnEffect(ExplosionAttack.novaEffectPrefab, new EffectData
 			{
 				origin = base.transform.position,
 				scale = num
@@ -72,37 +72,37 @@ namespace EntityStates.VagrantMonster
 			}
 		}
 
-		// Token: 0x04000697 RID: 1687
+		// Token: 0x04002BBB RID: 11195
 		public static float minRadius;
 
-		// Token: 0x04000698 RID: 1688
+		// Token: 0x04002BBC RID: 11196
 		public static float maxRadius;
 
-		// Token: 0x04000699 RID: 1689
+		// Token: 0x04002BBD RID: 11197
 		public static int explosionCount;
 
-		// Token: 0x0400069A RID: 1690
+		// Token: 0x04002BBE RID: 11198
 		public static float baseDuration;
 
-		// Token: 0x0400069B RID: 1691
+		// Token: 0x04002BBF RID: 11199
 		public static float damageCoefficient;
 
-		// Token: 0x0400069C RID: 1692
+		// Token: 0x04002BC0 RID: 11200
 		public static float force;
 
-		// Token: 0x0400069D RID: 1693
+		// Token: 0x04002BC1 RID: 11201
 		public static float damageScaling;
 
-		// Token: 0x0400069E RID: 1694
+		// Token: 0x04002BC2 RID: 11202
 		public static GameObject novaEffectPrefab;
 
-		// Token: 0x0400069F RID: 1695
+		// Token: 0x04002BC3 RID: 11203
 		private float explosionTimer;
 
-		// Token: 0x040006A0 RID: 1696
+		// Token: 0x04002BC4 RID: 11204
 		private float explosionInterval;
 
-		// Token: 0x040006A1 RID: 1697
+		// Token: 0x04002BC5 RID: 11205
 		private int explosionIndex;
 	}
 }

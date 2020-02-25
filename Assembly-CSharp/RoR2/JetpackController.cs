@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using RoR2.Networking;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000344 RID: 836
+	// Token: 0x02000268 RID: 616
 	public class JetpackController : NetworkBehaviour
 	{
-		// Token: 0x06001149 RID: 4425 RVA: 0x00055F07 File Offset: 0x00054107
+		// Token: 0x06000DA3 RID: 3491 RVA: 0x0003D329 File Offset: 0x0003B529
 		private void OnEnable()
 		{
 			JetpackController.instancesList.Add(this);
 		}
 
-		// Token: 0x0600114A RID: 4426 RVA: 0x00055F14 File Offset: 0x00054114
+		// Token: 0x06000DA4 RID: 3492 RVA: 0x0003D336 File Offset: 0x0003B536
 		private void OnDisable()
 		{
 			JetpackController.instancesList.Remove(this);
 		}
 
-		// Token: 0x0600114B RID: 4427 RVA: 0x00055F24 File Offset: 0x00054124
+		// Token: 0x06000DA5 RID: 3493 RVA: 0x0003D344 File Offset: 0x0003B544
 		public static JetpackController FindJetpackController(GameObject targetObject)
 		{
 			if (!targetObject)
@@ -38,7 +39,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x0600114C RID: 4428 RVA: 0x00055F78 File Offset: 0x00054178
+		// Token: 0x06000DA6 RID: 3494 RVA: 0x0003D398 File Offset: 0x0003B598
 		private void Start()
 		{
 			this.SetupWings();
@@ -55,7 +56,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600114D RID: 4429 RVA: 0x00055FFD File Offset: 0x000541FD
+		// Token: 0x06000DA7 RID: 3495 RVA: 0x0003D41D File Offset: 0x0003B61D
 		private void OnDestroy()
 		{
 			if (NetworkServer.active && this.targetBody)
@@ -64,7 +65,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600114E RID: 4430 RVA: 0x00056020 File Offset: 0x00054220
+		// Token: 0x06000DA8 RID: 3496 RVA: 0x0003D440 File Offset: 0x0003B640
 		public void ResetTimer()
 		{
 			this.stopwatch = 0f;
@@ -74,7 +75,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600114F RID: 4431 RVA: 0x0005603A File Offset: 0x0005423A
+		// Token: 0x06000DA9 RID: 3497 RVA: 0x0003D45A File Offset: 0x0003B65A
 		[ClientRpc]
 		private void RpcResetTimer()
 		{
@@ -85,7 +86,7 @@ namespace RoR2
 			this.ResetTimer();
 		}
 
-		// Token: 0x06001150 RID: 4432 RVA: 0x0005604A File Offset: 0x0005424A
+		// Token: 0x06000DAA RID: 3498 RVA: 0x0003D46A File Offset: 0x0003B66A
 		private void SyncJumpInputActive(bool state)
 		{
 			if (this.jumpInputActive == state)
@@ -99,7 +100,7 @@ namespace RoR2
 			this.NetworkjumpInputActive = state;
 		}
 
-		// Token: 0x06001151 RID: 4433 RVA: 0x00056066 File Offset: 0x00054266
+		// Token: 0x06000DAB RID: 3499 RVA: 0x0003D486 File Offset: 0x0003B686
 		private void SetJumpInputActive(bool state)
 		{
 			if (this.jumpInputActive == state)
@@ -113,7 +114,7 @@ namespace RoR2
 			this.NetworkjumpInputActive = state;
 		}
 
-		// Token: 0x06001152 RID: 4434 RVA: 0x00056090 File Offset: 0x00054290
+		// Token: 0x06000DAC RID: 3500 RVA: 0x0003D4B0 File Offset: 0x0003B6B0
 		[Client]
 		private void SendJetpackJumpState(bool state)
 		{
@@ -127,7 +128,7 @@ namespace RoR2
 			NetworkManager.singleton.client.connection.Send(69, JetpackController.stateMessageBuffer);
 		}
 
-		// Token: 0x06001153 RID: 4435 RVA: 0x000560E9 File Offset: 0x000542E9
+		// Token: 0x06000DAD RID: 3501 RVA: 0x0003D509 File Offset: 0x0003B709
 		[NetworkMessageHandler(msgType = 69, client = false, server = true)]
 		private static void HandleSendJumpInputActive(NetworkMessage netMsg)
 		{
@@ -145,7 +146,7 @@ namespace RoR2
 			component.SetJumpInputActive(JetpackController.stateMessageBuffer.state);
 		}
 
-		// Token: 0x06001154 RID: 4436 RVA: 0x00056120 File Offset: 0x00054320
+		// Token: 0x06000DAE RID: 3502 RVA: 0x0003D540 File Offset: 0x0003B740
 		private void FixedUpdate()
 		{
 			this.stopwatch += Time.fixedDeltaTime;
@@ -167,6 +168,7 @@ namespace RoR2
 						Vector3 velocity = this.targetCharacterMotor.velocity;
 						velocity.y = Mathf.Max(Mathf.MoveTowards(velocity.y, this.targetBody.jumpPower / 3f, this.acceleration * Time.fixedDeltaTime), velocity.y);
 						this.targetCharacterMotor.velocity = velocity;
+						this.targetCharacterMotor.disableAirControlUntilCollision = false;
 					}
 					else
 					{
@@ -203,7 +205,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001155 RID: 4437 RVA: 0x0005635C File Offset: 0x0005455C
+		// Token: 0x06000DAF RID: 3503 RVA: 0x0003D788 File Offset: 0x0003B988
 		private Transform FindWings()
 		{
 			ModelLocator component = this.targetObject.GetComponent<ModelLocator>();
@@ -226,7 +228,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06001156 RID: 4438 RVA: 0x000563BC File Offset: 0x000545BC
+		// Token: 0x06000DB0 RID: 3504 RVA: 0x0003D7E8 File Offset: 0x0003B9E8
 		private void ShowMotionLines(bool showWings)
 		{
 			for (int i = 0; i < this.wingMotions.Length; i++)
@@ -254,7 +256,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001157 RID: 4439 RVA: 0x00056444 File Offset: 0x00054644
+		// Token: 0x06000DB1 RID: 3505 RVA: 0x0003D870 File Offset: 0x0003BA70
 		public void SetupWings()
 		{
 			this.wingTransform = this.FindWings();
@@ -278,45 +280,47 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001159 RID: 4441 RVA: 0x00056538 File Offset: 0x00054738
+		// Token: 0x06000DB3 RID: 3507 RVA: 0x0003D964 File Offset: 0x0003BB64
 		static JetpackController()
 		{
 			NetworkBehaviour.RegisterRpcDelegate(typeof(JetpackController), JetpackController.kRpcRpcResetTimer, new NetworkBehaviour.CmdDelegate(JetpackController.InvokeRpcRpcResetTimer));
 			NetworkCRC.RegisterBehaviour("JetpackController", 0);
 		}
 
-		// Token: 0x0600115A RID: 4442 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000DB4 RID: 3508 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x17000181 RID: 385
-		// (get) Token: 0x0600115B RID: 4443 RVA: 0x00056594 File Offset: 0x00054794
-		// (set) Token: 0x0600115C RID: 4444 RVA: 0x000565A7 File Offset: 0x000547A7
+		// Token: 0x170001BE RID: 446
+		// (get) Token: 0x06000DB5 RID: 3509 RVA: 0x0003D9C0 File Offset: 0x0003BBC0
+		// (set) Token: 0x06000DB6 RID: 3510 RVA: 0x0003D9D3 File Offset: 0x0003BBD3
 		public GameObject NetworktargetObject
 		{
 			get
 			{
 				return this.targetObject;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVarGameObject(value, ref this.targetObject, 1u, ref this.___targetObjectNetId);
+				base.SetSyncVarGameObject(value, ref this.targetObject, 1U, ref this.___targetObjectNetId);
 			}
 		}
 
-		// Token: 0x17000182 RID: 386
-		// (get) Token: 0x0600115D RID: 4445 RVA: 0x000565C4 File Offset: 0x000547C4
-		// (set) Token: 0x0600115E RID: 4446 RVA: 0x000565D7 File Offset: 0x000547D7
+		// Token: 0x170001BF RID: 447
+		// (get) Token: 0x06000DB7 RID: 3511 RVA: 0x0003D9F0 File Offset: 0x0003BBF0
+		// (set) Token: 0x06000DB8 RID: 3512 RVA: 0x0003DA03 File Offset: 0x0003BC03
 		public bool NetworkjumpInputActive
 		{
 			get
 			{
 				return this.jumpInputActive;
 			}
+			[param: In]
 			set
 			{
-				uint dirtyBit = 2u;
+				uint dirtyBit = 2U;
 				if (NetworkServer.localClientActive && !base.syncVarHookGuard)
 				{
 					base.syncVarHookGuard = true;
@@ -327,7 +331,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600115F RID: 4447 RVA: 0x00056616 File Offset: 0x00054816
+		// Token: 0x06000DB9 RID: 3513 RVA: 0x0003DA42 File Offset: 0x0003BC42
 		protected static void InvokeRpcRpcResetTimer(NetworkBehaviour obj, NetworkReader reader)
 		{
 			if (!NetworkClient.active)
@@ -338,7 +342,7 @@ namespace RoR2
 			((JetpackController)obj).RpcResetTimer();
 		}
 
-		// Token: 0x06001160 RID: 4448 RVA: 0x0005663C File Offset: 0x0005483C
+		// Token: 0x06000DBA RID: 3514 RVA: 0x0003DA68 File Offset: 0x0003BC68
 		public void CallRpcResetTimer()
 		{
 			if (!NetworkServer.active)
@@ -354,7 +358,7 @@ namespace RoR2
 			this.SendRPCInternal(networkWriter, 0, "RpcResetTimer");
 		}
 
-		// Token: 0x06001161 RID: 4449 RVA: 0x000566A8 File Offset: 0x000548A8
+		// Token: 0x06000DBB RID: 3515 RVA: 0x0003DAD4 File Offset: 0x0003BCD4
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -364,7 +368,7 @@ namespace RoR2
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -373,7 +377,7 @@ namespace RoR2
 				}
 				writer.Write(this.targetObject);
 			}
-			if ((base.syncVarDirtyBits & 2u) != 0u)
+			if ((base.syncVarDirtyBits & 2U) != 0U)
 			{
 				if (!flag)
 				{
@@ -389,7 +393,7 @@ namespace RoR2
 			return flag;
 		}
 
-		// Token: 0x06001162 RID: 4450 RVA: 0x00056754 File Offset: 0x00054954
+		// Token: 0x06000DBC RID: 3516 RVA: 0x0003DB80 File Offset: 0x0003BD80
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -409,7 +413,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001163 RID: 4451 RVA: 0x000567BA File Offset: 0x000549BA
+		// Token: 0x06000DBD RID: 3517 RVA: 0x0003DBE6 File Offset: 0x0003BDE6
 		public override void PreStartClient()
 		{
 			if (!this.___targetObjectNetId.IsEmpty())
@@ -418,83 +422,83 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0400155B RID: 5467
+		// Token: 0x04000DAC RID: 3500
 		private static readonly List<JetpackController> instancesList = new List<JetpackController>();
 
-		// Token: 0x0400155C RID: 5468
+		// Token: 0x04000DAD RID: 3501
 		[SyncVar]
 		public GameObject targetObject;
 
-		// Token: 0x0400155D RID: 5469
+		// Token: 0x04000DAE RID: 3502
 		public float duration;
 
-		// Token: 0x0400155E RID: 5470
+		// Token: 0x04000DAF RID: 3503
 		public float acceleration;
 
-		// Token: 0x0400155F RID: 5471
+		// Token: 0x04000DB0 RID: 3504
 		private float stopwatch;
 
-		// Token: 0x04001560 RID: 5472
+		// Token: 0x04000DB1 RID: 3505
 		private CharacterBody targetBody;
 
-		// Token: 0x04001561 RID: 5473
+		// Token: 0x04000DB2 RID: 3506
 		private Transform wingTransform;
 
-		// Token: 0x04001562 RID: 5474
+		// Token: 0x04000DB3 RID: 3507
 		private Animator wingAnimator;
 
-		// Token: 0x04001563 RID: 5475
+		// Token: 0x04000DB4 RID: 3508
 		private GameObject[] wingMotions;
 
-		// Token: 0x04001564 RID: 5476
+		// Token: 0x04000DB5 RID: 3509
 		private GameObject wingMeshObject;
 
-		// Token: 0x04001565 RID: 5477
+		// Token: 0x04000DB6 RID: 3510
 		private CharacterMotor targetCharacterMotor;
 
-		// Token: 0x04001566 RID: 5478
+		// Token: 0x04000DB7 RID: 3511
 		private InputBankTest targetInputBank;
 
-		// Token: 0x04001567 RID: 5479
+		// Token: 0x04000DB8 RID: 3512
 		private bool targetHasAuthority;
 
-		// Token: 0x04001568 RID: 5480
+		// Token: 0x04000DB9 RID: 3513
 		private bool hasBegunSoundLoop;
 
-		// Token: 0x04001569 RID: 5481
+		// Token: 0x04000DBA RID: 3514
 		[SyncVar(hook = "SyncJumpInputActive")]
 		private bool jumpInputActive;
 
-		// Token: 0x0400156A RID: 5482
+		// Token: 0x04000DBB RID: 3515
 		private static JetpackController.SetJetpackJumpStateMessage stateMessageBuffer = new JetpackController.SetJetpackJumpStateMessage();
 
-		// Token: 0x0400156B RID: 5483
+		// Token: 0x04000DBC RID: 3516
 		private NetworkInstanceId ___targetObjectNetId;
 
-		// Token: 0x0400156C RID: 5484
+		// Token: 0x04000DBD RID: 3517
 		private static int kRpcRpcResetTimer = 1278379706;
 
-		// Token: 0x02000345 RID: 837
+		// Token: 0x02000269 RID: 617
 		private class SetJetpackJumpStateMessage : MessageBase
 		{
-			// Token: 0x06001165 RID: 4453 RVA: 0x000567DE File Offset: 0x000549DE
+			// Token: 0x06000DBF RID: 3519 RVA: 0x0003DC0A File Offset: 0x0003BE0A
 			public override void Serialize(NetworkWriter writer)
 			{
 				writer.Write(this.jetpackControllerObject);
 				writer.Write(this.state);
 			}
 
-			// Token: 0x06001166 RID: 4454 RVA: 0x000567F8 File Offset: 0x000549F8
+			// Token: 0x06000DC0 RID: 3520 RVA: 0x0003DC24 File Offset: 0x0003BE24
 			public override void Deserialize(NetworkReader reader)
 			{
 				this.jetpackControllerObject = reader.ReadGameObject();
 				this.state = reader.ReadBoolean();
 			}
 
-			// Token: 0x0400156D RID: 5485
+			// Token: 0x04000DBE RID: 3518
 			public GameObject jetpackControllerObject;
 
-			// Token: 0x0400156E RID: 5486
+			// Token: 0x04000DBF RID: 3519
 			public bool state;
 		}
 	}

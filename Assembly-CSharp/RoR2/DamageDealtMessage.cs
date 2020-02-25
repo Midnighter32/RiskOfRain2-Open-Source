@@ -4,10 +4,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x0200030A RID: 778
+	// Token: 0x0200022B RID: 555
 	public class DamageDealtMessage : MessageBase
 	{
-		// Token: 0x06001028 RID: 4136 RVA: 0x00051304 File Offset: 0x0004F504
+		// Token: 0x06000C6E RID: 3182 RVA: 0x00038144 File Offset: 0x00036344
 		public override void Serialize(NetworkWriter writer)
 		{
 			base.Serialize(writer);
@@ -20,7 +20,7 @@ namespace RoR2
 			writer.Write(this.damageColorIndex);
 		}
 
-		// Token: 0x06001029 RID: 4137 RVA: 0x00051370 File Offset: 0x0004F570
+		// Token: 0x06000C6F RID: 3183 RVA: 0x000381B0 File Offset: 0x000363B0
 		public override void Deserialize(NetworkReader reader)
 		{
 			base.Deserialize(reader);
@@ -33,8 +33,8 @@ namespace RoR2
 			this.damageColorIndex = reader.ReadDamageColorIndex();
 		}
 
-		// Token: 0x17000163 RID: 355
-		// (get) Token: 0x0600102A RID: 4138 RVA: 0x000513D8 File Offset: 0x0004F5D8
+		// Token: 0x1700019B RID: 411
+		// (get) Token: 0x06000C70 RID: 3184 RVA: 0x00038218 File Offset: 0x00036418
 		public bool isSilent
 		{
 			get
@@ -43,25 +43,25 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001416 RID: 5142
+		// Token: 0x04000C58 RID: 3160
 		public GameObject victim;
 
-		// Token: 0x04001417 RID: 5143
+		// Token: 0x04000C59 RID: 3161
 		public float damage;
 
-		// Token: 0x04001418 RID: 5144
+		// Token: 0x04000C5A RID: 3162
 		public GameObject attacker;
 
-		// Token: 0x04001419 RID: 5145
+		// Token: 0x04000C5B RID: 3163
 		public Vector3 position;
 
-		// Token: 0x0400141A RID: 5146
+		// Token: 0x04000C5C RID: 3164
 		public bool crit;
 
-		// Token: 0x0400141B RID: 5147
+		// Token: 0x04000C5D RID: 3165
 		public DamageType damageType;
 
-		// Token: 0x0400141C RID: 5148
+		// Token: 0x04000C5E RID: 3166
 		public DamageColorIndex damageColorIndex;
 	}
 }

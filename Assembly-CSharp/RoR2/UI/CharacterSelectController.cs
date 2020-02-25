@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using Rewired;
+using RoR2.Skills;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005BE RID: 1470
+	// Token: 0x02000598 RID: 1432
 	[RequireComponent(typeof(MPEventSystemLocator))]
 	public class CharacterSelectController : MonoBehaviour
 	{
-		// Token: 0x170002E3 RID: 739
-		// (get) Token: 0x060020E9 RID: 8425 RVA: 0x0009A911 File Offset: 0x00098B11
+		// Token: 0x17000397 RID: 919
+		// (get) Token: 0x0600220B RID: 8715 RVA: 0x000930D5 File Offset: 0x000912D5
 		private NetworkUser networkUser
 		{
 			get
@@ -27,7 +30,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060020EA RID: 8426 RVA: 0x0009A924 File Offset: 0x00098B24
+		// Token: 0x0600220C RID: 8716 RVA: 0x000930E8 File Offset: 0x000912E8
 		private void SetEventSystem(MPEventSystem newEventSystem)
 		{
 			if (newEventSystem == this.eventSystem)
@@ -36,96 +39,224 @@ namespace RoR2.UI
 			}
 			this.eventSystem = newEventSystem;
 			this.localUser = LocalUserManager.FindLocalUser(newEventSystem.player);
+			this.RebuildLocal();
 		}
 
-		// Token: 0x060020EB RID: 8427 RVA: 0x0009A94D File Offset: 0x00098B4D
+		// Token: 0x0600220D RID: 8717 RVA: 0x00093117 File Offset: 0x00091317
 		public void SelectSurvivor(SurvivorIndex survivor)
 		{
 			this.selectedSurvivorIndex = survivor;
 		}
 
-		// Token: 0x060020EC RID: 8428 RVA: 0x0009A958 File Offset: 0x00098B58
+		// Token: 0x0600220E RID: 8718 RVA: 0x00093120 File Offset: 0x00091320
+		private static UnlockableDef[] GenerateLoadoutAssociatedUnlockableDefs()
+		{
+			CharacterSelectController.<>c__DisplayClass23_0 CS$<>8__locals1;
+			CS$<>8__locals1.encounteredUnlockables = new HashSet<UnlockableDef>();
+			foreach (SkillFamily skillFamily in SkillCatalog.allSkillFamilies)
+			{
+				for (int i = 0; i < skillFamily.variants.Length; i++)
+				{
+					CharacterSelectController.<GenerateLoadoutAssociatedUnlockableDefs>g__TryAddUnlockable|23_0(skillFamily.variants[i].unlockableName, ref CS$<>8__locals1);
+				}
+			}
+			foreach (CharacterBody characterBody in BodyCatalog.allBodyPrefabBodyBodyComponents)
+			{
+				SkinDef[] bodySkins = BodyCatalog.GetBodySkins(characterBody.bodyIndex);
+				for (int j = 0; j < bodySkins.Length; j++)
+				{
+					CharacterSelectController.<GenerateLoadoutAssociatedUnlockableDefs>g__TryAddUnlockable|23_0(bodySkins[j].unlockableName, ref CS$<>8__locals1);
+				}
+			}
+			return CS$<>8__locals1.encounteredUnlockables.ToArray<UnlockableDef>();
+		}
+
+		// Token: 0x0600220F RID: 8719 RVA: 0x00093210 File Offset: 0x00091410
+		private static bool UserHasAnyLoadoutUnlockables(LocalUser localUser)
+		{
+			if (CharacterSelectController.loadoutAssociatedUnlockableDefs == null)
+			{
+				CharacterSelectController.loadoutAssociatedUnlockableDefs = CharacterSelectController.GenerateLoadoutAssociatedUnlockableDefs();
+			}
+			UserProfile userProfile = localUser.userProfile;
+			foreach (UnlockableDef unlockableDef in CharacterSelectController.loadoutAssociatedUnlockableDefs)
+			{
+				if (userProfile.HasUnlockable(unlockableDef))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		// Token: 0x06002210 RID: 8720 RVA: 0x0009325C File Offset: 0x0009145C
 		private void RebuildLocal()
 		{
+			Loadout loadout = new Loadout();
+			LocalUser localUser = this.localUser;
+			if (localUser != null)
+			{
+				UserProfile userProfile = localUser.userProfile;
+				if (userProfile != null)
+				{
+					userProfile.CopyLoadout(loadout);
+				}
+			}
 			SurvivorDef survivorDef = SurvivorCatalog.GetSurvivorDef(this.selectedSurvivorIndex);
-			this.survivorName.text = survivorDef.displayNameToken;
-			if (survivorDef.descriptionToken != null)
+			int bodyIndexFromSurvivorIndex = SurvivorCatalog.GetBodyIndexFromSurvivorIndex(this.selectedSurvivorIndex);
+			Color color = Color.white;
+			string text = string.Empty;
+			string text2 = string.Empty;
+			string viewableName = string.Empty;
+			if (survivorDef != null)
 			{
-				this.survivorDescription.text = Language.GetString(survivorDef.descriptionToken);
+				color = survivorDef.primaryColor;
+				text = Language.GetString(survivorDef.displayNameToken);
+				text2 = Language.GetString(survivorDef.descriptionToken);
 			}
-			SkillLocator component = survivorDef.bodyPrefab.GetComponent<SkillLocator>();
-			if (component)
+			List<CharacterSelectController.StripDisplayData> list = new List<CharacterSelectController.StripDisplayData>();
+			if (bodyIndexFromSurvivorIndex != -1)
 			{
-				this.RebuildStrip(this.primarySkillStrip, component.primary);
-				this.RebuildStrip(this.secondarySkillStrip, component.secondary);
-				this.RebuildStrip(this.utilitySkillStrip, component.utility);
-				this.RebuildStrip(this.specialSkillStrip, component.special);
-				this.RebuildStrip(this.passiveSkillStrip, component.passiveSkill);
+				GameObject bodyPrefab = BodyCatalog.GetBodyPrefab(bodyIndexFromSurvivorIndex);
+				SkillLocator component = bodyPrefab.GetComponent<SkillLocator>();
+				if (component.passiveSkill.enabled)
+				{
+					list.Add(new CharacterSelectController.StripDisplayData
+					{
+						enabled = true,
+						primaryColor = color,
+						icon = component.passiveSkill.icon,
+						titleString = Language.GetString(component.passiveSkill.skillNameToken),
+						descriptionString = Language.GetString(component.passiveSkill.skillDescriptionToken)
+					});
+				}
+				GenericSkill[] components = bodyPrefab.GetComponents<GenericSkill>();
+				for (int i = 0; i < components.Length; i++)
+				{
+					uint skillVariant = loadout.bodyLoadoutManager.GetSkillVariant(bodyIndexFromSurvivorIndex, i);
+					SkillDef skillDef = components[i].skillFamily.variants[(int)skillVariant].skillDef;
+					list.Add(new CharacterSelectController.StripDisplayData
+					{
+						enabled = true,
+						primaryColor = color,
+						icon = skillDef.icon,
+						titleString = Language.GetString(skillDef.skillNameToken),
+						descriptionString = Language.GetString(skillDef.skillDescriptionToken)
+					});
+				}
+				viewableName = "/Loadout/Bodies/" + BodyCatalog.GetBodyName(bodyIndexFromSurvivorIndex) + "/";
 			}
+			this.skillStripAllocator.AllocateElements(list.Count);
+			for (int j = 0; j < list.Count; j++)
+			{
+				this.RebuildStrip(this.skillStripAllocator.elements[j], list[j]);
+			}
+			this.survivorName.SetText(text);
+			this.survivorDescription.SetText(text2);
 			Image[] array = this.primaryColorImages;
-			for (int i = 0; i < array.Length; i++)
+			for (int k = 0; k < array.Length; k++)
 			{
-				array[i].color = survivorDef.primaryColor;
+				array[k].color = color;
 			}
 			TextMeshProUGUI[] array2 = this.primaryColorTexts;
-			for (int i = 0; i < array2.Length; i++)
+			for (int k = 0; k < array2.Length; k++)
 			{
-				array2[i].color = survivorDef.primaryColor;
+				array2[k].color = color;
 			}
+			this.loadoutViewableTag.viewableName = viewableName;
 		}
 
-		// Token: 0x060020ED RID: 8429 RVA: 0x0009AA58 File Offset: 0x00098C58
-		private void RebuildStrip(CharacterSelectController.SkillStrip skillStrip, GenericSkill skill)
+		// Token: 0x06002211 RID: 8721 RVA: 0x000934E8 File Offset: 0x000916E8
+		private void RebuildStrip(RectTransform skillStrip, CharacterSelectController.StripDisplayData stripDisplayData)
 		{
-			if (skill)
+			GameObject gameObject = skillStrip.gameObject;
+			Image component = skillStrip.Find("Icon").GetComponent<Image>();
+			HGTextMeshProUGUI component2 = skillStrip.Find("SkillDescriptionPanel/SkillName").GetComponent<HGTextMeshProUGUI>();
+			HGTextMeshProUGUI component3 = skillStrip.Find("SkillDescriptionPanel/SkillDescription").GetComponent<HGTextMeshProUGUI>();
+			if (stripDisplayData.enabled)
 			{
-				skillStrip.stripRoot.SetActive(true);
-				skillStrip.skillIcon.sprite = skill.icon;
-				skillStrip.skillDescription.text = Language.GetString(skill.skillDescriptionToken);
-				skillStrip.skillName.text = Language.GetString(skill.skillNameToken);
+				gameObject.SetActive(true);
+				component.sprite = stripDisplayData.icon;
+				component2.SetText(stripDisplayData.titleString);
+				component2.color = stripDisplayData.primaryColor;
+				component3.SetText(stripDisplayData.descriptionString);
 				return;
 			}
-			skillStrip.stripRoot.SetActive(false);
+			gameObject.SetActive(false);
 		}
 
-		// Token: 0x060020EE RID: 8430 RVA: 0x0009AAC4 File Offset: 0x00098CC4
-		private void RebuildStrip(CharacterSelectController.SkillStrip skillStrip, SkillLocator.PassiveSkill skill)
-		{
-			if (skill.enabled)
-			{
-				skillStrip.stripRoot.SetActive(true);
-				skillStrip.skillIcon.sprite = skill.icon;
-				skillStrip.skillDescription.text = Language.GetString(skill.skillDescriptionToken);
-				skillStrip.skillName.text = Language.GetString(skill.skillNameToken);
-				return;
-			}
-			skillStrip.stripRoot.SetActive(false);
-		}
-
-		// Token: 0x060020EF RID: 8431 RVA: 0x0009AB2F File Offset: 0x00098D2F
+		// Token: 0x06002212 RID: 8722 RVA: 0x00093578 File Offset: 0x00091778
 		private void Awake()
 		{
 			this.eventSystemLocator = base.GetComponent<MPEventSystemLocator>();
+			this.skillStripAllocator = new UIElementAllocator<RectTransform>(this.skillStripContainer, this.skillStripPrefab);
 			this.SetEventSystem(this.eventSystemLocator.eventSystem);
-			this.selectedSurvivorIndex = this.GetSelectedSurvivorIndexFromBodyPreference();
-			this.RebuildLocal();
+			bool active = true;
+			this.loadoutHeaderButton.SetActive(active);
 		}
 
-		// Token: 0x060020F0 RID: 8432 RVA: 0x0009AB60 File Offset: 0x00098D60
+		// Token: 0x06002213 RID: 8723 RVA: 0x000935C7 File Offset: 0x000917C7
+		private void Start()
+		{
+			this.selectedSurvivorIndex = this.GetSelectedSurvivorIndexFromBodyPreference();
+		}
+
+		// Token: 0x06002214 RID: 8724 RVA: 0x000935D5 File Offset: 0x000917D5
+		private void OnEnable()
+		{
+			UserProfile.onLoadoutChangedGlobal += this.OnLoadoutChangedGlobal;
+			NetworkUser.onLoadoutChangedGlobal += this.OnNetworkUserLoadoutChanged;
+		}
+
+		// Token: 0x06002215 RID: 8725 RVA: 0x000935F9 File Offset: 0x000917F9
+		private void OnLoadoutChangedGlobal(UserProfile userProfile)
+		{
+			LocalUser localUser = this.localUser;
+			if (userProfile == ((localUser != null) ? localUser.userProfile : null))
+			{
+				this.RebuildLocal();
+			}
+		}
+
+		// Token: 0x06002216 RID: 8726 RVA: 0x00093616 File Offset: 0x00091816
+		private void OnDisable()
+		{
+			NetworkUser.onLoadoutChangedGlobal -= this.OnNetworkUserLoadoutChanged;
+			UserProfile.onLoadoutChangedGlobal -= this.OnLoadoutChangedGlobal;
+		}
+
+		// Token: 0x06002217 RID: 8727 RVA: 0x0009363C File Offset: 0x0009183C
 		private SurvivorIndex GetSelectedSurvivorIndexFromBodyPreference()
 		{
 			if (this.networkUser)
 			{
-				SurvivorDef survivorDef = SurvivorCatalog.FindSurvivorDefFromBody(BodyCatalog.GetBodyPrefab(this.networkUser.bodyIndexPreference));
-				if (survivorDef != null && survivorDef.survivorIndex != SurvivorIndex.None)
+				SurvivorIndex survivorIndexFromBodyIndex = SurvivorCatalog.GetSurvivorIndexFromBodyIndex(this.networkUser.bodyIndexPreference);
+				Debug.Log(survivorIndexFromBodyIndex);
+				if (survivorIndexFromBodyIndex != SurvivorIndex.None)
 				{
-					return survivorDef.survivorIndex;
+					return survivorIndexFromBodyIndex;
 				}
 			}
 			return SurvivorIndex.Commando;
 		}
 
-		// Token: 0x060020F1 RID: 8433 RVA: 0x0009ABA4 File Offset: 0x00098DA4
+		// Token: 0x06002218 RID: 8728 RVA: 0x0009367C File Offset: 0x0009187C
+		private List<NetworkUser> GetSortedNetworkUsersList()
+		{
+			List<NetworkUser> list = new List<NetworkUser>(NetworkUser.readOnlyInstancesList.Count);
+			list.AddRange(NetworkUser.readOnlyLocalPlayersList);
+			for (int i = 0; i < NetworkUser.readOnlyInstancesList.Count; i++)
+			{
+				NetworkUser item = NetworkUser.readOnlyInstancesList[i];
+				if (!list.Contains(item))
+				{
+					list.Add(item);
+				}
+			}
+			return list;
+		}
+
+		// Token: 0x06002219 RID: 8729 RVA: 0x000936D8 File Offset: 0x000918D8
 		private void Update()
 		{
 			this.SetEventSystem(this.eventSystemLocator.eventSystem);
@@ -136,23 +267,14 @@ namespace RoR2.UI
 			}
 			if (this.characterDisplayPads.Length != 0)
 			{
+				List<NetworkUser> sortedNetworkUsersList = this.GetSortedNetworkUsersList();
 				for (int i = 0; i < this.characterDisplayPads.Length; i++)
 				{
-					CharacterSelectController.CharacterPad characterPad = this.characterDisplayPads[i];
+					ref CharacterSelectController.CharacterPad ptr = ref this.characterDisplayPads[i];
 					NetworkUser networkUser = null;
-					List<NetworkUser> list = new List<NetworkUser>(NetworkUser.readOnlyInstancesList.Count);
-					list.AddRange(NetworkUser.readOnlyLocalPlayersList);
-					for (int j = 0; j < NetworkUser.readOnlyInstancesList.Count; j++)
+					if (i < sortedNetworkUsersList.Count)
 					{
-						NetworkUser item = NetworkUser.readOnlyInstancesList[j];
-						if (!list.Contains(item))
-						{
-							list.Add(item);
-						}
-					}
-					if (i < list.Count)
-					{
-						networkUser = list[i];
+						networkUser = sortedNetworkUsersList[i];
 					}
 					if (networkUser)
 					{
@@ -160,7 +282,7 @@ namespace RoR2.UI
 						SurvivorDef survivorDef = SurvivorCatalog.FindSurvivorDefFromBody(bodyPrefab);
 						if (survivorDef != null)
 						{
-							SurvivorDef survivorDef2 = SurvivorCatalog.GetSurvivorDef(characterPad.displaySurvivorIndex);
+							SurvivorDef survivorDef2 = SurvivorCatalog.GetSurvivorDef(ptr.displaySurvivorIndex);
 							bool flag = true;
 							if (survivorDef2 != null && survivorDef2.bodyPrefab == bodyPrefab)
 							{
@@ -169,28 +291,28 @@ namespace RoR2.UI
 							if (flag)
 							{
 								GameObject displayPrefab = survivorDef.displayPrefab;
-								this.ClearPadDisplay(characterPad);
+								this.ClearPadDisplay(ptr);
 								if (displayPrefab)
 								{
-									characterPad.displayInstance = UnityEngine.Object.Instantiate<GameObject>(displayPrefab, characterPad.padTransform.position, characterPad.padTransform.rotation, characterPad.padTransform);
+									ptr.displayInstance = UnityEngine.Object.Instantiate<GameObject>(displayPrefab, ptr.padTransform.position, ptr.padTransform.rotation, ptr.padTransform);
 								}
-								characterPad.displaySurvivorIndex = survivorDef.survivorIndex;
+								ptr.displaySurvivorIndex = survivorDef.survivorIndex;
+								this.OnNetworkUserLoadoutChanged(networkUser);
 							}
 						}
 						else
 						{
-							this.ClearPadDisplay(characterPad);
+							this.ClearPadDisplay(ptr);
 						}
 					}
 					else
 					{
-						this.ClearPadDisplay(characterPad);
+						this.ClearPadDisplay(ptr);
 					}
-					if (!characterPad.padTransform)
+					if (!ptr.padTransform)
 					{
 						return;
 					}
-					this.characterDisplayPads[i] = characterPad;
 					if (this.characterDisplayPads[i].padTransform)
 					{
 						this.characterDisplayPads[i].padTransform.gameObject.SetActive(this.characterDisplayPads[i].displayInstance != null);
@@ -205,7 +327,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060020F2 RID: 8434 RVA: 0x0009ADC9 File Offset: 0x00098FC9
+		// Token: 0x0600221A RID: 8730 RVA: 0x000938BA File Offset: 0x00091ABA
 		private void ClearPadDisplay(CharacterSelectController.CharacterPad characterPad)
 		{
 			if (characterPad.displayInstance)
@@ -214,7 +336,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060020F3 RID: 8435 RVA: 0x0009ADE4 File Offset: 0x00098FE4
+		// Token: 0x0600221B RID: 8731 RVA: 0x000938D4 File Offset: 0x00091AD4
 		private static bool InputPlayerIsAssigned(Player inputPlayer)
 		{
 			ReadOnlyCollection<NetworkUser> readOnlyInstancesList = NetworkUser.readOnlyInstancesList;
@@ -228,7 +350,7 @@ namespace RoR2.UI
 			return false;
 		}
 
-		// Token: 0x060020F4 RID: 8436 RVA: 0x0009AE1C File Offset: 0x0009901C
+		// Token: 0x0600221C RID: 8732 RVA: 0x0009390C File Offset: 0x00091B0C
 		public bool IsClientReady()
 		{
 			int num = 0;
@@ -259,7 +381,7 @@ namespace RoR2.UI
 			return num == NetworkUser.readOnlyLocalPlayersList.Count;
 		}
 
-		// Token: 0x060020F5 RID: 8437 RVA: 0x0009AEB4 File Offset: 0x000990B4
+		// Token: 0x0600221D RID: 8733 RVA: 0x000939A4 File Offset: 0x00091BA4
 		public void ClientSetReady()
 		{
 			foreach (NetworkUser networkUser in NetworkUser.readOnlyLocalPlayersList)
@@ -275,7 +397,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060020F6 RID: 8438 RVA: 0x0009AF20 File Offset: 0x00099120
+		// Token: 0x0600221E RID: 8734 RVA: 0x00093A10 File Offset: 0x00091C10
 		public void ClientSetUnready()
 		{
 			foreach (NetworkUser networkUser in NetworkUser.readOnlyLocalPlayersList)
@@ -284,86 +406,147 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0400236E RID: 9070
+		// Token: 0x0600221F RID: 8735 RVA: 0x00093A64 File Offset: 0x00091C64
+		private void OnNetworkUserLoadoutChanged(NetworkUser networkUser)
+		{
+			int num = this.GetSortedNetworkUsersList().IndexOf(networkUser);
+			if (num != -1)
+			{
+				CharacterSelectController.CharacterPad safe = HGArrayUtilities.GetSafe<CharacterSelectController.CharacterPad>(this.characterDisplayPads, num);
+				if (safe.displayInstance)
+				{
+					Loadout loadout = new Loadout();
+					networkUser.networkLoadout.CopyLoadout(loadout);
+					int bodyIndexFromSurvivorIndex = SurvivorCatalog.GetBodyIndexFromSurvivorIndex(safe.displaySurvivorIndex);
+					int skinIndex = (int)loadout.bodyLoadoutManager.GetSkinIndex(bodyIndexFromSurvivorIndex);
+					SkinDef safe2 = HGArrayUtilities.GetSafe<SkinDef>(BodyCatalog.GetBodySkins(bodyIndexFromSurvivorIndex), skinIndex);
+					CharacterModel componentInChildren = safe.displayInstance.GetComponentInChildren<CharacterModel>();
+					if (componentInChildren && safe2 != null)
+					{
+						safe2.Apply(componentInChildren.gameObject);
+					}
+				}
+			}
+		}
+
+		// Token: 0x06002221 RID: 8737 RVA: 0x00093B10 File Offset: 0x00091D10
+		[CompilerGenerated]
+		internal static void <GenerateLoadoutAssociatedUnlockableDefs>g__TryAddUnlockable|23_0(string unlockableName, ref CharacterSelectController.<>c__DisplayClass23_0 A_1)
+		{
+			if (unlockableName == null)
+			{
+				return;
+			}
+			UnlockableDef unlockableDef = UnlockableCatalog.GetUnlockableDef(unlockableName);
+			if (unlockableDef != null)
+			{
+				A_1.encounteredUnlockables.Add(unlockableDef);
+			}
+		}
+
+		// Token: 0x04001F64 RID: 8036
 		private MPEventSystemLocator eventSystemLocator;
 
-		// Token: 0x0400236F RID: 9071
+		// Token: 0x04001F65 RID: 8037
 		private MPEventSystem eventSystem;
 
-		// Token: 0x04002370 RID: 9072
+		// Token: 0x04001F66 RID: 8038
 		private LocalUser localUser;
 
-		// Token: 0x04002371 RID: 9073
+		// Token: 0x04001F67 RID: 8039
 		public SurvivorIndex selectedSurvivorIndex;
 
-		// Token: 0x04002372 RID: 9074
+		// Token: 0x04001F68 RID: 8040
 		private SurvivorIndex previousSurvivorIndex = SurvivorIndex.None;
 
-		// Token: 0x04002373 RID: 9075
+		// Token: 0x04001F69 RID: 8041
 		public TextMeshProUGUI survivorName;
 
-		// Token: 0x04002374 RID: 9076
-		public CharacterSelectController.SkillStrip primarySkillStrip;
+		// Token: 0x04001F6A RID: 8042
+		public GameObject skillStripPrefab;
 
-		// Token: 0x04002375 RID: 9077
-		public CharacterSelectController.SkillStrip secondarySkillStrip;
+		// Token: 0x04001F6B RID: 8043
+		public RectTransform skillStripContainer;
 
-		// Token: 0x04002376 RID: 9078
-		public CharacterSelectController.SkillStrip utilitySkillStrip;
+		// Token: 0x04001F6C RID: 8044
+		private UIElementAllocator<RectTransform> skillStripAllocator;
 
-		// Token: 0x04002377 RID: 9079
-		public CharacterSelectController.SkillStrip specialSkillStrip;
-
-		// Token: 0x04002378 RID: 9080
-		public CharacterSelectController.SkillStrip passiveSkillStrip;
-
-		// Token: 0x04002379 RID: 9081
+		// Token: 0x04001F6D RID: 8045
 		public TextMeshProUGUI survivorDescription;
 
-		// Token: 0x0400237A RID: 9082
+		// Token: 0x04001F6E RID: 8046
 		public CharacterSelectController.CharacterPad[] characterDisplayPads;
 
-		// Token: 0x0400237B RID: 9083
+		// Token: 0x04001F6F RID: 8047
 		public Image[] primaryColorImages;
 
-		// Token: 0x0400237C RID: 9084
+		// Token: 0x04001F70 RID: 8048
 		public TextMeshProUGUI[] primaryColorTexts;
 
-		// Token: 0x0400237D RID: 9085
+		// Token: 0x04001F71 RID: 8049
 		public MPButton readyButton;
 
-		// Token: 0x0400237E RID: 9086
+		// Token: 0x04001F72 RID: 8050
 		public MPButton unreadyButton;
 
-		// Token: 0x020005BF RID: 1471
+		// Token: 0x04001F73 RID: 8051
+		[Tooltip("The header button for the loadout tab. Will be disabled if the user has no unlocked loadout options.")]
+		public GameObject loadoutHeaderButton;
+
+		// Token: 0x04001F74 RID: 8052
+		public ViewableTag loadoutViewableTag;
+
+		// Token: 0x04001F75 RID: 8053
+		private static UnlockableDef[] loadoutAssociatedUnlockableDefs;
+
+		// Token: 0x02000599 RID: 1433
 		[Serializable]
 		public struct SkillStrip
 		{
-			// Token: 0x0400237F RID: 9087
+			// Token: 0x04001F76 RID: 8054
 			public GameObject stripRoot;
 
-			// Token: 0x04002380 RID: 9088
+			// Token: 0x04001F77 RID: 8055
 			public Image skillIcon;
 
-			// Token: 0x04002381 RID: 9089
+			// Token: 0x04001F78 RID: 8056
 			public TextMeshProUGUI skillName;
 
-			// Token: 0x04002382 RID: 9090
+			// Token: 0x04001F79 RID: 8057
 			public TextMeshProUGUI skillDescription;
 		}
 
-		// Token: 0x020005C0 RID: 1472
+		// Token: 0x0200059A RID: 1434
 		[Serializable]
 		public struct CharacterPad
 		{
-			// Token: 0x04002383 RID: 9091
+			// Token: 0x04001F7A RID: 8058
 			public Transform padTransform;
 
-			// Token: 0x04002384 RID: 9092
+			// Token: 0x04001F7B RID: 8059
 			public GameObject displayInstance;
 
-			// Token: 0x04002385 RID: 9093
+			// Token: 0x04001F7C RID: 8060
 			public SurvivorIndex displaySurvivorIndex;
+		}
+
+		// Token: 0x0200059B RID: 1435
+		private struct StripDisplayData
+		{
+			// Token: 0x04001F7D RID: 8061
+			public bool enabled;
+
+			// Token: 0x04001F7E RID: 8062
+			public Color primaryColor;
+
+			// Token: 0x04001F7F RID: 8063
+			public Sprite icon;
+
+			// Token: 0x04001F80 RID: 8064
+			public string titleString;
+
+			// Token: 0x04001F81 RID: 8065
+			public string descriptionString;
 		}
 	}
 }

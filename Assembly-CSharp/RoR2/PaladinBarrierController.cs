@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000381 RID: 897
+	// Token: 0x020002B9 RID: 697
 	public class PaladinBarrierController : MonoBehaviour, IBarrier
 	{
-		// Token: 0x060012B1 RID: 4785 RVA: 0x0005BB98 File Offset: 0x00059D98
+		// Token: 0x06000FBD RID: 4029 RVA: 0x000451FC File Offset: 0x000433FC
 		public void BlockedDamage(DamageInfo damageInfo, float actualDamageBlocked)
 		{
 			this.totalDamageBlocked += actualDamageBlocked;
@@ -18,7 +18,7 @@ namespace RoR2
 			lightningOrb.bouncesRemaining = 0;
 			lightningOrb.attacker = damageInfo.attacker;
 			lightningOrb.procCoefficient = this.blockLaserProcCoefficient;
-			lightningOrb.lightningType = LightningOrb.LightningType.PaladinBarrier;
+			lightningOrb.lightningType = LightningOrb.LightningType.TreePoisonDart;
 			HurtBox hurtBox = lightningOrb.PickNextTarget(lightningOrb.origin);
 			if (hurtBox)
 			{
@@ -28,21 +28,21 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060012B2 RID: 4786 RVA: 0x0005BC52 File Offset: 0x00059E52
+		// Token: 0x06000FBE RID: 4030 RVA: 0x000452B6 File Offset: 0x000434B6
 		public void EnableBarrier()
 		{
 			this.barrierPivotTransform.gameObject.SetActive(true);
 			this.barrierIsOn = true;
 		}
 
-		// Token: 0x060012B3 RID: 4787 RVA: 0x0005BC6C File Offset: 0x00059E6C
+		// Token: 0x06000FBF RID: 4031 RVA: 0x000452D0 File Offset: 0x000434D0
 		public void DisableBarrier()
 		{
 			this.barrierPivotTransform.gameObject.SetActive(false);
 			this.barrierIsOn = false;
 		}
 
-		// Token: 0x060012B4 RID: 4788 RVA: 0x0005BC86 File Offset: 0x00059E86
+		// Token: 0x06000FC0 RID: 4032 RVA: 0x000452EA File Offset: 0x000434EA
 		private void Start()
 		{
 			this.inputBank = base.GetComponent<InputBankTest>();
@@ -51,7 +51,7 @@ namespace RoR2
 			this.DisableBarrier();
 		}
 
-		// Token: 0x060012B5 RID: 4789 RVA: 0x0005BCB2 File Offset: 0x00059EB2
+		// Token: 0x06000FC1 RID: 4033 RVA: 0x00045316 File Offset: 0x00043516
 		private void Update()
 		{
 			if (this.barrierIsOn)
@@ -60,31 +60,31 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0400167E RID: 5758
+		// Token: 0x04000F3B RID: 3899
 		public float blockLaserDamageCoefficient;
 
-		// Token: 0x0400167F RID: 5759
+		// Token: 0x04000F3C RID: 3900
 		public float blockLaserProcCoefficient;
 
-		// Token: 0x04001680 RID: 5760
+		// Token: 0x04000F3D RID: 3901
 		public float blockLaserDistance;
 
-		// Token: 0x04001681 RID: 5761
+		// Token: 0x04000F3E RID: 3902
 		private float totalDamageBlocked;
 
-		// Token: 0x04001682 RID: 5762
+		// Token: 0x04000F3F RID: 3903
 		private CharacterBody characterBody;
 
-		// Token: 0x04001683 RID: 5763
+		// Token: 0x04000F40 RID: 3904
 		private InputBankTest inputBank;
 
-		// Token: 0x04001684 RID: 5764
+		// Token: 0x04000F41 RID: 3905
 		private TeamComponent teamComponent;
 
-		// Token: 0x04001685 RID: 5765
+		// Token: 0x04000F42 RID: 3906
 		private bool barrierIsOn;
 
-		// Token: 0x04001686 RID: 5766
+		// Token: 0x04000F43 RID: 3907
 		public Transform barrierPivotTransform;
 	}
 }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200028A RID: 650
+	// Token: 0x0200018D RID: 397
 	public class CharacterEmoteDefinitions : MonoBehaviour
 	{
-		// Token: 0x06000CCF RID: 3279 RVA: 0x0003FB54 File Offset: 0x0003DD54
+		// Token: 0x0600080F RID: 2063 RVA: 0x000230F0 File Offset: 0x000212F0
 		public int FindEmoteIndex(string name)
 		{
 			for (int i = 0; i < this.emoteDefinitions.Length; i++)
@@ -20,23 +20,23 @@ namespace RoR2
 			return -1;
 		}
 
-		// Token: 0x040010F6 RID: 4342
+		// Token: 0x04000888 RID: 2184
 		public CharacterEmoteDefinitions.EmoteDef[] emoteDefinitions;
 
-		// Token: 0x0200028B RID: 651
+		// Token: 0x0200018E RID: 398
 		[Serializable]
 		public struct EmoteDef
 		{
-			// Token: 0x040010F7 RID: 4343
+			// Token: 0x04000889 RID: 2185
 			public string name;
 
-			// Token: 0x040010F8 RID: 4344
+			// Token: 0x0400088A RID: 2186
 			public string displayName;
 
-			// Token: 0x040010F9 RID: 4345
+			// Token: 0x0400088B RID: 2187
 			public EntityStateMachine targetStateMachine;
 
-			// Token: 0x040010FA RID: 4346
+			// Token: 0x0400088C RID: 2188
 			public SerializableEntityStateType state;
 		}
 	}

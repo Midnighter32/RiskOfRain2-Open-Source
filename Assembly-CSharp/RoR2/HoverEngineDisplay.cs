@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000313 RID: 787
+	// Token: 0x02000233 RID: 563
 	public class HoverEngineDisplay : MonoBehaviour
 	{
-		// Token: 0x0600104B RID: 4171 RVA: 0x00051B18 File Offset: 0x0004FD18
+		// Token: 0x06000C8D RID: 3213 RVA: 0x000388D4 File Offset: 0x00036AD4
 		private void FixedUpdate()
 		{
 			ref Vector3 localEulerAngles = base.transform.localEulerAngles;
@@ -16,24 +16,24 @@ namespace RoR2
 			base.transform.localRotation = Quaternion.Euler(x, 0f, 0f);
 		}
 
-		// Token: 0x0400144C RID: 5196
+		// Token: 0x04000C8A RID: 3210
 		public HoverEngine hoverEngine;
 
-		// Token: 0x0400144D RID: 5197
+		// Token: 0x04000C8B RID: 3211
 		[Tooltip("The local pitch at zero engine strength")]
 		public float minPitch = -20f;
 
-		// Token: 0x0400144E RID: 5198
+		// Token: 0x04000C8C RID: 3212
 		[Tooltip("The local pitch at max engine strength")]
 		public float maxPitch = 60f;
 
-		// Token: 0x0400144F RID: 5199
+		// Token: 0x04000C8D RID: 3213
 		public float smoothTime = 0.2f;
 
-		// Token: 0x04001450 RID: 5200
+		// Token: 0x04000C8E RID: 3214
 		public float forceScale = 1f;
 
-		// Token: 0x04001451 RID: 5201
+		// Token: 0x04000C8F RID: 3215
 		private float smoothVelocity;
 	}
 }

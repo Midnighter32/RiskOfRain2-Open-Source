@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.LemurianMonster
 {
-	// Token: 0x02000125 RID: 293
-	internal class FireFireball : BaseState
+	// Token: 0x020007F4 RID: 2036
+	public class FireFireball : BaseState
 	{
-		// Token: 0x060005A8 RID: 1448 RVA: 0x00019E28 File Offset: 0x00018028
+		// Token: 0x06002E4E RID: 11854 RVA: 0x000C5120 File Offset: 0x000C3320
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -19,7 +19,7 @@ namespace EntityStates.LemurianMonster
 			string muzzleName = "MuzzleMouth";
 			if (FireFireball.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireFireball.effectPrefab, base.gameObject, muzzleName, false);
+				EffectManager.SimpleMuzzleFlash(FireFireball.effectPrefab, base.gameObject, muzzleName, false);
 			}
 			if (base.isAuthority)
 			{
@@ -27,13 +27,13 @@ namespace EntityStates.LemurianMonster
 			}
 		}
 
-		// Token: 0x060005A9 RID: 1449 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002E4F RID: 11855 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x060005AA RID: 1450 RVA: 0x00019F07 File Offset: 0x00018107
+		// Token: 0x06002E50 RID: 11856 RVA: 0x000C51FA File Offset: 0x000C33FA
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -44,31 +44,31 @@ namespace EntityStates.LemurianMonster
 			}
 		}
 
-		// Token: 0x060005AB RID: 1451 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002E51 RID: 11857 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000674 RID: 1652
+		// Token: 0x04002B75 RID: 11125
 		public static GameObject projectilePrefab;
 
-		// Token: 0x04000675 RID: 1653
+		// Token: 0x04002B76 RID: 11126
 		public static GameObject effectPrefab;
 
-		// Token: 0x04000676 RID: 1654
+		// Token: 0x04002B77 RID: 11127
 		public static float baseDuration = 2f;
 
-		// Token: 0x04000677 RID: 1655
+		// Token: 0x04002B78 RID: 11128
 		public static float damageCoefficient = 1.2f;
 
-		// Token: 0x04000678 RID: 1656
+		// Token: 0x04002B79 RID: 11129
 		public static float force = 20f;
 
-		// Token: 0x04000679 RID: 1657
+		// Token: 0x04002B7A RID: 11130
 		public static string attackString;
 
-		// Token: 0x0400067A RID: 1658
+		// Token: 0x04002B7B RID: 11131
 		private float duration;
 	}
 }

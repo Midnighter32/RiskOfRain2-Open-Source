@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200025B RID: 603
+	// Token: 0x0200014C RID: 332
 	public class ApplyJiggleBoneMotion : MonoBehaviour
 	{
-		// Token: 0x06000B3E RID: 2878 RVA: 0x00037B9C File Offset: 0x00035D9C
+		// Token: 0x060005E7 RID: 1511 RVA: 0x00018710 File Offset: 0x00016910
 		private void FixedUpdate()
 		{
 			Vector3 position = this.rootTransform.position;
@@ -18,16 +18,16 @@ namespace RoR2
 			this.lastRootPosition = position;
 		}
 
-		// Token: 0x04000F4C RID: 3916
+		// Token: 0x04000669 RID: 1641
 		public float forceScale = 100f;
 
-		// Token: 0x04000F4D RID: 3917
+		// Token: 0x0400066A RID: 1642
 		public Transform rootTransform;
 
-		// Token: 0x04000F4E RID: 3918
+		// Token: 0x0400066B RID: 1643
 		public Rigidbody[] rigidbodies;
 
-		// Token: 0x04000F4F RID: 3919
+		// Token: 0x0400066C RID: 1644
 		private Vector3 lastRootPosition;
 	}
 }

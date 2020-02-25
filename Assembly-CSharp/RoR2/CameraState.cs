@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000277 RID: 631
+	// Token: 0x0200016F RID: 367
 	public struct CameraState
 	{
-		// Token: 0x06000BDE RID: 3038 RVA: 0x00039F04 File Offset: 0x00038104
+		// Token: 0x060006D4 RID: 1748 RVA: 0x0001BD9C File Offset: 0x00019F9C
 		public static CameraState Lerp(ref CameraState a, ref CameraState b, float t)
 		{
 			return new CameraState
@@ -17,7 +17,7 @@ namespace RoR2
 			};
 		}
 
-		// Token: 0x06000BDF RID: 3039 RVA: 0x00039F68 File Offset: 0x00038168
+		// Token: 0x060006D5 RID: 1749 RVA: 0x0001BE00 File Offset: 0x0001A000
 		public static CameraState SmoothDamp(CameraState current, CameraState target, ref Vector3 positionVelocity, ref float angleVelocity, ref float fovVelocity, float smoothTime)
 		{
 			return new CameraState
@@ -28,13 +28,13 @@ namespace RoR2
 			};
 		}
 
-		// Token: 0x04000FCC RID: 4044
+		// Token: 0x0400071E RID: 1822
 		public Vector3 position;
 
-		// Token: 0x04000FCD RID: 4045
+		// Token: 0x0400071F RID: 1823
 		public Quaternion rotation;
 
-		// Token: 0x04000FCE RID: 4046
+		// Token: 0x04000720 RID: 1824
 		public float fov;
 	}
 }

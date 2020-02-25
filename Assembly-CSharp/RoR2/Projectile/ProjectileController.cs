@@ -1,24 +1,35 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RoR2.Projectile
 {
-	// Token: 0x02000541 RID: 1345
+	// Token: 0x020004FE RID: 1278
 	[RequireComponent(typeof(TeamFilter))]
 	public class ProjectileController : NetworkBehaviour
 	{
-		// Token: 0x170002A1 RID: 673
-		// (get) Token: 0x06001E06 RID: 7686 RVA: 0x0008D750 File Offset: 0x0008B950
-		// (set) Token: 0x06001E07 RID: 7687 RVA: 0x0008D758 File Offset: 0x0008B958
+		// Token: 0x17000338 RID: 824
+		// (get) Token: 0x06001E4B RID: 7755 RVA: 0x00082C19 File Offset: 0x00080E19
+		// (set) Token: 0x06001E4C RID: 7756 RVA: 0x00082C21 File Offset: 0x00080E21
 		public TeamFilter teamFilter { get; private set; }
 
-		// Token: 0x170002A2 RID: 674
-		// (get) Token: 0x06001E08 RID: 7688 RVA: 0x0008D761 File Offset: 0x0008B961
-		// (set) Token: 0x06001E09 RID: 7689 RVA: 0x0008D769 File Offset: 0x0008B969
+		// Token: 0x17000339 RID: 825
+		// (get) Token: 0x06001E4D RID: 7757 RVA: 0x00082C2A File Offset: 0x00080E2A
+		// (set) Token: 0x06001E4E RID: 7758 RVA: 0x00082C32 File Offset: 0x00080E32
 		public NetworkConnection clientAuthorityOwner { get; private set; }
 
-		// Token: 0x06001E0A RID: 7690 RVA: 0x0008D774 File Offset: 0x0008B974
+		// Token: 0x1700033A RID: 826
+		// (get) Token: 0x06001E4F RID: 7759 RVA: 0x00082C3B File Offset: 0x00080E3B
+		// (set) Token: 0x06001E50 RID: 7760 RVA: 0x00082C43 File Offset: 0x00080E43
+		public GameObject authorityEffect { get; private set; }
+
+		// Token: 0x1700033B RID: 827
+		// (get) Token: 0x06001E51 RID: 7761 RVA: 0x00082C4C File Offset: 0x00080E4C
+		// (set) Token: 0x06001E52 RID: 7762 RVA: 0x00082C54 File Offset: 0x00080E54
+		public GameObject predictionEffect { get; private set; }
+
+		// Token: 0x06001E53 RID: 7763 RVA: 0x00082C60 File Offset: 0x00080E60
 		private void Awake()
 		{
 			this.rigidbody = base.GetComponent<Rigidbody>();
@@ -30,7 +41,7 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001E0B RID: 7691 RVA: 0x0008D7C8 File Offset: 0x0008B9C8
+		// Token: 0x06001E54 RID: 7764 RVA: 0x00082CB4 File Offset: 0x00080EB4
 		private void Start()
 		{
 			for (int i = 0; i < this.myColliders.Length; i++)
@@ -68,7 +79,7 @@ namespace RoR2.Projectile
 			this.clientAuthorityOwner = base.GetComponent<NetworkIdentity>().clientAuthorityOwner;
 		}
 
-		// Token: 0x06001E0C RID: 7692 RVA: 0x0008D8E0 File Offset: 0x0008BAE0
+		// Token: 0x06001E55 RID: 7765 RVA: 0x00082DCC File Offset: 0x00080FCC
 		private void OnDestroy()
 		{
 			if (NetworkServer.active)
@@ -81,13 +92,20 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001E0D RID: 7693 RVA: 0x0008D919 File Offset: 0x0008BB19
+		// Token: 0x06001E56 RID: 7766 RVA: 0x00082E05 File Offset: 0x00081005
 		private void OnEnable()
 		{
+			InstanceTracker.Add<ProjectileController>(this);
 			this.IgnoreCollisionsWithOwner();
 		}
 
-		// Token: 0x06001E0E RID: 7694 RVA: 0x0008D924 File Offset: 0x0008BB24
+		// Token: 0x06001E57 RID: 7767 RVA: 0x00082E13 File Offset: 0x00081013
+		private void OnDisable()
+		{
+			InstanceTracker.Remove<ProjectileController>(this);
+		}
+
+		// Token: 0x06001E58 RID: 7768 RVA: 0x00082E1C File Offset: 0x0008101C
 		private void IgnoreCollisionsWithOwner()
 		{
 			if (this.owner)
@@ -119,7 +137,7 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001E0F RID: 7695 RVA: 0x0008D9DF File Offset: 0x0008BBDF
+		// Token: 0x06001E59 RID: 7769 RVA: 0x00082ED7 File Offset: 0x000810D7
 		private static Vector3 EstimateContactPoint(ContactPoint[] contacts, Collider collider)
 		{
 			if (contacts.Length == 0)
@@ -129,7 +147,7 @@ namespace RoR2.Projectile
 			return contacts[0].point;
 		}
 
-		// Token: 0x06001E10 RID: 7696 RVA: 0x0008D9FD File Offset: 0x0008BBFD
+		// Token: 0x06001E5A RID: 7770 RVA: 0x00082EF5 File Offset: 0x000810F5
 		private static Vector3 EstimateContactNormal(ContactPoint[] contacts)
 		{
 			if (contacts.Length == 0)
@@ -139,7 +157,7 @@ namespace RoR2.Projectile
 			return contacts[0].normal;
 		}
 
-		// Token: 0x06001E11 RID: 7697 RVA: 0x0008DA18 File Offset: 0x0008BC18
+		// Token: 0x06001E5B RID: 7771 RVA: 0x00082F10 File Offset: 0x00081110
 		public void OnCollisionEnter(Collision collision)
 		{
 			if (NetworkServer.active || this.isPrediction)
@@ -159,42 +177,56 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001E13 RID: 7699 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001E5C RID: 7772 RVA: 0x00082F8D File Offset: 0x0008118D
+		private void OnValidate()
+		{
+			if (!base.GetComponent<NetworkIdentity>().localPlayerAuthority)
+			{
+				Debug.LogWarningFormat(this, "ProjectileController: {0} does not have localPlayerAuthority=true", new object[]
+				{
+					base.gameObject
+				});
+			}
+		}
+
+		// Token: 0x06001E5E RID: 7774 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x170002A3 RID: 675
-		// (get) Token: 0x06001E14 RID: 7700 RVA: 0x0008DAB0 File Offset: 0x0008BCB0
-		// (set) Token: 0x06001E15 RID: 7701 RVA: 0x0008DAC3 File Offset: 0x0008BCC3
+		// Token: 0x1700033C RID: 828
+		// (get) Token: 0x06001E5F RID: 7775 RVA: 0x00082FD8 File Offset: 0x000811D8
+		// (set) Token: 0x06001E60 RID: 7776 RVA: 0x00082FEB File Offset: 0x000811EB
 		public ushort NetworkpredictionId
 		{
 			get
 			{
 				return this.predictionId;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<ushort>(value, ref this.predictionId, 1u);
+				base.SetSyncVar<ushort>(value, ref this.predictionId, 1U);
 			}
 		}
 
-		// Token: 0x170002A4 RID: 676
-		// (get) Token: 0x06001E16 RID: 7702 RVA: 0x0008DAD8 File Offset: 0x0008BCD8
-		// (set) Token: 0x06001E17 RID: 7703 RVA: 0x0008DAEB File Offset: 0x0008BCEB
+		// Token: 0x1700033D RID: 829
+		// (get) Token: 0x06001E61 RID: 7777 RVA: 0x00083000 File Offset: 0x00081200
+		// (set) Token: 0x06001E62 RID: 7778 RVA: 0x00083013 File Offset: 0x00081213
 		public GameObject Networkowner
 		{
 			get
 			{
 				return this.owner;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVarGameObject(value, ref this.owner, 2u, ref this.___ownerNetId);
+				base.SetSyncVarGameObject(value, ref this.owner, 2U, ref this.___ownerNetId);
 			}
 		}
 
-		// Token: 0x06001E18 RID: 7704 RVA: 0x0008DB08 File Offset: 0x0008BD08
+		// Token: 0x06001E63 RID: 7779 RVA: 0x00083030 File Offset: 0x00081230
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -204,7 +236,7 @@ namespace RoR2.Projectile
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -213,7 +245,7 @@ namespace RoR2.Projectile
 				}
 				writer.WritePackedUInt32((uint)this.predictionId);
 			}
-			if ((base.syncVarDirtyBits & 2u) != 0u)
+			if ((base.syncVarDirtyBits & 2U) != 0U)
 			{
 				if (!flag)
 				{
@@ -229,7 +261,7 @@ namespace RoR2.Projectile
 			return flag;
 		}
 
-		// Token: 0x06001E19 RID: 7705 RVA: 0x0008DBB4 File Offset: 0x0008BDB4
+		// Token: 0x06001E64 RID: 7780 RVA: 0x000830DC File Offset: 0x000812DC
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -249,7 +281,7 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001E1A RID: 7706 RVA: 0x0008DC1A File Offset: 0x0008BE1A
+		// Token: 0x06001E65 RID: 7781 RVA: 0x00083142 File Offset: 0x00081342
 		public override void PreStartClient()
 		{
 			if (!this.___ownerNetId.IsEmpty())
@@ -258,51 +290,53 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x04002072 RID: 8306
+		// Token: 0x04001B98 RID: 7064
+		[HideInInspector]
+		[Tooltip("This is assigned to the prefab automatically by ProjectileCatalog at runtime. Do not set this value manually.")]
+		public int catalogIndex = -1;
+
+		// Token: 0x04001B99 RID: 7065
 		[Tooltip("The prefab to instantiate as the visual representation of this projectile. The prefab must have a ProjectileGhostController attached.")]
 		public GameObject ghostPrefab;
 
-		// Token: 0x04002073 RID: 8307
+		// Token: 0x04001B9A RID: 7066
 		private Rigidbody rigidbody;
 
-		// Token: 0x04002075 RID: 8309
+		// Token: 0x04001B9C RID: 7068
 		[HideInInspector]
 		public ProjectileGhostController ghost;
 
-		// Token: 0x04002076 RID: 8310
+		// Token: 0x04001B9D RID: 7069
 		[HideInInspector]
 		public bool isPrediction;
 
-		// Token: 0x04002077 RID: 8311
+		// Token: 0x04001B9E RID: 7070
 		public bool allowPrediction = true;
 
-		// Token: 0x04002078 RID: 8312
+		// Token: 0x04001B9F RID: 7071
 		[SyncVar]
 		[NonSerialized]
 		public ushort predictionId;
 
-		// Token: 0x04002079 RID: 8313
+		// Token: 0x04001BA0 RID: 7072
 		[SyncVar]
 		[HideInInspector]
 		public GameObject owner;
 
-		// Token: 0x0400207A RID: 8314
+		// Token: 0x04001BA1 RID: 7073
 		[HideInInspector]
 		public ProcChainMask procChainMask;
 
-		// Token: 0x0400207C RID: 8316
+		// Token: 0x04001BA3 RID: 7075
 		public float procCoefficient = 1f;
 
-		// Token: 0x0400207D RID: 8317
-		public GameObject authorityEffect;
+		// Token: 0x04001BA4 RID: 7076
+		public GameObject target;
 
-		// Token: 0x0400207E RID: 8318
-		public GameObject predictionEffect;
-
-		// Token: 0x0400207F RID: 8319
+		// Token: 0x04001BA7 RID: 7079
 		private Collider[] myColliders;
 
-		// Token: 0x04002080 RID: 8320
+		// Token: 0x04001BA8 RID: 7080
 		private NetworkInstanceId ___ownerNetId;
 	}
 }

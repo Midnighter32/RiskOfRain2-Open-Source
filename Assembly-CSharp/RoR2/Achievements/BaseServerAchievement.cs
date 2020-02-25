@@ -1,12 +1,13 @@
 ﻿using System;
+using UnityEngine;
 
 namespace RoR2.Achievements
 {
-	// Token: 0x02000689 RID: 1673
+	// Token: 0x0200068B RID: 1675
 	public class BaseServerAchievement
 	{
-		// Token: 0x1700032E RID: 814
-		// (get) Token: 0x06002554 RID: 9556 RVA: 0x000AEEE7 File Offset: 0x000AD0E7
+		// Token: 0x170003F7 RID: 1015
+		// (get) Token: 0x06002744 RID: 10052 RVA: 0x000AA52A File Offset: 0x000A872A
 		public NetworkUser networkUser
 		{
 			get
@@ -15,29 +16,43 @@ namespace RoR2.Achievements
 			}
 		}
 
-		// Token: 0x06002555 RID: 9557 RVA: 0x000AEEF4 File Offset: 0x000AD0F4
+		// Token: 0x06002745 RID: 10053 RVA: 0x000AA537 File Offset: 0x000A8737
 		protected CharacterBody GetCurrentBody()
 		{
 			return this.networkUser.GetCurrentBody();
 		}
 
-		// Token: 0x06002556 RID: 9558 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06002746 RID: 10054 RVA: 0x000AA544 File Offset: 0x000A8744
+		protected bool IsCurrentBody(GameObject gameObject)
+		{
+			CharacterBody currentBody = this.GetCurrentBody();
+			return currentBody && currentBody.gameObject == gameObject;
+		}
+
+		// Token: 0x06002747 RID: 10055 RVA: 0x000AA56C File Offset: 0x000A876C
+		protected bool IsCurrentBody(CharacterBody characterBody)
+		{
+			CharacterBody currentBody = this.GetCurrentBody();
+			return currentBody && currentBody == characterBody;
+		}
+
+		// Token: 0x06002748 RID: 10056 RVA: 0x0000409B File Offset: 0x0000229B
 		public virtual void OnInstall()
 		{
 		}
 
-		// Token: 0x06002557 RID: 9559 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06002749 RID: 10057 RVA: 0x0000409B File Offset: 0x0000229B
 		public virtual void OnUninstall()
 		{
 		}
 
-		// Token: 0x06002558 RID: 9560 RVA: 0x000AEF01 File Offset: 0x000AD101
+		// Token: 0x0600274A RID: 10058 RVA: 0x000AA58E File Offset: 0x000A878E
 		protected void Grant()
 		{
 			this.serverAchievementTracker.CallRpcGrantAchievement(this.achievementDef.serverIndex);
 		}
 
-		// Token: 0x06002559 RID: 9561 RVA: 0x000AEF1C File Offset: 0x000AD11C
+		// Token: 0x0600274B RID: 10059 RVA: 0x000AA5A8 File Offset: 0x000A87A8
 		public static BaseServerAchievement Instantiate(ServerAchievementIndex serverAchievementIndex)
 		{
 			AchievementDef achievementDef = AchievementManager.GetAchievementDef(serverAchievementIndex);
@@ -50,10 +65,10 @@ namespace RoR2.Achievements
 			return baseServerAchievement;
 		}
 
-		// Token: 0x0400285C RID: 10332
+		// Token: 0x040024E6 RID: 9446
 		public ServerAchievementTracker serverAchievementTracker;
 
-		// Token: 0x0400285D RID: 10333
+		// Token: 0x040024E7 RID: 9447
 		public AchievementDef achievementDef;
 	}
 }

@@ -4,10 +4,10 @@ using UnityEngine.Events;
 
 namespace EntityLogic
 {
-	// Token: 0x020001E7 RID: 487
+	// Token: 0x020000A8 RID: 168
 	public class Counter : MonoBehaviour
 	{
-		// Token: 0x06000980 RID: 2432 RVA: 0x0002FF46 File Offset: 0x0002E146
+		// Token: 0x06000340 RID: 832 RVA: 0x0000CC98 File Offset: 0x0000AE98
 		public void Add(int valueToAdd)
 		{
 			this.value += valueToAdd;
@@ -17,19 +17,19 @@ namespace EntityLogic
 			}
 		}
 
-		// Token: 0x06000981 RID: 2433 RVA: 0x0002FF6F File Offset: 0x0002E16F
+		// Token: 0x06000341 RID: 833 RVA: 0x0000CCC1 File Offset: 0x0000AEC1
 		public void SetValue(int newValue)
 		{
 			this.value = newValue;
 		}
 
-		// Token: 0x04000CDB RID: 3291
+		// Token: 0x040002ED RID: 749
 		public int value;
 
-		// Token: 0x04000CDC RID: 3292
+		// Token: 0x040002EE RID: 750
 		public int threshold;
 
-		// Token: 0x04000CDD RID: 3293
+		// Token: 0x040002EF RID: 751
 		public UnityEvent onTrigger;
 	}
 }

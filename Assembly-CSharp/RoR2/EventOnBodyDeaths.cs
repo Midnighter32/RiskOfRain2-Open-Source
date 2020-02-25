@@ -4,22 +4,22 @@ using UnityEngine.Events;
 
 namespace RoR2
 {
-	// Token: 0x020002EA RID: 746
+	// Token: 0x020001F8 RID: 504
 	public class EventOnBodyDeaths : MonoBehaviour
 	{
-		// Token: 0x06000F14 RID: 3860 RVA: 0x0004A931 File Offset: 0x00048B31
+		// Token: 0x06000ABC RID: 2748 RVA: 0x0002F861 File Offset: 0x0002DA61
 		private void OnEnable()
 		{
 			GlobalEventManager.onCharacterDeathGlobal += this.OnCharacterDeath;
 		}
 
-		// Token: 0x06000F15 RID: 3861 RVA: 0x0004A944 File Offset: 0x00048B44
+		// Token: 0x06000ABD RID: 2749 RVA: 0x0002F874 File Offset: 0x0002DA74
 		private void OnDisable()
 		{
 			GlobalEventManager.onCharacterDeathGlobal -= this.OnCharacterDeath;
 		}
 
-		// Token: 0x06000F16 RID: 3862 RVA: 0x0004A958 File Offset: 0x00048B58
+		// Token: 0x06000ABE RID: 2750 RVA: 0x0002F888 File Offset: 0x0002DA88
 		private void OnCharacterDeath(DamageReport damageReport)
 		{
 			if (damageReport.victimBody)
@@ -44,16 +44,16 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001326 RID: 4902
+		// Token: 0x04000B08 RID: 2824
 		public string[] bodyNames;
 
-		// Token: 0x04001327 RID: 4903
+		// Token: 0x04000B09 RID: 2825
 		private int currentDeathCount;
 
-		// Token: 0x04001328 RID: 4904
+		// Token: 0x04000B0A RID: 2826
 		public int targetDeathCount;
 
-		// Token: 0x04001329 RID: 4905
+		// Token: 0x04000B0B RID: 2827
 		public UnityEvent onAchieved;
 	}
 }

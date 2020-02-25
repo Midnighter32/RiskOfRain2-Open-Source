@@ -5,20 +5,29 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200042F RID: 1071
+	// Token: 0x0200038C RID: 908
 	public static class GameModeCatalog
 	{
-		// Token: 0x060017D9 RID: 6105 RVA: 0x00071E0F File Offset: 0x0007000F
-		static GameModeCatalog()
-		{
-			RoR2Application.onLoad = (Action)Delegate.Combine(RoR2Application.onLoad, new Action(GameModeCatalog.LoadGameModes));
-		}
+		// Token: 0x1400004E RID: 78
+		// (add) Token: 0x06001621 RID: 5665 RVA: 0x0005F460 File Offset: 0x0005D660
+		// (remove) Token: 0x06001622 RID: 5666 RVA: 0x0005F494 File Offset: 0x0005D694
+		public static event Action<List<GameObject>> getAdditionalEntries;
 
-		// Token: 0x060017DA RID: 6106 RVA: 0x00071E48 File Offset: 0x00070048
+		// Token: 0x06001623 RID: 5667 RVA: 0x0005F4C8 File Offset: 0x0005D6C8
+		[SystemInitializer(new Type[]
+		{
+			typeof(RuleCatalog)
+		})]
 		private static void LoadGameModes()
 		{
-			GameModeCatalog.indexToPrefabComponents = (from p in Resources.LoadAll<GameObject>("Prefabs/GameModes/")
-			orderby p.name
+			IEnumerable<GameObject> first = Resources.LoadAll<GameObject>("Prefabs/GameModes/");
+			List<GameObject> list = new List<GameObject>();
+			Action<List<GameObject>> action = GameModeCatalog.getAdditionalEntries;
+			if (action != null)
+			{
+				action(list);
+			}
+			GameModeCatalog.indexToPrefabComponents = (from p in first.Concat(list.OrderBy((GameObject v) => v.name, StringComparer.Ordinal))
 			select p.GetComponent<Run>()).ToArray<Run>();
 			GameModeCatalog.nameToIndex.Clear();
 			GameModeCatalog.nameToPrefabComponents.Clear();
@@ -43,7 +52,7 @@ namespace RoR2
 			GameModeCatalog.availability.MakeAvailable();
 		}
 
-		// Token: 0x060017DB RID: 6107 RVA: 0x00071F68 File Offset: 0x00070168
+		// Token: 0x06001624 RID: 5668 RVA: 0x0005F610 File Offset: 0x0005D810
 		public static Run FindGameModePrefabComponent(string name)
 		{
 			Run result;
@@ -51,7 +60,7 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x060017DC RID: 6108 RVA: 0x00071F84 File Offset: 0x00070184
+		// Token: 0x06001625 RID: 5669 RVA: 0x0005F62C File Offset: 0x0005D82C
 		public static Run GetGameModePrefabComponent(int index)
 		{
 			if (index < 0 || index >= GameModeCatalog.indexToPrefabComponents.Length)
@@ -61,7 +70,7 @@ namespace RoR2
 			return GameModeCatalog.indexToPrefabComponents[index];
 		}
 
-		// Token: 0x060017DD RID: 6109 RVA: 0x00071FA0 File Offset: 0x000701A0
+		// Token: 0x06001626 RID: 5670 RVA: 0x0005F648 File Offset: 0x0005D848
 		public static int FindGameModeIndex(string name)
 		{
 			int result;
@@ -69,16 +78,16 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x04001B36 RID: 6966
+		// Token: 0x040014D6 RID: 5334
 		private static readonly Dictionary<string, int> nameToIndex = new Dictionary<string, int>();
 
-		// Token: 0x04001B37 RID: 6967
+		// Token: 0x040014D7 RID: 5335
 		private static Run[] indexToPrefabComponents;
 
-		// Token: 0x04001B38 RID: 6968
+		// Token: 0x040014D8 RID: 5336
 		private static readonly Dictionary<string, Run> nameToPrefabComponents = new Dictionary<string, Run>();
 
-		// Token: 0x04001B39 RID: 6969
+		// Token: 0x040014DA RID: 5338
 		public static ResourceAvailability availability;
 	}
 }

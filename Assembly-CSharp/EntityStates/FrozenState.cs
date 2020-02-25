@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates
 {
-	// Token: 0x020000B2 RID: 178
+	// Token: 0x02000709 RID: 1801
 	public class FrozenState : BaseState
 	{
-		// Token: 0x06000383 RID: 899 RVA: 0x0000E124 File Offset: 0x0000C324
+		// Token: 0x060029FD RID: 10749 RVA: 0x000B064C File Offset: 0x000AE84C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -24,9 +24,6 @@ namespace EntityStates
 					this.temporaryOverlay = base.gameObject.AddComponent<TemporaryOverlay>();
 					this.temporaryOverlay.duration = this.freezeDuration;
 					this.temporaryOverlay.originalMaterial = Resources.Load<Material>("Materials/matIsFrozen");
-					this.temporaryOverlay.destroyComponentOnEnd = true;
-					this.temporaryOverlay.animateShaderAlpha = true;
-					this.temporaryOverlay.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
 					this.temporaryOverlay.AddToCharacerModel(component);
 				}
 			}
@@ -35,7 +32,7 @@ namespace EntityStates
 			{
 				this.modelAnimator.enabled = false;
 				this.duration = this.freezeDuration;
-				EffectManager.instance.SpawnEffect(FrozenState.frozenEffectPrefab, new EffectData
+				EffectManager.SpawnEffect(FrozenState.frozenEffectPrefab, new EffectData
 				{
 					origin = base.characterBody.corePosition,
 					scale = (base.characterBody ? base.characterBody.radius : 1f)
@@ -49,58 +46,61 @@ namespace EntityStates
 					base.rigidbodyMotor.moveVector = Vector3.zero;
 				}
 			}
-			base.healthComponent.isFrozen = true;
+			base.healthComponent.isInFrozenState = true;
 		}
 
-		// Token: 0x06000384 RID: 900 RVA: 0x0000E2E4 File Offset: 0x0000C4E4
+		// Token: 0x060029FE RID: 10750 RVA: 0x000B07C8 File Offset: 0x000AE9C8
 		public override void OnExit()
 		{
 			if (this.modelAnimator)
 			{
 				this.modelAnimator.enabled = true;
 			}
-			EffectManager.instance.SpawnEffect(FrozenState.frozenEffectPrefab, new EffectData
+			if (this.temporaryOverlay)
+			{
+				EntityState.Destroy(this.temporaryOverlay);
+			}
+			EffectManager.SpawnEffect(FrozenState.frozenEffectPrefab, new EffectData
 			{
 				origin = base.characterBody.corePosition,
 				scale = (base.characterBody ? base.characterBody.radius : 1f)
 			}, false);
-			base.healthComponent.isFrozen = false;
+			base.healthComponent.isInFrozenState = false;
 			base.OnExit();
 		}
 
-		// Token: 0x06000385 RID: 901 RVA: 0x0000E367 File Offset: 0x0000C567
+		// Token: 0x060029FF RID: 10751 RVA: 0x000B085E File Offset: 0x000AEA5E
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
-			if (base.isAuthority)
+			if (base.isAuthority && base.fixedAge >= this.duration)
 			{
-				this.stopwatch += Time.fixedDeltaTime;
-				if (this.stopwatch >= this.duration)
-				{
-					this.outer.SetNextStateToMain();
-				}
+				this.outer.SetNextStateToMain();
 			}
 		}
 
-		// Token: 0x0400033A RID: 826
-		private float stopwatch;
+		// Token: 0x06002A00 RID: 10752 RVA: 0x0000C68F File Offset: 0x0000A88F
+		public override InterruptPriority GetMinimumInterruptPriority()
+		{
+			return InterruptPriority.Frozen;
+		}
 
-		// Token: 0x0400033B RID: 827
+		// Token: 0x040025CD RID: 9677
 		private float duration;
 
-		// Token: 0x0400033C RID: 828
+		// Token: 0x040025CE RID: 9678
 		private Animator modelAnimator;
 
-		// Token: 0x0400033D RID: 829
+		// Token: 0x040025CF RID: 9679
 		private TemporaryOverlay temporaryOverlay;
 
-		// Token: 0x0400033E RID: 830
+		// Token: 0x040025D0 RID: 9680
 		public float freezeDuration = 0.35f;
 
-		// Token: 0x0400033F RID: 831
+		// Token: 0x040025D1 RID: 9681
 		public static GameObject frozenEffectPrefab;
 
-		// Token: 0x04000340 RID: 832
-		public static GameObject cullEffectPrefab;
+		// Token: 0x040025D2 RID: 9682
+		public static GameObject executeEffectPrefab;
 	}
 }

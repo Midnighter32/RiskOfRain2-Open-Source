@@ -4,11 +4,11 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000641 RID: 1601
+	// Token: 0x02000636 RID: 1590
 	[RequireComponent(typeof(Image))]
 	public class StageFadeTransitionController : MonoBehaviour
 	{
-		// Token: 0x060023D6 RID: 9174 RVA: 0x000A85A8 File Offset: 0x000A67A8
+		// Token: 0x06002575 RID: 9589 RVA: 0x000A2FB8 File Offset: 0x000A11B8
 		private void Awake()
 		{
 			this.fadeImage = base.GetComponent<Image>();
@@ -17,7 +17,7 @@ namespace RoR2.UI
 			this.fadeImage.color = color;
 		}
 
-		// Token: 0x060023D7 RID: 9175 RVA: 0x000A85E8 File Offset: 0x000A67E8
+		// Token: 0x06002576 RID: 9590 RVA: 0x000A2FF8 File Offset: 0x000A11F8
 		private void Start()
 		{
 			Color color = this.fadeImage.color;
@@ -27,7 +27,7 @@ namespace RoR2.UI
 			this.startEngineTime = Time.time;
 		}
 
-		// Token: 0x060023D8 RID: 9176 RVA: 0x000A863C File Offset: 0x000A683C
+		// Token: 0x06002577 RID: 9591 RVA: 0x000A304C File Offset: 0x000A124C
 		private void Update()
 		{
 			if (Stage.instance)
@@ -51,13 +51,13 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x040026CB RID: 9931
+		// Token: 0x0400232E RID: 9006
 		private Image fadeImage;
 
-		// Token: 0x040026CC RID: 9932
+		// Token: 0x0400232F RID: 9007
 		private float startEngineTime;
 
-		// Token: 0x040026CD RID: 9933
+		// Token: 0x04002330 RID: 9008
 		private const float transitionDuration = 0.5f;
 	}
 }

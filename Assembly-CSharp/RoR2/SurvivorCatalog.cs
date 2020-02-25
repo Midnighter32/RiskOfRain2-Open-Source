@@ -5,11 +5,31 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020004B9 RID: 1209
+	// Token: 0x0200044F RID: 1103
 	public static class SurvivorCatalog
 	{
-		// Token: 0x17000286 RID: 646
-		// (get) Token: 0x06001B4A RID: 6986 RVA: 0x0007F8AC File Offset: 0x0007DAAC
+		// Token: 0x17000310 RID: 784
+		// (get) Token: 0x06001AD5 RID: 6869 RVA: 0x00071BFB File Offset: 0x0006FDFB
+		public static int survivorCount
+		{
+			get
+			{
+				return SurvivorCatalog.survivorDefs.Length;
+			}
+		}
+
+		// Token: 0x17000311 RID: 785
+		// (get) Token: 0x06001AD6 RID: 6870 RVA: 0x00071BFB File Offset: 0x0006FDFB
+		public static SurvivorIndex endIndex
+		{
+			get
+			{
+				return (SurvivorIndex)SurvivorCatalog.survivorDefs.Length;
+			}
+		}
+
+		// Token: 0x17000312 RID: 786
+		// (get) Token: 0x06001AD7 RID: 6871 RVA: 0x00071C04 File Offset: 0x0006FE04
 		public static IEnumerable<SurvivorDef> allSurvivorDefs
 		{
 			get
@@ -18,24 +38,41 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001B4B RID: 6987 RVA: 0x0007F8B3 File Offset: 0x0007DAB3
+		// Token: 0x14000065 RID: 101
+		// (add) Token: 0x06001AD8 RID: 6872 RVA: 0x00071C0C File Offset: 0x0006FE0C
+		// (remove) Token: 0x06001AD9 RID: 6873 RVA: 0x00071C40 File Offset: 0x0006FE40
+		public static event Action<List<SurvivorDef>> getAdditionalSurvivorDefs;
+
+		// Token: 0x06001ADA RID: 6874 RVA: 0x00071C73 File Offset: 0x0006FE73
 		private static void RegisterSurvivor(SurvivorIndex survivorIndex, SurvivorDef survivorDef)
 		{
+			if (survivorIndex < SurvivorIndex.Count)
+			{
+				survivorDef.name = survivorIndex.ToString();
+			}
 			survivorDef.survivorIndex = survivorIndex;
 			SurvivorCatalog.survivorDefs[(int)survivorIndex] = survivorDef;
 		}
 
-		// Token: 0x06001B4C RID: 6988 RVA: 0x0007F8C4 File Offset: 0x0007DAC4
+		// Token: 0x06001ADB RID: 6875 RVA: 0x00071C9C File Offset: 0x0006FE9C
 		public static SurvivorDef GetSurvivorDef(SurvivorIndex survivorIndex)
 		{
-			if (survivorIndex < SurvivorIndex.Commando || survivorIndex > SurvivorIndex.Count)
-			{
-				return null;
-			}
-			return SurvivorCatalog.survivorDefs[(int)survivorIndex];
+			return HGArrayUtilities.GetSafe<SurvivorDef>(SurvivorCatalog.survivorDefs, (int)survivorIndex);
 		}
 
-		// Token: 0x06001B4D RID: 6989 RVA: 0x0007F8D8 File Offset: 0x0007DAD8
+		// Token: 0x06001ADC RID: 6876 RVA: 0x00071CA9 File Offset: 0x0006FEA9
+		public static SurvivorIndex GetSurvivorIndexFromBodyIndex(int bodyIndex)
+		{
+			return HGArrayUtilities.GetSafe<SurvivorIndex>(SurvivorCatalog.bodyIndexToSurvivorIndex, bodyIndex, SurvivorIndex.None);
+		}
+
+		// Token: 0x06001ADD RID: 6877 RVA: 0x00071CB7 File Offset: 0x0006FEB7
+		public static int GetBodyIndexFromSurvivorIndex(SurvivorIndex survivorIndex)
+		{
+			return HGArrayUtilities.GetSafe<int>(SurvivorCatalog.survivorIndexToBodyIndex, (int)survivorIndex, -1);
+		}
+
+		// Token: 0x06001ADE RID: 6878 RVA: 0x00071CC8 File Offset: 0x0006FEC8
 		public static SurvivorDef FindSurvivorDefFromBody(GameObject characterBodyPrefab)
 		{
 			for (int i = 0; i < SurvivorCatalog.survivorDefs.Length; i++)
@@ -50,7 +87,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06001B4E RID: 6990 RVA: 0x0007F918 File Offset: 0x0007DB18
+		// Token: 0x06001ADF RID: 6879 RVA: 0x00071D08 File Offset: 0x0006FF08
 		public static Texture GetSurvivorPortrait(SurvivorIndex survivorIndex)
 		{
 			SurvivorDef survivorDef = SurvivorCatalog.GetSurvivorDef(survivorIndex);
@@ -65,14 +102,28 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06001B4F RID: 6991 RVA: 0x0007F958 File Offset: 0x0007DB58
+		// Token: 0x06001AE0 RID: 6880 RVA: 0x00071D48 File Offset: 0x0006FF48
+		public static SurvivorIndex FindSurvivorIndex(string survivorName)
+		{
+			for (int i = 0; i < SurvivorCatalog.survivorCount; i++)
+			{
+				SurvivorDef survivorDef = SurvivorCatalog.survivorDefs[i];
+				if (((survivorDef != null) ? survivorDef.name : null) == survivorName)
+				{
+					return (SurvivorIndex)i;
+				}
+			}
+			return SurvivorIndex.None;
+		}
+
+		// Token: 0x06001AE1 RID: 6881 RVA: 0x00071D84 File Offset: 0x0006FF84
 		[SystemInitializer(new Type[]
 		{
 			typeof(BodyCatalog)
 		})]
 		private static void Init()
 		{
-			SurvivorCatalog.survivorDefs = new SurvivorDef[7];
+			SurvivorCatalog.survivorDefs = new SurvivorDef[10];
 			SurvivorCatalog.RegisterSurvivor(SurvivorIndex.Commando, new SurvivorDef
 			{
 				bodyPrefab = BodyCatalog.FindBodyPrefab("CommandoBody"),
@@ -96,7 +147,7 @@ namespace RoR2
 				primaryColor = new Color(0.827451f, 0.76862746f, 0.3137255f),
 				unlockableName = "Characters.Toolbot"
 			});
-			SurvivorCatalog.RegisterSurvivor(SurvivorIndex.Engineer, new SurvivorDef
+			SurvivorCatalog.RegisterSurvivor(SurvivorIndex.Engi, new SurvivorDef
 			{
 				bodyPrefab = BodyCatalog.FindBodyPrefab("EngiBody"),
 				displayPrefab = Resources.Load<GameObject>("Prefabs/CharacterDisplays/EngiDisplay"),
@@ -120,6 +171,30 @@ namespace RoR2
 				primaryColor = new Color(0.42352942f, 0.81960785f, 0.91764706f),
 				unlockableName = "Characters.Mercenary"
 			});
+			SurvivorCatalog.RegisterSurvivor(SurvivorIndex.Treebot, new SurvivorDef
+			{
+				bodyPrefab = BodyCatalog.FindBodyPrefab("TreebotBody"),
+				displayPrefab = Resources.Load<GameObject>("Prefabs/CharacterDisplays/TreebotDisplay"),
+				descriptionToken = "TREEBOT_DESCRIPTION",
+				primaryColor = new Color(0.5254902f, 0.61960787f, 0.32941177f),
+				unlockableName = "Characters.Treebot"
+			});
+			SurvivorCatalog.RegisterSurvivor(SurvivorIndex.Loader, new SurvivorDef
+			{
+				bodyPrefab = BodyCatalog.FindBodyPrefab("LoaderBody"),
+				displayPrefab = Resources.Load<GameObject>("Prefabs/CharacterDisplays/LoaderDisplay"),
+				descriptionToken = "LOADER_DESCRIPTION",
+				primaryColor = new Color(0.40392157f, 0.4392157f, 0.87058824f),
+				unlockableName = "Characters.Loader"
+			});
+			SurvivorCatalog.RegisterSurvivor(SurvivorIndex.Croco, new SurvivorDef
+			{
+				bodyPrefab = BodyCatalog.FindBodyPrefab("CrocoBody"),
+				displayPrefab = Resources.Load<GameObject>("Prefabs/CharacterDisplays/CrocoDisplay"),
+				descriptionToken = "CROCO_DESCRIPTION",
+				primaryColor = new Color(0.7882353f, 0.9490196f, 0.3019608f),
+				unlockableName = "Characters.Croco"
+			});
 			for (SurvivorIndex survivorIndex = SurvivorIndex.Commando; survivorIndex < SurvivorIndex.Count; survivorIndex++)
 			{
 				if (SurvivorCatalog.survivorDefs[(int)survivorIndex] == null)
@@ -130,6 +205,31 @@ namespace RoR2
 					});
 				}
 			}
+			List<SurvivorDef> list = new List<SurvivorDef>();
+			Action<List<SurvivorDef>> action = SurvivorCatalog.getAdditionalSurvivorDefs;
+			if (action != null)
+			{
+				action(list);
+			}
+			Array.Resize<SurvivorDef>(ref SurvivorCatalog.survivorDefs, SurvivorCatalog.survivorDefs.Length + list.Count);
+			for (int i = 0; i < list.Count; i++)
+			{
+				SurvivorCatalog.RegisterSurvivor(SurvivorIndex.Count + i, list[i]);
+			}
+			SurvivorCatalog.survivorIndexToBodyIndex = new int[SurvivorCatalog.survivorCount];
+			SurvivorCatalog.bodyIndexToSurvivorIndex = new SurvivorIndex[BodyCatalog.bodyCount];
+			HGArrayUtilities.SetAll<int>(SurvivorCatalog.survivorIndexToBodyIndex, -1);
+			HGArrayUtilities.SetAll<SurvivorIndex>(SurvivorCatalog.bodyIndexToSurvivorIndex, SurvivorIndex.None);
+			for (int j = 0; j < SurvivorCatalog.survivorDefs.Length; j++)
+			{
+				SurvivorDef survivorDef = SurvivorCatalog.survivorDefs[j];
+				int num = (survivorDef != null) ? survivorDef.bodyPrefab.GetComponent<CharacterBody>().bodyIndex : -1;
+				SurvivorCatalog.survivorIndexToBodyIndex[j] = num;
+				if (num != -1)
+				{
+					SurvivorCatalog.bodyIndexToSurvivorIndex[num] = (SurvivorIndex)j;
+				}
+			}
 			SurvivorCatalog._allSurvivorDefs = (from v in SurvivorCatalog.survivorDefs
 			where v != null
 			select v).ToArray<SurvivorDef>();
@@ -138,7 +238,7 @@ namespace RoR2
 			{
 				while (enumerator.MoveNext())
 				{
-					SurvivorCatalog.<>c__DisplayClass10_0 CS$<>8__locals1 = new SurvivorCatalog.<>c__DisplayClass10_0();
+					SurvivorCatalog.<>c__DisplayClass22_0 CS$<>8__locals1 = new SurvivorCatalog.<>c__DisplayClass22_0();
 					CS$<>8__locals1.survivorDef = enumerator.Current;
 					ViewablesCatalog.Node survivorEntryNode = new ViewablesCatalog.Node(CS$<>8__locals1.survivorDef.survivorIndex.ToString(), false, node);
 					survivorEntryNode.shouldShowUnviewed = ((UserProfile userProfile) => !userProfile.HasViewedViewable(survivorEntryNode.fullName) && userProfile.HasSurvivorUnlocked(CS$<>8__locals1.survivorDef.survivorIndex) && !string.IsNullOrEmpty(CS$<>8__locals1.survivorDef.unlockableName));
@@ -147,24 +247,33 @@ namespace RoR2
 			ViewablesCatalog.AddNodeToRoot(node);
 		}
 
-		// Token: 0x04001DE8 RID: 7656
+		// Token: 0x04001860 RID: 6240
 		public static int survivorMaxCount = 10;
 
-		// Token: 0x04001DE9 RID: 7657
+		// Token: 0x04001861 RID: 6241
 		private static SurvivorDef[] survivorDefs;
 
-		// Token: 0x04001DEA RID: 7658
+		// Token: 0x04001862 RID: 6242
 		private static SurvivorDef[] _allSurvivorDefs;
 
-		// Token: 0x04001DEB RID: 7659
+		// Token: 0x04001863 RID: 6243
+		private static SurvivorIndex[] bodyIndexToSurvivorIndex;
+
+		// Token: 0x04001864 RID: 6244
+		private static int[] survivorIndexToBodyIndex;
+
+		// Token: 0x04001865 RID: 6245
 		public static SurvivorIndex[] idealSurvivorOrder = new SurvivorIndex[]
 		{
 			SurvivorIndex.Commando,
-			SurvivorIndex.Toolbot,
 			SurvivorIndex.Huntress,
-			SurvivorIndex.Engineer,
+			SurvivorIndex.Toolbot,
+			SurvivorIndex.Engi,
 			SurvivorIndex.Mage,
-			SurvivorIndex.Merc
+			SurvivorIndex.Merc,
+			SurvivorIndex.Treebot,
+			SurvivorIndex.Loader,
+			SurvivorIndex.Croco
 		};
 	}
 }

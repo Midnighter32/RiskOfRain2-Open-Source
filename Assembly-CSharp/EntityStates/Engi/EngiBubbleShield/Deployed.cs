@@ -5,17 +5,17 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Engi.EngiBubbleShield
 {
-	// Token: 0x02000190 RID: 400
+	// Token: 0x02000893 RID: 2195
 	public class Deployed : EntityState
 	{
-		// Token: 0x060007B2 RID: 1970 RVA: 0x00026326 File Offset: 0x00024526
+		// Token: 0x06003143 RID: 12611 RVA: 0x000D41C2 File Offset: 0x000D23C2
 		public override void OnEnter()
 		{
 			base.OnEnter();
 			Util.PlaySound(Deployed.initialSoundString, base.gameObject);
 		}
 
-		// Token: 0x060007B3 RID: 1971 RVA: 0x00026340 File Offset: 0x00024540
+		// Token: 0x06003144 RID: 12612 RVA: 0x000D41DC File Offset: 0x000D23DC
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -34,40 +34,43 @@ namespace EntityStates.Engi.EngiBubbleShield
 			}
 		}
 
-		// Token: 0x060007B4 RID: 1972 RVA: 0x000263B4 File Offset: 0x000245B4
+		// Token: 0x06003145 RID: 12613 RVA: 0x000D4250 File Offset: 0x000D2450
 		public override void OnExit()
 		{
 			base.OnExit();
-			EffectManager.instance.SpawnEffect(Deployed.destroyEffectPrefab, new EffectData
+			EffectManager.SpawnEffect(this.destroyEffectPrefab, new EffectData
 			{
 				origin = base.transform.position,
-				scale = Deployed.destroyEffectRadius
+				rotation = base.transform.rotation,
+				scale = this.destroyEffectRadius
 			}, false);
 			Util.PlaySound(Deployed.destroySoundString, base.gameObject);
 		}
 
-		// Token: 0x040009F8 RID: 2552
+		// Token: 0x04002F94 RID: 12180
 		public static string childLocatorString;
 
-		// Token: 0x040009F9 RID: 2553
+		// Token: 0x04002F95 RID: 12181
 		public static string initialSoundString;
 
-		// Token: 0x040009FA RID: 2554
+		// Token: 0x04002F96 RID: 12182
 		public static string destroySoundString;
 
-		// Token: 0x040009FB RID: 2555
+		// Token: 0x04002F97 RID: 12183
 		public static float delayToDeploy;
 
-		// Token: 0x040009FC RID: 2556
+		// Token: 0x04002F98 RID: 12184
 		public static float lifetime;
 
-		// Token: 0x040009FD RID: 2557
-		public static GameObject destroyEffectPrefab;
+		// Token: 0x04002F99 RID: 12185
+		[SerializeField]
+		public GameObject destroyEffectPrefab;
 
-		// Token: 0x040009FE RID: 2558
-		public static float destroyEffectRadius;
+		// Token: 0x04002F9A RID: 12186
+		[SerializeField]
+		public float destroyEffectRadius;
 
-		// Token: 0x040009FF RID: 2559
+		// Token: 0x04002F9B RID: 12187
 		private bool hasDeployed;
 	}
 }

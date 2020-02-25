@@ -1,17 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-// Token: 0x02000078 RID: 120
+// Token: 0x0200007D RID: 125
 public class Xoroshiro128Plus
 {
-	// Token: 0x060001DC RID: 476 RVA: 0x00009A94 File Offset: 0x00007C94
+	// Token: 0x06000215 RID: 533 RVA: 0x0000A4F4 File Offset: 0x000086F4
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static ulong RotateLeft(ulong x, int k)
 	{
 		return x << k | x >> 64 - k;
 	}
 
-	// Token: 0x060001DD RID: 477 RVA: 0x00009AA6 File Offset: 0x00007CA6
+	// Token: 0x06000216 RID: 534 RVA: 0x0000A506 File Offset: 0x00008706
 	public Xoroshiro128Plus(ulong seed)
 	{
 		Xoroshiro128Plus.initializer.x = seed;
@@ -19,7 +20,7 @@ public class Xoroshiro128Plus
 		this.state1 = Xoroshiro128Plus.initializer.Next();
 	}
 
-	// Token: 0x060001DE RID: 478 RVA: 0x00009ADC File Offset: 0x00007CDC
+	// Token: 0x06000217 RID: 535 RVA: 0x0000A53C File Offset: 0x0000873C
 	public ulong Next()
 	{
 		ulong num = this.state0;
@@ -31,7 +32,7 @@ public class Xoroshiro128Plus
 		return result;
 	}
 
-	// Token: 0x060001DF RID: 479 RVA: 0x00009B24 File Offset: 0x00007D24
+	// Token: 0x06000218 RID: 536 RVA: 0x0000A584 File Offset: 0x00008784
 	public void Jump()
 	{
 		ulong num = 0UL;
@@ -52,7 +53,7 @@ public class Xoroshiro128Plus
 		this.state1 = num2;
 	}
 
-	// Token: 0x060001E0 RID: 480 RVA: 0x00009B90 File Offset: 0x00007D90
+	// Token: 0x06000219 RID: 537 RVA: 0x0000A5F0 File Offset: 0x000087F0
 	public void LongJump()
 	{
 		ulong num = 0UL;
@@ -73,29 +74,29 @@ public class Xoroshiro128Plus
 		this.state1 = num2;
 	}
 
-	// Token: 0x060001E1 RID: 481 RVA: 0x00009BFA File Offset: 0x00007DFA
+	// Token: 0x0600021A RID: 538 RVA: 0x0000A65A File Offset: 0x0000885A
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static double ToDouble01Fast(ulong x)
 	{
 		return BitConverter.Int64BitsToDouble((long)(4607182418800017408UL | x >> 12));
 	}
 
-	// Token: 0x060001E2 RID: 482 RVA: 0x00009C0F File Offset: 0x00007E0F
+	// Token: 0x0600021B RID: 539 RVA: 0x0000A66F File Offset: 0x0000886F
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static double ToDouble01(ulong x)
 	{
 		return (x >> 11) * 1.1102230246251565E-16;
 	}
 
-	// Token: 0x060001E3 RID: 483 RVA: 0x00009C21 File Offset: 0x00007E21
+	// Token: 0x0600021C RID: 540 RVA: 0x0000A681 File Offset: 0x00008881
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static float ToFloat01(uint x)
 	{
 		return (x >> 8) * 5.9604645E-08f;
 	}
 
-	// Token: 0x1700001F RID: 31
-	// (get) Token: 0x060001E4 RID: 484 RVA: 0x00009C2E File Offset: 0x00007E2E
+	// Token: 0x17000025 RID: 37
+	// (get) Token: 0x0600021D RID: 541 RVA: 0x0000A68E File Offset: 0x0000888E
 	public bool nextBool
 	{
 		get
@@ -104,8 +105,8 @@ public class Xoroshiro128Plus
 		}
 	}
 
-	// Token: 0x17000020 RID: 32
-	// (get) Token: 0x060001E5 RID: 485 RVA: 0x00009C3A File Offset: 0x00007E3A
+	// Token: 0x17000026 RID: 38
+	// (get) Token: 0x0600021E RID: 542 RVA: 0x0000A69A File Offset: 0x0000889A
 	public uint nextUint
 	{
 		get
@@ -114,8 +115,8 @@ public class Xoroshiro128Plus
 		}
 	}
 
-	// Token: 0x17000021 RID: 33
-	// (get) Token: 0x060001E6 RID: 486 RVA: 0x00009C43 File Offset: 0x00007E43
+	// Token: 0x17000027 RID: 39
+	// (get) Token: 0x0600021F RID: 543 RVA: 0x0000A6A3 File Offset: 0x000088A3
 	public int nextInt
 	{
 		get
@@ -124,8 +125,8 @@ public class Xoroshiro128Plus
 		}
 	}
 
-	// Token: 0x17000022 RID: 34
-	// (get) Token: 0x060001E7 RID: 487 RVA: 0x00009C4C File Offset: 0x00007E4C
+	// Token: 0x17000028 RID: 40
+	// (get) Token: 0x06000220 RID: 544 RVA: 0x0000A6AC File Offset: 0x000088AC
 	public ulong nextUlong
 	{
 		get
@@ -134,8 +135,8 @@ public class Xoroshiro128Plus
 		}
 	}
 
-	// Token: 0x17000023 RID: 35
-	// (get) Token: 0x060001E8 RID: 488 RVA: 0x00009C4C File Offset: 0x00007E4C
+	// Token: 0x17000029 RID: 41
+	// (get) Token: 0x06000221 RID: 545 RVA: 0x0000A6AC File Offset: 0x000088AC
 	public long nextLong
 	{
 		get
@@ -144,8 +145,8 @@ public class Xoroshiro128Plus
 		}
 	}
 
-	// Token: 0x17000024 RID: 36
-	// (get) Token: 0x060001E9 RID: 489 RVA: 0x00009C54 File Offset: 0x00007E54
+	// Token: 0x1700002A RID: 42
+	// (get) Token: 0x06000222 RID: 546 RVA: 0x0000A6B4 File Offset: 0x000088B4
 	public double nextNormalizedDouble
 	{
 		get
@@ -154,8 +155,8 @@ public class Xoroshiro128Plus
 		}
 	}
 
-	// Token: 0x17000025 RID: 37
-	// (get) Token: 0x060001EA RID: 490 RVA: 0x00009C61 File Offset: 0x00007E61
+	// Token: 0x1700002B RID: 43
+	// (get) Token: 0x06000223 RID: 547 RVA: 0x0000A6C1 File Offset: 0x000088C1
 	public float nextNormalizedFloat
 	{
 		get
@@ -164,25 +165,25 @@ public class Xoroshiro128Plus
 		}
 	}
 
-	// Token: 0x060001EB RID: 491 RVA: 0x00009C6E File Offset: 0x00007E6E
+	// Token: 0x06000224 RID: 548 RVA: 0x0000A6CE File Offset: 0x000088CE
 	public float RangeFloat(float minInclusive, float maxInclusive)
 	{
 		return minInclusive + (maxInclusive - minInclusive) * this.nextNormalizedFloat;
 	}
 
-	// Token: 0x060001EC RID: 492 RVA: 0x00009C7C File Offset: 0x00007E7C
+	// Token: 0x06000225 RID: 549 RVA: 0x0000A6DC File Offset: 0x000088DC
 	public int RangeInt(int minInclusive, int maxExclusive)
 	{
 		return minInclusive + (int)this.RangeUInt32Uniform((uint)(maxExclusive - minInclusive));
 	}
 
-	// Token: 0x060001ED RID: 493 RVA: 0x00009C89 File Offset: 0x00007E89
+	// Token: 0x06000226 RID: 550 RVA: 0x0000A6E9 File Offset: 0x000088E9
 	public long RangeLong(long minInclusive, long maxExclusive)
 	{
 		return minInclusive + (long)this.RangeUInt64Uniform((ulong)(maxExclusive - minInclusive));
 	}
 
-	// Token: 0x060001EE RID: 494 RVA: 0x00009C98 File Offset: 0x00007E98
+	// Token: 0x06000227 RID: 551 RVA: 0x0000A6F8 File Offset: 0x000088F8
 	private ulong RangeUInt64Uniform(ulong maxExclusive)
 	{
 		if (maxExclusive == 0UL)
@@ -200,10 +201,10 @@ public class Xoroshiro128Plus
 		return num3;
 	}
 
-	// Token: 0x060001EF RID: 495 RVA: 0x00009CD0 File Offset: 0x00007ED0
+	// Token: 0x06000228 RID: 552 RVA: 0x0000A730 File Offset: 0x00008930
 	private uint RangeUInt32Uniform(uint maxExclusive)
 	{
-		if (maxExclusive == 0u)
+		if (maxExclusive == 0U)
 		{
 			throw new ArgumentOutOfRangeException("Range cannot have size of zero.");
 		}
@@ -218,7 +219,7 @@ public class Xoroshiro128Plus
 		return num3;
 	}
 
-	// Token: 0x060001F0 RID: 496 RVA: 0x00009D08 File Offset: 0x00007F08
+	// Token: 0x06000229 RID: 553 RVA: 0x0000A768 File Offset: 0x00008968
 	private static int[] GenerateLogTable()
 	{
 		int[] array = new int[256];
@@ -231,7 +232,7 @@ public class Xoroshiro128Plus
 		return array;
 	}
 
-	// Token: 0x060001F1 RID: 497 RVA: 0x00009D4C File Offset: 0x00007F4C
+	// Token: 0x0600022A RID: 554 RVA: 0x0000A7AC File Offset: 0x000089AC
 	private static int CalcRequiredBits(ulong v)
 	{
 		int num = 0;
@@ -243,11 +244,11 @@ public class Xoroshiro128Plus
 		return num;
 	}
 
-	// Token: 0x060001F2 RID: 498 RVA: 0x00009D6C File Offset: 0x00007F6C
+	// Token: 0x0600022B RID: 555 RVA: 0x0000A7CC File Offset: 0x000089CC
 	private static int CalcRequiredBits(uint v)
 	{
 		int num = 0;
-		while (v != 0u)
+		while (v != 0U)
 		{
 			v >>= 1;
 			num++;
@@ -255,41 +256,59 @@ public class Xoroshiro128Plus
 		return num;
 	}
 
-	// Token: 0x040001FC RID: 508
+	// Token: 0x0600022C RID: 556 RVA: 0x0000A7EA File Offset: 0x000089EA
+	public ref T NextElementUniform<T>(T[] array)
+	{
+		return ref array[this.RangeInt(0, array.Length)];
+	}
+
+	// Token: 0x0600022D RID: 557 RVA: 0x0000A7FC File Offset: 0x000089FC
+	public T NextElementUniform<T>(List<T> list)
+	{
+		return list[this.RangeInt(0, list.Count)];
+	}
+
+	// Token: 0x0600022E RID: 558 RVA: 0x0000A811 File Offset: 0x00008A11
+	public T NextElementUniform<T>(IList<T> list)
+	{
+		return list[this.RangeInt(0, list.Count)];
+	}
+
+	// Token: 0x04000207 RID: 519
 	private ulong state0;
 
-	// Token: 0x040001FD RID: 509
+	// Token: 0x04000208 RID: 520
 	private ulong state1;
 
-	// Token: 0x040001FE RID: 510
+	// Token: 0x04000209 RID: 521
 	private static readonly SplitMix64 initializer = new SplitMix64();
 
-	// Token: 0x040001FF RID: 511
+	// Token: 0x0400020A RID: 522
 	private const ulong JUMP0 = 16109378705422636197UL;
 
-	// Token: 0x04000200 RID: 512
+	// Token: 0x0400020B RID: 523
 	private const ulong JUMP1 = 1659688472399708668UL;
 
-	// Token: 0x04000201 RID: 513
+	// Token: 0x0400020C RID: 524
 	private static readonly ulong[] JUMP = new ulong[]
 	{
 		16109378705422636197UL,
 		1659688472399708668UL
 	};
 
-	// Token: 0x04000202 RID: 514
+	// Token: 0x0400020D RID: 525
 	private const ulong LONG_JUMP0 = 15179817016004374139UL;
 
-	// Token: 0x04000203 RID: 515
+	// Token: 0x0400020E RID: 526
 	private const ulong LONG_JUMP1 = 15987667697637423809UL;
 
-	// Token: 0x04000204 RID: 516
+	// Token: 0x0400020F RID: 527
 	private static readonly ulong[] LONG_JUMP = new ulong[]
 	{
 		15179817016004374139UL,
 		15987667697637423809UL
 	};
 
-	// Token: 0x04000205 RID: 517
+	// Token: 0x04000210 RID: 528
 	private static readonly int[] logTable256 = Xoroshiro128Plus.GenerateLogTable();
 }

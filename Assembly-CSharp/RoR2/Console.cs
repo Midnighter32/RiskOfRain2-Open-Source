@@ -13,22 +13,22 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020002AB RID: 683
+	// Token: 0x020001BA RID: 442
 	public class Console : MonoBehaviour
 	{
-		// Token: 0x1700012F RID: 303
-		// (get) Token: 0x06000DDD RID: 3549 RVA: 0x00044233 File Offset: 0x00042433
-		// (set) Token: 0x06000DDE RID: 3550 RVA: 0x0004423A File Offset: 0x0004243A
+		// Token: 0x1700013F RID: 319
+		// (get) Token: 0x0600097B RID: 2427 RVA: 0x00029293 File Offset: 0x00027493
+		// (set) Token: 0x0600097C RID: 2428 RVA: 0x0002929A File Offset: 0x0002749A
 		public static Console instance { get; private set; }
 
-		// Token: 0x06000DDF RID: 3551 RVA: 0x00044242 File Offset: 0x00042442
+		// Token: 0x0600097D RID: 2429 RVA: 0x000292A2 File Offset: 0x000274A2
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void RegisterLogHandler()
 		{
 			Application.logMessageReceived += Console.HandleLog;
 		}
 
-		// Token: 0x06000DE0 RID: 3552 RVA: 0x00044258 File Offset: 0x00042458
+		// Token: 0x0600097E RID: 2430 RVA: 0x000292B8 File Offset: 0x000274B8
 		private static void HandleLog(string message, string stackTrace, LogType logType)
 		{
 			if (logType == LogType.Error)
@@ -59,17 +59,17 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x1400000C RID: 12
-		// (add) Token: 0x06000DE1 RID: 3553 RVA: 0x00044304 File Offset: 0x00042504
-		// (remove) Token: 0x06000DE2 RID: 3554 RVA: 0x00044338 File Offset: 0x00042538
+		// Token: 0x14000014 RID: 20
+		// (add) Token: 0x0600097F RID: 2431 RVA: 0x00029364 File Offset: 0x00027564
+		// (remove) Token: 0x06000980 RID: 2432 RVA: 0x00029398 File Offset: 0x00027598
 		public static event Console.LogReceivedDelegate onLogReceived;
 
-		// Token: 0x1400000D RID: 13
-		// (add) Token: 0x06000DE3 RID: 3555 RVA: 0x0004436C File Offset: 0x0004256C
-		// (remove) Token: 0x06000DE4 RID: 3556 RVA: 0x000443A0 File Offset: 0x000425A0
+		// Token: 0x14000015 RID: 21
+		// (add) Token: 0x06000981 RID: 2433 RVA: 0x000293CC File Offset: 0x000275CC
+		// (remove) Token: 0x06000982 RID: 2434 RVA: 0x00029400 File Offset: 0x00027600
 		public static event Action onClear;
 
-		// Token: 0x06000DE5 RID: 3557 RVA: 0x000443D4 File Offset: 0x000425D4
+		// Token: 0x06000983 RID: 2435 RVA: 0x00029434 File Offset: 0x00027634
 		private string GetVstrValue(NetworkUser user, string identifier)
 		{
 			string result;
@@ -85,7 +85,7 @@ namespace RoR2
 			return "";
 		}
 
-		// Token: 0x06000DE6 RID: 3558 RVA: 0x0004440C File Offset: 0x0004260C
+		// Token: 0x06000984 RID: 2436 RVA: 0x0002946C File Offset: 0x0002766C
 		private void InitConVars()
 		{
 			this.allConVars = new Dictionary<string, BaseConVar>();
@@ -150,12 +150,12 @@ namespace RoR2
 				}
 				else if (value.defaultValue != null)
 				{
-					value.SetString(value.defaultValue);
+					value.AttemptSetString(value.defaultValue);
 				}
 			}
 		}
 
-		// Token: 0x06000DE7 RID: 3559 RVA: 0x0004465C File Offset: 0x0004285C
+		// Token: 0x06000985 RID: 2437 RVA: 0x000296BC File Offset: 0x000278BC
 		private void RegisterConVarInternal(BaseConVar conVar)
 		{
 			if (conVar == null)
@@ -170,7 +170,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000DE8 RID: 3560 RVA: 0x00044694 File Offset: 0x00042894
+		// Token: 0x06000986 RID: 2438 RVA: 0x000296F4 File Offset: 0x000278F4
 		public BaseConVar FindConVar(string name)
 		{
 			BaseConVar result;
@@ -181,7 +181,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06000DE9 RID: 3561 RVA: 0x000446B4 File Offset: 0x000428B4
+		// Token: 0x06000987 RID: 2439 RVA: 0x00029714 File Offset: 0x00027914
 		public void SubmitCmd(NetworkUser sender, string cmd, bool recordSubmit = false)
 		{
 			if (recordSubmit)
@@ -210,7 +210,7 @@ namespace RoR2
 					flag = false;
 					if (list.Count > 0)
 					{
-						string concommandName = list[0].ToLower();
+						string concommandName = list[0].ToLower(CultureInfo.InvariantCulture);
 						list.RemoveAt(0);
 						this.RunCmd(sender, concommandName, list);
 						list.Clear();
@@ -235,55 +235,85 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000DEA RID: 3562 RVA: 0x000447B4 File Offset: 0x000429B4
+		// Token: 0x06000988 RID: 2440 RVA: 0x00029817 File Offset: 0x00027A17
 		private void ForwardCmdToServer(ConCommandArgs args)
 		{
 			if (!args.sender)
 			{
 				return;
 			}
-			Console.sendCmdBuilder.Append(args.commandName);
-			Console.sendCmdBuilder.Append(" ");
-			foreach (string value in args.userArgs)
-			{
-				Console.sendCmdBuilder.Append("\"");
-				Console.sendCmdBuilder.Append(value);
-				Console.sendCmdBuilder.Append("\"");
-			}
-			string cmd = Console.sendCmdBuilder.ToString();
-			Console.sendCmdBuilder.Length = 0;
-			args.sender.CallCmdSendConsoleCommand(cmd);
+			args.sender.CallCmdSendConsoleCommand(args.commandName, args.userArgs.ToArray());
 		}
 
-		// Token: 0x06000DEB RID: 3563 RVA: 0x00044880 File Offset: 0x00042A80
+		// Token: 0x06000989 RID: 2441 RVA: 0x00029843 File Offset: 0x00027A43
+		public void RunClientCmd(NetworkUser sender, string concommandName, string[] args)
+		{
+			this.RunCmd(sender, concommandName, new List<string>(args));
+		}
+
+		// Token: 0x0600098A RID: 2442 RVA: 0x00029854 File Offset: 0x00027A54
 		private void RunCmd(NetworkUser sender, string concommandName, List<string> userArgs)
 		{
-			bool active = NetworkServer.active;
-			Console.ConCommand conCommand;
+			bool flag = sender != null && !sender.isLocalPlayer;
+			Console.ConCommand conCommand = null;
+			BaseConVar baseConVar = null;
+			ConVarFlags flags;
 			if (this.concommandCatalog.TryGetValue(concommandName, out conCommand))
 			{
-				if (!active && (conCommand.flags & ConVarFlags.ExecuteOnServer) > ConVarFlags.None)
+				flags = conCommand.flags;
+			}
+			else
+			{
+				baseConVar = this.FindConVar(concommandName);
+				if (baseConVar == null)
 				{
-					this.ForwardCmdToServer(new ConCommandArgs
-					{
-						sender = sender,
-						commandName = concommandName,
-						userArgs = userArgs
-					});
-					return;
-				}
-				if (NetworkServer.active && sender && !sender.isLocalPlayer && (conCommand.flags & ConVarFlags.SenderMustBeServer) != ConVarFlags.None)
-				{
-					return;
-				}
-				if ((conCommand.flags & ConVarFlags.Cheat) != ConVarFlags.None && !RoR2Application.cvCheats.boolValue)
-				{
-					Debug.LogFormat("Command \"{0}\" cannot be used while cheats are disabled.", new object[]
+					Debug.LogFormat("\"{0}\" is not a recognized ConCommand or ConVar.", new object[]
 					{
 						concommandName
 					});
 					return;
 				}
+				flags = baseConVar.flags;
+			}
+			bool flag2 = (flags & ConVarFlags.ExecuteOnServer) > ConVarFlags.None;
+			if (!NetworkServer.active && flag2)
+			{
+				this.ForwardCmdToServer(new ConCommandArgs
+				{
+					sender = sender,
+					commandName = concommandName,
+					userArgs = userArgs
+				});
+				return;
+			}
+			if (flag && (flags & ConVarFlags.SenderMustBeServer) != ConVarFlags.None)
+			{
+				Debug.LogFormat("Blocked server-only command {0} from remote user {1}.", new object[]
+				{
+					concommandName,
+					sender.userName
+				});
+				return;
+			}
+			if (flag && !flag2)
+			{
+				Debug.LogFormat("Blocked non-transmittable command {0} from remote user {1}.", new object[]
+				{
+					concommandName,
+					sender.userName
+				});
+				return;
+			}
+			if ((flags & ConVarFlags.Cheat) != ConVarFlags.None && !RoR2Application.cvCheats.boolValue)
+			{
+				Debug.LogFormat("Command \"{0}\" cannot be used while cheats are disabled.", new object[]
+				{
+					concommandName
+				});
+				return;
+			}
+			if (conCommand != null)
+			{
 				try
 				{
 					conCommand.action(new ConCommandArgs
@@ -303,75 +333,44 @@ namespace RoR2
 				}
 				return;
 			}
-			else
+			if (baseConVar == null)
 			{
-				BaseConVar baseConVar = this.FindConVar(concommandName);
-				if (baseConVar == null)
-				{
-					Debug.LogFormat("\"{0}\" is not a recognized ConCommand or ConVar.", new object[]
-					{
-						concommandName
-					});
-					return;
-				}
-				if (!active && (baseConVar.flags & ConVarFlags.ExecuteOnServer) > ConVarFlags.None)
-				{
-					this.ForwardCmdToServer(new ConCommandArgs
-					{
-						sender = sender,
-						commandName = concommandName,
-						userArgs = userArgs
-					});
-					return;
-				}
-				if (NetworkServer.active && sender && !sender.isLocalPlayer && (baseConVar.flags & ConVarFlags.SenderMustBeServer) != ConVarFlags.None)
-				{
-					return;
-				}
-				if (userArgs.Count <= 0)
-				{
-					Debug.LogFormat("\"{0}\" = \"{1}\"\n{2}", new object[]
-					{
-						concommandName,
-						baseConVar.GetString(),
-						baseConVar.helpText
-					});
-					return;
-				}
-				if ((baseConVar.flags & ConVarFlags.Cheat) != ConVarFlags.None && !RoR2Application.cvCheats.boolValue)
-				{
-					Debug.LogFormat("Command \"{0}\" cannot be changed while cheats are disabled.", new object[]
-					{
-						concommandName
-					});
-					return;
-				}
-				baseConVar.SetString(userArgs[0]);
 				return;
 			}
+			if (userArgs.Count > 0)
+			{
+				baseConVar.AttemptSetString(userArgs[0]);
+				return;
+			}
+			Debug.LogFormat("\"{0}\" = \"{1}\"\n{2}", new object[]
+			{
+				concommandName,
+				baseConVar.GetString(),
+				baseConVar.helpText
+			});
 		}
 
-		// Token: 0x06000DEC RID: 3564
+		// Token: 0x0600098B RID: 2443
 		[DllImport("kernel32.dll")]
 		private static extern bool AllocConsole();
 
-		// Token: 0x06000DED RID: 3565
+		// Token: 0x0600098C RID: 2444
 		[DllImport("kernel32.dll")]
 		private static extern bool FreeConsole();
 
-		// Token: 0x06000DEE RID: 3566
+		// Token: 0x0600098D RID: 2445
 		[DllImport("kernel32.dll")]
 		private static extern bool AttachConsole(int processId);
 
-		// Token: 0x06000DEF RID: 3567
+		// Token: 0x0600098E RID: 2446
 		[DllImport("user32.dll")]
 		private static extern bool PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
 
-		// Token: 0x06000DF0 RID: 3568
+		// Token: 0x0600098F RID: 2447
 		[DllImport("kernel32.dll")]
 		private static extern IntPtr GetConsoleWindow();
 
-		// Token: 0x06000DF1 RID: 3569 RVA: 0x00044A80 File Offset: 0x00042C80
+		// Token: 0x06000990 RID: 2448 RVA: 0x00029A10 File Offset: 0x00027C10
 		private static string ReadInputStream()
 		{
 			if (Console.stdInQueue.Count > 0)
@@ -381,7 +380,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06000DF2 RID: 3570 RVA: 0x00044A9C File Offset: 0x00042C9C
+		// Token: 0x06000991 RID: 2449 RVA: 0x00029A2C File Offset: 0x00027C2C
 		private static void ThreadedInputQueue()
 		{
 			string item;
@@ -391,7 +390,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000DF3 RID: 3571 RVA: 0x00044AC8 File Offset: 0x00042CC8
+		// Token: 0x06000992 RID: 2450 RVA: 0x00029A58 File Offset: 0x00027C58
 		private static void SetupSystemConsole()
 		{
 			bool flag = false;
@@ -433,53 +432,42 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000DF4 RID: 3572 RVA: 0x00044B84 File Offset: 0x00042D84
+		// Token: 0x06000993 RID: 2451 RVA: 0x00029B14 File Offset: 0x00027D14
 		private void Awake()
 		{
 			Console.instance = this;
 			Console.SetupSystemConsole();
 			this.InitConVars();
-			Type[] types = base.GetType().Assembly.GetTypes();
-			for (int i = 0; i < types.Length; i++)
+			foreach (SearchableAttribute searchableAttribute in SearchableAttribute.GetInstances<ConCommandAttribute>())
 			{
-				foreach (MethodInfo methodInfo in types[i].GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+				ConCommandAttribute conCommandAttribute = (ConCommandAttribute)searchableAttribute;
+				this.concommandCatalog[conCommandAttribute.commandName.ToLower(CultureInfo.InvariantCulture)] = new Console.ConCommand
 				{
-					object[] customAttributes = methodInfo.GetCustomAttributes(false);
-					for (int k = 0; k < customAttributes.Length; k++)
-					{
-						ConCommandAttribute conCommandAttribute = ((Attribute)customAttributes[k]) as ConCommandAttribute;
-						if (conCommandAttribute != null)
-						{
-							this.concommandCatalog[conCommandAttribute.commandName.ToLower()] = new Console.ConCommand
-							{
-								flags = conCommandAttribute.flags,
-								action = (Console.ConCommandDelegate)Delegate.CreateDelegate(typeof(Console.ConCommandDelegate), methodInfo),
-								helpText = conCommandAttribute.helpText
-							};
-						}
-					}
-				}
+					flags = conCommandAttribute.flags,
+					action = (Console.ConCommandDelegate)Delegate.CreateDelegate(typeof(Console.ConCommandDelegate), conCommandAttribute.target as MethodInfo),
+					helpText = conCommandAttribute.helpText
+				};
 			}
 			string[] commandLineArgs = Environment.GetCommandLineArgs();
-			for (int l = 0; l < commandLineArgs.Length; l++)
+			for (int i = 0; i < commandLineArgs.Length; i++)
 			{
 				Debug.LogFormat("arg[{0}]=\"{1}\"", new object[]
 				{
-					l,
-					commandLineArgs[l]
+					i,
+					commandLineArgs[i]
 				});
 			}
 			MPEventSystemManager.availability.CallWhenAvailable(new Action(this.LoadStartupConfigs));
 		}
 
-		// Token: 0x06000DF5 RID: 3573 RVA: 0x00044CC3 File Offset: 0x00042EC3
+		// Token: 0x06000994 RID: 2452 RVA: 0x00029C1C File Offset: 0x00027E1C
 		private void LoadStartupConfigs()
 		{
 			this.SubmitCmd(null, "exec config", false);
 			this.SubmitCmd(null, "exec autoexec", false);
 		}
 
-		// Token: 0x06000DF6 RID: 3574 RVA: 0x00044CE0 File Offset: 0x00042EE0
+		// Token: 0x06000995 RID: 2453 RVA: 0x00029C38 File Offset: 0x00027E38
 		private void Update()
 		{
 			string cmd;
@@ -489,7 +477,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000DF7 RID: 3575 RVA: 0x00044D04 File Offset: 0x00042F04
+		// Token: 0x06000996 RID: 2454 RVA: 0x00029C5C File Offset: 0x00027E5C
 		private void OnDestroy()
 		{
 			if (Console.stdInReaderThread != null)
@@ -502,7 +490,7 @@ namespace RoR2
 				IntPtr consoleWindow = Console.GetConsoleWindow();
 				if (consoleWindow != IntPtr.Zero)
 				{
-					Console.PostMessage(consoleWindow, 256u, 13, 0);
+					Console.PostMessage(consoleWindow, 256U, 13, 0);
 				}
 				if (Console.stdInReaderThread != null)
 				{
@@ -516,7 +504,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000DF8 RID: 3576 RVA: 0x00044D7C File Offset: 0x00042F7C
+		// Token: 0x06000997 RID: 2455 RVA: 0x00029CD4 File Offset: 0x00027ED4
 		private static string LoadConfig(string fileName)
 		{
 			string text = Console.sharedStringBuilder.Clear().Append("/Config/").Append(fileName).Append(".cfg").ToString();
@@ -544,7 +532,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06000DF9 RID: 3577 RVA: 0x00044E40 File Offset: 0x00043040
+		// Token: 0x06000998 RID: 2456 RVA: 0x00029D98 File Offset: 0x00027F98
 		public void SaveArchiveConVars()
 		{
 			using (MemoryStream memoryStream = new MemoryStream())
@@ -584,7 +572,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000DFA RID: 3578 RVA: 0x00044F84 File Offset: 0x00043184
+		// Token: 0x06000999 RID: 2457 RVA: 0x00029EDC File Offset: 0x000280DC
 		[ConCommand(commandName = "set_vstr", flags = ConVarFlags.None, helpText = "Sets the specified vstr to the specified value.")]
 		private static void CCSetVstr(ConCommandArgs args)
 		{
@@ -592,7 +580,7 @@ namespace RoR2
 			Console.instance.vstrs.Add(args[0], args[1]);
 		}
 
-		// Token: 0x06000DFB RID: 3579 RVA: 0x00044FB0 File Offset: 0x000431B0
+		// Token: 0x0600099A RID: 2458 RVA: 0x00029F08 File Offset: 0x00028108
 		[ConCommand(commandName = "exec", flags = ConVarFlags.None, helpText = "Executes a named config from the \"Config/\" folder.")]
 		private static void CCExec(ConCommandArgs args)
 		{
@@ -606,7 +594,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000DFC RID: 3580 RVA: 0x00044FEA File Offset: 0x000431EA
+		// Token: 0x0600099B RID: 2459 RVA: 0x00029F42 File Offset: 0x00028142
 		[ConCommand(commandName = "echo", flags = ConVarFlags.None, helpText = "Echoes the given text to the console.")]
 		private static void CCEcho(ConCommandArgs args)
 		{
@@ -618,7 +606,7 @@ namespace RoR2
 			Console.ShowHelpText(args.commandName);
 		}
 
-		// Token: 0x06000DFD RID: 3581 RVA: 0x00045010 File Offset: 0x00043210
+		// Token: 0x0600099C RID: 2460 RVA: 0x00029F68 File Offset: 0x00028168
 		[ConCommand(commandName = "cvarlist", flags = ConVarFlags.None, helpText = "Print all available convars and concommands.")]
 		private static void CCCvarList(ConCommandArgs args)
 		{
@@ -635,7 +623,7 @@ namespace RoR2
 			Debug.Log(string.Join("\n", list.ToArray()));
 		}
 
-		// Token: 0x06000DFE RID: 3582 RVA: 0x000450DC File Offset: 0x000432DC
+		// Token: 0x0600099D RID: 2461 RVA: 0x0002A034 File Offset: 0x00028234
 		[ConCommand(commandName = "help", flags = ConVarFlags.None, helpText = "Show help text for the named convar or concommand.")]
 		private static void CCHelp(ConCommandArgs args)
 		{
@@ -647,7 +635,7 @@ namespace RoR2
 			Console.ShowHelpText(args[0]);
 		}
 
-		// Token: 0x06000DFF RID: 3583 RVA: 0x0004510C File Offset: 0x0004330C
+		// Token: 0x0600099E RID: 2462 RVA: 0x0002A064 File Offset: 0x00028264
 		[ConCommand(commandName = "find", flags = ConVarFlags.None, helpText = "Find all concommands and convars with the specified substring.")]
 		private static void CCFind(ConCommandArgs args)
 		{
@@ -656,19 +644,19 @@ namespace RoR2
 				Console.ShowHelpText("find");
 				return;
 			}
-			string text = args[0].ToLower();
+			string text = args[0].ToLower(CultureInfo.InvariantCulture);
 			bool flag = text == "*";
 			List<string> list = new List<string>();
 			foreach (KeyValuePair<string, BaseConVar> keyValuePair in Console.instance.allConVars)
 			{
-				if (flag || keyValuePair.Key.ToLower().Contains(text) || keyValuePair.Value.helpText.ToLower().Contains(text))
+				if (flag || keyValuePair.Key.ToLower(CultureInfo.InvariantCulture).Contains(text) || keyValuePair.Value.helpText.ToLower(CultureInfo.InvariantCulture).Contains(text))
 				{
 					list.Add(keyValuePair.Key);
 				}
 			}
 			foreach (KeyValuePair<string, Console.ConCommand> keyValuePair2 in Console.instance.concommandCatalog)
 			{
-				if (flag || keyValuePair2.Key.ToLower().Contains(text) || keyValuePair2.Value.helpText.ToLower().Contains(text))
+				if (flag || keyValuePair2.Key.ToLower(CultureInfo.InvariantCulture).Contains(text) || keyValuePair2.Value.helpText.ToLower(CultureInfo.InvariantCulture).Contains(text))
 				{
 					list.Add(keyValuePair2.Key);
 				}
@@ -682,7 +670,7 @@ namespace RoR2
 			Debug.Log(string.Join("\n", array));
 		}
 
-		// Token: 0x06000E00 RID: 3584 RVA: 0x00045298 File Offset: 0x00043498
+		// Token: 0x0600099F RID: 2463 RVA: 0x0002A208 File Offset: 0x00028408
 		[ConCommand(commandName = "clear", flags = ConVarFlags.None, helpText = "Clears the console output.")]
 		private static void CCClear(ConCommandArgs args)
 		{
@@ -695,7 +683,7 @@ namespace RoR2
 			action();
 		}
 
-		// Token: 0x06000E01 RID: 3585 RVA: 0x000452B4 File Offset: 0x000434B4
+		// Token: 0x060009A0 RID: 2464 RVA: 0x0002A224 File Offset: 0x00028424
 		private static string GetHelpText(string commandName)
 		{
 			Console.ConCommand conCommand;
@@ -711,155 +699,156 @@ namespace RoR2
 			return "";
 		}
 
-		// Token: 0x06000E02 RID: 3586 RVA: 0x0004531D File Offset: 0x0004351D
+		// Token: 0x060009A1 RID: 2465 RVA: 0x0002A28D File Offset: 0x0002848D
 		public static void ShowHelpText(string commandName)
 		{
 			Debug.Log(Console.GetHelpText(commandName));
 		}
 
-		// Token: 0x040011DC RID: 4572
+		// Token: 0x040009C5 RID: 2501
 		public static List<Console.Log> logs = new List<Console.Log>();
 
-		// Token: 0x040011DF RID: 4575
+		// Token: 0x040009C8 RID: 2504
 		private Dictionary<string, string> vstrs = new Dictionary<string, string>();
 
-		// Token: 0x040011E0 RID: 4576
+		// Token: 0x040009C9 RID: 2505
 		private Dictionary<string, Console.ConCommand> concommandCatalog = new Dictionary<string, Console.ConCommand>();
 
-		// Token: 0x040011E1 RID: 4577
+		// Token: 0x040009CA RID: 2506
 		private Dictionary<string, BaseConVar> allConVars;
 
-		// Token: 0x040011E2 RID: 4578
+		// Token: 0x040009CB RID: 2507
 		private List<BaseConVar> archiveConVars;
 
-		// Token: 0x040011E3 RID: 4579
+		// Token: 0x040009CC RID: 2508
 		public static List<string> userCmdHistory = new List<string>();
 
-		// Token: 0x040011E4 RID: 4580
-		private static StringBuilder sendCmdBuilder = new StringBuilder();
-
-		// Token: 0x040011E5 RID: 4581
+		// Token: 0x040009CD RID: 2509
 		private const int VK_RETURN = 13;
 
-		// Token: 0x040011E6 RID: 4582
+		// Token: 0x040009CE RID: 2510
 		private const int WM_KEYDOWN = 256;
 
-		// Token: 0x040011E7 RID: 4583
+		// Token: 0x040009CF RID: 2511
 		private static byte[] inputStreamBuffer = new byte[256];
 
-		// Token: 0x040011E8 RID: 4584
+		// Token: 0x040009D0 RID: 2512
 		private static Queue<string> stdInQueue = new Queue<string>();
 
-		// Token: 0x040011E9 RID: 4585
+		// Token: 0x040009D1 RID: 2513
 		private static Thread stdInReaderThread = null;
 
-		// Token: 0x040011EA RID: 4586
+		// Token: 0x040009D2 RID: 2514
 		private static Console.SystemConsoleType systemConsoleType = Console.SystemConsoleType.None;
 
-		// Token: 0x040011EB RID: 4587
+		// Token: 0x040009D3 RID: 2515
 		private static readonly StringBuilder sharedStringBuilder = new StringBuilder();
 
-		// Token: 0x040011EC RID: 4588
+		// Token: 0x040009D4 RID: 2516
 		private const string configFolder = "/Config/";
 
-		// Token: 0x040011ED RID: 4589
+		// Token: 0x040009D5 RID: 2517
 		private const string archiveConVarsPath = "/Config/config.cfg";
 
-		// Token: 0x040011EE RID: 4590
+		// Token: 0x040009D6 RID: 2518
 		private static IntConVar maxMessages = new IntConVar("max_messages", ConVarFlags.Archive, "25", "Maximum number of messages that can be held in the console log.");
 
-		// Token: 0x020002AC RID: 684
+		// Token: 0x020001BB RID: 443
 		public struct Log
 		{
-			// Token: 0x040011EF RID: 4591
+			// Token: 0x040009D7 RID: 2519
 			public string message;
 
-			// Token: 0x040011F0 RID: 4592
+			// Token: 0x040009D8 RID: 2520
 			public string stackTrace;
 
-			// Token: 0x040011F1 RID: 4593
+			// Token: 0x040009D9 RID: 2521
 			public LogType logType;
 		}
 
-		// Token: 0x020002AD RID: 685
-		// (Invoke) Token: 0x06000E06 RID: 3590
+		// Token: 0x020001BC RID: 444
+		// (Invoke) Token: 0x060009A5 RID: 2469
 		public delegate void LogReceivedDelegate(Console.Log log);
 
-		// Token: 0x020002AE RID: 686
+		// Token: 0x020001BD RID: 445
 		private class Lexer
 		{
-			// Token: 0x06000E09 RID: 3593 RVA: 0x000453BC File Offset: 0x000435BC
+			// Token: 0x060009A8 RID: 2472 RVA: 0x0002A322 File Offset: 0x00028522
 			public Lexer(string srcString)
 			{
 				this.srcString = srcString;
 				this.readIndex = 0;
 			}
 
-			// Token: 0x06000E0A RID: 3594 RVA: 0x000453DD File Offset: 0x000435DD
+			// Token: 0x060009A9 RID: 2473 RVA: 0x0002A343 File Offset: 0x00028543
 			private static bool IsIgnorableCharacter(char character)
 			{
 				return !Console.Lexer.IsSeparatorCharacter(character) && !Console.Lexer.IsQuoteCharacter(character) && !Console.Lexer.IsIdentifierCharacter(character) && character != '/';
 			}
 
-			// Token: 0x06000E0B RID: 3595 RVA: 0x00045401 File Offset: 0x00043601
+			// Token: 0x060009AA RID: 2474 RVA: 0x0002A367 File Offset: 0x00028567
 			private static bool IsSeparatorCharacter(char character)
 			{
 				return character == ';' || character == '\n';
 			}
 
-			// Token: 0x06000E0C RID: 3596 RVA: 0x0004540F File Offset: 0x0004360F
+			// Token: 0x060009AB RID: 2475 RVA: 0x0002A375 File Offset: 0x00028575
 			private static bool IsQuoteCharacter(char character)
 			{
 				return character == '\'' || character == '"';
 			}
 
-			// Token: 0x06000E0D RID: 3597 RVA: 0x0004541D File Offset: 0x0004361D
+			// Token: 0x060009AC RID: 2476 RVA: 0x0002A383 File Offset: 0x00028583
 			private static bool IsIdentifierCharacter(char character)
 			{
-				return char.IsLetterOrDigit(character) || character == '_' || character == '.' || character == '-';
+				return char.IsLetterOrDigit(character) || character == '_' || character == '.' || character == '-' || character == ':';
 			}
 
-			// Token: 0x06000E0E RID: 3598 RVA: 0x00045438 File Offset: 0x00043638
+			// Token: 0x060009AD RID: 2477 RVA: 0x0002A3A4 File Offset: 0x000285A4
 			private bool TrimComment()
 			{
 				if (this.readIndex >= this.srcString.Length)
 				{
 					return false;
 				}
-				if (this.srcString[this.readIndex] == '/' && this.readIndex + 1 < this.srcString.Length)
+				if (this.srcString[this.readIndex] == '/')
 				{
-					char c = this.srcString[this.readIndex + 1];
-					if (c == '/')
+					if (this.readIndex + 1 < this.srcString.Length)
 					{
-						while (this.readIndex < this.srcString.Length)
+						char c = this.srcString[this.readIndex + 1];
+						if (c == '/')
 						{
-							if (this.srcString[this.readIndex] == '\n')
+							while (this.readIndex < this.srcString.Length)
 							{
+								if (this.srcString[this.readIndex] == '\n')
+								{
+									this.readIndex++;
+									return true;
+								}
 								this.readIndex++;
-								return true;
 							}
-							this.readIndex++;
+							return true;
 						}
-						return true;
-					}
-					if (c == '*')
-					{
-						while (this.readIndex < this.srcString.Length - 1)
+						if (c == '*')
 						{
-							if (this.srcString[this.readIndex] == '*' && this.srcString[this.readIndex + 1] == '/')
+							while (this.readIndex < this.srcString.Length - 1)
 							{
-								this.readIndex += 2;
-								return true;
+								if (this.srcString[this.readIndex] == '*' && this.srcString[this.readIndex + 1] == '/')
+								{
+									this.readIndex += 2;
+									return true;
+								}
+								this.readIndex++;
 							}
-							this.readIndex++;
+							return true;
 						}
-						return true;
 					}
+					this.readIndex++;
 				}
 				return false;
 			}
 
-			// Token: 0x06000E0F RID: 3599 RVA: 0x00045556 File Offset: 0x00043756
+			// Token: 0x060009AE RID: 2478 RVA: 0x0002A4D0 File Offset: 0x000286D0
 			private void TrimWhitespace()
 			{
 				while (this.readIndex < this.srcString.Length && Console.Lexer.IsIgnorableCharacter(this.srcString[this.readIndex]))
@@ -868,7 +857,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06000E10 RID: 3600 RVA: 0x00045593 File Offset: 0x00043793
+			// Token: 0x060009AF RID: 2479 RVA: 0x0002A50D File Offset: 0x0002870D
 			private void TrimUnused()
 			{
 				do
@@ -878,7 +867,7 @@ namespace RoR2
 				while (this.TrimComment());
 			}
 
-			// Token: 0x06000E11 RID: 3601 RVA: 0x000455A4 File Offset: 0x000437A4
+			// Token: 0x060009B0 RID: 2480 RVA: 0x0002A520 File Offset: 0x00028720
 			private static int UnescapeNext(string srcString, int startPos, out char result)
 			{
 				result = '\\';
@@ -908,7 +897,7 @@ namespace RoR2
 				return 1;
 			}
 
-			// Token: 0x06000E12 RID: 3602 RVA: 0x000455F8 File Offset: 0x000437F8
+			// Token: 0x060009B1 RID: 2481 RVA: 0x0002A574 File Offset: 0x00028774
 			public string NextToken()
 			{
 				this.TrimUnused();
@@ -960,7 +949,7 @@ namespace RoR2
 				return result;
 			}
 
-			// Token: 0x06000E13 RID: 3603 RVA: 0x0004571C File Offset: 0x0004391C
+			// Token: 0x060009B2 RID: 2482 RVA: 0x0002A698 File Offset: 0x00028898
 			public Queue<string> GetTokens()
 			{
 				Queue<string> queue = new Queue<string>();
@@ -972,30 +961,30 @@ namespace RoR2
 				return queue;
 			}
 
-			// Token: 0x040011F2 RID: 4594
+			// Token: 0x040009DA RID: 2522
 			private string srcString;
 
-			// Token: 0x040011F3 RID: 4595
+			// Token: 0x040009DB RID: 2523
 			private int readIndex;
 
-			// Token: 0x040011F4 RID: 4596
+			// Token: 0x040009DC RID: 2524
 			private StringBuilder stringBuilder = new StringBuilder();
 
-			// Token: 0x020002AF RID: 687
+			// Token: 0x020001BE RID: 446
 			private enum TokenType
 			{
-				// Token: 0x040011F6 RID: 4598
+				// Token: 0x040009DE RID: 2526
 				Identifier,
-				// Token: 0x040011F7 RID: 4599
+				// Token: 0x040009DF RID: 2527
 				NestedString
 			}
 		}
 
-		// Token: 0x020002B0 RID: 688
+		// Token: 0x020001BF RID: 447
 		private class Substring
 		{
-			// Token: 0x17000130 RID: 304
-			// (get) Token: 0x06000E14 RID: 3604 RVA: 0x00045755 File Offset: 0x00043955
+			// Token: 0x17000140 RID: 320
+			// (get) Token: 0x060009B3 RID: 2483 RVA: 0x0002A6D1 File Offset: 0x000288D1
 			public int endIndex
 			{
 				get
@@ -1004,8 +993,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x17000131 RID: 305
-			// (get) Token: 0x06000E15 RID: 3605 RVA: 0x00045764 File Offset: 0x00043964
+			// Token: 0x17000141 RID: 321
+			// (get) Token: 0x060009B4 RID: 2484 RVA: 0x0002A6E0 File Offset: 0x000288E0
 			public string str
 			{
 				get
@@ -1014,8 +1003,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x17000132 RID: 306
-			// (get) Token: 0x06000E16 RID: 3606 RVA: 0x0004577D File Offset: 0x0004397D
+			// Token: 0x17000142 RID: 322
+			// (get) Token: 0x060009B5 RID: 2485 RVA: 0x0002A6F9 File Offset: 0x000288F9
 			public Console.Substring nextToken
 			{
 				get
@@ -1029,48 +1018,48 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x040011F8 RID: 4600
+			// Token: 0x040009E0 RID: 2528
 			public string srcString;
 
-			// Token: 0x040011F9 RID: 4601
+			// Token: 0x040009E1 RID: 2529
 			public int startIndex;
 
-			// Token: 0x040011FA RID: 4602
+			// Token: 0x040009E2 RID: 2530
 			public int length;
 		}
 
-		// Token: 0x020002B1 RID: 689
+		// Token: 0x020001C0 RID: 448
 		private class ConCommand
 		{
-			// Token: 0x040011FB RID: 4603
+			// Token: 0x040009E3 RID: 2531
 			public ConVarFlags flags;
 
-			// Token: 0x040011FC RID: 4604
+			// Token: 0x040009E4 RID: 2532
 			public Console.ConCommandDelegate action;
 
-			// Token: 0x040011FD RID: 4605
+			// Token: 0x040009E5 RID: 2533
 			public string helpText;
 		}
 
-		// Token: 0x020002B2 RID: 690
-		// (Invoke) Token: 0x06000E1A RID: 3610
+		// Token: 0x020001C1 RID: 449
+		// (Invoke) Token: 0x060009B9 RID: 2489
 		public delegate void ConCommandDelegate(ConCommandArgs args);
 
-		// Token: 0x020002B3 RID: 691
+		// Token: 0x020001C2 RID: 450
 		private enum SystemConsoleType
 		{
-			// Token: 0x040011FF RID: 4607
+			// Token: 0x040009E7 RID: 2535
 			None,
-			// Token: 0x04001200 RID: 4608
+			// Token: 0x040009E8 RID: 2536
 			Attach,
-			// Token: 0x04001201 RID: 4609
+			// Token: 0x040009E9 RID: 2537
 			Alloc
 		}
 
-		// Token: 0x020002B4 RID: 692
+		// Token: 0x020001C3 RID: 451
 		public class AutoComplete
 		{
-			// Token: 0x06000E1D RID: 3613 RVA: 0x000457AC File Offset: 0x000439AC
+			// Token: 0x060009BC RID: 2492 RVA: 0x0002A728 File Offset: 0x00028928
 			public AutoComplete(Console console)
 			{
 				HashSet<string> hashSet = new HashSet<string>();
@@ -1093,10 +1082,10 @@ namespace RoR2
 				this.searchableStrings.Sort();
 			}
 
-			// Token: 0x06000E1E RID: 3614 RVA: 0x000458EC File Offset: 0x00043AEC
+			// Token: 0x060009BD RID: 2493 RVA: 0x0002A868 File Offset: 0x00028A68
 			public bool SetSearchString(string newSearchString)
 			{
-				newSearchString = newSearchString.ToLower();
+				newSearchString = newSearchString.ToLower(CultureInfo.InvariantCulture);
 				if (newSearchString == this.searchString)
 				{
 					return false;
@@ -1141,22 +1130,22 @@ namespace RoR2
 				return true;
 			}
 
-			// Token: 0x04001202 RID: 4610
+			// Token: 0x040009EA RID: 2538
 			private List<string> searchableStrings = new List<string>();
 
-			// Token: 0x04001203 RID: 4611
+			// Token: 0x040009EB RID: 2539
 			private string searchString;
 
-			// Token: 0x04001204 RID: 4612
+			// Token: 0x040009EC RID: 2540
 			public List<string> resultsList = new List<string>();
 
-			// Token: 0x020002B5 RID: 693
+			// Token: 0x020001C4 RID: 452
 			private struct MatchInfo
 			{
-				// Token: 0x04001205 RID: 4613
+				// Token: 0x040009ED RID: 2541
 				public string str;
 
-				// Token: 0x04001206 RID: 4614
+				// Token: 0x040009EE RID: 2542
 				public int similarity;
 			}
 		}

@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates
 {
-	// Token: 0x020000B9 RID: 185
+	// Token: 0x02000713 RID: 1811
 	public class HurtState : BaseState
 	{
-		// Token: 0x060003A8 RID: 936 RVA: 0x0000F2AC File Offset: 0x0000D4AC
+		// Token: 0x06002A46 RID: 10822 RVA: 0x000B205C File Offset: 0x000B025C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -21,11 +21,11 @@ namespace EntityStates
 				int layerIndex = modelAnimator.GetLayerIndex("Body");
 				modelAnimator.CrossFadeInFixedTime((UnityEngine.Random.Range(0, 2) == 0) ? "Hurt1" : "Hurt2", 0.1f);
 				modelAnimator.Update(0f);
-				this.duration = modelAnimator.GetCurrentAnimatorStateInfo(layerIndex).length;
+				this.duration = modelAnimator.GetNextAnimatorStateInfo(layerIndex).length;
 			}
 		}
 
-		// Token: 0x060003A9 RID: 937 RVA: 0x0000F355 File Offset: 0x0000D555
+		// Token: 0x06002A47 RID: 10823 RVA: 0x000B2105 File Offset: 0x000B0305
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -36,10 +36,10 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x04000369 RID: 873
+		// Token: 0x04002623 RID: 9763
 		private float stopwatch;
 
-		// Token: 0x0400036A RID: 874
+		// Token: 0x04002624 RID: 9764
 		private float duration = 0.35f;
 	}
 }

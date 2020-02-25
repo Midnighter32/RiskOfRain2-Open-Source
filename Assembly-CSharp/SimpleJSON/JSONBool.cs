@@ -4,11 +4,11 @@ using System.Text;
 
 namespace SimpleJSON
 {
-	// Token: 0x0200008A RID: 138
+	// Token: 0x0200008F RID: 143
 	public class JSONBool : JSONNode
 	{
-		// Token: 0x17000066 RID: 102
-		// (get) Token: 0x060002C8 RID: 712 RVA: 0x0000BD35 File Offset: 0x00009F35
+		// Token: 0x1700006C RID: 108
+		// (get) Token: 0x06000304 RID: 772 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override JSONNodeType Tag
 		{
 			get
@@ -17,8 +17,8 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x17000067 RID: 103
-		// (get) Token: 0x060002C9 RID: 713 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x1700006D RID: 109
+		// (get) Token: 0x06000305 RID: 773 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override bool IsBoolean
 		{
 			get
@@ -27,9 +27,9 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x17000068 RID: 104
-		// (get) Token: 0x060002CA RID: 714 RVA: 0x0000BD38 File Offset: 0x00009F38
-		// (set) Token: 0x060002CB RID: 715 RVA: 0x0000BD48 File Offset: 0x00009F48
+		// Token: 0x1700006E RID: 110
+		// (get) Token: 0x06000306 RID: 774 RVA: 0x0000C7E0 File Offset: 0x0000A9E0
+		// (set) Token: 0x06000307 RID: 775 RVA: 0x0000C7F0 File Offset: 0x0000A9F0
 		public override string Value
 		{
 			get
@@ -46,9 +46,9 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x17000069 RID: 105
-		// (get) Token: 0x060002CC RID: 716 RVA: 0x0000BD66 File Offset: 0x00009F66
-		// (set) Token: 0x060002CD RID: 717 RVA: 0x0000BD6E File Offset: 0x00009F6E
+		// Token: 0x1700006F RID: 111
+		// (get) Token: 0x06000308 RID: 776 RVA: 0x0000C80E File Offset: 0x0000AA0E
+		// (set) Token: 0x06000309 RID: 777 RVA: 0x0000C816 File Offset: 0x0000AA16
 		public override bool AsBool
 		{
 			get
@@ -61,44 +61,44 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x060002CE RID: 718 RVA: 0x0000BD77 File Offset: 0x00009F77
+		// Token: 0x0600030A RID: 778 RVA: 0x0000C81F File Offset: 0x0000AA1F
 		public JSONBool(bool aData)
 		{
 			this.m_Data = aData;
 		}
 
-		// Token: 0x060002CF RID: 719 RVA: 0x0000BC36 File Offset: 0x00009E36
+		// Token: 0x0600030B RID: 779 RVA: 0x0000C6DE File Offset: 0x0000A8DE
 		public JSONBool(string aData)
 		{
 			this.Value = aData;
 		}
 
-		// Token: 0x060002D0 RID: 720 RVA: 0x0000BD86 File Offset: 0x00009F86
+		// Token: 0x0600030C RID: 780 RVA: 0x0000C82E File Offset: 0x0000AA2E
 		public override void Serialize(BinaryWriter aWriter)
 		{
 			aWriter.Write(6);
 			aWriter.Write(this.m_Data);
 		}
 
-		// Token: 0x060002D1 RID: 721 RVA: 0x0000BD9B File Offset: 0x00009F9B
+		// Token: 0x0600030D RID: 781 RVA: 0x0000C843 File Offset: 0x0000AA43
 		internal override void WriteToStringBuilder(StringBuilder aSB, int aIndent, int aIndentInc, JSONTextMode aMode)
 		{
 			aSB.Append(this.m_Data ? "true" : "false");
 		}
 
-		// Token: 0x060002D2 RID: 722 RVA: 0x0000BDB8 File Offset: 0x00009FB8
+		// Token: 0x0600030E RID: 782 RVA: 0x0000C860 File Offset: 0x0000AA60
 		public override bool Equals(object obj)
 		{
 			return obj != null && obj is bool && this.m_Data == (bool)obj;
 		}
 
-		// Token: 0x060002D3 RID: 723 RVA: 0x0000BDD7 File Offset: 0x00009FD7
+		// Token: 0x0600030F RID: 783 RVA: 0x0000C87F File Offset: 0x0000AA7F
 		public override int GetHashCode()
 		{
 			return this.m_Data.GetHashCode();
 		}
 
-		// Token: 0x04000247 RID: 583
+		// Token: 0x04000252 RID: 594
 		private bool m_Data;
 	}
 }

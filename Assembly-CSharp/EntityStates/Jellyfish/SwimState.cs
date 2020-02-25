@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace EntityStates.Jellyfish
 {
-	// Token: 0x02000136 RID: 310
-	internal class SwimState : BaseState
+	// Token: 0x0200080C RID: 2060
+	public class SwimState : BaseState
 	{
-		// Token: 0x060005F8 RID: 1528 RVA: 0x0001B69D File Offset: 0x0001989D
+		// Token: 0x06002ECF RID: 11983 RVA: 0x000C734D File Offset: 0x000C554D
 		public override void OnEnter()
 		{
 			base.OnEnter();
 			this.modelAnimator = base.GetModelAnimator();
 		}
 
-		// Token: 0x060005F9 RID: 1529 RVA: 0x0001B6B4 File Offset: 0x000198B4
+		// Token: 0x06002ED0 RID: 11984 RVA: 0x000C7364 File Offset: 0x000C5564
 		public override void Update()
 		{
 			base.Update();
@@ -27,7 +27,7 @@ namespace EntityStates.Jellyfish
 			}
 		}
 
-		// Token: 0x060005FA RID: 1530 RVA: 0x0001B764 File Offset: 0x00019964
+		// Token: 0x06002ED1 RID: 11985 RVA: 0x000C7414 File Offset: 0x000C5614
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -70,22 +70,22 @@ namespace EntityStates.Jellyfish
 			}
 		}
 
-		// Token: 0x040006E9 RID: 1769
+		// Token: 0x04002C0D RID: 11277
 		private Animator modelAnimator;
 
-		// Token: 0x040006EA RID: 1770
+		// Token: 0x04002C0E RID: 11278
 		private bool skill1InputReceived;
 
-		// Token: 0x040006EB RID: 1771
+		// Token: 0x04002C0F RID: 11279
 		private bool skill2InputReceived;
 
-		// Token: 0x040006EC RID: 1772
+		// Token: 0x04002C10 RID: 11280
 		private bool skill3InputReceived;
 
-		// Token: 0x040006ED RID: 1773
+		// Token: 0x04002C11 RID: 11281
 		private bool skill4InputReceived;
 
-		// Token: 0x040006EE RID: 1774
+		// Token: 0x04002C12 RID: 11282
 		private bool jumpInputReceived;
 	}
 }

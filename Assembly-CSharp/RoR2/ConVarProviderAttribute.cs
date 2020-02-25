@@ -2,7 +2,7 @@
 
 namespace RoR2
 {
-	// Token: 0x020002A8 RID: 680
+	// Token: 0x020001B7 RID: 439
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 	public class ConVarProviderAttribute : Attribute
 	{

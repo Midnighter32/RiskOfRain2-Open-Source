@@ -3,20 +3,20 @@ using UnityEngine;
 
 namespace KinematicCharacterController
 {
-	// Token: 0x020006CF RID: 1743
+	// Token: 0x0200091A RID: 2330
 	[Serializable]
 	public struct PhysicsMoverState
 	{
-		// Token: 0x04002949 RID: 10569
+		// Token: 0x040033E2 RID: 13282
 		public Vector3 Position;
 
-		// Token: 0x0400294A RID: 10570
+		// Token: 0x040033E3 RID: 13283
 		public Quaternion Rotation;
 
-		// Token: 0x0400294B RID: 10571
+		// Token: 0x040033E4 RID: 13284
 		public Vector3 Velocity;
 
-		// Token: 0x0400294C RID: 10572
+		// Token: 0x040033E5 RID: 13285
 		public Vector3 AngularVelocity;
 	}
 }

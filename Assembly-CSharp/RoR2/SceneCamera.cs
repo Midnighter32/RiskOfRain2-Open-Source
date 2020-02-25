@@ -1,45 +1,46 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace RoR2
 {
-	// Token: 0x020003C6 RID: 966
+	// Token: 0x02000313 RID: 787
 	[RequireComponent(typeof(Camera))]
 	public class SceneCamera : MonoBehaviour
 	{
-		// Token: 0x14000027 RID: 39
-		// (add) Token: 0x060014F7 RID: 5367 RVA: 0x00064C1C File Offset: 0x00062E1C
-		// (remove) Token: 0x060014F8 RID: 5368 RVA: 0x00064C50 File Offset: 0x00062E50
+		// Token: 0x14000039 RID: 57
+		// (add) Token: 0x06001279 RID: 4729 RVA: 0x0004F848 File Offset: 0x0004DA48
+		// (remove) Token: 0x0600127A RID: 4730 RVA: 0x0004F87C File Offset: 0x0004DA7C
 		public static event SceneCamera.SceneCameraDelegate onSceneCameraPreCull;
 
-		// Token: 0x14000028 RID: 40
-		// (add) Token: 0x060014F9 RID: 5369 RVA: 0x00064C84 File Offset: 0x00062E84
-		// (remove) Token: 0x060014FA RID: 5370 RVA: 0x00064CB8 File Offset: 0x00062EB8
+		// Token: 0x1400003A RID: 58
+		// (add) Token: 0x0600127B RID: 4731 RVA: 0x0004F8B0 File Offset: 0x0004DAB0
+		// (remove) Token: 0x0600127C RID: 4732 RVA: 0x0004F8E4 File Offset: 0x0004DAE4
 		public static event SceneCamera.SceneCameraDelegate onSceneCameraPreRender;
 
-		// Token: 0x14000029 RID: 41
-		// (add) Token: 0x060014FB RID: 5371 RVA: 0x00064CEC File Offset: 0x00062EEC
-		// (remove) Token: 0x060014FC RID: 5372 RVA: 0x00064D20 File Offset: 0x00062F20
+		// Token: 0x1400003B RID: 59
+		// (add) Token: 0x0600127D RID: 4733 RVA: 0x0004F918 File Offset: 0x0004DB18
+		// (remove) Token: 0x0600127E RID: 4734 RVA: 0x0004F94C File Offset: 0x0004DB4C
 		public static event SceneCamera.SceneCameraDelegate onSceneCameraPostRender;
 
-		// Token: 0x170001E7 RID: 487
-		// (get) Token: 0x060014FD RID: 5373 RVA: 0x00064D53 File Offset: 0x00062F53
-		// (set) Token: 0x060014FE RID: 5374 RVA: 0x00064D5B File Offset: 0x00062F5B
+		// Token: 0x17000242 RID: 578
+		// (get) Token: 0x0600127F RID: 4735 RVA: 0x0004F97F File Offset: 0x0004DB7F
+		// (set) Token: 0x06001280 RID: 4736 RVA: 0x0004F987 File Offset: 0x0004DB87
 		public Camera camera { get; private set; }
 
-		// Token: 0x170001E8 RID: 488
-		// (get) Token: 0x060014FF RID: 5375 RVA: 0x00064D64 File Offset: 0x00062F64
-		// (set) Token: 0x06001500 RID: 5376 RVA: 0x00064D6C File Offset: 0x00062F6C
+		// Token: 0x17000243 RID: 579
+		// (get) Token: 0x06001281 RID: 4737 RVA: 0x0004F990 File Offset: 0x0004DB90
+		// (set) Token: 0x06001282 RID: 4738 RVA: 0x0004F998 File Offset: 0x0004DB98
 		public CameraRigController cameraRigController { get; private set; }
 
-		// Token: 0x06001501 RID: 5377 RVA: 0x00064D75 File Offset: 0x00062F75
+		// Token: 0x06001283 RID: 4739 RVA: 0x0004F9A1 File Offset: 0x0004DBA1
 		private void Awake()
 		{
 			this.camera = base.GetComponent<Camera>();
 			this.cameraRigController = base.GetComponentInParent<CameraRigController>();
 		}
 
-		// Token: 0x06001502 RID: 5378 RVA: 0x00064D8F File Offset: 0x00062F8F
+		// Token: 0x06001284 RID: 4740 RVA: 0x0004F9BB File Offset: 0x0004DBBB
 		private void OnPreCull()
 		{
 			if (SceneCamera.onSceneCameraPreCull != null)
@@ -48,16 +49,17 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001503 RID: 5379 RVA: 0x00064DA3 File Offset: 0x00062FA3
+		// Token: 0x06001285 RID: 4741 RVA: 0x0004F9CF File Offset: 0x0004DBCF
 		private void OnPreRender()
 		{
 			if (SceneCamera.onSceneCameraPreRender != null)
 			{
+				this.camera.opaqueSortMode = this.sortMode;
 				SceneCamera.onSceneCameraPreRender(this);
 			}
 		}
 
-		// Token: 0x06001504 RID: 5380 RVA: 0x00064DB7 File Offset: 0x00062FB7
+		// Token: 0x06001286 RID: 4742 RVA: 0x0004F9F4 File Offset: 0x0004DBF4
 		private void OnPostRender()
 		{
 			if (SceneCamera.onSceneCameraPostRender != null)
@@ -66,8 +68,11 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x020003C7 RID: 967
-		// (Invoke) Token: 0x06001507 RID: 5383
+		// Token: 0x04001171 RID: 4465
+		public OpaqueSortMode sortMode = OpaqueSortMode.NoDistanceSort;
+
+		// Token: 0x02000314 RID: 788
+		// (Invoke) Token: 0x06001289 RID: 4745
 		public delegate void SceneCameraDelegate(SceneCamera sceneCamera);
 	}
 }

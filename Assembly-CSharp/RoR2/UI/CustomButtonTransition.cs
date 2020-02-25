@@ -6,17 +6,17 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005D2 RID: 1490
+	// Token: 0x020005B1 RID: 1457
 	public class CustomButtonTransition : MPButton
 	{
-		// Token: 0x06002164 RID: 8548 RVA: 0x0009CB0E File Offset: 0x0009AD0E
+		// Token: 0x06002294 RID: 8852 RVA: 0x00095A6B File Offset: 0x00093C6B
 		protected override void Awake()
 		{
 			base.Awake();
 			this.textMeshProUGui = base.GetComponent<TextMeshProUGUI>();
 		}
 
-		// Token: 0x06002165 RID: 8549 RVA: 0x0009CB24 File Offset: 0x0009AD24
+		// Token: 0x06002295 RID: 8853 RVA: 0x00095A80 File Offset: 0x00093C80
 		protected override void Start()
 		{
 			base.Start();
@@ -28,44 +28,48 @@ namespace RoR2.UI
 			this.newPosition = this.originalPosition;
 		}
 
-		// Token: 0x06002166 RID: 8550 RVA: 0x0009CB8C File Offset: 0x0009AD8C
+		// Token: 0x06002296 RID: 8854 RVA: 0x00095AE8 File Offset: 0x00093CE8
 		protected override void DoStateTransition(Selectable.SelectionState state, bool instant)
 		{
 			base.DoStateTransition(state, instant);
-			switch (state)
+			if (this.previousState != state)
 			{
-			case Selectable.SelectionState.Normal:
-				this.newPosition.x = this.originalPosition.x;
-				this.newButtonScale = 1f;
-				this.hovering = false;
-				break;
-			case Selectable.SelectionState.Highlighted:
-				this.newPosition.x = this.originalPosition.x + 4f;
-				Util.PlaySound("Play_UI_menuHover", RoR2Application.instance.gameObject);
-				this.newButtonScale = 1.05f;
-				this.hovering = true;
-				break;
-			case Selectable.SelectionState.Pressed:
-				this.newPosition.x = this.originalPosition.x + 6f;
-				this.newButtonScale = 0.95f;
-				this.hovering = true;
-				break;
-			case Selectable.SelectionState.Disabled:
-				this.newPosition.x = this.originalPosition.x;
-				this.newButtonScale = 1f;
-				this.hovering = false;
-				break;
+				switch (state)
+				{
+				case Selectable.SelectionState.Normal:
+					this.newPosition.x = this.originalPosition.x;
+					this.newButtonScale = 1f;
+					this.hovering = false;
+					break;
+				case Selectable.SelectionState.Highlighted:
+					this.newPosition.x = this.originalPosition.x + 4f;
+					Util.PlaySound("Play_UI_menuHover", RoR2Application.instance.gameObject);
+					this.newButtonScale = 1.05f;
+					this.hovering = true;
+					break;
+				case Selectable.SelectionState.Pressed:
+					this.newPosition.x = this.originalPosition.x + 6f;
+					this.newButtonScale = 0.95f;
+					this.hovering = true;
+					break;
+				case Selectable.SelectionState.Disabled:
+					this.newPosition.x = this.originalPosition.x;
+					this.newButtonScale = 1f;
+					this.hovering = false;
+					break;
+				}
+				this.previousState = state;
 			}
 			this.originalColor = base.targetGraphic.color;
 		}
 
-		// Token: 0x06002167 RID: 8551 RVA: 0x0009CC97 File Offset: 0x0009AE97
+		// Token: 0x06002297 RID: 8855 RVA: 0x00095C06 File Offset: 0x00093E06
 		public void OnClickCustom()
 		{
 			Util.PlaySound("Play_UI_menuClick", RoR2Application.instance.gameObject);
 		}
 
-		// Token: 0x06002168 RID: 8552 RVA: 0x0009CCB0 File Offset: 0x0009AEB0
+		// Token: 0x06002298 RID: 8856 RVA: 0x00095C20 File Offset: 0x00093E20
 		private void LateUpdate()
 		{
 			this.stopwatch += Time.deltaTime;
@@ -100,46 +104,49 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x040023EE RID: 9198
+		// Token: 0x04001FFC RID: 8188
 		private TextMeshProUGUI textMeshProUGui;
 
-		// Token: 0x040023EF RID: 9199
+		// Token: 0x04001FFD RID: 8189
 		private Vector3 originalPosition;
 
-		// Token: 0x040023F0 RID: 9200
+		// Token: 0x04001FFE RID: 8190
 		private Vector3 newPosition;
 
-		// Token: 0x040023F1 RID: 9201
+		// Token: 0x04001FFF RID: 8191
 		private float newButtonScale = 1f;
 
-		// Token: 0x040023F2 RID: 9202
+		// Token: 0x04002000 RID: 8192
 		private float stopwatch;
 
-		// Token: 0x040023F3 RID: 9203
+		// Token: 0x04002001 RID: 8193
 		private Color originalColor;
 
-		// Token: 0x040023F4 RID: 9204
+		// Token: 0x04002002 RID: 8194
 		public bool scaleButtonOnHover = true;
 
-		// Token: 0x040023F5 RID: 9205
+		// Token: 0x04002003 RID: 8195
 		public bool showImageOnHover;
 
-		// Token: 0x040023F6 RID: 9206
+		// Token: 0x04002004 RID: 8196
 		public Image imageOnHover;
 
-		// Token: 0x040023F7 RID: 9207
+		// Token: 0x04002005 RID: 8197
 		public Image imageOnInteractable;
 
-		// Token: 0x040023F8 RID: 9208
+		// Token: 0x04002006 RID: 8198
 		private bool hovering;
 
-		// Token: 0x040023F9 RID: 9209
+		// Token: 0x04002007 RID: 8199
+		private Selectable.SelectionState previousState = Selectable.SelectionState.Disabled;
+
+		// Token: 0x04002008 RID: 8200
 		private float buttonScaleVelocity;
 
-		// Token: 0x040023FA RID: 9210
+		// Token: 0x04002009 RID: 8201
 		private float imageOnHoverAlphaVelocity;
 
-		// Token: 0x040023FB RID: 9211
+		// Token: 0x0400200A RID: 8202
 		private float imageOnHoverScaleVelocity;
 	}
 }

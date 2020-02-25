@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005CD RID: 1485
+	// Token: 0x020005AC RID: 1452
 	[RequireComponent(typeof(RectTransform))]
 	[RequireComponent(typeof(Graphic))]
 	public class CursorCapture : MonoBehaviour, IPointerClickHandler, IEventSystemHandler
 	{
-		// Token: 0x06002155 RID: 8533 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06002285 RID: 8837 RVA: 0x0000409B File Offset: 0x0000229B
 		public void OnPointerClick(PointerEventData eventData)
 		{
 		}

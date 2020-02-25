@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,14 +9,14 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000600 RID: 1536
-	[RequireComponent(typeof(RectTransform))]
+	// Token: 0x020005EE RID: 1518
 	[RequireComponent(typeof(RawImage))]
+	[RequireComponent(typeof(RectTransform))]
 	public class ModelPanel : MonoBehaviour, IBeginDragHandler, IEventSystemHandler, IDragHandler, IScrollHandler, IEndDragHandler
 	{
-		// Token: 0x17000301 RID: 769
-		// (get) Token: 0x06002265 RID: 8805 RVA: 0x000A2723 File Offset: 0x000A0923
-		// (set) Token: 0x06002266 RID: 8806 RVA: 0x000A272B File Offset: 0x000A092B
+		// Token: 0x170003B7 RID: 951
+		// (get) Token: 0x060023D0 RID: 9168 RVA: 0x0009C67F File Offset: 0x0009A87F
+		// (set) Token: 0x060023D1 RID: 9169 RVA: 0x0009C687 File Offset: 0x0009A887
 		public GameObject modelPrefab
 		{
 			get
@@ -34,14 +35,14 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002267 RID: 8807 RVA: 0x000A274F File Offset: 0x000A094F
+		// Token: 0x060023D2 RID: 9170 RVA: 0x0009C6AB File Offset: 0x0009A8AB
 		private void DestroyModelInstance()
 		{
 			UnityEngine.Object.Destroy(this.modelInstance);
 			this.modelInstance = null;
 		}
 
-		// Token: 0x06002268 RID: 8808 RVA: 0x000A2764 File Offset: 0x000A0964
+		// Token: 0x060023D3 RID: 9171 RVA: 0x0009C6C0 File Offset: 0x0009A8C0
 		private void BuildModelInstance()
 		{
 			if (this._modelPrefab && base.enabled && !this.modelInstance)
@@ -116,12 +117,12 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x17000302 RID: 770
-		// (get) Token: 0x06002269 RID: 8809 RVA: 0x000A2A3B File Offset: 0x000A0C3B
-		// (set) Token: 0x0600226A RID: 8810 RVA: 0x000A2A43 File Offset: 0x000A0C43
+		// Token: 0x170003B8 RID: 952
+		// (get) Token: 0x060023D4 RID: 9172 RVA: 0x0009C997 File Offset: 0x0009AB97
+		// (set) Token: 0x060023D5 RID: 9173 RVA: 0x0009C99F File Offset: 0x0009AB9F
 		public RenderTexture renderTexture { get; private set; }
 
-		// Token: 0x0600226B RID: 8811 RVA: 0x000A2A4C File Offset: 0x000A0C4C
+		// Token: 0x060023D6 RID: 9174 RVA: 0x0009C9A8 File Offset: 0x0009ABA8
 		private void ResetOrbitAndPan()
 		{
 			this.orbitPitch = 0f;
@@ -133,7 +134,7 @@ namespace RoR2.UI
 			this.panVelocitySmoothDampVelocity = Vector2.zero;
 		}
 
-		// Token: 0x0600226C RID: 8812 RVA: 0x000A2AA8 File Offset: 0x000A0CA8
+		// Token: 0x060023D7 RID: 9175 RVA: 0x0009CA04 File Offset: 0x0009AC04
 		private void Awake()
 		{
 			this.rectTransform = base.GetComponent<RectTransform>();
@@ -189,7 +190,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600226D RID: 8813 RVA: 0x000A2D06 File Offset: 0x000A0F06
+		// Token: 0x060023D8 RID: 9176 RVA: 0x0009CC62 File Offset: 0x0009AE62
 		public void Start()
 		{
 			this.BuildRenderTexture();
@@ -198,7 +199,7 @@ namespace RoR2.UI
 			this.zoomVelocity = 0f;
 		}
 
-		// Token: 0x0600226E RID: 8814 RVA: 0x000A2D30 File Offset: 0x000A0F30
+		// Token: 0x060023D9 RID: 9177 RVA: 0x0009CC8C File Offset: 0x0009AE8C
 		private void OnDestroy()
 		{
 			UnityEngine.Object.Destroy(this.renderTexture);
@@ -212,25 +213,25 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600226F RID: 8815 RVA: 0x000A2DB0 File Offset: 0x000A0FB0
+		// Token: 0x060023DA RID: 9178 RVA: 0x0009CD0C File Offset: 0x0009AF0C
 		private void OnDisable()
 		{
 			this.DestroyModelInstance();
 		}
 
-		// Token: 0x06002270 RID: 8816 RVA: 0x000A2DB8 File Offset: 0x000A0FB8
+		// Token: 0x060023DB RID: 9179 RVA: 0x0009CD14 File Offset: 0x0009AF14
 		private void OnEnable()
 		{
 			this.BuildModelInstance();
 		}
 
-		// Token: 0x06002271 RID: 8817 RVA: 0x000A2DC0 File Offset: 0x000A0FC0
+		// Token: 0x060023DC RID: 9180 RVA: 0x0009CD1C File Offset: 0x0009AF1C
 		public void Update()
 		{
 			this.UpdateForModelViewer(Time.unscaledDeltaTime);
 		}
 
-		// Token: 0x06002272 RID: 8818 RVA: 0x000A2DD0 File Offset: 0x000A0FD0
+		// Token: 0x060023DD RID: 9181 RVA: 0x0009CD2C File Offset: 0x0009AF2C
 		public void LateUpdate()
 		{
 			this.modelCamera.attachedCamera.aspect = (float)this.renderTexture.width / (float)this.renderTexture.height;
@@ -239,13 +240,13 @@ namespace RoR2.UI
 			this.modelCamera.RenderItem(this.modelInstance, this.renderTexture);
 		}
 
-		// Token: 0x06002273 RID: 8819 RVA: 0x000A2E3F File Offset: 0x000A103F
+		// Token: 0x060023DE RID: 9182 RVA: 0x0009CD9B File Offset: 0x0009AF9B
 		private void OnRectTransformDimensionsChange()
 		{
 			this.BuildRenderTexture();
 		}
 
-		// Token: 0x06002274 RID: 8820 RVA: 0x000A2E48 File Offset: 0x000A1048
+		// Token: 0x060023DF RID: 9183 RVA: 0x0009CDA4 File Offset: 0x0009AFA4
 		private void BuildRenderTexture()
 		{
 			if (!this.rectTransform)
@@ -275,7 +276,7 @@ namespace RoR2.UI
 			this.rawImage.texture = this.renderTexture;
 		}
 
-		// Token: 0x06002275 RID: 8821 RVA: 0x000A2F2C File Offset: 0x000A112C
+		// Token: 0x060023E0 RID: 9184 RVA: 0x0009CE88 File Offset: 0x0009B088
 		private void UpdateForModelViewer(float deltaTime)
 		{
 			this.zoom = Mathf.SmoothDamp(this.zoom, this.desiredZoom, ref this.zoomVelocity, 0.1f);
@@ -301,7 +302,7 @@ namespace RoR2.UI
 			this.cameraRigController.transform.position = position;
 		}
 
-		// Token: 0x06002276 RID: 8822 RVA: 0x000A3110 File Offset: 0x000A1310
+		// Token: 0x060023E1 RID: 9185 RVA: 0x0009D06C File Offset: 0x0009B26C
 		public void SetAnglesForCharacterThumbnailForSeconds(float time, bool setZoom = false)
 		{
 			this.SetAnglesForCharacterThumbnail(setZoom);
@@ -322,7 +323,7 @@ namespace RoR2.UI
 			RoR2Application.onUpdate += func;
 		}
 
-		// Token: 0x06002277 RID: 8823 RVA: 0x000A3168 File Offset: 0x000A1368
+		// Token: 0x060023E2 RID: 9186 RVA: 0x0009D0C4 File Offset: 0x0009B2C4
 		public void SetAnglesForCharacterThumbnail(bool setZoom = false)
 		{
 			if (!this.modelInstance)
@@ -344,7 +345,7 @@ namespace RoR2.UI
 			this.zoomVelocity = 0f;
 		}
 
-		// Token: 0x06002278 RID: 8824 RVA: 0x000A3220 File Offset: 0x000A1420
+		// Token: 0x060023E3 RID: 9187 RVA: 0x0009D17C File Offset: 0x0009B37C
 		public void OnBeginDrag(PointerEventData eventData)
 		{
 			if (eventData.button == PointerEventData.InputButton.Right)
@@ -366,7 +367,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002279 RID: 8825 RVA: 0x000A3285 File Offset: 0x000A1485
+		// Token: 0x060023E4 RID: 9188 RVA: 0x0009D1E1 File Offset: 0x0009B3E1
 		public void OnEndDrag(PointerEventData eventData)
 		{
 			if (eventData.button == PointerEventData.InputButton.Right)
@@ -380,7 +381,7 @@ namespace RoR2.UI
 			this.OnDrag(eventData);
 		}
 
-		// Token: 0x0600227A RID: 8826 RVA: 0x000A32C0 File Offset: 0x000A14C0
+		// Token: 0x060023E5 RID: 9189 RVA: 0x0009D21C File Offset: 0x0009B41C
 		public void OnDrag(PointerEventData eventData)
 		{
 			float unscaledDeltaTime = Time.unscaledDeltaTime;
@@ -398,126 +399,115 @@ namespace RoR2.UI
 			this.panVelocity = a * d / unscaledDeltaTime;
 		}
 
-		// Token: 0x0600227B RID: 8827 RVA: 0x000A3363 File Offset: 0x000A1563
+		// Token: 0x060023E6 RID: 9190 RVA: 0x0009D2BF File Offset: 0x0009B4BF
 		public void OnScroll(PointerEventData eventData)
 		{
 			this.desiredZoom = Mathf.Clamp01(this.desiredZoom + eventData.scrollDelta.y * -0.05f);
 		}
 
-		// Token: 0x0400257C RID: 9596
+		// Token: 0x040021C2 RID: 8642
 		private GameObject _modelPrefab;
 
-		// Token: 0x0400257D RID: 9597
+		// Token: 0x040021C3 RID: 8643
 		public RenderSettingsState renderSettings;
 
-		// Token: 0x0400257E RID: 9598
+		// Token: 0x040021C4 RID: 8644
 		public Color camBackgroundColor = Color.clear;
 
-		// Token: 0x0400257F RID: 9599
+		// Token: 0x040021C5 RID: 8645
 		public bool disablePostProcessLayer = true;
 
-		// Token: 0x04002580 RID: 9600
+		// Token: 0x040021C6 RID: 8646
 		private RectTransform rectTransform;
 
-		// Token: 0x04002581 RID: 9601
+		// Token: 0x040021C7 RID: 8647
 		private RawImage rawImage;
 
-		// Token: 0x04002582 RID: 9602
+		// Token: 0x040021C8 RID: 8648
 		private GameObject modelInstance;
 
-		// Token: 0x04002583 RID: 9603
+		// Token: 0x040021C9 RID: 8649
 		private CameraRigController cameraRigController;
 
-		// Token: 0x04002584 RID: 9604
+		// Token: 0x040021CA RID: 8650
 		private ModelCamera modelCamera;
 
-		// Token: 0x04002585 RID: 9605
+		// Token: 0x040021CB RID: 8651
 		public GameObject headlightPrefab;
 
-		// Token: 0x04002586 RID: 9606
+		// Token: 0x040021CC RID: 8652
 		public GameObject[] lightPrefabs;
 
-		// Token: 0x04002587 RID: 9607
+		// Token: 0x040021CD RID: 8653
 		private Light headlight;
 
-		// Token: 0x04002589 RID: 9609
+		// Token: 0x040021CF RID: 8655
 		public float fov = 60f;
 
-		// Token: 0x0400258A RID: 9610
+		// Token: 0x040021D0 RID: 8656
 		private float zoom = 0.5f;
 
-		// Token: 0x0400258B RID: 9611
+		// Token: 0x040021D1 RID: 8657
 		private float desiredZoom = 0.5f;
 
-		// Token: 0x0400258C RID: 9612
+		// Token: 0x040021D2 RID: 8658
 		private float zoomVelocity;
 
-		// Token: 0x0400258D RID: 9613
+		// Token: 0x040021D3 RID: 8659
 		private float minDistance = 0.5f;
 
-		// Token: 0x0400258E RID: 9614
+		// Token: 0x040021D4 RID: 8660
 		private float maxDistance = 10f;
 
-		// Token: 0x0400258F RID: 9615
+		// Token: 0x040021D5 RID: 8661
 		private float orbitPitch;
 
-		// Token: 0x04002590 RID: 9616
+		// Token: 0x040021D6 RID: 8662
 		private float orbitYaw = 180f;
 
-		// Token: 0x04002591 RID: 9617
+		// Token: 0x040021D7 RID: 8663
 		private Vector3 orbitalVelocity = Vector3.zero;
 
-		// Token: 0x04002592 RID: 9618
+		// Token: 0x040021D8 RID: 8664
 		private Vector3 orbitalVelocitySmoothDampVelocity = Vector3.zero;
 
-		// Token: 0x04002593 RID: 9619
+		// Token: 0x040021D9 RID: 8665
 		private Vector2 pan;
 
-		// Token: 0x04002594 RID: 9620
+		// Token: 0x040021DA RID: 8666
 		private Vector2 panVelocity;
 
-		// Token: 0x04002595 RID: 9621
+		// Token: 0x040021DB RID: 8667
 		private Vector2 panVelocitySmoothDampVelocity;
 
-		// Token: 0x04002596 RID: 9622
+		// Token: 0x040021DC RID: 8668
 		private Vector3 pivotPoint = Vector3.zero;
 
-		// Token: 0x04002597 RID: 9623
+		// Token: 0x040021DD RID: 8669
 		private List<Light> lights = new List<Light>();
 
-		// Token: 0x04002598 RID: 9624
+		// Token: 0x040021DE RID: 8670
 		private Vector2 orbitDragPoint;
 
-		// Token: 0x04002599 RID: 9625
+		// Token: 0x040021DF RID: 8671
 		private Vector2 panDragPoint;
 
-		// Token: 0x0400259A RID: 9626
+		// Token: 0x040021E0 RID: 8672
 		private int orbitDragCount;
 
-		// Token: 0x0400259B RID: 9627
+		// Token: 0x040021E1 RID: 8673
 		private int panDragCount;
 
-		// Token: 0x02000601 RID: 1537
+		// Token: 0x020005EF RID: 1519
 		private class CameraFramingCalculator
 		{
-			// Token: 0x0600227D RID: 8829 RVA: 0x000A341C File Offset: 0x000A161C
+			// Token: 0x060023E8 RID: 9192 RVA: 0x0009D378 File Offset: 0x0009B578
 			private static void GenerateBoneList(Transform rootBone, List<Transform> boneList)
 			{
-				boneList.Add(rootBone);
-				for (int i = 0; i < boneList.Count; i++)
-				{
-					Transform transform = boneList[i];
-					int j = 0;
-					int childCount = transform.childCount;
-					while (j < childCount)
-					{
-						boneList.Add(transform.GetChild(j));
-						j++;
-					}
-				}
+				boneList.AddRange(rootBone.gameObject.GetComponentsInChildren<Transform>());
 			}
 
-			// Token: 0x0600227E RID: 8830 RVA: 0x000A346C File Offset: 0x000A166C
+			// Token: 0x060023E9 RID: 9193 RVA: 0x0009D398 File Offset: 0x0009B598
 			public CameraFramingCalculator(GameObject modelInstance)
 			{
 				this.modelInstance = modelInstance;
@@ -530,60 +520,59 @@ namespace RoR2.UI
 				}
 			}
 
-			// Token: 0x0600227F RID: 8831 RVA: 0x000A34E4 File Offset: 0x000A16E4
+			// Token: 0x060023EA RID: 9194 RVA: 0x0009D410 File Offset: 0x0009B610
 			private bool FindBestEyePoint(out Vector3 result, out float approximateEyeRadius)
 			{
 				approximateEyeRadius = 1f;
-				IEnumerable<Transform> source = from bone in this.boneList
-				where bone.name.Equals("eye", StringComparison.OrdinalIgnoreCase) || bone.name.Equals("eyeball.1", StringComparison.OrdinalIgnoreCase)
-				select bone;
+				IEnumerable<Transform> source = this.boneList.Where(new Func<Transform, bool>(ModelPanel.CameraFramingCalculator.<>c.<>9.<FindBestEyePoint>g__FirstChoice|10_0));
 				if (!source.Any<Transform>())
 				{
-					source = from bone in this.boneList
-					where bone.name.ToLower().Contains("eye")
-					select bone;
+					source = this.boneList.Where(new Func<Transform, bool>(ModelPanel.CameraFramingCalculator.<>c.<>9.<FindBestEyePoint>g__SecondChoice|10_1));
 				}
 				Vector3[] array = (from bone in source
 				select bone.position).ToArray<Vector3>();
 				result = HGMath.Average<Vector3[]>(array);
+				for (int i = 0; i < array.Length; i++)
+				{
+					float magnitude = (array[i] - result).magnitude;
+					if (magnitude > approximateEyeRadius)
+					{
+						approximateEyeRadius = magnitude;
+					}
+				}
 				return array.Length != 0;
 			}
 
-			// Token: 0x06002280 RID: 8832 RVA: 0x000A3594 File Offset: 0x000A1794
-			private bool FindBestHeadPoint(out Vector3 result, out float approximateRadius)
+			// Token: 0x060023EB RID: 9195 RVA: 0x0009D4D4 File Offset: 0x0009B6D4
+			private bool FindBestHeadPoint(string searchName, out Vector3 result, out float approximateRadius)
 			{
-				IEnumerable<Transform> source = from bone in this.boneList
-				where string.Equals(bone.name, "head", StringComparison.OrdinalIgnoreCase)
-				select bone;
-				if (!source.Any<Transform>())
+				Transform[] array = (from bone in this.boneList
+				where string.Equals(bone.name, searchName, StringComparison.OrdinalIgnoreCase)
+				select bone).ToArray<Transform>();
+				if (array.Length == 0)
 				{
-					source = from bone in this.boneList
-					where bone.name.ToLower().Contains("head")
-					select bone;
+					array = (from bone in this.boneList
+					where bone.name.ToLower(CultureInfo.InvariantCulture).Contains(searchName)
+					select bone).ToArray<Transform>();
 				}
-				Vector3[] array = (from bone in source
-				select bone.position).ToArray<Vector3>();
-				result = HGMath.Average<Vector3[]>(array);
-				approximateRadius = 1f;
-				IEnumerable<float> source2 = from hurtBox in (from bone in source
-				select bone.GetComponentInChildren<HurtBox>() into hurtBox
-				where hurtBox
-				select hurtBox).Distinct<HurtBox>()
-				select Util.SphereVolumeToRadius(hurtBox.volume);
-				if (source2.Any<float>())
+				if (array.Length != 0)
 				{
-					approximateRadius = source2.Max();
+					foreach (Transform bone2 in array)
+					{
+						Bounds bounds;
+						if (this.TryCalcBoneBounds(bone2, 0.2f, out bounds, out approximateRadius))
+						{
+							result = bounds.center;
+							return true;
+						}
+					}
 				}
-				Transform transform = this.boneList.Find((Transform bone) => string.Equals(bone.name, "chest", StringComparison.OrdinalIgnoreCase));
-				if (transform)
-				{
-					approximateRadius = Mathf.Max(Vector3.Distance(transform.position, result), approximateRadius);
-					result = (result + transform.position) / 2f;
-				}
-				return array.Length != 0;
+				result = Vector3.zero;
+				approximateRadius = 0f;
+				return false;
 			}
 
-			// Token: 0x06002281 RID: 8833 RVA: 0x000A3734 File Offset: 0x000A1934
+			// Token: 0x060023EC RID: 9196 RVA: 0x0009D57C File Offset: 0x0009B77C
 			private static float CalcMagnitudeToFrameSphere(float sphereRadius, float fieldOfView)
 			{
 				float num = fieldOfView * 0.5f;
@@ -591,7 +580,7 @@ namespace RoR2.UI
 				return Mathf.Tan((180f - num2 - num) * 0.017453292f) * sphereRadius;
 			}
 
-			// Token: 0x06002282 RID: 8834 RVA: 0x000A3768 File Offset: 0x000A1968
+			// Token: 0x060023ED RID: 9197 RVA: 0x0009D5B0 File Offset: 0x0009B7B0
 			private bool FindBestCenterOfMass(out Vector3 result, out float approximateRadius)
 			{
 				from bone in this.boneList
@@ -609,12 +598,132 @@ namespace RoR2.UI
 				return false;
 			}
 
-			// Token: 0x06002283 RID: 8835 RVA: 0x000A382C File Offset: 0x000A1A2C
+			// Token: 0x060023EE RID: 9198 RVA: 0x0009D674 File Offset: 0x0009B874
+			private static float GetWeightForBone(ref BoneWeight boneWeight, int boneIndex)
+			{
+				if (boneWeight.boneIndex0 == boneIndex)
+				{
+					return boneWeight.weight0;
+				}
+				if (boneWeight.boneIndex1 == boneIndex)
+				{
+					return boneWeight.weight1;
+				}
+				if (boneWeight.boneIndex2 == boneIndex)
+				{
+					return boneWeight.weight2;
+				}
+				if (boneWeight.boneIndex3 == boneIndex)
+				{
+					return boneWeight.weight3;
+				}
+				return 0f;
+			}
+
+			// Token: 0x060023EF RID: 9199 RVA: 0x0009D6C8 File Offset: 0x0009B8C8
+			private static int FindBoneIndex(SkinnedMeshRenderer _skinnedMeshRenderer, Transform _bone)
+			{
+				Transform[] bones = _skinnedMeshRenderer.bones;
+				for (int i = 0; i < bones.Length; i++)
+				{
+					if (bones[i] == _bone)
+					{
+						return i;
+					}
+				}
+				return -1;
+			}
+
+			// Token: 0x060023F0 RID: 9200 RVA: 0x0009D6F8 File Offset: 0x0009B8F8
+			private bool TryCalcBoneBounds(Transform bone, float weightThreshold, out Bounds bounds, out float approximateRadius)
+			{
+				SkinnedMeshRenderer[] componentsInChildren = this.modelInstance.GetComponentsInChildren<SkinnedMeshRenderer>();
+				SkinnedMeshRenderer skinnedMeshRenderer = null;
+				Mesh mesh = null;
+				int num = -1;
+				List<int> list = new List<int>();
+				foreach (SkinnedMeshRenderer skinnedMeshRenderer in componentsInChildren)
+				{
+					mesh = skinnedMeshRenderer.sharedMesh;
+					if (mesh)
+					{
+						num = ModelPanel.CameraFramingCalculator.FindBoneIndex(skinnedMeshRenderer, bone);
+						if (num != -1)
+						{
+							BoneWeight[] boneWeights = mesh.boneWeights;
+							for (int j = 0; j < boneWeights.Length; j++)
+							{
+								if (ModelPanel.CameraFramingCalculator.GetWeightForBone(ref boneWeights[j], num) > weightThreshold)
+								{
+									list.Add(j);
+								}
+							}
+							if (list.Count == 0)
+							{
+								num = -1;
+							}
+						}
+						if (num != -1)
+						{
+							break;
+						}
+					}
+				}
+				if (num == -1)
+				{
+					bounds = default(Bounds);
+					approximateRadius = 0f;
+					return false;
+				}
+				Mesh mesh2 = new Mesh();
+				skinnedMeshRenderer.BakeMesh(mesh2);
+				Vector3[] vertices = mesh2.vertices;
+				UnityEngine.Object.Destroy(mesh2);
+				if (mesh2.vertexCount != mesh.vertexCount)
+				{
+					Debug.LogWarningFormat("Baked mesh vertex count differs from the original mesh vertex count! baked={0} original={1}", new object[]
+					{
+						mesh2.vertexCount,
+						mesh.vertexCount
+					});
+					vertices = mesh.vertices;
+				}
+				Vector3[] array = new Vector3[list.Count];
+				Transform transform = skinnedMeshRenderer.transform;
+				Vector3 position = transform.position;
+				Quaternion rotation = transform.rotation;
+				for (int k = 0; k < list.Count; k++)
+				{
+					int num2 = list[k];
+					Vector3 point = vertices[num2];
+					Vector3 vector = position + rotation * point;
+					array[k] = vector;
+				}
+				bounds = new Bounds(HGMath.Average<Vector3[]>(array), Vector3.zero);
+				float num3 = 0f;
+				for (int l = 0; l < array.Length; l++)
+				{
+					bounds.Encapsulate(array[l]);
+					float num4 = Vector3.Distance(bounds.center, array[l]);
+					if (num4 > num3)
+					{
+						num3 = num4;
+					}
+				}
+				approximateRadius = num3;
+				return true;
+			}
+
+			// Token: 0x060023F1 RID: 9201 RVA: 0x0009D8E0 File Offset: 0x0009BAE0
 			public void GetCharacterThumbnailPosition(float fov)
 			{
 				Vector3 vector = Vector3.zero;
 				float sphereRadius = 1f;
-				bool flag = this.FindBestHeadPoint(out vector, out sphereRadius);
+				bool flag = this.FindBestHeadPoint("head", out vector, out sphereRadius);
+				if (!flag)
+				{
+					flag = this.FindBestHeadPoint("chest", out vector, out sphereRadius);
+				}
 				bool flag2 = false;
 				float num = 1f;
 				float num2 = 1f;
@@ -640,11 +749,26 @@ namespace RoR2.UI
 					{
 						sphereRadius = Util.SphereVolumeToRadius(bounds.size.x * bounds.size.y * bounds.size.z);
 					}
+					Mathf.Max((vector.y - bounds.min.y) / bounds.size.y - 0.5f - 0.2f, 0f);
+					Vector3 center = bounds.center;
 					num3 = bounds.size.z / bounds.size.x;
-					float num4 = Mathf.Max((vector.y - bounds.min.y) / bounds.size.y - 0.5f - 0.2f, 0f);
-					vector.y -= num4 * 0.5f * bounds.size.y;
 				}
 				Vector3 vector3 = -this.root.forward;
+				for (int i = 0; i < this.boneList.Count; i++)
+				{
+					if (this.boneList[i].name.Equals("muzzle", StringComparison.OrdinalIgnoreCase))
+					{
+						Vector3 vector4 = this.root.position - this.boneList[i].position;
+						vector4.y = 0f;
+						float magnitude = vector4.magnitude;
+						if (magnitude > 0.2f)
+						{
+							vector4 /= magnitude;
+							vector3 = vector4;
+							break;
+						}
+					}
+				}
 				vector3 = Quaternion.Euler(0f, 57.29578f * Mathf.Atan(num3 - 1f) * 1f, 0f) * vector3;
 				Vector3 b = -vector3 * (ModelPanel.CameraFramingCalculator.CalcMagnitudeToFrameSphere(sphereRadius, fov) + num);
 				Vector3 b2 = vector + b;
@@ -653,28 +777,28 @@ namespace RoR2.UI
 				this.outputCameraRotation = Util.QuaternionSafeLookRotation(vector - b2);
 			}
 
-			// Token: 0x0400259C RID: 9628
+			// Token: 0x040021E2 RID: 8674
 			private GameObject modelInstance;
 
-			// Token: 0x0400259D RID: 9629
+			// Token: 0x040021E3 RID: 8675
 			private Transform root;
 
-			// Token: 0x0400259E RID: 9630
+			// Token: 0x040021E4 RID: 8676
 			private readonly List<Transform> boneList = new List<Transform>();
 
-			// Token: 0x0400259F RID: 9631
+			// Token: 0x040021E5 RID: 8677
 			private HurtBoxGroup hurtBoxGroup;
 
-			// Token: 0x040025A0 RID: 9632
+			// Token: 0x040021E6 RID: 8678
 			private HurtBox[] hurtBoxes = Array.Empty<HurtBox>();
 
-			// Token: 0x040025A1 RID: 9633
+			// Token: 0x040021E7 RID: 8679
 			public Vector3 outputPivotPoint;
 
-			// Token: 0x040025A2 RID: 9634
+			// Token: 0x040021E8 RID: 8680
 			public Vector3 outputCameraPosition;
 
-			// Token: 0x040025A3 RID: 9635
+			// Token: 0x040021E9 RID: 8681
 			public Quaternion outputCameraRotation;
 		}
 	}

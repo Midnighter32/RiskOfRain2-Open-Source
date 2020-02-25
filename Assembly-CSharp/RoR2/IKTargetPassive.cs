@@ -3,15 +3,15 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000333 RID: 819
+	// Token: 0x02000255 RID: 597
 	public class IKTargetPassive : MonoBehaviour, IIKTargetBehavior
 	{
-		// Token: 0x060010CB RID: 4299 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000D18 RID: 3352 RVA: 0x0000409B File Offset: 0x0000229B
 		public void UpdateIKState(int targetState)
 		{
 		}
 
-		// Token: 0x060010CC RID: 4300 RVA: 0x00053CE7 File Offset: 0x00051EE7
+		// Token: 0x06000D19 RID: 3353 RVA: 0x0003AC8B File Offset: 0x00038E8B
 		private void Awake()
 		{
 			if (this.cacheFirstPosition)
@@ -20,7 +20,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060010CD RID: 4301 RVA: 0x00053D04 File Offset: 0x00051F04
+		// Token: 0x06000D1A RID: 3354 RVA: 0x0003ACA8 File Offset: 0x00038EA8
 		private void LateUpdate()
 		{
 			this.selfPlantTimer -= Time.deltaTime;
@@ -32,7 +32,7 @@ namespace RoR2
 			this.UpdateYOffset();
 		}
 
-		// Token: 0x060010CE RID: 4302 RVA: 0x00053D58 File Offset: 0x00051F58
+		// Token: 0x06000D1B RID: 3355 RVA: 0x0003ACFC File Offset: 0x00038EFC
 		public void UpdateIKTargetPosition()
 		{
 			this.ResetTransformToCachedPosition();
@@ -40,12 +40,15 @@ namespace RoR2
 			if (Physics.Raycast(base.transform.position + Vector3.up * -this.minHeight, Vector3.down, out raycastHit, this.maxHeight - this.minHeight, LayerIndex.world.mask))
 			{
 				this.targetHeightOffset = raycastHit.point.y - base.transform.position.y;
-				return;
 			}
-			this.targetHeightOffset = 0f;
+			else
+			{
+				this.targetHeightOffset = 0f;
+			}
+			this.targetHeightOffset += this.baseOffset;
 		}
 
-		// Token: 0x060010CF RID: 4303 RVA: 0x00053DE8 File Offset: 0x00051FE8
+		// Token: 0x06000D1C RID: 3356 RVA: 0x0003ADA0 File Offset: 0x00038FA0
 		public void UpdateYOffset()
 		{
 			float t = 1f;
@@ -58,7 +61,7 @@ namespace RoR2
 			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + Mathf.Lerp(0f, this.smoothedTargetHeightOffset, t), base.transform.position.z);
 		}
 
-		// Token: 0x060010D0 RID: 4304 RVA: 0x00053EAD File Offset: 0x000520AD
+		// Token: 0x06000D1D RID: 3357 RVA: 0x0003AE65 File Offset: 0x00039065
 		private void ResetTransformToCachedPosition()
 		{
 			if (this.cacheFirstPosition)
@@ -67,46 +70,49 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x040014EB RID: 5355
+		// Token: 0x04000D2E RID: 3374
 		private float smoothedTargetHeightOffset;
 
-		// Token: 0x040014EC RID: 5356
+		// Token: 0x04000D2F RID: 3375
 		private float targetHeightOffset;
 
-		// Token: 0x040014ED RID: 5357
+		// Token: 0x04000D30 RID: 3376
 		private float smoothdampVelocity;
 
-		// Token: 0x040014EE RID: 5358
+		// Token: 0x04000D31 RID: 3377
 		public float minHeight = -0.3f;
 
-		// Token: 0x040014EF RID: 5359
+		// Token: 0x04000D32 RID: 3378
 		public float maxHeight = 1f;
 
-		// Token: 0x040014F0 RID: 5360
+		// Token: 0x04000D33 RID: 3379
 		public float dampTime = 0.1f;
 
-		// Token: 0x040014F1 RID: 5361
+		// Token: 0x04000D34 RID: 3380
+		public float baseOffset;
+
+		// Token: 0x04000D35 RID: 3381
 		[Tooltip("The IK weight float parameter if used")]
 		public string animatorIKWeightFloat = "";
 
-		// Token: 0x040014F2 RID: 5362
+		// Token: 0x04000D36 RID: 3382
 		public Animator animator;
 
-		// Token: 0x040014F3 RID: 5363
+		// Token: 0x04000D37 RID: 3383
 		[Tooltip("The target transform will plant without any calls from external IK chains")]
 		public bool selfPlant;
 
-		// Token: 0x040014F4 RID: 5364
+		// Token: 0x04000D38 RID: 3384
 		public float selfPlantFrequency = 5f;
 
-		// Token: 0x040014F5 RID: 5365
+		// Token: 0x04000D39 RID: 3385
 		[Tooltip("Whether or not to cache where the raycast begins. Used when not attached to bones, who reset themselves via animator.")]
 		public bool cacheFirstPosition;
 
-		// Token: 0x040014F6 RID: 5366
+		// Token: 0x04000D3A RID: 3386
 		private Vector3 cachedLocalPosition;
 
-		// Token: 0x040014F7 RID: 5367
+		// Token: 0x04000D3B RID: 3387
 		private float selfPlantTimer;
 	}
 }

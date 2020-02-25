@@ -6,10 +6,10 @@ using UnityEngine;
 
 namespace EntityStates.AI.Walker
 {
-	// Token: 0x020001E6 RID: 486
+	// Token: 0x02000902 RID: 2306
 	public class Wander : BaseAIState
 	{
-		// Token: 0x0600097B RID: 2427 RVA: 0x0002FAE4 File Offset: 0x0002DCE4
+		// Token: 0x0600337E RID: 13182 RVA: 0x000DF730 File Offset: 0x000DD930
 		private void PickNewTargetLookPosition()
 		{
 			if (base.bodyInputBank)
@@ -41,14 +41,14 @@ namespace EntityStates.AI.Walker
 			this.lookTimer = UnityEngine.Random.Range(0.5f, 4f);
 		}
 
-		// Token: 0x0600097C RID: 2428 RVA: 0x0002FBD8 File Offset: 0x0002DDD8
+		// Token: 0x0600337F RID: 13183 RVA: 0x000DF824 File Offset: 0x000DDA24
 		public override void OnEnter()
 		{
 			base.OnEnter();
 			if (base.ai && base.body)
 			{
-				this.targetPosition = base.bodyTransform.position;
 				NodeGraph nodeGraph = base.ai.GetNodeGraph();
+				this.targetPosition = base.bodyTransform.position;
 				NodeGraphSpider nodeGraphSpider = new NodeGraphSpider(nodeGraph, (HullMask)(1 << (int)base.body.hullClassification));
 				nodeGraphSpider.AddNodeForNextStep(nodeGraph.FindClosestNode(base.bodyTransform.position, base.body.hullClassification));
 				for (int i = 0; i < 6; i++)
@@ -67,7 +67,7 @@ namespace EntityStates.AI.Walker
 			}
 		}
 
-		// Token: 0x0600097D RID: 2429 RVA: 0x0002FCCC File Offset: 0x0002DECC
+		// Token: 0x06003380 RID: 13184 RVA: 0x000DF918 File Offset: 0x000DDB18
 		public override void OnExit()
 		{
 			if (base.bodyInputBank)
@@ -82,7 +82,7 @@ namespace EntityStates.AI.Walker
 			base.OnExit();
 		}
 
-		// Token: 0x0600097E RID: 2430 RVA: 0x0002FD54 File Offset: 0x0002DF54
+		// Token: 0x06003381 RID: 13185 RVA: 0x000DF9A0 File Offset: 0x000DDBA0
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -119,25 +119,25 @@ namespace EntityStates.AI.Walker
 			}
 		}
 
-		// Token: 0x04000CD4 RID: 3284
+		// Token: 0x040032FD RID: 13053
 		private Vector3 targetPosition;
 
-		// Token: 0x04000CD5 RID: 3285
+		// Token: 0x040032FE RID: 13054
 		private float lookTimer;
 
-		// Token: 0x04000CD6 RID: 3286
+		// Token: 0x040032FF RID: 13055
 		private const float minLookDuration = 0.5f;
 
-		// Token: 0x04000CD7 RID: 3287
+		// Token: 0x04003300 RID: 13056
 		private const float maxLookDuration = 4f;
 
-		// Token: 0x04000CD8 RID: 3288
+		// Token: 0x04003301 RID: 13057
 		private const int lookTries = 1;
 
-		// Token: 0x04000CD9 RID: 3289
+		// Token: 0x04003302 RID: 13058
 		private const float lookRaycastLength = 25f;
 
-		// Token: 0x04000CDA RID: 3290
+		// Token: 0x04003303 RID: 13059
 		private Vector3 targetLookPosition;
 	}
 }

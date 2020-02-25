@@ -3,20 +3,56 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using Rewired;
-using RoR2.CharacterAI;
 using RoR2.Networking;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020004E0 RID: 1248
+	// Token: 0x0200047B RID: 1147
 	public static class Util
 	{
-		// Token: 0x06001C1F RID: 7199 RVA: 0x000832A8 File Offset: 0x000814A8
+		// Token: 0x06001BD3 RID: 7123 RVA: 0x00076A74 File Offset: 0x00074C74
+		public static WeightedSelection<DirectorCard> CreateReasonableDirectorCardSpawnList(float availableCredit, int maximumNumberToSpawnBeforeSkipping, int minimumToSpawn)
+		{
+			WeightedSelection<DirectorCard> monsterSelection = ClassicStageInfo.instance.monsterSelection;
+			WeightedSelection<DirectorCard> weightedSelection = new WeightedSelection<DirectorCard>(8);
+			float highestEliteCostMultiplier = CombatDirector.highestEliteCostMultiplier;
+			for (int i = 0; i < monsterSelection.Count; i++)
+			{
+				DirectorCard value = monsterSelection.choices[i].value;
+				float num = (float)(value.cost * maximumNumberToSpawnBeforeSkipping) * ((value.spawnCard as CharacterSpawnCard).noElites ? 1f : highestEliteCostMultiplier);
+				if (value.CardIsValid() && (float)value.cost * (float)minimumToSpawn <= availableCredit && num / 2f > availableCredit)
+				{
+					weightedSelection.AddChoice(value, monsterSelection.choices[i].weight);
+				}
+			}
+			return weightedSelection;
+		}
+
+		// Token: 0x06001BD4 RID: 7124 RVA: 0x00076B24 File Offset: 0x00074D24
+		public static CharacterBody HurtBoxColliderToBody(Collider collider)
+		{
+			HurtBox component = collider.GetComponent<HurtBox>();
+			if (component && component.healthComponent)
+			{
+				return component.healthComponent.body;
+			}
+			return null;
+		}
+
+		// Token: 0x06001BD5 RID: 7125 RVA: 0x00076B5A File Offset: 0x00074D5A
+		public static float ConvertAmplificationPercentageIntoReductionPercentage(float amplificationPercentage)
+		{
+			return (1f - 100f / (100f + amplificationPercentage)) * 100f;
+		}
+
+		// Token: 0x06001BD6 RID: 7126 RVA: 0x00076B78 File Offset: 0x00074D78
 		public static Vector3 ClosestPointOnLine(Vector3 vA, Vector3 vB, Vector3 vPoint)
 		{
 			Vector3 rhs = vPoint - vA;
@@ -35,72 +71,70 @@ namespace RoR2
 			return vA + b;
 		}
 
-		// Token: 0x06001C20 RID: 7200 RVA: 0x00083300 File Offset: 0x00081500
+		// Token: 0x06001BD7 RID: 7127 RVA: 0x00076BD0 File Offset: 0x00074DD0
 		public static CharacterBody TryToCreateGhost(CharacterBody targetBody, CharacterBody ownerBody, int duration)
 		{
-			if (!targetBody || !NetworkServer.active)
+			Util.<>c__DisplayClass4_0 CS$<>8__locals1 = new Util.<>c__DisplayClass4_0();
+			CS$<>8__locals1.targetBody = targetBody;
+			CS$<>8__locals1.ownerBody = ownerBody;
+			CS$<>8__locals1.duration = duration;
+			if (!NetworkServer.active)
+			{
+				Debug.LogWarning("[Server] function 'RoR2.CharacterBody RoR2.Util::TryToCreateGhost(RoR2.CharacterBody, RoR2.CharacterBody, int)' called on client");
+				return null;
+			}
+			if (!CS$<>8__locals1.targetBody)
 			{
 				return null;
 			}
-			if (TeamComponent.GetTeamMembers(ownerBody.teamComponent.teamIndex).Count >= 40)
+			CS$<>8__locals1.bodyPrefab = BodyCatalog.FindBodyPrefab(CS$<>8__locals1.targetBody);
+			if (!CS$<>8__locals1.bodyPrefab)
 			{
 				return null;
 			}
-			int num = BodyCatalog.FindBodyIndex(targetBody.gameObject);
-			if (num < 0)
-			{
-				return null;
-			}
-			GameObject bodyPrefab = BodyCatalog.GetBodyPrefab(num);
-			if (!bodyPrefab)
-			{
-				return null;
-			}
-			CharacterMaster characterMaster = MasterCatalog.allAiMasters.FirstOrDefault((CharacterMaster master) => master.bodyPrefab == bodyPrefab);
+			CharacterMaster characterMaster = MasterCatalog.allAiMasters.FirstOrDefault((CharacterMaster master) => master.bodyPrefab == CS$<>8__locals1.bodyPrefab);
 			if (!characterMaster)
 			{
 				return null;
 			}
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(characterMaster.gameObject);
-			CharacterMaster component = gameObject.GetComponent<CharacterMaster>();
-			component.teamIndex = ownerBody.teamComponent.teamIndex;
-			component.GetComponent<BaseAI>().leader.gameObject = ownerBody.gameObject;
-			Inventory inventory = targetBody.inventory;
-			if (inventory)
+			MasterSummon masterSummon = new MasterSummon();
+			masterSummon.masterPrefab = characterMaster.gameObject;
+			masterSummon.ignoreTeamMemberLimit = false;
+			masterSummon.position = CS$<>8__locals1.targetBody.footPosition;
+			CharacterDirection component = CS$<>8__locals1.targetBody.GetComponent<CharacterDirection>();
+			masterSummon.rotation = (component ? Quaternion.Euler(0f, component.yaw, 0f) : CS$<>8__locals1.targetBody.transform.rotation);
+			masterSummon.summonerBodyObject = (CS$<>8__locals1.ownerBody ? CS$<>8__locals1.ownerBody.gameObject : null);
+			masterSummon.preSpawnSetupCallback = new Action<CharacterMaster>(CS$<>8__locals1.<TryToCreateGhost>g__PreSpawnSetup|1);
+			CharacterMaster characterMaster2 = masterSummon.Perform();
+			if (!characterMaster2)
 			{
-				component.inventory.CopyItemsFrom(inventory);
-				component.inventory.CopyEquipmentFrom(inventory);
+				return null;
 			}
-			component.inventory.GiveItem(ItemIndex.Ghost, 1);
-			component.inventory.GiveItem(ItemIndex.HealthDecay, duration);
-			component.inventory.GiveItem(ItemIndex.BoostDamage, 30);
-			NetworkServer.Spawn(gameObject);
-			CharacterBody characterBody = component.Respawn(targetBody.footPosition, targetBody.transform.rotation);
-			if (characterBody)
+			CharacterBody body = characterMaster2.GetBody();
+			if (body)
 			{
-				foreach (EntityStateMachine entityStateMachine in characterBody.GetComponents<EntityStateMachine>())
+				foreach (EntityStateMachine entityStateMachine in body.GetComponents<EntityStateMachine>())
 				{
 					entityStateMachine.initialStateType = entityStateMachine.mainStateType;
 				}
 			}
-			return characterBody;
+			return body;
 		}
 
-		// Token: 0x06001C21 RID: 7201 RVA: 0x0008347C File Offset: 0x0008167C
-		public static float OnHitProcDamage(float damageThatProccedIt, float baseDamage, float damageCoefficient)
+		// Token: 0x06001BD8 RID: 7128 RVA: 0x00076D48 File Offset: 0x00074F48
+		public static float OnHitProcDamage(float damageThatProccedIt, float damageStat, float damageCoefficient)
 		{
-			float a = damageThatProccedIt + (damageCoefficient - 1f) * baseDamage;
 			float b = damageThatProccedIt * damageCoefficient;
-			return Mathf.Max(1f, Mathf.Min(a, b));
+			return Mathf.Max(1f, b);
 		}
 
-		// Token: 0x06001C22 RID: 7202 RVA: 0x000834AA File Offset: 0x000816AA
+		// Token: 0x06001BD9 RID: 7129 RVA: 0x00076D64 File Offset: 0x00074F64
 		public static float OnKillProcDamage(float baseDamage, float damageCoefficient)
 		{
 			return baseDamage * damageCoefficient;
 		}
 
-		// Token: 0x06001C23 RID: 7203 RVA: 0x000834B0 File Offset: 0x000816B0
+		// Token: 0x06001BDA RID: 7130 RVA: 0x00076D6C File Offset: 0x00074F6C
 		public static Quaternion QuaternionSafeLookRotation(Vector3 forward)
 		{
 			Quaternion result = Quaternion.identity;
@@ -111,7 +145,7 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x06001C24 RID: 7204 RVA: 0x000834DC File Offset: 0x000816DC
+		// Token: 0x06001BDB RID: 7131 RVA: 0x00076D98 File Offset: 0x00074F98
 		public static Quaternion QuaternionSafeLookRotation(Vector3 forward, Vector3 upwards)
 		{
 			Quaternion result = Quaternion.identity;
@@ -122,7 +156,7 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x06001C25 RID: 7205 RVA: 0x00083508 File Offset: 0x00081708
+		// Token: 0x06001BDC RID: 7132 RVA: 0x00076DC4 File Offset: 0x00074FC4
 		public static bool HasParameterOfType(Animator animator, string name, AnimatorControllerParameterType type)
 		{
 			foreach (AnimatorControllerParameter animatorControllerParameter in animator.parameters)
@@ -135,32 +169,32 @@ namespace RoR2
 			return false;
 		}
 
-		// Token: 0x06001C26 RID: 7206 RVA: 0x00083548 File Offset: 0x00081748
+		// Token: 0x06001BDD RID: 7133 RVA: 0x00076E04 File Offset: 0x00075004
 		public static uint PlaySound(string soundString, GameObject gameObject)
 		{
 			if (string.IsNullOrEmpty(soundString))
 			{
-				return 0u;
+				return 0U;
 			}
 			return AkSoundEngine.PostEvent(soundString, gameObject);
 		}
 
-		// Token: 0x06001C27 RID: 7207 RVA: 0x0008355C File Offset: 0x0008175C
+		// Token: 0x06001BDE RID: 7134 RVA: 0x00076E18 File Offset: 0x00075018
 		public static uint PlaySound(string soundString, GameObject gameObject, string RTPCstring, float RTPCvalue)
 		{
 			uint num = Util.PlaySound(soundString, gameObject);
-			if (num != 0u)
+			if (num != 0U)
 			{
 				AkSoundEngine.SetRTPCValueByPlayingID(RTPCstring, RTPCvalue, num);
 			}
 			return num;
 		}
 
-		// Token: 0x06001C28 RID: 7208 RVA: 0x00083580 File Offset: 0x00081780
+		// Token: 0x06001BDF RID: 7135 RVA: 0x00076E3C File Offset: 0x0007503C
 		public static uint PlayScaledSound(string soundString, GameObject gameObject, float playbackRate)
 		{
 			uint num = Util.PlaySound(soundString, gameObject);
-			if (num != 0u)
+			if (num != 0U)
 			{
 				float num2 = Mathf.Log(playbackRate, 2f);
 				float in_value = 1200f * num2 / 96f + 50f;
@@ -169,7 +203,7 @@ namespace RoR2
 			return num;
 		}
 
-		// Token: 0x06001C29 RID: 7209 RVA: 0x000835C8 File Offset: 0x000817C8
+		// Token: 0x06001BE0 RID: 7136 RVA: 0x00076E84 File Offset: 0x00075084
 		public static void RotateAwayFromWalls(float raycastLength, int raycastCount, Vector3 raycastOrigin, Transform referenceTransform)
 		{
 			float num = 360f / (float)raycastCount;
@@ -193,7 +227,7 @@ namespace RoR2
 			referenceTransform.Rotate(Vector3.up, angle, Space.Self);
 		}
 
-		// Token: 0x06001C2A RID: 7210 RVA: 0x00083660 File Offset: 0x00081860
+		// Token: 0x06001BE1 RID: 7137 RVA: 0x00076F1C File Offset: 0x0007511C
 		public static string GetActionDisplayString(ActionElementMap actionElementMap)
 		{
 			if (actionElementMap == null)
@@ -216,19 +250,19 @@ namespace RoR2
 			return "Shift";
 		}
 
-		// Token: 0x06001C2B RID: 7211 RVA: 0x000836BE File Offset: 0x000818BE
+		// Token: 0x06001BE2 RID: 7138 RVA: 0x00076F7A File Offset: 0x0007517A
 		public static float AngleSigned(Vector3 v1, Vector3 v2, Vector3 n)
 		{
 			return Mathf.Atan2(Vector3.Dot(n, Vector3.Cross(v1, v2)), Vector3.Dot(v1, v2)) * 57.29578f;
 		}
 
-		// Token: 0x06001C2C RID: 7212 RVA: 0x00036C4B File Offset: 0x00034E4B
+		// Token: 0x06001BE3 RID: 7139 RVA: 0x00017777 File Offset: 0x00015977
 		public static float Remap(float value, float inMin, float inMax, float outMin, float outMax)
 		{
 			return outMin + (value - inMin) / (inMax - inMin) * (outMax - outMin);
 		}
 
-		// Token: 0x06001C2D RID: 7213 RVA: 0x000836E0 File Offset: 0x000818E0
+		// Token: 0x06001BE4 RID: 7140 RVA: 0x00076F9C File Offset: 0x0007519C
 		public static bool HasAnimationParameter(string paramName, Animator animator)
 		{
 			AnimatorControllerParameter[] parameters = animator.parameters;
@@ -242,7 +276,7 @@ namespace RoR2
 			return false;
 		}
 
-		// Token: 0x06001C2E RID: 7214 RVA: 0x00083718 File Offset: 0x00081918
+		// Token: 0x06001BE5 RID: 7141 RVA: 0x00076FD4 File Offset: 0x000751D4
 		public static bool HasAnimationParameter(int paramHash, Animator animator)
 		{
 			int i = 0;
@@ -258,7 +292,7 @@ namespace RoR2
 			return false;
 		}
 
-		// Token: 0x06001C2F RID: 7215 RVA: 0x0008374C File Offset: 0x0008194C
+		// Token: 0x06001BE6 RID: 7142 RVA: 0x00077008 File Offset: 0x00075208
 		public static bool CheckRoll(float percentChance, float luck = 0f, CharacterMaster effectOriginMaster = null)
 		{
 			if (percentChance <= 0f)
@@ -292,13 +326,13 @@ namespace RoR2
 			return false;
 		}
 
-		// Token: 0x06001C30 RID: 7216 RVA: 0x000837F7 File Offset: 0x000819F7
+		// Token: 0x06001BE7 RID: 7143 RVA: 0x000770B3 File Offset: 0x000752B3
 		public static bool CheckRoll(float percentChance, CharacterMaster master)
 		{
 			return Util.CheckRoll(percentChance, master ? master.luck : 0f, master);
 		}
 
-		// Token: 0x06001C31 RID: 7217 RVA: 0x00083818 File Offset: 0x00081A18
+		// Token: 0x06001BE8 RID: 7144 RVA: 0x000770D4 File Offset: 0x000752D4
 		public static float EstimateSurfaceDistance(Collider a, Collider b)
 		{
 			Vector3 center = a.bounds.center;
@@ -325,31 +359,31 @@ namespace RoR2
 			return Vector3.Distance(a2, b2);
 		}
 
-		// Token: 0x06001C32 RID: 7218 RVA: 0x000838AB File Offset: 0x00081AAB
+		// Token: 0x06001BE9 RID: 7145 RVA: 0x00077167 File Offset: 0x00075367
 		public static bool HasEffectiveAuthority(GameObject gameObject)
 		{
 			return gameObject && Util.HasEffectiveAuthority(gameObject.GetComponent<NetworkIdentity>());
 		}
 
-		// Token: 0x06001C33 RID: 7219 RVA: 0x000838C2 File Offset: 0x00081AC2
+		// Token: 0x06001BEA RID: 7146 RVA: 0x0007717E File Offset: 0x0007537E
 		public static bool HasEffectiveAuthority(NetworkIdentity networkIdentity)
 		{
 			return networkIdentity && (networkIdentity.hasAuthority || (NetworkServer.active && networkIdentity.clientAuthorityOwner == null));
 		}
 
-		// Token: 0x06001C34 RID: 7220 RVA: 0x000838EA File Offset: 0x00081AEA
+		// Token: 0x06001BEB RID: 7147 RVA: 0x000771A6 File Offset: 0x000753A6
 		public static float CalculateSphereVolume(float radius)
 		{
 			return 4.1887903f * radius * radius * radius;
 		}
 
-		// Token: 0x06001C35 RID: 7221 RVA: 0x000838F7 File Offset: 0x00081AF7
+		// Token: 0x06001BEC RID: 7148 RVA: 0x000771B3 File Offset: 0x000753B3
 		public static float CalculateCylinderVolume(float radius, float height)
 		{
 			return 3.1415927f * radius * radius * height;
 		}
 
-		// Token: 0x06001C36 RID: 7222 RVA: 0x00083904 File Offset: 0x00081B04
+		// Token: 0x06001BED RID: 7149 RVA: 0x000771C0 File Offset: 0x000753C0
 		public static float CalculateColliderVolume(Collider collider)
 		{
 			Vector3 lossyScale = collider.transform.lossyScale;
@@ -385,7 +419,7 @@ namespace RoR2
 			return num2 * num;
 		}
 
-		// Token: 0x06001C37 RID: 7223 RVA: 0x00083A1C File Offset: 0x00081C1C
+		// Token: 0x06001BEE RID: 7150 RVA: 0x000772D8 File Offset: 0x000754D8
 		public static Vector3 RandomColliderVolumePoint(Collider collider)
 		{
 			Transform transform = collider.transform;
@@ -471,7 +505,7 @@ namespace RoR2
 			return transform.TransformPoint(vector);
 		}
 
-		// Token: 0x06001C38 RID: 7224 RVA: 0x00083D6C File Offset: 0x00081F6C
+		// Token: 0x06001BEF RID: 7151 RVA: 0x00077628 File Offset: 0x00075828
 		public static CharacterBody GetFriendlyEasyTarget(CharacterBody casterBody, Ray aimRay, float maxDistance, float maxDeviation = 20f)
 		{
 			TeamIndex teamIndex = TeamIndex.Neutral;
@@ -532,7 +566,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06001C39 RID: 7225 RVA: 0x00083F04 File Offset: 0x00082104
+		// Token: 0x06001BF0 RID: 7152 RVA: 0x000777C0 File Offset: 0x000759C0
 		public static CharacterBody GetEnemyEasyTarget(CharacterBody casterBody, Ray aimRay, float maxDistance, float maxDeviation = 20f)
 		{
 			TeamIndex teamIndex = TeamIndex.Neutral;
@@ -600,7 +634,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06001C3A RID: 7226 RVA: 0x000840C4 File Offset: 0x000822C4
+		// Token: 0x06001BF1 RID: 7153 RVA: 0x00077980 File Offset: 0x00075B80
 		public static float GetBodyPrefabFootOffset(GameObject prefab)
 		{
 			CapsuleCollider component = prefab.GetComponent<CapsuleCollider>();
@@ -611,7 +645,7 @@ namespace RoR2
 			return 0f;
 		}
 
-		// Token: 0x06001C3B RID: 7227 RVA: 0x00084100 File Offset: 0x00082300
+		// Token: 0x06001BF2 RID: 7154 RVA: 0x000779BC File Offset: 0x00075BBC
 		public static void ShuffleList<T>(List<T> list)
 		{
 			for (int i = 0; i < list.Count; i++)
@@ -623,7 +657,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001C3C RID: 7228 RVA: 0x0008414C File Offset: 0x0008234C
+		// Token: 0x06001BF3 RID: 7155 RVA: 0x00077A08 File Offset: 0x00075C08
 		public static void ShuffleList<T>(List<T> list, Xoroshiro128Plus rng)
 		{
 			for (int i = 0; i < list.Count; i++)
@@ -635,7 +669,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001C3D RID: 7229 RVA: 0x00084198 File Offset: 0x00082398
+		// Token: 0x06001BF4 RID: 7156 RVA: 0x00077A54 File Offset: 0x00075C54
 		public static void ShuffleArray<T>(T[] array)
 		{
 			for (int i = 0; i < array.Length; i++)
@@ -647,7 +681,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001C3E RID: 7230 RVA: 0x000841DC File Offset: 0x000823DC
+		// Token: 0x06001BF5 RID: 7157 RVA: 0x00077A98 File Offset: 0x00075C98
 		public static void ShuffleArray<T>(T[] array, Xoroshiro128Plus rng)
 		{
 			for (int i = 0; i < array.Length; i++)
@@ -659,7 +693,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001C3F RID: 7231 RVA: 0x00084220 File Offset: 0x00082420
+		// Token: 0x06001BF6 RID: 7158 RVA: 0x00077ADC File Offset: 0x00075CDC
 		public static Transform FindNearest(Vector3 position, List<Transform> transformsList, float range = float.PositiveInfinity)
 		{
 			Transform result = null;
@@ -676,7 +710,7 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x06001C40 RID: 7232 RVA: 0x00084270 File Offset: 0x00082470
+		// Token: 0x06001BF7 RID: 7159 RVA: 0x00077B2C File Offset: 0x00075D2C
 		public static Vector3 ApplySpread(Vector3 aimDirection, float minSpread, float maxSpread, float spreadYawScale, float spreadPitchScale, float bonusYaw = 0f, float bonusPitch = 0f)
 		{
 			Vector3 up = Vector3.up;
@@ -691,7 +725,7 @@ namespace RoR2
 			return Quaternion.AngleAxis(angle, up) * (Quaternion.AngleAxis(angle2, axis) * aimDirection);
 		}
 
-		// Token: 0x06001C41 RID: 7233 RVA: 0x00084344 File Offset: 0x00082544
+		// Token: 0x06001BF8 RID: 7160 RVA: 0x00077C00 File Offset: 0x00075E00
 		public static string GenerateColoredString(string str, Color32 color)
 		{
 			return string.Format(CultureInfo.InvariantCulture, "<color=#{0:X2}{1:X2}{2:X2}>{3}</color>", new object[]
@@ -703,7 +737,7 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x06001C42 RID: 7234 RVA: 0x00084394 File Offset: 0x00082594
+		// Token: 0x06001BF9 RID: 7161 RVA: 0x00077C50 File Offset: 0x00075E50
 		public static bool GuessRenderBounds(GameObject gameObject, out Bounds bounds)
 		{
 			Renderer[] componentsInChildren = gameObject.GetComponentsInChildren<Renderer>();
@@ -720,7 +754,7 @@ namespace RoR2
 			return false;
 		}
 
-		// Token: 0x06001C43 RID: 7235 RVA: 0x000843F4 File Offset: 0x000825F4
+		// Token: 0x06001BFA RID: 7162 RVA: 0x00077CB0 File Offset: 0x00075EB0
 		public static bool GuessRenderBoundsMeshOnly(GameObject gameObject, out Bounds bounds)
 		{
 			Renderer[] array = (from renderer in gameObject.GetComponentsInChildren<Renderer>()
@@ -739,7 +773,7 @@ namespace RoR2
 			return false;
 		}
 
-		// Token: 0x06001C44 RID: 7236 RVA: 0x0008447D File Offset: 0x0008267D
+		// Token: 0x06001BFB RID: 7163 RVA: 0x00077D39 File Offset: 0x00075F39
 		public static GameObject FindNetworkObject(NetworkInstanceId networkInstanceId)
 		{
 			if (NetworkServer.active)
@@ -749,7 +783,7 @@ namespace RoR2
 			return ClientScene.FindLocalObject(networkInstanceId);
 		}
 
-		// Token: 0x06001C45 RID: 7237 RVA: 0x00084494 File Offset: 0x00082694
+		// Token: 0x06001BFC RID: 7164 RVA: 0x00077D50 File Offset: 0x00075F50
 		public static string GetGameObjectHierarchyName(GameObject gameObject)
 		{
 			int num = 0;
@@ -769,42 +803,45 @@ namespace RoR2
 			return string.Join("/", array);
 		}
 
-		// Token: 0x06001C46 RID: 7238 RVA: 0x000844FC File Offset: 0x000826FC
+		// Token: 0x06001BFD RID: 7165 RVA: 0x00077DB8 File Offset: 0x00075FB8
 		public static string GetBestBodyName(GameObject bodyObject)
 		{
+			CharacterBody characterBody = null;
+			string text = "???";
 			if (bodyObject)
 			{
-				CharacterBody component = bodyObject.GetComponent<CharacterBody>();
-				if (component)
+				characterBody = bodyObject.GetComponent<CharacterBody>();
+			}
+			if (characterBody)
+			{
+				text = characterBody.GetUserName();
+			}
+			else
+			{
+				IDisplayNameProvider component = bodyObject.GetComponent<IDisplayNameProvider>();
+				if (component != null)
 				{
-					CharacterMaster master = component.master;
-					if (master)
-					{
-						PlayerCharacterMasterController component2 = master.GetComponent<PlayerCharacterMasterController>();
-						if (component2)
-						{
-							GameObject networkUserObject = component2.networkUserObject;
-							if (networkUserObject)
-							{
-								NetworkUser component3 = networkUserObject.GetComponent<NetworkUser>();
-								if (component3)
-								{
-									return component3.userName;
-								}
-							}
-						}
-					}
-				}
-				IDisplayNameProvider component4 = bodyObject.GetComponent<IDisplayNameProvider>();
-				if (component4 != null)
-				{
-					return component4.GetDisplayName();
+					text = component.GetDisplayName();
 				}
 			}
-			return "???";
+			string text2 = text;
+			if (characterBody && characterBody.isElite)
+			{
+				foreach (BuffIndex buffIndex in BuffCatalog.eliteBuffIndices)
+				{
+					if (characterBody.HasBuff(buffIndex))
+					{
+						text2 = Language.GetStringFormatted(EliteCatalog.GetEliteDef(BuffCatalog.GetBuffDef(buffIndex).eliteIndex).modifierToken, new object[]
+						{
+							text2
+						});
+					}
+				}
+			}
+			return text2;
 		}
 
-		// Token: 0x06001C47 RID: 7239 RVA: 0x00084580 File Offset: 0x00082780
+		// Token: 0x06001BFE RID: 7166 RVA: 0x00077E64 File Offset: 0x00076064
 		public static string GetBestBodyNameColored(GameObject bodyObject)
 		{
 			if (bodyObject)
@@ -839,30 +876,34 @@ namespace RoR2
 			return "???";
 		}
 
-		// Token: 0x06001C48 RID: 7240 RVA: 0x00084610 File Offset: 0x00082810
+		// Token: 0x06001BFF RID: 7167 RVA: 0x00077EF4 File Offset: 0x000760F4
 		public static string GetBestMasterName(CharacterMaster characterMaster)
 		{
 			if (characterMaster)
 			{
-				PlayerCharacterMasterController component = characterMaster.GetComponent<PlayerCharacterMasterController>();
-				if (component)
+				PlayerCharacterMasterController playerCharacterMasterController = characterMaster.playerCharacterMasterController;
+				string text;
+				if (playerCharacterMasterController == null)
 				{
-					GameObject networkUserObject = component.networkUserObject;
-					if (networkUserObject)
-					{
-						NetworkUser component2 = networkUserObject.GetComponent<NetworkUser>();
-						if (component2)
-						{
-							return component2.userName;
-						}
-					}
+					text = null;
 				}
-				return characterMaster.name;
+				else
+				{
+					NetworkUser networkUser = playerCharacterMasterController.networkUser;
+					text = ((networkUser != null) ? networkUser.userName : null);
+				}
+				string text2 = text;
+				if (text2 == null)
+				{
+					GameObject bodyPrefab = characterMaster.bodyPrefab;
+					text2 = Language.GetString((bodyPrefab != null) ? bodyPrefab.GetComponent<CharacterBody>().baseNameToken : null);
+				}
+				return text2;
 			}
 			return "Null Master";
 		}
 
-		// Token: 0x06001C49 RID: 7241 RVA: 0x00084665 File Offset: 0x00082865
+		// Token: 0x06001C00 RID: 7168 RVA: 0x00077F4F File Offset: 0x0007614F
 		public static NetworkUser LookUpBodyNetworkUser(GameObject bodyObject)
 		{
 			if (bodyObject)
@@ -872,7 +913,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06001C4A RID: 7242 RVA: 0x0008467C File Offset: 0x0008287C
+		// Token: 0x06001C01 RID: 7169 RVA: 0x00077F68 File Offset: 0x00076168
 		public static NetworkUser LookUpBodyNetworkUser(CharacterBody characterBody)
 		{
 			if (characterBody)
@@ -898,92 +939,107 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06001C4B RID: 7243 RVA: 0x000846D0 File Offset: 0x000828D0
-		public static bool CharacterRaycast(GameObject bodyObject, Ray ray, out RaycastHit hitInfo, float maxDistance, LayerMask layerMask, QueryTriggerInteraction queryTriggerInteraction)
+		// Token: 0x06001C02 RID: 7170 RVA: 0x00077FBC File Offset: 0x000761BC
+		private static bool HandleCharacterPhysicsCastResults(GameObject bodyObject, RaycastHit[] hits, out RaycastHit hitInfo)
 		{
-			RaycastHit[] array = Physics.RaycastAll(ray, maxDistance, layerMask, queryTriggerInteraction);
 			int num = -1;
 			float num2 = float.PositiveInfinity;
-			for (int i = 0; i < array.Length; i++)
+			for (int i = 0; i < hits.Length; i++)
 			{
-				float distance = array[i].distance;
+				float distance = hits[i].distance;
 				if (distance < num2)
 				{
-					HurtBox component = array[i].collider.GetComponent<HurtBox>();
+					HurtBox component = hits[i].collider.GetComponent<HurtBox>();
 					if (component)
 					{
 						HealthComponent healthComponent = component.healthComponent;
 						if (healthComponent && healthComponent.gameObject == bodyObject)
 						{
-							goto IL_72;
+							goto IL_5E;
 						}
 					}
 					num = i;
 					num2 = distance;
 				}
-				IL_72:;
+				IL_5E:;
 			}
 			if (num == -1)
 			{
 				hitInfo = default(RaycastHit);
 				return false;
 			}
-			hitInfo = array[num];
+			hitInfo = hits[num];
 			return true;
 		}
 
-		// Token: 0x06001C4C RID: 7244 RVA: 0x00084774 File Offset: 0x00082974
+		// Token: 0x06001C03 RID: 7171 RVA: 0x0007804C File Offset: 0x0007624C
+		public static bool CharacterRaycast(GameObject bodyObject, Ray ray, out RaycastHit hitInfo, float maxDistance, LayerMask layerMask, QueryTriggerInteraction queryTriggerInteraction)
+		{
+			RaycastHit[] hits = Physics.RaycastAll(ray, maxDistance, layerMask, queryTriggerInteraction);
+			return Util.HandleCharacterPhysicsCastResults(bodyObject, hits, out hitInfo);
+		}
+
+		// Token: 0x06001C04 RID: 7172 RVA: 0x00078074 File Offset: 0x00076274
+		public static bool CharacterSpherecast(GameObject bodyObject, Ray ray, float radius, out RaycastHit hitInfo, float maxDistance, LayerMask layerMask, QueryTriggerInteraction queryTriggerInteraction)
+		{
+			RaycastHit[] hits = Physics.SphereCastAll(ray, radius, maxDistance, layerMask, queryTriggerInteraction);
+			return Util.HandleCharacterPhysicsCastResults(bodyObject, hits, out hitInfo);
+		}
+
+		// Token: 0x06001C05 RID: 7173 RVA: 0x0007809C File Offset: 0x0007629C
 		public static bool ConnectionIsLocal([NotNull] NetworkConnection conn)
 		{
 			return !(conn is SteamNetworkConnection) && conn.GetType() != typeof(NetworkConnection);
 		}
 
-		// Token: 0x06001C4D RID: 7245 RVA: 0x00084798 File Offset: 0x00082998
+		// Token: 0x06001C06 RID: 7174 RVA: 0x000780C0 File Offset: 0x000762C0
 		public static string EscapeRichTextForTextMeshPro(string rtString)
 		{
 			string str = rtString.Replace("<", "</noparse><noparse><</noparse><noparse>");
 			return "<noparse>" + str + "</noparse>";
 		}
 
-		// Token: 0x06001C4E RID: 7246 RVA: 0x000847C8 File Offset: 0x000829C8
+		// Token: 0x06001C07 RID: 7175 RVA: 0x000780F0 File Offset: 0x000762F0
 		public static string EscapeQuotes(string str)
 		{
-			return new Regex("\"").Replace(str, "\\\"");
+			str = Util.backlashSearch.Replace(str, Util.strBackslashBackslash);
+			str = Util.quoteSearch.Replace(str, Util.strBackslashQuote);
+			return str;
 		}
 
-		// Token: 0x06001C4F RID: 7247 RVA: 0x000847DF File Offset: 0x000829DF
+		// Token: 0x06001C08 RID: 7176 RVA: 0x00078117 File Offset: 0x00076317
 		public static string RGBToHex(Color32 rgb)
 		{
 			return string.Format(CultureInfo.InvariantCulture, "{0:X2}{1:X2}{2:X2}", rgb.r, rgb.g, rgb.b);
 		}
 
-		// Token: 0x06001C50 RID: 7248 RVA: 0x00084811 File Offset: 0x00082A11
+		// Token: 0x06001C09 RID: 7177 RVA: 0x00078149 File Offset: 0x00076349
 		public static Vector2 Vector3XZToVector2XY(Vector3 vector3)
 		{
 			return new Vector2(vector3.x, vector3.z);
 		}
 
-		// Token: 0x06001C51 RID: 7249 RVA: 0x00084811 File Offset: 0x00082A11
+		// Token: 0x06001C0A RID: 7178 RVA: 0x00078149 File Offset: 0x00076349
 		public static Vector2 Vector3XZToVector2XY(ref Vector3 vector3)
 		{
 			return new Vector2(vector3.x, vector3.z);
 		}
 
-		// Token: 0x06001C52 RID: 7250 RVA: 0x00084824 File Offset: 0x00082A24
+		// Token: 0x06001C0B RID: 7179 RVA: 0x0007815C File Offset: 0x0007635C
 		public static void Vector3XZToVector2XY(Vector3 vector3, out Vector2 vector2)
 		{
 			vector2.x = vector3.x;
 			vector2.y = vector3.z;
 		}
 
-		// Token: 0x06001C53 RID: 7251 RVA: 0x00084824 File Offset: 0x00082A24
+		// Token: 0x06001C0C RID: 7180 RVA: 0x0007815C File Offset: 0x0007635C
 		public static void Vector3XZToVector2XY(ref Vector3 vector3, out Vector2 vector2)
 		{
 			vector2.x = vector3.x;
 			vector2.y = vector3.z;
 		}
 
-		// Token: 0x06001C54 RID: 7252 RVA: 0x00084840 File Offset: 0x00082A40
+		// Token: 0x06001C0D RID: 7181 RVA: 0x00078178 File Offset: 0x00076378
 		public static Vector2 RotateVector2(Vector2 vector2, float degrees)
 		{
 			float num = Mathf.Sin(degrees * 0.017453292f);
@@ -991,7 +1047,7 @@ namespace RoR2
 			return new Vector2(num2 * vector2.x - num * vector2.y, num * vector2.x + num2 * vector2.y);
 		}
 
-		// Token: 0x06001C55 RID: 7253 RVA: 0x00084890 File Offset: 0x00082A90
+		// Token: 0x06001C0E RID: 7182 RVA: 0x000781C8 File Offset: 0x000763C8
 		public static Quaternion SmoothDampQuaternion(Quaternion current, Quaternion target, ref float currentVelocity, float smoothTime, float maxSpeed, float deltaTime)
 		{
 			float num = Quaternion.Angle(current, target);
@@ -999,7 +1055,7 @@ namespace RoR2
 			return Quaternion.RotateTowards(current, target, num);
 		}
 
-		// Token: 0x06001C56 RID: 7254 RVA: 0x000848C0 File Offset: 0x00082AC0
+		// Token: 0x06001C0F RID: 7183 RVA: 0x000781F8 File Offset: 0x000763F8
 		public static Quaternion SmoothDampQuaternion(Quaternion current, Quaternion target, ref float currentVelocity, float smoothTime)
 		{
 			float num = Quaternion.Angle(current, target);
@@ -1007,13 +1063,13 @@ namespace RoR2
 			return Quaternion.RotateTowards(current, target, num);
 		}
 
-		// Token: 0x06001C57 RID: 7255 RVA: 0x000848EB File Offset: 0x00082AEB
+		// Token: 0x06001C10 RID: 7184 RVA: 0x00078223 File Offset: 0x00076423
 		public static HurtBox FindBodyMainHurtBox(CharacterBody characterBody)
 		{
 			return characterBody.mainHurtBox;
 		}
 
-		// Token: 0x06001C58 RID: 7256 RVA: 0x000848F4 File Offset: 0x00082AF4
+		// Token: 0x06001C11 RID: 7185 RVA: 0x0007822C File Offset: 0x0007642C
 		public static HurtBox FindBodyMainHurtBox(GameObject bodyObject)
 		{
 			CharacterBody component = bodyObject.GetComponent<CharacterBody>();
@@ -1024,13 +1080,13 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06001C59 RID: 7257 RVA: 0x00084918 File Offset: 0x00082B18
+		// Token: 0x06001C12 RID: 7186 RVA: 0x00078250 File Offset: 0x00076450
 		public static Vector3 GetCorePosition(CharacterBody characterBody)
 		{
 			return characterBody.corePosition;
 		}
 
-		// Token: 0x06001C5A RID: 7258 RVA: 0x00084920 File Offset: 0x00082B20
+		// Token: 0x06001C13 RID: 7187 RVA: 0x00078258 File Offset: 0x00076458
 		public static Vector3 GetCorePosition(GameObject bodyObject)
 		{
 			CharacterBody component = bodyObject.GetComponent<CharacterBody>();
@@ -1041,7 +1097,7 @@ namespace RoR2
 			return bodyObject.transform.position;
 		}
 
-		// Token: 0x06001C5B RID: 7259 RVA: 0x00084950 File Offset: 0x00082B50
+		// Token: 0x06001C14 RID: 7188 RVA: 0x00078288 File Offset: 0x00076488
 		public static Transform GetCoreTransform(GameObject bodyObject)
 		{
 			CharacterBody component = bodyObject.GetComponent<CharacterBody>();
@@ -1052,19 +1108,19 @@ namespace RoR2
 			return bodyObject.transform;
 		}
 
-		// Token: 0x06001C5C RID: 7260 RVA: 0x00084979 File Offset: 0x00082B79
+		// Token: 0x06001C15 RID: 7189 RVA: 0x000782B1 File Offset: 0x000764B1
 		public static float SphereRadiusToVolume(float radius)
 		{
 			return 4.1887903f * (radius * radius * radius);
 		}
 
-		// Token: 0x06001C5D RID: 7261 RVA: 0x00084986 File Offset: 0x00082B86
+		// Token: 0x06001C16 RID: 7190 RVA: 0x000782BE File Offset: 0x000764BE
 		public static float SphereVolumeToRadius(float volume)
 		{
 			return Mathf.Pow(3f * volume / 12.566371f, 0.33333334f);
 		}
 
-		// Token: 0x06001C5E RID: 7262 RVA: 0x000849A0 File Offset: 0x00082BA0
+		// Token: 0x06001C17 RID: 7191 RVA: 0x000782D8 File Offset: 0x000764D8
 		public static void CopyList<T>(List<T> src, List<T> dest)
 		{
 			dest.Clear();
@@ -1074,7 +1130,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001C5F RID: 7263 RVA: 0x000849F4 File Offset: 0x00082BF4
+		// Token: 0x06001C18 RID: 7192 RVA: 0x0007832C File Offset: 0x0007652C
 		public static float ScanCharacterAnimationClipForMomentOfRootMotionStop(GameObject characterPrefab, string clipName, string rootBoneNameInChildLocator)
 		{
 			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(characterPrefab);
@@ -1099,7 +1155,7 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x06001C60 RID: 7264 RVA: 0x00084AC4 File Offset: 0x00082CC4
+		// Token: 0x06001C19 RID: 7193 RVA: 0x000783FC File Offset: 0x000765FC
 		public static void DebugCross(Vector3 position, float radius, Color color, float duration)
 		{
 			Debug.DrawLine(position - Vector3.right * radius, position + Vector3.right * radius, color, duration);
@@ -1107,14 +1163,14 @@ namespace RoR2
 			Debug.DrawLine(position - Vector3.forward * radius, position + Vector3.forward * radius, color, duration);
 		}
 
-		// Token: 0x06001C61 RID: 7265 RVA: 0x00084B4C File Offset: 0x00082D4C
+		// Token: 0x06001C1A RID: 7194 RVA: 0x00078484 File Offset: 0x00076684
 		public static bool PositionIsValid(Vector3 value)
 		{
 			float f = value.x + value.y + value.z;
 			return !float.IsInfinity(f) && !float.IsNaN(f);
 		}
 
-		// Token: 0x06001C62 RID: 7266 RVA: 0x00084B84 File Offset: 0x00082D84
+		// Token: 0x06001C1B RID: 7195 RVA: 0x000784BC File Offset: 0x000766BC
 		public static void Swap<T>(ref T a, ref T b)
 		{
 			T t = a;
@@ -1122,25 +1178,149 @@ namespace RoR2
 			b = t;
 		}
 
-		// Token: 0x06001C63 RID: 7267 RVA: 0x00084BAC File Offset: 0x00082DAC
+		// Token: 0x06001C1C RID: 7196 RVA: 0x000784E4 File Offset: 0x000766E4
 		public static DateTime UnixTimeStampToDateTimeUtc(uint unixTimeStamp)
 		{
 			return Util.dateZero.AddSeconds(unixTimeStamp).ToUniversalTime();
 		}
 
-		// Token: 0x04001E77 RID: 7799
+		// Token: 0x06001C1D RID: 7197 RVA: 0x0007850B File Offset: 0x0007670B
+		public static bool IsValid(UnityEngine.Object o)
+		{
+			return o;
+		}
+
+		// Token: 0x06001C1E RID: 7198 RVA: 0x00078514 File Offset: 0x00076714
+		public static string BuildPrefabTransformPath(Transform root, Transform transform, bool includeClone)
+		{
+			string name = transform.gameObject.name;
+			if (includeClone)
+			{
+				Util.sharedStringStack.Push(Util.cloneString);
+			}
+			Util.sharedStringStack.Push(name);
+			Transform parent = transform.parent;
+			while (parent != root)
+			{
+				string name2 = parent.name;
+				Util.sharedStringStack.Push("/");
+				Util.sharedStringStack.Push(name2);
+				parent = parent.parent;
+			}
+			while (Util.sharedStringStack.Count > 0)
+			{
+				Util.sharedStringBuilder.Append(Util.sharedStringStack.Pop());
+			}
+			return Util.sharedStringBuilder.Take();
+		}
+
+		// Token: 0x06001C1F RID: 7199 RVA: 0x000785B4 File Offset: 0x000767B4
+		public static int GetItemCountForTeam(TeamIndex teamIndex, ItemIndex itemIndex, bool requiresAlive, bool requiresConnected = true)
+		{
+			int num = 0;
+			ReadOnlyCollection<CharacterMaster> readOnlyInstancesList = CharacterMaster.readOnlyInstancesList;
+			int i = 0;
+			int count = readOnlyInstancesList.Count;
+			while (i < count)
+			{
+				CharacterMaster characterMaster = readOnlyInstancesList[i];
+				if (characterMaster.teamIndex == teamIndex && (!requiresAlive || characterMaster.alive) && (!requiresConnected || !characterMaster.playerCharacterMasterController || characterMaster.playerCharacterMasterController.isConnected))
+				{
+					num += characterMaster.inventory.GetItemCount(itemIndex);
+				}
+				i++;
+			}
+			return num;
+		}
+
+		// Token: 0x06001C20 RID: 7200 RVA: 0x0007862B File Offset: 0x0007682B
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void NullifyIfInvalid<T>(ref T objRef) where T : UnityEngine.Object
+		{
+			if (objRef == null)
+			{
+				return;
+			}
+			if (!objRef)
+			{
+				objRef = default(T);
+			}
+		}
+
+		// Token: 0x06001C21 RID: 7201 RVA: 0x00078654 File Offset: 0x00076854
+		public static bool IsPrefab(GameObject gameObject)
+		{
+			return gameObject && !gameObject.scene.IsValid();
+		}
+
+		// Token: 0x06001C22 RID: 7202 RVA: 0x0007867C File Offset: 0x0007687C
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static uint IntToUintPlusOne(int value)
+		{
+			return (uint)(value + 1);
+		}
+
+		// Token: 0x06001C23 RID: 7203 RVA: 0x00078681 File Offset: 0x00076881
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static int UintToIntMinusOne(uint value)
+		{
+			return (int)(value - 1U);
+		}
+
+		// Token: 0x06001C24 RID: 7204 RVA: 0x00078686 File Offset: 0x00076886
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ulong LongToUlongPlusOne(long value)
+		{
+			return (ulong)(value + 1L);
+		}
+
+		// Token: 0x06001C25 RID: 7205 RVA: 0x0007868C File Offset: 0x0007688C
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static long UlongToLongMinusOne(ulong value)
+		{
+			return (long)(value - 1UL);
+		}
+
+		// Token: 0x04001907 RID: 6407
+		private static readonly string strBackslash = "\\";
+
+		// Token: 0x04001908 RID: 6408
+		private static readonly string strBackslashBackslash = Util.strBackslash + Util.strBackslash;
+
+		// Token: 0x04001909 RID: 6409
+		private static readonly string strQuote = "\"";
+
+		// Token: 0x0400190A RID: 6410
+		private static readonly string strBackslashQuote = Util.strBackslash + Util.strQuote;
+
+		// Token: 0x0400190B RID: 6411
+		private static readonly Regex backlashSearch = new Regex(Util.strBackslashBackslash);
+
+		// Token: 0x0400190C RID: 6412
+		private static readonly Regex quoteSearch = new Regex(Util.strQuote);
+
+		// Token: 0x0400190D RID: 6413
 		public static readonly DateTime dateZero = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
-		// Token: 0x020004E1 RID: 1249
+		// Token: 0x0400190E RID: 6414
+		private static readonly StringBuilder sharedStringBuilder = new StringBuilder();
+
+		// Token: 0x0400190F RID: 6415
+		private static readonly Stack<string> sharedStringStack = new Stack<string>();
+
+		// Token: 0x04001910 RID: 6416
+		private static readonly string cloneString = "(Clone)";
+
+		// Token: 0x0200047C RID: 1148
 		private struct EasyTargetCandidate
 		{
-			// Token: 0x04001E78 RID: 7800
+			// Token: 0x04001911 RID: 6417
 			public Transform transform;
 
-			// Token: 0x04001E79 RID: 7801
+			// Token: 0x04001912 RID: 6418
 			public float score;
 
-			// Token: 0x04001E7A RID: 7802
+			// Token: 0x04001913 RID: 6419
 			public float distance;
 		}
 	}

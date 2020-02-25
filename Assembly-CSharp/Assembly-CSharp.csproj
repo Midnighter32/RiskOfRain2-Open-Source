@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0C9B23A4-7CE4-42E6-8CFD-2E5F0FF1D12D}</ProjectGuid>
+    <ProjectGuid>{BF8E70DB-1693-45BB-8736-EE5E90247311}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Assembly-CSharp</RootNamespace>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -32,84 +32,84 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Facepunch.Steamworks">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Facepunch.Steamworks.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Facepunch.Steamworks.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\netstandard.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\netstandard.dll</HintPath>
     </Reference>
     <Reference Include="Rewired_Core">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Rewired_Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Rewired_Core.dll</HintPath>
     </Reference>
     <Reference Include="Rewired_CSharp">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Rewired_CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="TextMeshPro-1.0.55.2017.1.0b11">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\TextMeshPro-1.0.55.2017.1.0b11.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Rewired_CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Unity.Postprocessing.Runtime.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Unity.Postprocessing.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.AIModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.AIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.Networking.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.Networking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TerrainModule">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.TerrainModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.TerrainModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.UIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UNETModule">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.UNETModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.UNETModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VehiclesModule">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.VehiclesModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.VehiclesModule.dll</HintPath>
     </Reference>
     <Reference Include="Wwise">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Wwise.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Wwise.dll</HintPath>
     </Reference>
     <Reference Include="Zio">
-      <HintPath>..\..\..\Programms\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Zio.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Zio.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\RoR2\Scripts\GameBehaviors\UI\HUDSpeedometer.cs" />
     <Compile Include="BeamPointsFromTransforms.cs" />
+    <Compile Include="BeginRapidlyActivatingAndDeactivating.cs" />
     <Compile Include="BezierCurveLine.cs" />
     <Compile Include="CameraDepthMode.cs" />
     <Compile Include="ChildLocator.cs" />
@@ -118,8 +118,8 @@
     <Compile Include="DestroyOnKill.cs" />
     <Compile Include="DestroyOnParticleEnd.cs" />
     <Compile Include="DestroyOnSoundEnd.cs" />
-    <Compile Include="DetachTrailOnDestroy.cs" />
     <Compile Include="DisableOnStart.cs" />
+    <Compile Include="DoXInYSecondsTracker.cs" />
     <Compile Include="DynamicBone.cs" />
     <Compile Include="DynamicBoneCollider.cs" />
     <Compile Include="EntityLogic\Counter.cs" />
@@ -128,6 +128,7 @@
     <Compile Include="EntityStates\AimThrowableBase.cs" />
     <Compile Include="EntityStates\AI\BaseAIState.cs" />
     <Compile Include="EntityStates\AI\Walker\Combat.cs" />
+    <Compile Include="EntityStates\AI\Walker\Guard.cs" />
     <Compile Include="EntityStates\AI\Walker\LookBusy.cs" />
     <Compile Include="EntityStates\AI\Walker\Wander.cs" />
     <Compile Include="EntityStates\AncientWispMonster\ChannelRain.cs" />
@@ -139,14 +140,21 @@
     <Compile Include="EntityStates\AncientWispMonster\FireBomb.cs" />
     <Compile Include="EntityStates\AncientWispMonster\FireRHCannon.cs" />
     <Compile Include="EntityStates\AncientWispMonster\Throw.cs" />
+    <Compile Include="EntityStates\AnimatedJump.cs" />
+    <Compile Include="EntityStates\ArchWispMonster\ChargeCannons.cs" />
+    <Compile Include="EntityStates\ArchWispMonster\DeathState.cs" />
+    <Compile Include="EntityStates\ArchWispMonster\FireCannons.cs" />
     <Compile Include="EntityStates\Assassin\Weapon\SlashCombo.cs" />
     <Compile Include="EntityStates\Barrel\ActivateFan.cs" />
     <Compile Include="EntityStates\Barrel\Opened.cs" />
     <Compile Include="EntityStates\Barrel\Opening.cs" />
     <Compile Include="EntityStates\Barrel\OpeningLunar.cs" />
+    <Compile Include="EntityStates\BaseBodyAttachmentState.cs" />
     <Compile Include="EntityStates\BaseCharacterMain.cs" />
     <Compile Include="EntityStates\BaseMelee.cs" />
+    <Compile Include="EntityStates\BaseSkillState.cs" />
     <Compile Include="EntityStates\BaseState.cs" />
+    <Compile Include="EntityStates\BasicMeleeAttack.cs" />
     <Compile Include="EntityStates\BeetleGuardMonster\DefenseUp.cs" />
     <Compile Include="EntityStates\BeetleGuardMonster\FireSunder.cs" />
     <Compile Include="EntityStates\BeetleGuardMonster\GroundSlam.cs" />
@@ -167,6 +175,7 @@
     <Compile Include="EntityStates\Bell\BellWeapon\ChargeTrioBomb.cs" />
     <Compile Include="EntityStates\Bell\DeathState.cs" />
     <Compile Include="EntityStates\Bell\SpawnState.cs" />
+    <Compile Include="EntityStates\BigCharacterMain.cs" />
     <Compile Include="EntityStates\Bison\Charge.cs" />
     <Compile Include="EntityStates\Bison\Headbutt.cs" />
     <Compile Include="EntityStates\Bison\PrepCharge.cs" />
@@ -178,10 +187,17 @@
     <Compile Include="EntityStates\ClayBoss\Recover.cs" />
     <Compile Include="EntityStates\ClayBoss\RecoverExit.cs" />
     <Compile Include="EntityStates\ClayBoss\SpawnState.cs" />
+    <Compile Include="EntityStates\ClayBruiserMonster\SpawnState.cs" />
+    <Compile Include="EntityStates\ClayBruiser\Weapon\FireSonicBoom.cs" />
+    <Compile Include="EntityStates\ClayBruiser\Weapon\MinigunFire.cs" />
+    <Compile Include="EntityStates\ClayBruiser\Weapon\MinigunSpinDown.cs" />
+    <Compile Include="EntityStates\ClayBruiser\Weapon\MinigunSpinUp.cs" />
+    <Compile Include="EntityStates\ClayBruiser\Weapon\MinigunState.cs" />
     <Compile Include="EntityStates\ClaymanMonster\Leap.cs" />
     <Compile Include="EntityStates\ClaymanMonster\SpawnState.cs" />
     <Compile Include="EntityStates\ClaymanMonster\SwipeForward.cs" />
     <Compile Include="EntityStates\CloakTest.cs" />
+    <Compile Include="EntityStates\Commando\CombatDodge.cs" />
     <Compile Include="EntityStates\Commando\CommandoWeapon\CastSmokescreen.cs" />
     <Compile Include="EntityStates\Commando\CommandoWeapon\CastSmokescreenNoDelay.cs" />
     <Compile Include="EntityStates\Commando\CommandoWeapon\FireBarrage.cs" />
@@ -193,15 +209,28 @@
     <Compile Include="EntityStates\Commando\CommandoWeapon\FirePistol2.cs" />
     <Compile Include="EntityStates\Commando\CommandoWeapon\FireRocket.cs" />
     <Compile Include="EntityStates\Commando\CommandoWeapon\FireShotgun.cs" />
+    <Compile Include="EntityStates\Commando\CommandoWeapon\FireShotgunBlast.cs" />
     <Compile Include="EntityStates\Commando\CommandoWeapon\FireShrapnel.cs" />
+    <Compile Include="EntityStates\Commando\CommandoWeapon\FireSweepBarrage.cs" />
     <Compile Include="EntityStates\Commando\CommandoWeapon\FireThermite.cs" />
     <Compile Include="EntityStates\Commando\CommandoWeapon\PaintMicroMissiles.cs" />
     <Compile Include="EntityStates\Commando\CommandoWeapon\PrepBarrage.cs" />
     <Compile Include="EntityStates\Commando\CommandoWeapon\PrepLightsOut.cs" />
     <Compile Include="EntityStates\Commando\CommandoWeapon\Reload.cs" />
+    <Compile Include="EntityStates\Commando\CommandoWeapon\ThrowEvisProjectile.cs" />
+    <Compile Include="EntityStates\Commando\CommandoWeapon\ThrowGrenade.cs" />
     <Compile Include="EntityStates\Commando\DeathState.cs" />
     <Compile Include="EntityStates\Commando\DodgeState.cs" />
     <Compile Include="EntityStates\Commando\MainState.cs" />
+    <Compile Include="EntityStates\Croco\BaseLeap.cs" />
+    <Compile Include="EntityStates\Croco\ChainableLeap.cs" />
+    <Compile Include="EntityStates\Croco\Disease.cs" />
+    <Compile Include="EntityStates\Croco\FireDiseaseProjectile.cs" />
+    <Compile Include="EntityStates\Croco\FireSpit.cs" />
+    <Compile Include="EntityStates\Croco\Leap.cs" />
+    <Compile Include="EntityStates\Croco\Slash.cs" />
+    <Compile Include="EntityStates\Croco\Spawn.cs" />
+    <Compile Include="EntityStates\Croco\WakeUp.cs" />
     <Compile Include="EntityStates\Destructible\AltarSkeletonDeath.cs" />
     <Compile Include="EntityStates\Destructible\ExplosivePotDeath.cs" />
     <Compile Include="EntityStates\Destructible\FusionCellDeath.cs" />
@@ -212,7 +241,9 @@
     <Compile Include="EntityStates\Drone\DroneWeapon\FireMissileBarrage.cs" />
     <Compile Include="EntityStates\Drone\DroneWeapon\FireTurret.cs" />
     <Compile Include="EntityStates\Drone\DroneWeapon\FireTwinRocket.cs" />
+    <Compile Include="EntityStates\Drone\DroneWeapon\Flamethrower.cs" />
     <Compile Include="EntityStates\Drone\DroneWeapon\HealBeam.cs" />
+    <Compile Include="EntityStates\Drone\DroneWeapon\StartHealBeam.cs" />
     <Compile Include="EntityStates\Drone\MegaDroneDeathState.cs" />
     <Compile Include="EntityStates\Duplicator\Duplicating.cs" />
     <Compile Include="EntityStates\EmotePoint.cs" />
@@ -222,6 +253,8 @@
     <Compile Include="EntityStates\EngiTurret\EngiTurretWeapon\FireGauss.cs" />
     <Compile Include="EntityStates\Engi\EngiBubbleShield\Deployed.cs" />
     <Compile Include="EntityStates\Engi\EngiBubbleShield\Undeployed.cs" />
+    <Compile Include="EntityStates\Engi\EngiWallShield\Deployed.cs" />
+    <Compile Include="EntityStates\Engi\EngiWallShield\Undeployed.cs" />
     <Compile Include="EntityStates\Engi\EngiWeapon\ChargeGrenades.cs" />
     <Compile Include="EntityStates\Engi\EngiWeapon\EngiOtherShield.cs" />
     <Compile Include="EntityStates\Engi\EngiWeapon\EngiSelfShield.cs" />
@@ -231,10 +264,37 @@
     <Compile Include="EntityStates\Engi\EngiWeapon\FireGrenades.cs" />
     <Compile Include="EntityStates\Engi\EngiWeapon\FireMines.cs" />
     <Compile Include="EntityStates\Engi\EngiWeapon\FireSeekerGrenades.cs" />
-    <Compile Include="EntityStates\Engi\EngiWeapon\PlaceBeamTurret.cs" />
+    <Compile Include="EntityStates\Engi\EngiWeapon\FireSpiderMine.cs" />
+    <Compile Include="EntityStates\Engi\EngiWeapon\FireWallShield.cs" />
     <Compile Include="EntityStates\Engi\EngiWeapon\PlaceTurret.cs" />
+    <Compile Include="EntityStates\Engi\EngiWeapon\PlaceWalkerTurret.cs" />
+    <Compile Include="EntityStates\Engi\EngiWeapon\ThrowMineDeployer.cs" />
+    <Compile Include="EntityStates\Engi\MineDeployer\BaseMineDeployerState.cs" />
+    <Compile Include="EntityStates\Engi\MineDeployer\FireMine.cs" />
+    <Compile Include="EntityStates\Engi\MineDeployer\WaitForDeath.cs" />
+    <Compile Include="EntityStates\Engi\MineDeployer\WaitForStick.cs" />
+    <Compile Include="EntityStates\Engi\Mine\Arm.cs" />
+    <Compile Include="EntityStates\Engi\Mine\BaseMineArmingState.cs" />
+    <Compile Include="EntityStates\Engi\Mine\BaseMineState.cs" />
+    <Compile Include="EntityStates\Engi\Mine\Detonate.cs" />
+    <Compile Include="EntityStates\Engi\Mine\MineArmingFull.cs" />
+    <Compile Include="EntityStates\Engi\Mine\MineArmingUnarmed.cs" />
+    <Compile Include="EntityStates\Engi\Mine\MineArmingWeak.cs" />
+    <Compile Include="EntityStates\Engi\Mine\PreDetonate.cs" />
+    <Compile Include="EntityStates\Engi\Mine\WaitForStick.cs" />
+    <Compile Include="EntityStates\Engi\Mine\WaitForTarget.cs" />
+    <Compile Include="EntityStates\Engi\SpiderMine\BaseSpiderMineState.cs" />
+    <Compile Include="EntityStates\Engi\SpiderMine\Burrow.cs" />
+    <Compile Include="EntityStates\Engi\SpiderMine\ChaseTarget.cs" />
+    <Compile Include="EntityStates\Engi\SpiderMine\Detonate.cs" />
+    <Compile Include="EntityStates\Engi\SpiderMine\PreDetonate.cs" />
+    <Compile Include="EntityStates\Engi\SpiderMine\Unburrow.cs" />
+    <Compile Include="EntityStates\Engi\SpiderMine\WaitForStick.cs" />
+    <Compile Include="EntityStates\Engi\SpiderMine\WaitForTarget.cs" />
     <Compile Include="EntityStates\EntityState.cs" />
     <Compile Include="EntityStates\Fauna\BirdsharkDeathState.cs" />
+    <Compile Include="EntityStates\Fauna\VultureEggDeathState.cs" />
+    <Compile Include="EntityStates\FireFlower2.cs" />
     <Compile Include="EntityStates\FireNailgun.cs" />
     <Compile Include="EntityStates\FlyState.cs" />
     <Compile Include="EntityStates\FrozenState.cs" />
@@ -243,6 +303,10 @@
     <Compile Include="EntityStates\GenericCharacterMain.cs" />
     <Compile Include="EntityStates\GenericCharacterPod.cs" />
     <Compile Include="EntityStates\GenericCharacterSpawnState.cs" />
+    <Compile Include="EntityStates\GenericCharacterVehicleSeated.cs" />
+    <Compile Include="EntityStates\GenericProjectileBaseState.cs" />
+    <Compile Include="EntityStates\GhostUtilitySkillState.cs" />
+    <Compile Include="EntityStates\GlobalSkills\LunarNeedle\FireLunarNeedle.cs" />
     <Compile Include="EntityStates\GoldGat\BaseGoldGatState.cs" />
     <Compile Include="EntityStates\GoldGat\GoldGatFire.cs" />
     <Compile Include="EntityStates\GoldGat\GoldGatIdle.cs" />
@@ -251,6 +315,10 @@
     <Compile Include="EntityStates\GolemMonster\DeathState.cs" />
     <Compile Include="EntityStates\GolemMonster\FireLaser.cs" />
     <Compile Include="EntityStates\GolemMonster\SpawnState.cs" />
+    <Compile Include="EntityStates\GravekeeperBoss\FireHook.cs" />
+    <Compile Include="EntityStates\GravekeeperBoss\PrepHook.cs" />
+    <Compile Include="EntityStates\GravekeeperBoss\SpawnState.cs" />
+    <Compile Include="EntityStates\GravekeeperMonster\Weapon\GravekeeperBarrage.cs" />
     <Compile Include="EntityStates\GreaterWispMonster\ChargeCannons.cs" />
     <Compile Include="EntityStates\GreaterWispMonster\DeathState.cs" />
     <Compile Include="EntityStates\GreaterWispMonster\FireCannons.cs" />
@@ -270,9 +338,13 @@
     <Compile Include="EntityStates\HermitCrab\FireMortar.cs" />
     <Compile Include="EntityStates\HermitCrab\SpawnState.cs" />
     <Compile Include="EntityStates\HoverState.cs" />
+    <Compile Include="EntityStates\Huntress\AimArrowSnipe.cs" />
     <Compile Include="EntityStates\Huntress\ArrowRain.cs" />
     <Compile Include="EntityStates\Huntress\BackflipState.cs" />
+    <Compile Include="EntityStates\Huntress\BaseArrowBarrage.cs" />
+    <Compile Include="EntityStates\Huntress\BaseBeginArrowBarrage.cs" />
     <Compile Include="EntityStates\Huntress\BeginArrowRain.cs" />
+    <Compile Include="EntityStates\Huntress\BeginArrowSnipe.cs" />
     <Compile Include="EntityStates\Huntress\BlinkState.cs" />
     <Compile Include="EntityStates\Huntress\HuntressWeapon\ChargeArrow.cs" />
     <Compile Include="EntityStates\Huntress\HuntressWeapon\FireArrow.cs" />
@@ -281,6 +353,8 @@
     <Compile Include="EntityStates\Huntress\HuntressWeapon\FireSeekingArrow.cs" />
     <Compile Include="EntityStates\Huntress\HuntressWeapon\IdleTracking.cs" />
     <Compile Include="EntityStates\Huntress\HuntressWeapon\ThrowGlaive.cs" />
+    <Compile Include="EntityStates\Huntress\MiniBlinkState.cs" />
+    <Compile Include="EntityStates\Huntress\Weapon\FireArrowSnipe.cs" />
     <Compile Include="EntityStates\HurtState.cs" />
     <Compile Include="EntityStates\HurtStateFlyer.cs" />
     <Compile Include="EntityStates\Idle.cs" />
@@ -302,6 +376,7 @@
     <Compile Include="EntityStates\Interactables\GoldBeacon\Ready.cs" />
     <Compile Include="EntityStates\Interactables\MSObelisk\EndingGame.cs" />
     <Compile Include="EntityStates\Interactables\MSObelisk\ReadyToEndGame.cs" />
+    <Compile Include="EntityStates\Interactables\MSObelisk\TransitionToNextStage.cs" />
     <Compile Include="EntityStates\Interactables\StoneGate\Opening.cs" />
     <Compile Include="EntityStates\InterruptPriority.cs" />
     <Compile Include="EntityStates\JellyfishMonster\DeathState.cs" />
@@ -309,6 +384,12 @@
     <Compile Include="EntityStates\JellyfishMonster\SpawnState.cs" />
     <Compile Include="EntityStates\Jellyfish\Dash.cs" />
     <Compile Include="EntityStates\Jellyfish\SwimState.cs" />
+    <Compile Include="EntityStates\LaserTurbine\AimState.cs" />
+    <Compile Include="EntityStates\LaserTurbine\ChargeMainBeamState.cs" />
+    <Compile Include="EntityStates\LaserTurbine\FireMainBeamState.cs" />
+    <Compile Include="EntityStates\LaserTurbine\LaserTurbineBaseState.cs" />
+    <Compile Include="EntityStates\LaserTurbine\ReadyState.cs" />
+    <Compile Include="EntityStates\LaserTurbine\RechargeState.cs" />
     <Compile Include="EntityStates\LemurianBruiserMonster\ChargeMegaFireball.cs" />
     <Compile Include="EntityStates\LemurianBruiserMonster\FireMegaFireball.cs" />
     <Compile Include="EntityStates\LemurianBruiserMonster\Flamebreath.cs" />
@@ -318,54 +399,126 @@
     <Compile Include="EntityStates\LemurianMonster\FireFireball.cs" />
     <Compile Include="EntityStates\LemurianMonster\LeapAttackState.cs" />
     <Compile Include="EntityStates\LemurianMonster\SpawnState.cs" />
+    <Compile Include="EntityStates\Loader\BaseChargeFist.cs" />
+    <Compile Include="EntityStates\Loader\BaseSwingChargedFist.cs" />
+    <Compile Include="EntityStates\Loader\BeginOvercharge.cs" />
+    <Compile Include="EntityStates\Loader\BigPunch.cs" />
+    <Compile Include="EntityStates\Loader\ChargeFist.cs" />
+    <Compile Include="EntityStates\Loader\ChargeZapFist.cs" />
+    <Compile Include="EntityStates\Loader\FireHook.cs" />
+    <Compile Include="EntityStates\Loader\FireYankHook.cs" />
+    <Compile Include="EntityStates\Loader\LoaderMeleeAttack.cs" />
+    <Compile Include="EntityStates\Loader\SwingChargedFist.cs" />
+    <Compile Include="EntityStates\Loader\SwingComboFist.cs" />
+    <Compile Include="EntityStates\Loader\SwingZapFist.cs" />
+    <Compile Include="EntityStates\Loader\ThrowPylon.cs" />
     <Compile Include="EntityStates\LockedMage\UnlockingMage.cs" />
     <Compile Include="EntityStates\LockSkill.cs" />
     <Compile Include="EntityStates\MageCalibrate.cs" />
+    <Compile Include="EntityStates\Mage\FlyUpState.cs" />
+    <Compile Include="EntityStates\Mage\JetpackOn.cs" />
+    <Compile Include="EntityStates\Mage\MageCharacterMain.cs" />
+    <Compile Include="EntityStates\Mage\Weapon\ChargeIcebomb.cs" />
     <Compile Include="EntityStates\Mage\Weapon\ChargeMeteor.cs" />
     <Compile Include="EntityStates\Mage\Weapon\ChargeNovabomb.cs" />
-    <Compile Include="EntityStates\Mage\Weapon\FireBolt.cs" />
+    <Compile Include="EntityStates\Mage\Weapon\FireFireBolt.cs" />
+    <Compile Include="EntityStates\Mage\Weapon\FireIceBolt.cs" />
     <Compile Include="EntityStates\Mage\Weapon\FireIceOrb.cs" />
     <Compile Include="EntityStates\Mage\Weapon\FireLaserbolt.cs" />
+    <Compile Include="EntityStates\Mage\Weapon\FireLightningBolt.cs" />
     <Compile Include="EntityStates\Mage\Weapon\FireRoller.cs" />
     <Compile Include="EntityStates\Mage\Weapon\Flamethrower.cs" />
     <Compile Include="EntityStates\Mage\Weapon\IceNova.cs" />
     <Compile Include="EntityStates\Mage\Weapon\PrepWall.cs" />
+    <Compile Include="EntityStates\MagmaWorm\BlinkState.cs" />
     <Compile Include="EntityStates\MagmaWorm\DeathState.cs" />
     <Compile Include="EntityStates\MagmaWorm\Leap.cs" />
+    <Compile Include="EntityStates\MagmaWorm\SwitchStance.cs" />
     <Compile Include="EntityStates\Merc\Assaulter.cs" />
     <Compile Include="EntityStates\Merc\Evis.cs" />
     <Compile Include="EntityStates\Merc\EvisDash.cs" />
     <Compile Include="EntityStates\Merc\GroundLight.cs" />
+    <Compile Include="EntityStates\Merc\Uppercut.cs" />
     <Compile Include="EntityStates\Merc\WhirlwindAir.cs" />
     <Compile Include="EntityStates\Merc\WhirlwindBase.cs" />
     <Compile Include="EntityStates\Merc\WhirlwindEntry.cs" />
     <Compile Include="EntityStates\Merc\WhirlwindGround.cs" />
+    <Compile Include="EntityStates\Missions\Arena\NullWard\Active.cs" />
+    <Compile Include="EntityStates\Missions\Arena\NullWard\Complete.cs" />
+    <Compile Include="EntityStates\Missions\Arena\NullWard\NullWardBaseState.cs" />
+    <Compile Include="EntityStates\Missions\Arena\NullWard\Off.cs" />
+    <Compile Include="EntityStates\Missions\Arena\NullWard\WardOnAndReady.cs" />
     <Compile Include="EntityStates\Missions\Goldshores\ActivateBeacons.cs" />
     <Compile Include="EntityStates\Missions\Goldshores\Exit.cs" />
     <Compile Include="EntityStates\Missions\Goldshores\GoldshoresBossfight.cs" />
+    <Compile Include="EntityStates\Missions\LunarScavengerEncounter\FadeOut.cs" />
+    <Compile Include="EntityStates\Missions\LunarScavengerEncounter\WaitForAllMonstersDead.cs" />
+    <Compile Include="EntityStates\Missions\SuperRoboBallEncounter\Listening.cs" />
     <Compile Include="EntityStates\NewtMonster\KickFromShop.cs" />
     <Compile Include="EntityStates\NewtMonster\SpawnState.cs" />
+    <Compile Include="EntityStates\NullifierMonster\DeathState.cs" />
+    <Compile Include="EntityStates\NullifierMonster\FirePortalBomb.cs" />
+    <Compile Include="EntityStates\NullifierMonster\SpawnState.cs" />
     <Compile Include="EntityStates\Paladin\DashSlam.cs" />
     <Compile Include="EntityStates\Paladin\LeapSlam.cs" />
     <Compile Include="EntityStates\Paladin\PaladinWeapon\BarrierUp.cs" />
     <Compile Include="EntityStates\Paladin\PaladinWeapon\FireBigRocket.cs" />
     <Compile Include="EntityStates\Paladin\PaladinWeapon\FireRocket.cs" />
     <Compile Include="EntityStates\Pot\PotWeapon\FireCannon.cs" />
+    <Compile Include="EntityStates\PrepFlower2.cs" />
+    <Compile Include="EntityStates\QuestVolatileBattery\CountDown.cs" />
+    <Compile Include="EntityStates\QuestVolatileBattery\Monitor.cs" />
+    <Compile Include="EntityStates\QuestVolatileBattery\QuestVolatileBatteryBaseState.cs" />
+    <Compile Include="EntityStates\RoboBallBoss\DeathState.cs" />
+    <Compile Include="EntityStates\RoboBallBoss\SpawnState.cs" />
+    <Compile Include="EntityStates\RoboBallBoss\Weapon\ChargeEyeblast.cs" />
+    <Compile Include="EntityStates\RoboBallBoss\Weapon\ChargeSuperEyeblast.cs" />
+    <Compile Include="EntityStates\RoboBallBoss\Weapon\DeployMinions.cs" />
+    <Compile Include="EntityStates\RoboBallBoss\Weapon\EnableEyebeams.cs" />
+    <Compile Include="EntityStates\RoboBallBoss\Weapon\FireDelayKnockup.cs" />
+    <Compile Include="EntityStates\RoboBallBoss\Weapon\FireEyeBlast.cs" />
+    <Compile Include="EntityStates\RoboBallBoss\Weapon\FireSpinningEyeBeam.cs" />
+    <Compile Include="EntityStates\RoboBallBoss\Weapon\FireSuperDelayKnockup.cs" />
+    <Compile Include="EntityStates\RoboBallBoss\Weapon\FireSuperEyeblast.cs" />
+    <Compile Include="EntityStates\RoboBallMini\DeathState.cs" />
+    <Compile Include="EntityStates\RoboBallMini\Weapon\FireEyeBeam.cs" />
+    <Compile Include="EntityStates\RoboCratePod\Descent.cs" />
+    <Compile Include="EntityStates\ScavBackpack\Opening.cs" />
+    <Compile Include="EntityStates\ScavMonster\Death.cs" />
+    <Compile Include="EntityStates\ScavMonster\DeathLunar.cs" />
+    <Compile Include="EntityStates\ScavMonster\EnergyCannonState.cs" />
+    <Compile Include="EntityStates\ScavMonster\EnterSit.cs" />
+    <Compile Include="EntityStates\ScavMonster\ExitSit.cs" />
+    <Compile Include="EntityStates\ScavMonster\FindItem.cs" />
+    <Compile Include="EntityStates\ScavMonster\FireEnergyCannon.cs" />
+    <Compile Include="EntityStates\ScavMonster\GrantItem.cs" />
+    <Compile Include="EntityStates\ScavMonster\PrepEnergyCannon.cs" />
+    <Compile Include="EntityStates\ScavMonster\PrepSack.cs" />
+    <Compile Include="EntityStates\ScavMonster\SackBaseState.cs" />
+    <Compile Include="EntityStates\ScavMonster\Sit.cs" />
+    <Compile Include="EntityStates\ScavMonster\ThrowSack.cs" />
     <Compile Include="EntityStates\SerializableEntityStateType.cs" />
     <Compile Include="EntityStates\SleepState.cs" />
     <Compile Include="EntityStates\Sniper\Scope\ScopeSniper.cs" />
     <Compile Include="EntityStates\Sniper\SniperWeapon\FireRifle.cs" />
     <Compile Include="EntityStates\Sniper\SniperWeapon\Reload.cs" />
     <Compile Include="EntityStates\SpawnTeleporterState.cs" />
+    <Compile Include="EntityStates\SpectatorSkills\LockOn.cs" />
     <Compile Include="EntityStates\Squid\SquidWeapon\FireSpine.cs" />
     <Compile Include="EntityStates\StateIndexTable.cs" />
     <Compile Include="EntityStates\StunState.cs" />
+    <Compile Include="EntityStates\SurvivorPod\BatteryPanel\BaseBatteryPanelState.cs" />
+    <Compile Include="EntityStates\SurvivorPod\BatteryPanel\Opened.cs" />
+    <Compile Include="EntityStates\SurvivorPod\BatteryPanel\Opening.cs" />
     <Compile Include="EntityStates\SurvivorPod\Descent.cs" />
     <Compile Include="EntityStates\SurvivorPod\Landed.cs" />
     <Compile Include="EntityStates\SurvivorPod\PreRelease.cs" />
     <Compile Include="EntityStates\SurvivorPod\Release.cs" />
     <Compile Include="EntityStates\SurvivorPod\ReleaseFinished.cs" />
     <Compile Include="EntityStates\SurvivorPod\SurvivorPodBaseState.cs" />
+    <Compile Include="EntityStates\TeleporterHealNovaController\TeleporterHealNovaGeneratorMain.cs" />
+    <Compile Include="EntityStates\TeleporterHealNovaController\TeleporterHealNovaPulse.cs" />
+    <Compile Include="EntityStates\TeleporterHealNovaController\TeleporterHealNovaWindup.cs" />
     <Compile Include="EntityStates\TestState1.cs" />
     <Compile Include="EntityStates\TestState2.cs" />
     <Compile Include="EntityStates\TimedChest\Opening.cs" />
@@ -388,6 +541,8 @@
     <Compile Include="EntityStates\Toolbot\DroneProjectileHoverStun.cs" />
     <Compile Include="EntityStates\Toolbot\DroneProjectileInFlight.cs" />
     <Compile Include="EntityStates\Toolbot\DroneProjectilePrepHover.cs" />
+    <Compile Include="EntityStates\Toolbot\FireBuzzsaw.cs" />
+    <Compile Include="EntityStates\Toolbot\FireGrenadeLauncher.cs" />
     <Compile Include="EntityStates\Toolbot\FireSpear.cs" />
     <Compile Include="EntityStates\Toolbot\RecoverAimStunDrone.cs" />
     <Compile Include="EntityStates\Toolbot\StartToolbotStanceSwap.cs" />
@@ -396,8 +551,38 @@
     <Compile Include="EntityStates\Toolbot\ToolbotStanceB.cs" />
     <Compile Include="EntityStates\Toolbot\ToolbotStanceBase.cs" />
     <Compile Include="EntityStates\Toolbot\ToolbotStanceSwap.cs" />
+    <Compile Include="EntityStates\Treebot\BurrowDash.cs" />
+    <Compile Include="EntityStates\Treebot\Burrowed.cs" />
+    <Compile Include="EntityStates\Treebot\BurrowIn.cs" />
+    <Compile Include="EntityStates\Treebot\BurrowOut.cs" />
+    <Compile Include="EntityStates\Treebot\FlowerProjectileHover.cs" />
+    <Compile Include="EntityStates\Treebot\Pounder\Pound.cs" />
+    <Compile Include="EntityStates\Treebot\Pounder\Spawn.cs" />
+    <Compile Include="EntityStates\Treebot\TreebotFlower\SpawnState.cs" />
+    <Compile Include="EntityStates\Treebot\TreebotFlower\TreebotFlower2Projectile.cs" />
+    <Compile Include="EntityStates\Treebot\UnlockInteractable\Unlock.cs" />
+    <Compile Include="EntityStates\Treebot\Weapon\AimFlower.cs" />
+    <Compile Include="EntityStates\Treebot\Weapon\AimMortar.cs" />
+    <Compile Include="EntityStates\Treebot\Weapon\AimMortar2.cs" />
+    <Compile Include="EntityStates\Treebot\Weapon\AimMortarRain.cs" />
+    <Compile Include="EntityStates\Treebot\Weapon\ChargePlantSonicBoom.cs" />
+    <Compile Include="EntityStates\Treebot\Weapon\ChargeSonicBoom.cs" />
+    <Compile Include="EntityStates\Treebot\Weapon\CreatePounder.cs" />
+    <Compile Include="EntityStates\Treebot\Weapon\FireMortar.cs" />
+    <Compile Include="EntityStates\Treebot\Weapon\FireMortar2.cs" />
+    <Compile Include="EntityStates\Treebot\Weapon\FirePlantSonicBoom.cs" />
+    <Compile Include="EntityStates\Treebot\Weapon\FireSonicBoom.cs" />
+    <Compile Include="EntityStates\Treebot\Weapon\FireSonicPull.cs" />
+    <Compile Include="EntityStates\Treebot\Weapon\FireSyringe.cs" />
+    <Compile Include="EntityStates\Turret1\DeathState.cs" />
     <Compile Include="EntityStates\Turret1\SpawnState.cs" />
     <Compile Include="EntityStates\Uninitialized.cs" />
+    <Compile Include="EntityStates\UrchinTurret\DeathState.cs" />
+    <Compile Include="EntityStates\UrchinTurret\SpawnState.cs" />
+    <Compile Include="EntityStates\UrchinTurret\Weapon\MinigunFire.cs" />
+    <Compile Include="EntityStates\UrchinTurret\Weapon\MinigunSpinDown.cs" />
+    <Compile Include="EntityStates\UrchinTurret\Weapon\MinigunSpinUp.cs" />
+    <Compile Include="EntityStates\UrchinTurret\Weapon\MinigunState.cs" />
     <Compile Include="EntityStates\VagrantMonster\ChargeMegaNova.cs" />
     <Compile Include="EntityStates\VagrantMonster\ChargeTrackingBomb.cs" />
     <Compile Include="EntityStates\VagrantMonster\DeathState.cs" />
@@ -407,6 +592,19 @@
     <Compile Include="EntityStates\VagrantMonster\SpawnState.cs" />
     <Compile Include="EntityStates\VagrantMonster\Weapon\JellyBarrage.cs" />
     <Compile Include="EntityStates\VagrantMonster\Weapon\JellyStorm.cs" />
+    <Compile Include="EntityStates\VagrantNovaItem\BaseVagrantNovaItemState.cs" />
+    <Compile Include="EntityStates\VagrantNovaItem\ChargeState.cs" />
+    <Compile Include="EntityStates\VagrantNovaItem\DetonateState.cs" />
+    <Compile Include="EntityStates\VagrantNovaItem\ReadyState.cs" />
+    <Compile Include="EntityStates\VagrantNovaItem\RechargeState.cs" />
+    <Compile Include="EntityStates\Vulture\FallingDeath.cs" />
+    <Compile Include="EntityStates\Vulture\Fly.cs" />
+    <Compile Include="EntityStates\Vulture\FlyToLand.cs" />
+    <Compile Include="EntityStates\Vulture\Land.cs" />
+    <Compile Include="EntityStates\Vulture\SpawnState.cs" />
+    <Compile Include="EntityStates\Vulture\VultureModeState.cs" />
+    <Compile Include="EntityStates\Vulture\Weapon\ChargeWindblade.cs" />
+    <Compile Include="EntityStates\Vulture\Weapon\FireWindblade.cs" />
     <Compile Include="EntityStates\Wisp1Monster\ChargeEmbers.cs" />
     <Compile Include="EntityStates\Wisp1Monster\DeathState.cs" />
     <Compile Include="EntityStates\Wisp1Monster\FireEmbers.cs" />
@@ -428,6 +626,7 @@
     <Compile Include="GlobalShaderTextures.cs" />
     <Compile Include="HGArrayUtilities.cs" />
     <Compile Include="HGMath.cs" />
+    <Compile Include="HGUnitConversions.cs" />
     <Compile Include="HGXml.cs" />
     <Compile Include="HoverOverHead.cs" />
     <Compile Include="InterpolatedTransform.cs" />
@@ -467,15 +666,17 @@
     <Compile Include="NGSS_ContactShadows.cs" />
     <Compile Include="NGSS_Directional.cs" />
     <Compile Include="NGSS_Local.cs" />
-    <Compile Include="ObjectScaleCurve.cs" />
     <Compile Include="PhysicsController.cs" />
+    <Compile Include="PhysicsImpactSpeedModifier.cs" />
     <Compile Include="POISecretChest.cs" />
     <Compile Include="PositionFromParentRaycast.cs" />
+    <Compile Include="ProcessorAffinity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuaternionPID.cs" />
     <Compile Include="RampFog.cs" />
     <Compile Include="RampFogRenderer.cs" />
     <Compile Include="RenderDepth.cs" />
+    <Compile Include="RendererSetMaterialsExtension.cs" />
     <Compile Include="RenderInFrontOfParticles.cs" />
     <Compile Include="RenderSettingsState.cs" />
     <Compile Include="ResourceAvailability.cs" />
@@ -491,9 +692,16 @@
     <Compile Include="RoR2\AchievementManager.cs" />
     <Compile Include="RoR2\Achievements\AttackSpeedAchievement.cs" />
     <Compile Include="RoR2\Achievements\BaseAchievement.cs" />
+    <Compile Include="RoR2\Achievements\BasePerSurvivorClearGameMonsoonAchievement.cs" />
     <Compile Include="RoR2\Achievements\BaseServerAchievement.cs" />
+    <Compile Include="RoR2\Achievements\BeatArenaAchievement.cs" />
+    <Compile Include="RoR2\Achievements\BurnToDeathAchievement.cs" />
     <Compile Include="RoR2\Achievements\CarryLunarItemsAchievement.cs" />
     <Compile Include="RoR2\Achievements\ChargeTeleporterWhileNearDeathAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Commando\CommandoClearGameMonsoonAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Commando\CommandoKillOverloadingWormAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Commando\CommandoNonLunarEnduranceAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Commando\CrocoClearGameMonsoonAchievement.cs" />
     <Compile Include="RoR2\Achievements\Complete20StagesAchievement.cs" />
     <Compile Include="RoR2\Achievements\Complete30StagesCareerAchievement.cs" />
     <Compile Include="RoR2\Achievements\CompleteMultiBossShrineAchievement.cs" />
@@ -503,9 +711,14 @@
     <Compile Include="RoR2\Achievements\CompleteThreeStagesAchievement.cs" />
     <Compile Include="RoR2\Achievements\CompleteThreeStagesWithoutHealingsAchievement.cs" />
     <Compile Include="RoR2\Achievements\CompleteUnknownEndingAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Croco\CrocoTotalInfectionsMilestoneAchievement.cs" />
+    <Compile Include="RoR2\Achievements\DefeatSuperRoboBallBossAchievement.cs" />
     <Compile Include="RoR2\Achievements\Die5TimesAchievement.cs" />
     <Compile Include="RoR2\Achievements\Discover10UniqueTier1Achievement.cs" />
     <Compile Include="RoR2\Achievements\Discover5EquipmentAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Engi\EngiArmyAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Engi\EngiClearGameMonsoonAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Engi\EngiKillBossQuickAchievement.cs" />
     <Compile Include="RoR2\Achievements\FailShrineChanceAchievement.cs" />
     <Compile Include="RoR2\Achievements\FindDevilAltarAchievement.cs" />
     <Compile Include="RoR2\Achievements\FindTimedChestAchievement.cs" />
@@ -513,22 +726,48 @@
     <Compile Include="RoR2\Achievements\FreeMageAchievement.cs" />
     <Compile Include="RoR2\Achievements\HardEliteBossKillAchievement.cs" />
     <Compile Include="RoR2\Achievements\HardHitterAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Huntress\HuntressClearGameMonsoonAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Huntress\HuntressCollectCrowbarsAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Huntress\HuntressMaintainFullHealthOnFrozenWallAchievement.cs" />
+    <Compile Include="RoR2\Achievements\KillBossQuantityInRunAchievement.cs" />
     <Compile Include="RoR2\Achievements\KillBossQuickAchievement.cs" />
     <Compile Include="RoR2\Achievements\KillElementalLemuriansAchievement.cs" />
     <Compile Include="RoR2\Achievements\KillEliteMonsterAchievement.cs" />
+    <Compile Include="RoR2\Achievements\KillElitesMilestoneAchievement.cs" />
+    <Compile Include="RoR2\Achievements\KillGoldTitanInOneCycleAchievement.cs" />
     <Compile Include="RoR2\Achievements\KillTotalEnemiesAchievement.cs" />
+    <Compile Include="RoR2\Achievements\LoaderBigSlamAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Loader\LoaderClearGameMonsoonAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Loader\LoaderSpeedRunAchievement.cs" />
     <Compile Include="RoR2\Achievements\LogCollectorAchievement.cs" />
     <Compile Include="RoR2\Achievements\LoopOnceAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Mage\MageAirborneMultiKillAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Mage\MageClearGameMonsoonAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Mage\MageFastBossAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Mage\MageMultiExecuteAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Mage\MageMultiKillAchievement.cs" />
     <Compile Include="RoR2\Achievements\MajorMultikillAchievement.cs" />
     <Compile Include="RoR2\Achievements\MaxHealingShrineAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Merc\MercClearGameMonsoonAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Merc\MercCompleteTrialWithFullHealthAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Merc\MercDontTouchGroundAchievement.cs" />
     <Compile Include="RoR2\Achievements\MoveSpeedAchievement.cs" />
+    <Compile Include="RoR2\Achievements\MultiCombatShrineAchievement.cs" />
     <Compile Include="RoR2\Achievements\RepeatedlyDuplicateItemsAchievement.cs" />
     <Compile Include="RoR2\Achievements\RepeatFirstTeleporterAchievement.cs" />
+    <Compile Include="RoR2\Achievements\RescueTreebotAchievement.cs" />
     <Compile Include="RoR2\Achievements\ServerAchievementTracker.cs" />
     <Compile Include="RoR2\Achievements\StayAlive1Achievement.cs" />
     <Compile Include="RoR2\Achievements\SuicideHermitCrabsAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Toolbot\ToolbotClearGameMonsoonAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Toolbot\ToolbotGuardTeleporterAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Toolbot\ToolbotKillImpBossWithBfgAchievement.cs" />
     <Compile Include="RoR2\Achievements\TotalDronesRepairedAchievement.cs" />
     <Compile Include="RoR2\Achievements\TotalMoneyCollectedAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Treebot\TreebotClearGameMonsoonAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Treebot\TreebotDunkClayBossAchievement.cs" />
+    <Compile Include="RoR2\Achievements\Treebot\TreebotLowHealthTeleporterAchievement.cs" />
+    <Compile Include="RoR2\Achievements\UseThreePortalsAchievement.cs" />
     <Compile Include="RoR2\AddCurvedTorque.cs" />
     <Compile Include="RoR2\AimAnimator.cs" />
     <Compile Include="RoR2\AimAssistController.cs" />
@@ -538,19 +777,31 @@
     <Compile Include="RoR2\AncientWispFireController.cs" />
     <Compile Include="RoR2\AnimateImageAlpha.cs" />
     <Compile Include="RoR2\AnimateShaderAlpha.cs" />
+    <Compile Include="RoR2\AnimationCurveAsset.cs" />
     <Compile Include="RoR2\AnimationEvents.cs" />
     <Compile Include="RoR2\AnimationParameters.cs" />
     <Compile Include="RoR2\ApplyForceOnStart.cs" />
     <Compile Include="RoR2\ApplyJiggleBoneMotion.cs" />
     <Compile Include="RoR2\ApplyTorqueOnStart.cs" />
+    <Compile Include="RoR2\ArenaMissionController.cs" />
     <Compile Include="RoR2\ArtifactCatalog.cs" />
     <Compile Include="RoR2\ArtifactDef.cs" />
     <Compile Include="RoR2\ArtifactIndex.cs" />
     <Compile Include="RoR2\ArtifactMask.cs" />
+    <Compile Include="RoR2\AssetCheckArgs.cs" />
     <Compile Include="RoR2\AssetCheckAttribute.cs" />
+    <Compile Include="RoR2\AssignRandomMaterial.cs" />
     <Compile Include="RoR2\AudioManager.cs" />
+    <Compile Include="RoR2\Audio\AkEventIdArg.cs" />
+    <Compile Include="RoR2\Audio\EntitySoundManager.cs" />
+    <Compile Include="RoR2\Audio\LoopSoundDef.cs" />
+    <Compile Include="RoR2\Audio\LoopSoundManager.cs" />
+    <Compile Include="RoR2\Audio\NetworkSoundEventCatalog.cs" />
+    <Compile Include="RoR2\Audio\NetworkSoundEventIndex.cs" />
+    <Compile Include="RoR2\Audio\PointSoundManager.cs" />
     <Compile Include="RoR2\AwakeEvent.cs" />
     <Compile Include="RoR2\BarrelInteraction.cs" />
+    <Compile Include="RoR2\BasicPickupDropTable.cs" />
     <Compile Include="RoR2\BazaarController.cs" />
     <Compile Include="RoR2\BazaarUpgradeInteraction.cs" />
     <Compile Include="RoR2\Billboard.cs" />
@@ -573,14 +824,17 @@
     <Compile Include="RoR2\BulletAttack.cs" />
     <Compile Include="RoR2\BullseyeSearch.cs" />
     <Compile Include="RoR2\BurnEffectController.cs" />
+    <Compile Include="RoR2\CallbackCheck.cs" />
     <Compile Include="RoR2\CameraResolutionScaler.cs" />
     <Compile Include="RoR2\CameraRigController.cs" />
     <Compile Include="RoR2\CameraState.cs" />
     <Compile Include="RoR2\CameraTargetParams.cs" />
+    <Compile Include="RoR2\CatalogModHelper.cs" />
     <Compile Include="RoR2\ChainController.cs" />
     <Compile Include="RoR2\CharacterAI\AIOwnership.cs" />
     <Compile Include="RoR2\CharacterAI\AISkillDriver.cs" />
     <Compile Include="RoR2\CharacterAI\BaseAI.cs" />
+    <Compile Include="RoR2\CharacterAI\EmergencyDroneCustomTarget.cs" />
     <Compile Include="RoR2\CharacterAnimatorWalkParamCalculator.cs" />
     <Compile Include="RoR2\CharacterAnimParamAvailability.cs" />
     <Compile Include="RoR2\CharacterBody.cs" />
@@ -601,9 +855,11 @@
     <Compile Include="RoR2\CoinBehavior.cs" />
     <Compile Include="RoR2\ColorCatalog.cs" />
     <Compile Include="RoR2\CombatDirector.cs" />
+    <Compile Include="RoR2\CombatSquad.cs" />
     <Compile Include="RoR2\CombineMesh.cs" />
-    <Compile Include="RoR2\ComboSkill.cs" />
     <Compile Include="RoR2\CommonLanguageTokens.cs" />
+    <Compile Include="RoR2\CommonShaderProperties.cs" />
+    <Compile Include="RoR2\ConCommandArgExtensions.cs" />
     <Compile Include="RoR2\ConCommandArgs.cs" />
     <Compile Include="RoR2\ConCommandAttribute.cs" />
     <Compile Include="RoR2\ConCommandException.cs" />
@@ -621,7 +877,9 @@
     <Compile Include="RoR2\ConvertPlayerMoneyToExperience.cs" />
     <Compile Include="RoR2\Corpse.cs" />
     <Compile Include="RoR2\CostHologramContent.cs" />
-    <Compile Include="RoR2\CostType.cs" />
+    <Compile Include="RoR2\CostTypeCatalog.cs" />
+    <Compile Include="RoR2\CostTypeDef.cs" />
+    <Compile Include="RoR2\CostTypeIndex.cs" />
     <Compile Include="RoR2\DamageColor.cs" />
     <Compile Include="RoR2\DamageColorIndex.cs" />
     <Compile Include="RoR2\DamageDealtMessage.cs" />
@@ -637,14 +895,17 @@
     <Compile Include="RoR2\DeathZone.cs" />
     <Compile Include="RoR2\DebuffZone.cs" />
     <Compile Include="RoR2\DefaultControllerMaps.cs" />
+    <Compile Include="RoR2\DegreeSlices.cs" />
     <Compile Include="RoR2\DelayBlast.cs" />
     <Compile Include="RoR2\DelayedEvent.cs" />
     <Compile Include="RoR2\Deployable.cs" />
     <Compile Include="RoR2\DeployableInfo.cs" />
     <Compile Include="RoR2\DeployableSlot.cs" />
+    <Compile Include="RoR2\DestroyOnDestroy.cs" />
     <Compile Include="RoR2\DestroyOnTimer.cs" />
     <Compile Include="RoR2\DestroyOnUnseen.cs" />
     <Compile Include="RoR2\DetachParticleOnDestroyAndEndEmission.cs" />
+    <Compile Include="RoR2\DetachTrailOnDestroy.cs" />
     <Compile Include="RoR2\DevCommands.cs" />
     <Compile Include="RoR2\DifficultyCatalog.cs" />
     <Compile Include="RoR2\DifficultyDef.cs" />
@@ -653,21 +914,24 @@
     <Compile Include="RoR2\DirectorCardCategorySelection.cs" />
     <Compile Include="RoR2\DirectorCore.cs" />
     <Compile Include="RoR2\DirectorPlacementRule.cs" />
+    <Compile Include="RoR2\DirectorSpawnRequest.cs" />
     <Compile Include="RoR2\DisableCollisionsBetweenColliders.cs" />
     <Compile Include="RoR2\DisableCollisionsIfInTrigger.cs" />
     <Compile Include="RoR2\DisableIfGameModded.cs" />
     <Compile Include="RoR2\DisplayRuleGroup.cs" />
     <Compile Include="RoR2\DitherModel.cs" />
     <Compile Include="RoR2\DotController.cs" />
+    <Compile Include="RoR2\EffectCatalog.cs" />
     <Compile Include="RoR2\EffectComponent.cs" />
     <Compile Include="RoR2\EffectData.cs" />
+    <Compile Include="RoR2\EffectDef.cs" />
+    <Compile Include="RoR2\EffectIndex.cs" />
     <Compile Include="RoR2\EffectManager.cs" />
     <Compile Include="RoR2\EliteCatalog.cs" />
     <Compile Include="RoR2\EliteDef.cs" />
     <Compile Include="RoR2\EliteIndex.cs" />
     <Compile Include="RoR2\EnableOnMecanimFloat.cs" />
     <Compile Include="RoR2\EngiMineAnimator.cs" />
-    <Compile Include="RoR2\EngiMineController.cs" />
     <Compile Include="RoR2\EntityLocator.cs" />
     <Compile Include="RoR2\EntityStateMachine.cs" />
     <Compile Include="RoR2\EnumMaskAttribute.cs" />
@@ -681,39 +945,45 @@
     <Compile Include="RoR2\EventOnBodyDeaths.cs" />
     <Compile Include="RoR2\ExperienceManager.cs" />
     <Compile Include="RoR2\ExperienceOrbBehavior.cs" />
+    <Compile Include="RoR2\ExplicitPickupDropTable.cs" />
     <Compile Include="RoR2\ExplodeRigidbodiesOnStart.cs" />
-    <Compile Include="RoR2\Extensions\PickupIndexNetworkSerializationExtensions.cs" />
     <Compile Include="RoR2\EyeFlare.cs" />
     <Compile Include="RoR2\FadeToBlackManager.cs" />
     <Compile Include="RoR2\FallBootsLights.cs" />
     <Compile Include="RoR2\FireAuraController.cs" />
+    <Compile Include="RoR2\FireballVehicle.cs" />
     <Compile Include="RoR2\FireworkLauncher.cs" />
     <Compile Include="RoR2\FlickerLight.cs" />
     <Compile Include="RoR2\FollowerItemDisplayComponent.cs" />
     <Compile Include="RoR2\FootstepHandler.cs" />
-    <Compile Include="RoR2\GameBehaviors\ImpactEffect.cs" />
     <Compile Include="RoR2\GameModeCatalog.cs" />
     <Compile Include="RoR2\GameObjectToggleGroup.cs" />
     <Compile Include="RoR2\GameObjectUnlockableFilter.cs" />
     <Compile Include="RoR2\GameOverController.cs" />
+    <Compile Include="RoR2\GamepadVibrationManager.cs" />
     <Compile Include="RoR2\GameResultType.cs" />
     <Compile Include="RoR2\GenericDisplayNameProvider.cs" />
     <Compile Include="RoR2\GenericInteraction.cs" />
+    <Compile Include="RoR2\GenericOwnership.cs" />
     <Compile Include="RoR2\GenericPickupController.cs" />
     <Compile Include="RoR2\GenericSkill.cs" />
     <Compile Include="RoR2\GenericStaticEnumerable.cs" />
+    <Compile Include="RoR2\GetComponentsCache.cs" />
     <Compile Include="RoR2\GhostGunController.cs" />
+    <Compile Include="RoR2\GivePickupsOnStart.cs" />
     <Compile Include="RoR2\GlassesSize.cs" />
     <Compile Include="RoR2\GlobalEventManager.cs" />
     <Compile Include="RoR2\Glyphs.cs" />
     <Compile Include="RoR2\GoldshoresMissionController.cs" />
     <Compile Include="RoR2\GravCubeController.cs" />
     <Compile Include="RoR2\GravitatePickup.cs" />
+    <Compile Include="RoR2\HealBeamController.cs" />
     <Compile Include="RoR2\HealingFollowerController.cs" />
     <Compile Include="RoR2\HealingWard.cs" />
     <Compile Include="RoR2\HealthComponent.cs" />
     <Compile Include="RoR2\HealthPickup.cs" />
     <Compile Include="RoR2\HelfireController.cs" />
+    <Compile Include="RoR2\HGHeap.cs" />
     <Compile Include="RoR2\HGPhysics.cs" />
     <Compile Include="RoR2\Highlight.cs" />
     <Compile Include="RoR2\HitBox.cs" />
@@ -727,13 +997,13 @@
     <Compile Include="RoR2\HullDef.cs" />
     <Compile Include="RoR2\HullMask.cs" />
     <Compile Include="RoR2\HuntressTracker.cs" />
-    <Compile Include="RoR2\HuntressTrackingSkill.cs" />
     <Compile Include="RoR2\HurtBox.cs" />
     <Compile Include="RoR2\HurtBoxGroup.cs" />
     <Compile Include="RoR2\HurtBoxReference.cs" />
     <Compile Include="RoR2\IBarrier.cs" />
     <Compile Include="RoR2\ICameraStateProvider.cs" />
     <Compile Include="RoR2\IcicleAuraController.cs" />
+    <Compile Include="RoR2\IDisplacementReceiver.cs" />
     <Compile Include="RoR2\IDisplayNameProvider.cs" />
     <Compile Include="RoR2\IHologramContentProvider.cs" />
     <Compile Include="RoR2\IIKTargetBehavior.cs" />
@@ -742,6 +1012,7 @@
     <Compile Include="RoR2\IKTargetPassive.cs" />
     <Compile Include="RoR2\IKTargetPlant.cs" />
     <Compile Include="RoR2\ILifeBehavior.cs" />
+    <Compile Include="RoR2\ImpactEffect.cs" />
     <Compile Include="RoR2\IndexAllocator.cs" />
     <Compile Include="RoR2\Indicator.cs" />
     <Compile Include="RoR2\INetworkedBodyAttachmentListener.cs" />
@@ -750,12 +1021,19 @@
     <Compile Include="RoR2\InputCatalog.cs" />
     <Compile Include="RoR2\InputMapperHelper.cs" />
     <Compile Include="RoR2\InputStickVisualizer.cs" />
+    <Compile Include="RoR2\InstanceTracker.cs" />
     <Compile Include="RoR2\InstantiatePrefabOnStart.cs" />
     <Compile Include="RoR2\Interactability.cs" />
     <Compile Include="RoR2\InteractableSpawnCard.cs" />
     <Compile Include="RoR2\InteractionDriver.cs" />
     <Compile Include="RoR2\Interactor.cs" />
     <Compile Include="RoR2\Inventory.cs" />
+    <Compile Include="RoR2\IOnDamageDealtServerReceiver.cs" />
+    <Compile Include="RoR2\IOnDamageInflictedServerReceiver.cs" />
+    <Compile Include="RoR2\IOnIncomingDamageServerReceiver.cs" />
+    <Compile Include="RoR2\IOnKilledOtherServerReceiver.cs" />
+    <Compile Include="RoR2\IOnKilledServerReceiver.cs" />
+    <Compile Include="RoR2\IOnTakeDamageServerReceiver.cs" />
     <Compile Include="RoR2\IPainAnimationHandler.cs" />
     <Compile Include="RoR2\ITeleportHandler.cs" />
     <Compile Include="RoR2\ItemCatalog.cs" />
@@ -768,27 +1046,34 @@
     <Compile Include="RoR2\ItemFollower.cs" />
     <Compile Include="RoR2\ItemIndex.cs" />
     <Compile Include="RoR2\ItemMask.cs" />
+    <Compile Include="RoR2\ItemMaskNetworkExtensions.cs" />
+    <Compile Include="RoR2\ItemTag.cs" />
     <Compile Include="RoR2\ItemTier.cs" />
     <Compile Include="RoR2\JetpackController.cs" />
+    <Compile Include="RoR2\JitterBones.cs" />
     <Compile Include="RoR2\JumpVolume.cs" />
     <Compile Include="RoR2\Language.cs" />
     <Compile Include="RoR2\LaserPointer.cs" />
     <Compile Include="RoR2\LaserPointerController.cs" />
+    <Compile Include="RoR2\LaserTurbineController.cs" />
     <Compile Include="RoR2\LayerIndex.cs" />
     <Compile Include="RoR2\LightScaleFromParent.cs" />
     <Compile Include="RoR2\LimbFlags.cs" />
     <Compile Include="RoR2\LimbMatcher.cs" />
+    <Compile Include="RoR2\LoaderStaticChargeComponent.cs" />
+    <Compile Include="RoR2\Loadout.cs" />
+    <Compile Include="RoR2\LocalCameraEffect.cs" />
     <Compile Include="RoR2\LocalNavigator.cs" />
     <Compile Include="RoR2\LocalUser.cs" />
     <Compile Include="RoR2\LocalUserManager.cs" />
     <Compile Include="RoR2\LoopSound.cs" />
     <Compile Include="RoR2\MageCalibrationController.cs" />
     <Compile Include="RoR2\MageElement.cs" />
-    <Compile Include="RoR2\MageLastElementTracker.cs" />
     <Compile Include="RoR2\MapZone.cs" />
     <Compile Include="RoR2\MasterCatalog.cs" />
     <Compile Include="RoR2\MasterDropDroplet.cs" />
     <Compile Include="RoR2\MasterSuicideOnTimer.cs" />
+    <Compile Include="RoR2\MasterSummon.cs" />
     <Compile Include="RoR2\MatchCamera.cs" />
     <Compile Include="RoR2\Mecanim\ClearLayerWeight.cs" />
     <Compile Include="RoR2\Mecanim\CrouchMecanim.cs" />
@@ -799,13 +1084,17 @@
     <Compile Include="RoR2\Mecanim\SetRandomIntOnEnter.cs" />
     <Compile Include="RoR2\Mecanim\StayInStateForDuration.cs" />
     <Compile Include="RoR2\MemoizedGetComponent.cs" />
-    <Compile Include="RoR2\MercDashSkill.cs" />
     <Compile Include="RoR2\MeteorStormController.cs" />
     <Compile Include="RoR2\MidpointBetweenTwoTransforms.cs" />
+    <Compile Include="RoR2\MinionOwnership.cs" />
     <Compile Include="RoR2\ModelCamera.cs" />
     <Compile Include="RoR2\ModelLocator.cs" />
+    <Compile Include="RoR2\ModelSkinController.cs" />
+    <Compile Include="RoR2\MoneyPickup.cs" />
     <Compile Include="RoR2\MonsterCounter.cs" />
+    <Compile Include="RoR2\MorsecodeFlasher.cs" />
     <Compile Include="RoR2\MPEventSystemManager.cs" />
+    <Compile Include="RoR2\MultiCharacterSpawnCard.cs" />
     <Compile Include="RoR2\MultiPointBezierCurveLine.cs" />
     <Compile Include="RoR2\MultiShopController.cs" />
     <Compile Include="RoR2\MusicController.cs" />
@@ -823,13 +1112,17 @@
     <Compile Include="RoR2\Networking\AddressPortPair.cs" />
     <Compile Include="RoR2\Networking\CharacterNetworkTransform.cs" />
     <Compile Include="RoR2\Networking\CharacterNetworkTransformManager.cs" />
+    <Compile Include="RoR2\Networking\ClientAuthData.cs" />
     <Compile Include="RoR2\Networking\GameNetworkManager.cs" />
     <Compile Include="RoR2\Networking\GenericSceneSpawnPoint.cs" />
     <Compile Include="RoR2\Networking\NetworkActivation.cs" />
     <Compile Include="RoR2\Networking\NetworkedViewAngles.cs" />
     <Compile Include="RoR2\Networking\NetworkEnableObjectIfLocal.cs" />
+    <Compile Include="RoR2\Networking\NetworkLoadout.cs" />
     <Compile Include="RoR2\Networking\NetworkMessageHandlerAttribute.cs" />
     <Compile Include="RoR2\Networking\QosChannelIndex.cs" />
+    <Compile Include="RoR2\Networking\RttManager.cs" />
+    <Compile Include="RoR2\Networking\ServerAuthManager.cs" />
     <Compile Include="RoR2\Networking\SteamLobbyFinder.cs" />
     <Compile Include="RoR2\Networking\SteamNetworkClient.cs" />
     <Compile Include="RoR2\Networking\SteamNetworkConnection.cs" />
@@ -840,14 +1133,18 @@
     <Compile Include="RoR2\NetworkRuleBook.cs" />
     <Compile Include="RoR2\NetworkRuleChoiceMask.cs" />
     <Compile Include="RoR2\NetworkSession.cs" />
+    <Compile Include="RoR2\NetworkSoundEventDef.cs" />
     <Compile Include="RoR2\NetworkSpawnOnStart.cs" />
     <Compile Include="RoR2\NetworkStateMachine.cs" />
     <Compile Include="RoR2\NetworkUser.cs" />
     <Compile Include="RoR2\NetworkUserId.cs" />
     <Compile Include="RoR2\NonSolidToCamera.cs" />
     <Compile Include="RoR2\NormalizeParticleScale.cs" />
+    <Compile Include="RoR2\ObjectScaleCurve.cs" />
+    <Compile Include="RoR2\OccupyNearbyNodes.cs" />
     <Compile Include="RoR2\OmniEffect.cs" />
     <Compile Include="RoR2\OnDestroyCallback.cs" />
+    <Compile Include="RoR2\OnDisableEvent.cs" />
     <Compile Include="RoR2\OnEnableEvent.cs" />
     <Compile Include="RoR2\OnPlayerEnterEvent.cs" />
     <Compile Include="RoR2\OrbFireZone.cs" />
@@ -857,6 +1154,7 @@
     <Compile Include="RoR2\Orbs\BounceOrb.cs" />
     <Compile Include="RoR2\Orbs\DamageOrb.cs" />
     <Compile Include="RoR2\Orbs\DevilOrb.cs" />
+    <Compile Include="RoR2\Orbs\HauntOrb.cs" />
     <Compile Include="RoR2\Orbs\HealOrb.cs" />
     <Compile Include="RoR2\Orbs\InfusionOrb.cs" />
     <Compile Include="RoR2\Orbs\IOrbFixedUpdateBehavior.cs" />
@@ -870,6 +1168,7 @@
     <Compile Include="RoR2\Orbs\TitanRechargeOrb.cs" />
     <Compile Include="RoR2\OutlineHighlight.cs" />
     <Compile Include="RoR2\OverlapAttack.cs" />
+    <Compile Include="RoR2\PackedUnitVector3.cs" />
     <Compile Include="RoR2\PaintDetailsBelow.cs" />
     <Compile Include="RoR2\PaintTerrain.cs" />
     <Compile Include="RoR2\PaladinBarrierController.cs" />
@@ -878,8 +1177,11 @@
     <Compile Include="RoR2\Path.cs" />
     <Compile Include="RoR2\PathFollower.cs" />
     <Compile Include="RoR2\PathStatus.cs" />
+    <Compile Include="RoR2\PickupCatalog.cs" />
+    <Compile Include="RoR2\PickupDef.cs" />
     <Compile Include="RoR2\PickupDisplay.cs" />
     <Compile Include="RoR2\PickupDropletController.cs" />
+    <Compile Include="RoR2\PickupDropTable.cs" />
     <Compile Include="RoR2\PickupIndex.cs" />
     <Compile Include="RoR2\PingerController.cs" />
     <Compile Include="RoR2\PitchYawPair.cs" />
@@ -891,6 +1193,7 @@
     <Compile Include="RoR2\PostProcessing\HopooPostProcess.cs" />
     <Compile Include="RoR2\PostProcessing\ScreenDamage.cs" />
     <Compile Include="RoR2\PostProcess\SobelCommandBuffer.cs" />
+    <Compile Include="RoR2\PrefabReferenceAttribute.cs" />
     <Compile Include="RoR2\PreGameController.cs" />
     <Compile Include="RoR2\PreGameRuleVoteController.cs" />
     <Compile Include="RoR2\PreGameShakeController.cs" />
@@ -900,19 +1203,23 @@
     <Compile Include="RoR2\ProcChainMaskNetworkReaderExtension.cs" />
     <Compile Include="RoR2\ProcChainMaskNetworkWriterExtension.cs" />
     <Compile Include="RoR2\ProcType.cs" />
+    <Compile Include="RoR2\ProjectileCatalog.cs" />
     <Compile Include="RoR2\Projectile\AssignTeamFilterToTeamComponent.cs" />
     <Compile Include="RoR2\Projectile\BoomerangProjectile.cs" />
     <Compile Include="RoR2\Projectile\DaggerController.cs" />
     <Compile Include="RoR2\Projectile\EngiMineGhostController.cs" />
     <Compile Include="RoR2\Projectile\FireProjectileInfo.cs" />
+    <Compile Include="RoR2\Projectile\GatewayProjectileController.cs" />
     <Compile Include="RoR2\Projectile\HookProjectileImpact.cs" />
     <Compile Include="RoR2\Projectile\IProjectileImpactBehavior.cs" />
     <Compile Include="RoR2\Projectile\MineProximityDetonator.cs" />
     <Compile Include="RoR2\Projectile\MissileController.cs" />
+    <Compile Include="RoR2\Projectile\ProjectileCallOnOwnerNearby.cs" />
     <Compile Include="RoR2\Projectile\ProjectileCharacterController.cs" />
-    <Compile Include="RoR2\Projectile\ProjectileCharacterControllerTrailOnGround.cs" />
     <Compile Include="RoR2\Projectile\ProjectileController.cs" />
     <Compile Include="RoR2\Projectile\ProjectileDamage.cs" />
+    <Compile Include="RoR2\Projectile\ProjectileDamageTrail.cs" />
+    <Compile Include="RoR2\Projectile\ProjectileDeployToOwner.cs" />
     <Compile Include="RoR2\Projectile\ProjectileDirectionalTargetFinder.cs" />
     <Compile Include="RoR2\Projectile\ProjectileDotZone.cs" />
     <Compile Include="RoR2\Projectile\ProjectileFireChildren.cs" />
@@ -921,11 +1228,15 @@
     <Compile Include="RoR2\Projectile\ProjectileFuse.cs" />
     <Compile Include="RoR2\Projectile\ProjectileGhostCluster.cs" />
     <Compile Include="RoR2\Projectile\ProjectileGhostController.cs" />
+    <Compile Include="RoR2\Projectile\ProjectileGrantOnKillOnDestroy.cs" />
+    <Compile Include="RoR2\Projectile\ProjectileGrappleController.cs" />
+    <Compile Include="RoR2\Projectile\ProjectileHealOwnerOnDamageInflicted.cs" />
     <Compile Include="RoR2\Projectile\ProjectileImpactEvent.cs" />
     <Compile Include="RoR2\Projectile\ProjectileImpactEventCaller.cs" />
     <Compile Include="RoR2\Projectile\ProjectileImpactExplosion.cs" />
     <Compile Include="RoR2\Projectile\ProjectileImpactInfo.cs" />
     <Compile Include="RoR2\Projectile\ProjectileImpaleOnEnemy.cs" />
+    <Compile Include="RoR2\Projectile\ProjectileInflictTimedBuff.cs" />
     <Compile Include="RoR2\Projectile\ProjectileIntervalOverlapAttack.cs" />
     <Compile Include="RoR2\Projectile\ProjectileMageFirewallController.cs" />
     <Compile Include="RoR2\Projectile\ProjectileMageFirewallWalkerController.cs" />
@@ -936,14 +1247,17 @@
     <Compile Include="RoR2\Projectile\ProjectileProximityBeamController.cs" />
     <Compile Include="RoR2\Projectile\ProjectileSimple.cs" />
     <Compile Include="RoR2\Projectile\ProjectileSingleTargetImpact.cs" />
+    <Compile Include="RoR2\Projectile\ProjectileSphereTargetFinder.cs" />
     <Compile Include="RoR2\Projectile\ProjectileSteerTowardTarget.cs" />
     <Compile Include="RoR2\Projectile\ProjectileStickOnImpact.cs" />
     <Compile Include="RoR2\Projectile\ProjectileTargetComponent.cs" />
+    <Compile Include="RoR2\Projectile\SlowDownProjectiles.cs" />
     <Compile Include="RoR2\ProjectIssueChecker.cs" />
     <Compile Include="RoR2\PullNearby.cs" />
     <Compile Include="RoR2\PurchaseAvailabilityIndicator.cs" />
     <Compile Include="RoR2\PurchaseEvent.cs" />
     <Compile Include="RoR2\PurchaseInteraction.cs" />
+    <Compile Include="RoR2\QuitConfirmationHelper.cs" />
     <Compile Include="RoR2\RadialForce.cs" />
     <Compile Include="RoR2\RadiotowerTerminal.cs" />
     <Compile Include="RoR2\RagdollController.cs" />
@@ -953,12 +1267,15 @@
     <Compile Include="RoR2\RangeFloat.cs" />
     <Compile Include="RoR2\RegisterAchievementAttribute.cs" />
     <Compile Include="RoR2\RemapLightIntensityToParticleAlpha.cs" />
+    <Compile Include="RoR2\ReplaceLightColorsInChildren.cs" />
     <Compile Include="RoR2\RigidbodyDirection.cs" />
     <Compile Include="RoR2\RigidbodyMotor.cs" />
+    <Compile Include="RoR2\RigidbodySoundOnImpact.cs" />
     <Compile Include="RoR2\RigidbodyStickOnImpact.cs" />
     <Compile Include="RoR2\RoachController.cs" />
     <Compile Include="RoR2\RoachParams.cs" />
     <Compile Include="RoR2\RoR2Application.cs" />
+    <Compile Include="RoR2\RouletteChestController.cs" />
     <Compile Include="RoR2\RTPCController.cs" />
     <Compile Include="RoR2\RuleBook.cs" />
     <Compile Include="RoR2\RuleCatalog.cs" />
@@ -970,9 +1287,12 @@
     <Compile Include="RoR2\Run.cs" />
     <Compile Include="RoR2\RunCameraManager.cs" />
     <Compile Include="RoR2\RunConsoleStringOnEnable.cs" />
+    <Compile Include="RoR2\RunEventFlagResponse.cs" />
     <Compile Include="RoR2\RunReport.cs" />
     <Compile Include="RoR2\ScaleParticleSystemDuration.cs" />
     <Compile Include="RoR2\ScaleSpriteByCamDistance.cs" />
+    <Compile Include="RoR2\ScavBackpackBehavior.cs" />
+    <Compile Include="RoR2\ScavengerItemGranter.cs" />
     <Compile Include="RoR2\SceneCamera.cs" />
     <Compile Include="RoR2\SceneCatalog.cs" />
     <Compile Include="RoR2\SceneDef.cs" />
@@ -982,8 +1302,13 @@
     <Compile Include="RoR2\SceneObjectToggleGroup.cs" />
     <Compile Include="RoR2\SceneType.cs" />
     <Compile Include="RoR2\SceneWeatherController.cs" />
+    <Compile Include="RoR2\ScriptedCombatEncounter.cs" />
+    <Compile Include="RoR2\SearchableAttribute.cs" />
+    <Compile Include="RoR2\SeerStationController.cs" />
+    <Compile Include="RoR2\SerializableLoadout.cs" />
     <Compile Include="RoR2\SerializablePickupIndex.cs" />
     <Compile Include="RoR2\ServerAchievementIndex.cs" />
+    <Compile Include="RoR2\SetAmbientLight.cs" />
     <Compile Include="RoR2\SetDontDestroyOnLoad.cs" />
     <Compile Include="RoR2\SetStateOnHurt.cs" />
     <Compile Include="RoR2\SetStateOnWeakened.cs" />
@@ -995,22 +1320,39 @@
     <Compile Include="RoR2\ShrineBloodBehavior.cs" />
     <Compile Include="RoR2\ShrineBossBehavior.cs" />
     <Compile Include="RoR2\ShrineChanceBehavior.cs" />
+    <Compile Include="RoR2\ShrineCleanseBehavior.cs" />
     <Compile Include="RoR2\ShrineCombatBehavior.cs" />
     <Compile Include="RoR2\ShrineHealingBehavior.cs" />
     <Compile Include="RoR2\ShrineRestackBehavior.cs" />
+    <Compile Include="RoR2\SimpleLeash.cs" />
+    <Compile Include="RoR2\SimpleRotateToDirection.cs" />
     <Compile Include="RoR2\SkateSparks.cs" />
     <Compile Include="RoR2\SkillLocator.cs" />
     <Compile Include="RoR2\SkillReloader.cs" />
     <Compile Include="RoR2\SkillSlot.cs" />
+    <Compile Include="RoR2\Skills\ComboSkillDef.cs" />
+    <Compile Include="RoR2\Skills\EngiMineDeployerSkill.cs" />
+    <Compile Include="RoR2\Skills\HuntressTrackingSkillDef.cs" />
+    <Compile Include="RoR2\Skills\LunarPrimaryReplacementSkill.cs" />
+    <Compile Include="RoR2\Skills\MercDashSkillDef.cs" />
+    <Compile Include="RoR2\Skills\SkillCatalog.cs" />
+    <Compile Include="RoR2\Skills\SkillDef.cs" />
+    <Compile Include="RoR2\Skills\SkillFamily.cs" />
+    <Compile Include="RoR2\Skills\SteppedSkillDef.cs" />
+    <Compile Include="RoR2\Skills\ToolbotWeaponSkillDef.cs" />
+    <Compile Include="RoR2\SkinDef.cs" />
     <Compile Include="RoR2\SmoothTrailMesh.cs" />
     <Compile Include="RoR2\SnailAnimator.cs" />
     <Compile Include="RoR2\SocialUserIcon.cs" />
     <Compile Include="RoR2\Social\SocialUserId.cs" />
     <Compile Include="RoR2\SpawnCard.cs" />
     <Compile Include="RoR2\SpawnPoint.cs" />
+    <Compile Include="RoR2\SphereSearch.cs" />
+    <Compile Include="RoR2\SprintEffectController.cs" />
     <Compile Include="RoR2\Stage.cs" />
     <Compile Include="RoR2\StageOrder.cs" />
     <Compile Include="RoR2\StageSkinVariantController.cs" />
+    <Compile Include="RoR2\StartEvent.cs" />
     <Compile Include="RoR2\Stats\PerBodyStatDef.cs" />
     <Compile Include="RoR2\Stats\PerEquipmentStatDef.cs" />
     <Compile Include="RoR2\Stats\PerItemStatDef.cs" />
@@ -1023,12 +1365,17 @@
     <Compile Include="RoR2\Stats\StatManager.cs" />
     <Compile Include="RoR2\Stats\StatRecordType.cs" />
     <Compile Include="RoR2\Stats\StatSheet.cs" />
-    <Compile Include="RoR2\SteamworksEventManager.cs" />
+    <Compile Include="RoR2\SteamworksClientManager.cs" />
     <Compile Include="RoR2\SteamworksLobbyManager.cs" />
     <Compile Include="RoR2\SteamworksRemoteStorageFileSystem.cs" />
     <Compile Include="RoR2\SteamworksRichPresenceManager.cs" />
+    <Compile Include="RoR2\SteamworksServerManager.cs" />
     <Compile Include="RoR2\StriderLegController.cs" />
     <Compile Include="RoR2\SummonMasterBehavior.cs" />
+    <Compile Include="RoR2\SurfaceDef.cs" />
+    <Compile Include="RoR2\SurfaceDefCatalog.cs" />
+    <Compile Include="RoR2\SurfaceDefIndex.cs" />
+    <Compile Include="RoR2\SurfaceDefProvider.cs" />
     <Compile Include="RoR2\SurvivorCatalog.cs" />
     <Compile Include="RoR2\SurvivorDef.cs" />
     <Compile Include="RoR2\SurvivorIndex.cs" />
@@ -1036,7 +1383,9 @@
     <Compile Include="RoR2\SystemInitializerAttribute.cs" />
     <Compile Include="RoR2\TalismanAnimator.cs" />
     <Compile Include="RoR2\TarTetherController.cs" />
+    <Compile Include="RoR2\TeamCatalog.cs" />
     <Compile Include="RoR2\TeamComponent.cs" />
+    <Compile Include="RoR2\TeamDef.cs" />
     <Compile Include="RoR2\TeamFilter.cs" />
     <Compile Include="RoR2\TeamIndex.cs" />
     <Compile Include="RoR2\TeamManager.cs" />
@@ -1055,6 +1404,7 @@
     <Compile Include="RoR2\Tracer.cs" />
     <Compile Include="RoR2\Trajectory.cs" />
     <Compile Include="RoR2\TransitionCommand.cs" />
+    <Compile Include="RoR2\TreebotSunBuffGranter.cs" />
     <Compile Include="RoR2\UICamera.cs" />
     <Compile Include="RoR2\UI\AchievementCardController.cs" />
     <Compile Include="RoR2\UI\AchievementListPanelController.cs" />
@@ -1062,6 +1412,7 @@
     <Compile Include="RoR2\UI\AllyCardController.cs" />
     <Compile Include="RoR2\UI\AllyCardManager.cs" />
     <Compile Include="RoR2\UI\AnimateUIAlpha.cs" />
+    <Compile Include="RoR2\UI\ArenaInfoPanel.cs" />
     <Compile Include="RoR2\UI\ArtifactToggleController.cs" />
     <Compile Include="RoR2\UI\AssignStageToken.cs" />
     <Compile Include="RoR2\UI\BaseSettingsControl.cs" />
@@ -1073,6 +1424,7 @@
     <Compile Include="RoR2\UI\CharacterSelectController.cs" />
     <Compile Include="RoR2\UI\ChargeIndicatorController.cs" />
     <Compile Include="RoR2\UI\ChatBox.cs" />
+    <Compile Include="RoR2\UI\ColumnLayoutGroupElement.cs" />
     <Compile Include="RoR2\UI\CombatHealthBarViewer.cs" />
     <Compile Include="RoR2\UI\ConsoleWindow.cs" />
     <Compile Include="RoR2\UI\ContextManager.cs" />
@@ -1097,11 +1449,14 @@
     <Compile Include="RoR2\UI\GenericNotification.cs" />
     <Compile Include="RoR2\UI\HeaderNavigationController.cs" />
     <Compile Include="RoR2\UI\HealthBar.cs" />
+    <Compile Include="RoR2\UI\HealthBarStyle.cs" />
+    <Compile Include="RoR2\UI\HGTextMeshProUGUI.cs" />
     <Compile Include="RoR2\UI\HighlightRect.cs" />
     <Compile Include="RoR2\UI\HUD.cs" />
     <Compile Include="RoR2\UI\HUDBossHealthBarController.cs" />
     <Compile Include="RoR2\UI\HudElement.cs" />
     <Compile Include="RoR2\UI\HUDScaleController.cs" />
+    <Compile Include="RoR2\UI\HUDSpeedometer.cs" />
     <Compile Include="RoR2\UI\HUDTutorialController.cs" />
     <Compile Include="RoR2\UI\InputBindingControl.cs" />
     <Compile Include="RoR2\UI\ItemIcon.cs" />
@@ -1111,6 +1466,8 @@
     <Compile Include="RoR2\UI\LeaderboardStrip.cs" />
     <Compile Include="RoR2\UI\LerpUIRect.cs" />
     <Compile Include="RoR2\UI\LevelText.cs" />
+    <Compile Include="RoR2\UI\LoaderHookCrosshairController.cs" />
+    <Compile Include="RoR2\UI\LoadoutPanelController.cs" />
     <Compile Include="RoR2\UI\LocalUserSignInCardController.cs" />
     <Compile Include="RoR2\UI\LocalUserSignInController.cs" />
     <Compile Include="RoR2\UI\LogBook\CategoryDef.cs" />
@@ -1157,6 +1514,8 @@
     <Compile Include="RoR2\UI\ScoreboardStrip.cs" />
     <Compile Include="RoR2\UI\ScrollToSelection.cs" />
     <Compile Include="RoR2\UI\SelectableDescriptionUpdater.cs" />
+    <Compile Include="RoR2\UI\ServerBrowserController.cs" />
+    <Compile Include="RoR2\UI\ServerBrowserStripController.cs" />
     <Compile Include="RoR2\UI\SetLabelTextToMainUserProfileName.cs" />
     <Compile Include="RoR2\UI\SettingsPanelController.cs" />
     <Compile Include="RoR2\UI\SettingsSlider.cs" />
@@ -1170,6 +1529,8 @@
     <Compile Include="RoR2\UI\SniperRangeIndicator.cs" />
     <Compile Include="RoR2\UI\SniperScopeChargeIndicatorController.cs" />
     <Compile Include="RoR2\UI\SocialUsernameLabel.cs" />
+    <Compile Include="RoR2\UI\SpectatorLabel.cs" />
+    <Compile Include="RoR2\UI\StageCountDisplay.cs" />
     <Compile Include="RoR2\UI\StageFadeTransitionController.cs" />
     <Compile Include="RoR2\UI\SteamBuildIdLabel.cs" />
     <Compile Include="RoR2\UI\SteamJoinClipboardLobby.cs" />
@@ -1202,6 +1563,7 @@
     <Compile Include="RoR2\UserProfile.cs" />
     <Compile Include="RoR2\Util.cs" />
     <Compile Include="RoR2\VehicleForceZone.cs" />
+    <Compile Include="RoR2\VehicleSeat.cs" />
     <Compile Include="RoR2\VelocityRandomOnStart.cs" />
     <Compile Include="RoR2\VFXAttributes.cs" />
     <Compile Include="RoR2\VFXBudget.cs" />
@@ -1217,6 +1579,12 @@
     <Compile Include="RoR2\WispAI.cs" />
     <Compile Include="RoR2\WormBodyPositions.cs" />
     <Compile Include="RoR2\WormBodyPositions2.cs" />
+    <Compile Include="RoR2\WwiseUtils\CommonWwiseIds.cs" />
+    <Compile Include="RoR2\WwiseUtils\RtpcSetter.cs" />
+    <Compile Include="RoR2\WwiseUtils\SoundbankLoader.cs" />
+    <Compile Include="RoR2\WwiseUtils\StateSetter.cs" />
+    <Compile Include="RoR2\ZiplineController.cs" />
+    <Compile Include="RoR2\ZiplineVehicle.cs" />
     <Compile Include="RotateItem.cs" />
     <Compile Include="RotateObject.cs" />
     <Compile Include="ScaledCamera.cs" />
@@ -1241,16 +1609,17 @@
     <Compile Include="SingletonHelper.cs" />
     <Compile Include="SobelOutline.cs" />
     <Compile Include="SobelOutlineRenderer.cs" />
+    <Compile Include="SobelRain.cs" />
+    <Compile Include="SobelRainRenderer.cs" />
     <Compile Include="SplitMix64.cs" />
     <Compile Include="SteamAPIValidator\SteamApiValidator.cs" />
     <Compile Include="SteamAPIValidator\WinCrypt.cs" />
     <Compile Include="StringBuilderExtensions.cs" />
-    <Compile Include="SurfaceDef.cs" />
-    <Compile Include="SurfaceDefProvider.cs" />
     <Compile Include="System\Runtime\CompilerServices\IsReadOnlyAttribute.cs" />
     <Compile Include="TextSerialization.cs" />
     <Compile Include="ThreeEyedGames\Decal.cs" />
     <Compile Include="ThreeEyedGames\DecaliciousRenderer.cs" />
+    <Compile Include="ToggleAction.cs" />
     <Compile Include="TracerBehavior.cs" />
     <Compile Include="UnderWaterFog.cs" />
     <Compile Include="UnityEngine\Rendering\PostProcessing\HopooSSR.cs" />
@@ -1262,7 +1631,6 @@
     <Compile Include="Wave.cs" />
     <Compile Include="WeightedSelection.cs" />
     <Compile Include="Wind.cs" />
-    <Compile Include="WispFlameControl.cs" />
     <Compile Include="Xoroshiro128Plus.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

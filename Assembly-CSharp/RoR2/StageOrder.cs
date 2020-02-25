@@ -2,14 +2,14 @@
 
 namespace RoR2
 {
-	// Token: 0x0200049D RID: 1181
+	// Token: 0x0200042D RID: 1069
 	public enum StageOrder
 	{
-		// Token: 0x04001D67 RID: 7527
+		// Token: 0x040017C7 RID: 6087
 		Normal,
-		// Token: 0x04001D68 RID: 7528
+		// Token: 0x040017C8 RID: 6088
 		Random,
-		// Token: 0x04001D69 RID: 7529
+		// Token: 0x040017C9 RID: 6089
 		Count
 	}
 }

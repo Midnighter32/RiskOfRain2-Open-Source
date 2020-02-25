@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using RoR2.Networking;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020003D0 RID: 976
+	// Token: 0x0200031E RID: 798
 	public class SceneObjectToggleGroup : NetworkBehaviour
 	{
-		// Token: 0x0600152B RID: 5419 RVA: 0x00065A76 File Offset: 0x00063C76
+		// Token: 0x060012C4 RID: 4804 RVA: 0x000508B3 File Offset: 0x0004EAB3
 		static SceneObjectToggleGroup()
 		{
 			GameNetworkManager.onServerSceneChangedGlobal += SceneObjectToggleGroup.OnServerSceneChanged;
 		}
 
-		// Token: 0x0600152C RID: 5420 RVA: 0x00065A94 File Offset: 0x00063C94
+		// Token: 0x060012C5 RID: 4805 RVA: 0x000508D0 File Offset: 0x0004EAD0
 		private static void OnServerSceneChanged(string sceneName)
 		{
 			while (SceneObjectToggleGroup.activationsQueue.Count > 0)
@@ -28,7 +29,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600152D RID: 5421 RVA: 0x00065ACC File Offset: 0x00063CCC
+		// Token: 0x060012C6 RID: 4806 RVA: 0x00050908 File Offset: 0x0004EB08
 		private void Awake()
 		{
 			SceneObjectToggleGroup.activationsQueue.Enqueue(this);
@@ -61,7 +62,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600152E RID: 5422 RVA: 0x00065BFA File Offset: 0x00063DFA
+		// Token: 0x060012C7 RID: 4807 RVA: 0x00050A36 File Offset: 0x0004EC36
 		public override void OnStartClient()
 		{
 			base.OnStartClient();
@@ -71,7 +72,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600152F RID: 5423 RVA: 0x00065C10 File Offset: 0x00063E10
+		// Token: 0x060012C8 RID: 4808 RVA: 0x00050A4C File Offset: 0x0004EC4C
 		[Server]
 		private void Generate()
 		{
@@ -96,15 +97,15 @@ namespace RoR2
 					this.activations[list[k]] = false;
 				}
 			}
-			base.SetDirtyBit(1u);
+			base.SetDirtyBit(1U);
 		}
 
-		// Token: 0x06001530 RID: 5424 RVA: 0x00065CE8 File Offset: 0x00063EE8
+		// Token: 0x060012C9 RID: 4809 RVA: 0x00050B24 File Offset: 0x0004ED24
 		public override bool OnSerialize(NetworkWriter writer, bool initialState)
 		{
-			uint num = initialState ? 1u : base.syncVarDirtyBits;
+			uint num = initialState ? 1U : base.syncVarDirtyBits;
 			writer.Write((byte)num);
-			if ((num & 1u) != 0u)
+			if ((num & 1U) != 0U)
 			{
 				int num2 = 0;
 				int num3 = (this.activations.Length - 1 >> 3) + 1;
@@ -124,10 +125,10 @@ namespace RoR2
 					writer.Write(b);
 				}
 			}
-			return !initialState && num > 0u;
+			return !initialState && num > 0U;
 		}
 
-		// Token: 0x06001531 RID: 5425 RVA: 0x00065D78 File Offset: 0x00063F78
+		// Token: 0x060012CA RID: 4810 RVA: 0x00050BB4 File Offset: 0x0004EDB4
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if ((reader.ReadByte() & 1) != 0)
@@ -148,7 +149,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001532 RID: 5426 RVA: 0x00065DE8 File Offset: 0x00063FE8
+		// Token: 0x060012CB RID: 4811 RVA: 0x00050C24 File Offset: 0x0004EE24
 		private void ApplyActivations()
 		{
 			for (int i = 0; i < this.allToggleableObjects.Length; i++)
@@ -157,45 +158,60 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001535 RID: 5429 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060012CD RID: 4813 RVA: 0x00050C5C File Offset: 0x0004EE5C
+		[CompilerGenerated]
+		internal static List<int> <Generate>g__RangeList|12_0(int start, int count)
+		{
+			List<int> list = new List<int>(count);
+			int i = start;
+			int num = start + count;
+			while (i < num)
+			{
+				list.Add(i);
+				i++;
+			}
+			return list;
+		}
+
+		// Token: 0x060012CE RID: 4814 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x04001879 RID: 6265
+		// Token: 0x0400119C RID: 4508
 		public GameObjectToggleGroup[] toggleGroups;
 
-		// Token: 0x0400187A RID: 6266
+		// Token: 0x0400119D RID: 4509
 		private const byte enabledObjectsDirtyBit = 1;
 
-		// Token: 0x0400187B RID: 6267
+		// Token: 0x0400119E RID: 4510
 		private const byte initialStateMask = 1;
 
-		// Token: 0x0400187C RID: 6268
+		// Token: 0x0400119F RID: 4511
 		private static readonly Queue<SceneObjectToggleGroup> activationsQueue = new Queue<SceneObjectToggleGroup>();
 
-		// Token: 0x0400187D RID: 6269
+		// Token: 0x040011A0 RID: 4512
 		private GameObject[] allToggleableObjects;
 
-		// Token: 0x0400187E RID: 6270
+		// Token: 0x040011A1 RID: 4513
 		private bool[] activations;
 
-		// Token: 0x0400187F RID: 6271
+		// Token: 0x040011A2 RID: 4514
 		private SceneObjectToggleGroup.ToggleGroupRange[] internalToggleGroups;
 
-		// Token: 0x020003D1 RID: 977
+		// Token: 0x0200031F RID: 799
 		private struct ToggleGroupRange
 		{
-			// Token: 0x04001880 RID: 6272
+			// Token: 0x040011A3 RID: 4515
 			public int start;
 
-			// Token: 0x04001881 RID: 6273
+			// Token: 0x040011A4 RID: 4516
 			public int count;
 
-			// Token: 0x04001882 RID: 6274
+			// Token: 0x040011A5 RID: 4517
 			public int minEnabled;
 
-			// Token: 0x04001883 RID: 6275
+			// Token: 0x040011A6 RID: 4518
 			public int maxEnabled;
 		}
 	}

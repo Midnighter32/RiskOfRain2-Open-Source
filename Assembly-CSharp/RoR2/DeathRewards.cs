@@ -4,14 +4,13 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020002C3 RID: 707
+	// Token: 0x020001D2 RID: 466
 	[RequireComponent(typeof(CharacterBody))]
-	public class DeathRewards : MonoBehaviour
+	public class DeathRewards : MonoBehaviour, IOnKilledServerReceiver
 	{
-		// Token: 0x17000135 RID: 309
-		// (get) Token: 0x06000E5C RID: 3676 RVA: 0x00046E3D File Offset: 0x0004503D
-		// (set) Token: 0x06000E5D RID: 3677 RVA: 0x00046E68 File Offset: 0x00045068
-		[HideInInspector]
+		// Token: 0x17000145 RID: 325
+		// (get) Token: 0x060009FC RID: 2556 RVA: 0x0002BC74 File Offset: 0x00029E74
+		// (set) Token: 0x060009FD RID: 2557 RVA: 0x0002BC9F File Offset: 0x00029E9F
 		public uint goldReward
 		{
 			get
@@ -33,66 +32,67 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000E5E RID: 3678 RVA: 0x00046E95 File Offset: 0x00045095
+		// Token: 0x17000146 RID: 326
+		// (get) Token: 0x060009FE RID: 2558 RVA: 0x0002BCCC File Offset: 0x00029ECC
+		// (set) Token: 0x060009FF RID: 2559 RVA: 0x0002BCD4 File Offset: 0x00029ED4
+		public uint expReward { get; set; }
+
+		// Token: 0x06000A00 RID: 2560 RVA: 0x0002BCDD File Offset: 0x00029EDD
+		[RuntimeInitializeOnLoadMethod]
+		private static void LoadAssets()
+		{
+			DeathRewards.coinEffectPrefab = Resources.Load<GameObject>("Prefabs/Effects/CoinEmitter");
+			DeathRewards.logbookPrefab = Resources.Load<GameObject>("Prefabs/NetworkedObjects/LogPickup");
+		}
+
+		// Token: 0x06000A01 RID: 2561 RVA: 0x0002BCFD File Offset: 0x00029EFD
 		private void Awake()
 		{
 			this.characterBody = base.GetComponent<CharacterBody>();
 		}
 
-		// Token: 0x06000E5F RID: 3679 RVA: 0x00046EA4 File Offset: 0x000450A4
-		private void OnKilled(DamageInfo damageInfo)
+		// Token: 0x06000A02 RID: 2562 RVA: 0x0002BD0C File Offset: 0x00029F0C
+		public void OnKilledServer(DamageReport damageReport)
 		{
-			CharacterBody component = base.GetComponent<CharacterBody>();
-			EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/CoinEmitter"), new EffectData
+			CharacterBody attackerBody = damageReport.attackerBody;
+			if (attackerBody)
 			{
-				origin = base.transform.position,
-				genericFloat = this.goldReward,
-				scale = (component ? component.radius : 1f)
-			}, true);
-			if (damageInfo.attacker)
-			{
-				TeamComponent component2 = base.GetComponent<TeamComponent>();
-				CharacterBody component3 = damageInfo.attacker.GetComponent<CharacterBody>();
-				if (component3)
+				Vector3 corePosition = this.characterBody.corePosition;
+				TeamManager.instance.GiveTeamMoney(damageReport.attackerTeamIndex, this.goldReward);
+				EffectManager.SpawnEffect(DeathRewards.coinEffectPrefab, new EffectData
 				{
-					CharacterMaster master = component3.master;
-					TeamIndex objectTeam = TeamComponent.GetObjectTeam(component3.gameObject);
-					TeamManager.instance.GiveTeamMoney(objectTeam, this.goldReward);
-					float num = 1f;
-					if (component2)
-					{
-						num = 1f + (TeamManager.instance.GetTeamLevel(component2.teamIndex) - 1f) * 0.3f;
-					}
-					ExperienceManager.instance.AwardExperience(base.transform.position, component3.GetComponent<CharacterBody>(), (ulong)((uint)(this.expReward * num)));
-				}
-				if (this.logUnlockableName != "" && Run.instance.selectedDifficulty > DifficultyIndex.Easy && Run.instance.CanUnlockableBeGrantedThisRun(this.logUnlockableName))
+					origin = corePosition,
+					genericFloat = this.goldReward,
+					scale = this.characterBody.radius
+				}, true);
+				float num = 1f + (this.characterBody.level - 1f) * 0.3f;
+				ExperienceManager.instance.AwardExperience(corePosition, attackerBody, (ulong)((uint)(this.expReward * num)));
+				if (this.logUnlockableName != "" && Run.instance.CanUnlockableBeGrantedThisRun(this.logUnlockableName) && Util.CheckRoll(this.characterBody.isChampion ? 3f : 1f, damageReport.attackerMaster))
 				{
-					CharacterBody component4 = base.GetComponent<CharacterBody>();
-					if (Util.CheckRoll((component4 && component4.isChampion) ? 3f : 1f, component3.master))
-					{
-						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkedObjects/LogPickup"), base.transform.position, UnityEngine.Random.rotation);
-						gameObject.GetComponentInChildren<UnlockPickup>().unlockableName = this.logUnlockableName;
-						gameObject.GetComponent<TeamFilter>().teamIndex = TeamIndex.Player;
-						NetworkServer.Spawn(gameObject);
-					}
+					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(DeathRewards.logbookPrefab, corePosition, UnityEngine.Random.rotation);
+					gameObject.GetComponentInChildren<UnlockPickup>().unlockableName = this.logUnlockableName;
+					gameObject.GetComponent<TeamFilter>().teamIndex = TeamIndex.Player;
+					NetworkServer.Spawn(gameObject);
 				}
 			}
 		}
 
-		// Token: 0x04001250 RID: 4688
-		private uint fallbackGold;
-
-		// Token: 0x04001251 RID: 4689
-		[HideInInspector]
-		public uint expReward;
-
-		// Token: 0x04001252 RID: 4690
+		// Token: 0x04000A38 RID: 2616
 		public string logUnlockableName = "";
 
-		// Token: 0x04001253 RID: 4691
+		// Token: 0x04000A39 RID: 2617
 		public SerializablePickupIndex bossPickup;
 
-		// Token: 0x04001254 RID: 4692
+		// Token: 0x04000A3A RID: 2618
+		private uint fallbackGold;
+
+		// Token: 0x04000A3C RID: 2620
 		private CharacterBody characterBody;
+
+		// Token: 0x04000A3D RID: 2621
+		private static GameObject coinEffectPrefab;
+
+		// Token: 0x04000A3E RID: 2622
+		private static GameObject logbookPrefab;
 	}
 }

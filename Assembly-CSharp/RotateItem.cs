@@ -1,16 +1,16 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x02000050 RID: 80
+// Token: 0x0200004C RID: 76
 public class RotateItem : MonoBehaviour
 {
-	// Token: 0x06000156 RID: 342 RVA: 0x00007ECD File Offset: 0x000060CD
+	// Token: 0x0600013B RID: 315 RVA: 0x00007DE1 File Offset: 0x00005FE1
 	private void Start()
 	{
 		this.initialPosition = base.transform.position;
 	}
 
-	// Token: 0x06000157 RID: 343 RVA: 0x00007EE0 File Offset: 0x000060E0
+	// Token: 0x0600013C RID: 316 RVA: 0x00007DF4 File Offset: 0x00005FF4
 	private void Update()
 	{
 		this.counter += Time.deltaTime;

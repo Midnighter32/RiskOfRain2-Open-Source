@@ -2,13 +2,13 @@
 
 namespace RewiredConsts
 {
-	// Token: 0x0200009B RID: 155
+	// Token: 0x020000A0 RID: 160
 	public static class Category
 	{
-		// Token: 0x040002D5 RID: 725
+		// Token: 0x040002E0 RID: 736
 		public const int Default = 0;
 
-		// Token: 0x040002D6 RID: 726
+		// Token: 0x040002E1 RID: 737
 		public const int UI = 2;
 	}
 }

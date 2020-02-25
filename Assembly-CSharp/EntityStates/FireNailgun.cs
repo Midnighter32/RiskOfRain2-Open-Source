@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates
 {
-	// Token: 0x020000C4 RID: 196
+	// Token: 0x0200071E RID: 1822
 	public class FireNailgun : BaseState
 	{
-		// Token: 0x060003D1 RID: 977 RVA: 0x0000F9E4 File Offset: 0x0000DBE4
+		// Token: 0x06002A6F RID: 10863 RVA: 0x000B27AC File Offset: 0x000B09AC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -17,11 +17,11 @@ namespace EntityStates
 			Util.PlaySound(FireNailgun.burstSoundString, base.gameObject);
 			base.PlayAnimation("Gesture, Additive", "FireNailgun");
 			base.GetModelAnimator().SetBool("isFiringNailgun", true);
-			EffectManager.instance.SimpleMuzzleFlash(FireNailgun.burstMuzzleFlashPrefab, base.gameObject, FireNailgun.muzzleName, false);
+			EffectManager.SimpleMuzzleFlash(FireNailgun.burstMuzzleFlashPrefab, base.gameObject, FireNailgun.muzzleName, false);
 			this.stopwatchBetweenShots = -FireNailgun.delayBetweenShotgunAndNailgun / this.attackSpeedStat;
 		}
 
-		// Token: 0x060003D2 RID: 978 RVA: 0x0000FA98 File Offset: 0x0000DC98
+		// Token: 0x06002A70 RID: 10864 RVA: 0x000B2858 File Offset: 0x000B0A58
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -43,7 +43,7 @@ namespace EntityStates
 					this.stopwatchBetweenShots -= this.duration;
 					Util.PlaySound(FireNailgun.fireSoundString, base.gameObject);
 					this.FireBullet(base.GetAimRay(), 1, 1f);
-					EffectManager.instance.SimpleMuzzleFlash(FireNailgun.muzzleFlashPrefab, base.gameObject, FireNailgun.muzzleName, false);
+					EffectManager.SimpleMuzzleFlash(FireNailgun.muzzleFlashPrefab, base.gameObject, FireNailgun.muzzleName, false);
 				}
 			}
 			if ((!base.inputBank.skill1.down || base.characterBody.isSprinting) && !this.beginToCooldown)
@@ -53,7 +53,7 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x060003D3 RID: 979 RVA: 0x0000FB9E File Offset: 0x0000DD9E
+		// Token: 0x06002A71 RID: 10865 RVA: 0x000B2956 File Offset: 0x000B0B56
 		private void RefreshCombatStats()
 		{
 			this.attackSpeedStat = base.characterBody.attackSpeed;
@@ -61,7 +61,7 @@ namespace EntityStates
 			this.duration = FireNailgun.baseDuration / this.attackSpeedStat;
 		}
 
-		// Token: 0x060003D4 RID: 980 RVA: 0x0000FBD4 File Offset: 0x0000DDD4
+		// Token: 0x06002A72 RID: 10866 RVA: 0x000B298C File Offset: 0x000B0B8C
 		private void FireBullet(Ray aimRay, int bulletCount, float spreadScale)
 		{
 			base.StartAimMode(aimRay, 3f, false);
@@ -102,7 +102,7 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x060003D5 RID: 981 RVA: 0x0000FD30 File Offset: 0x0000DF30
+		// Token: 0x06002A73 RID: 10867 RVA: 0x000B2AE8 File Offset: 0x000B0CE8
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -113,91 +113,91 @@ namespace EntityStates
 			AkSoundEngine.StopPlayingID(this.soundID);
 		}
 
-		// Token: 0x060003D6 RID: 982 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002A74 RID: 10868 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x0400037D RID: 893
+		// Token: 0x04002637 RID: 9783
 		public static float baseDuration = 0.1f;
 
-		// Token: 0x0400037E RID: 894
+		// Token: 0x04002638 RID: 9784
 		public static float damageCoefficient = 0.1f;
 
-		// Token: 0x0400037F RID: 895
+		// Token: 0x04002639 RID: 9785
 		public static float procCoefficient = 1f;
 
-		// Token: 0x04000380 RID: 896
+		// Token: 0x0400263A RID: 9786
 		public static float baseCooldownDuration;
 
-		// Token: 0x04000381 RID: 897
+		// Token: 0x0400263B RID: 9787
 		public static int bulletCount = 1;
 
-		// Token: 0x04000382 RID: 898
+		// Token: 0x0400263C RID: 9788
 		public static float force = 100f;
 
-		// Token: 0x04000383 RID: 899
+		// Token: 0x0400263D RID: 9789
 		public static float maxDistance = 50f;
 
-		// Token: 0x04000384 RID: 900
+		// Token: 0x0400263E RID: 9790
 		public static string muzzleName;
 
-		// Token: 0x04000385 RID: 901
+		// Token: 0x0400263F RID: 9791
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000386 RID: 902
+		// Token: 0x04002640 RID: 9792
 		public static float spreadPitchScale = 0.5f;
 
-		// Token: 0x04000387 RID: 903
+		// Token: 0x04002641 RID: 9793
 		public static float spreadYawScale = 1f;
 
-		// Token: 0x04000388 RID: 904
+		// Token: 0x04002642 RID: 9794
 		public static GameObject tracerEffectPrefab;
 
-		// Token: 0x04000389 RID: 905
+		// Token: 0x04002643 RID: 9795
 		public static string fireSoundString;
 
-		// Token: 0x0400038A RID: 906
+		// Token: 0x04002644 RID: 9796
 		public static string burstSoundString;
 
-		// Token: 0x0400038B RID: 907
+		// Token: 0x04002645 RID: 9797
 		public static string spinUpSoundString;
 
-		// Token: 0x0400038C RID: 908
+		// Token: 0x04002646 RID: 9798
 		public static string spinDownSoundString;
 
-		// Token: 0x0400038D RID: 909
+		// Token: 0x04002647 RID: 9799
 		public static float shotgunSpreadScale;
 
-		// Token: 0x0400038E RID: 910
+		// Token: 0x04002648 RID: 9800
 		public static float delayBetweenShotgunAndNailgun;
 
-		// Token: 0x0400038F RID: 911
+		// Token: 0x04002649 RID: 9801
 		public static GameObject muzzleFlashPrefab;
 
-		// Token: 0x04000390 RID: 912
+		// Token: 0x0400264A RID: 9802
 		public static GameObject burstMuzzleFlashPrefab;
 
-		// Token: 0x04000391 RID: 913
+		// Token: 0x0400264B RID: 9803
 		public static float spreadBloomValue = 0.2f;
 
-		// Token: 0x04000392 RID: 914
+		// Token: 0x0400264C RID: 9804
 		public static int initialBurstCount;
 
-		// Token: 0x04000393 RID: 915
+		// Token: 0x0400264D RID: 9805
 		private float stopwatchBetweenShots;
 
-		// Token: 0x04000394 RID: 916
+		// Token: 0x0400264E RID: 9806
 		private float cooldownStopwatch;
 
-		// Token: 0x04000395 RID: 917
+		// Token: 0x0400264F RID: 9807
 		private float duration;
 
-		// Token: 0x04000396 RID: 918
+		// Token: 0x04002650 RID: 9808
 		private uint soundID;
 
-		// Token: 0x04000397 RID: 919
+		// Token: 0x04002651 RID: 9809
 		private bool beginToCooldown;
 	}
 }

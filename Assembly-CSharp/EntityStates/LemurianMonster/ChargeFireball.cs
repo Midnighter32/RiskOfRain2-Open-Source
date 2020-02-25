@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.LemurianMonster
 {
-	// Token: 0x02000124 RID: 292
-	internal class ChargeFireball : BaseState
+	// Token: 0x020007F3 RID: 2035
+	public class ChargeFireball : BaseState
 	{
-		// Token: 0x060005A2 RID: 1442 RVA: 0x00019CF4 File Offset: 0x00017EF4
+		// Token: 0x06002E48 RID: 11848 RVA: 0x000C4FEC File Offset: 0x000C31EC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -21,27 +21,27 @@ namespace EntityStates.LemurianMonster
 				if (component)
 				{
 					Transform transform = component.FindChild("MuzzleMouth");
-					if (transform && ChargeFireball.effectPrefab)
+					if (transform && ChargeFireball.chargeVfxPrefab)
 					{
-						this.chargeEffect = UnityEngine.Object.Instantiate<GameObject>(ChargeFireball.effectPrefab, transform.position, transform.rotation);
-						this.chargeEffect.transform.parent = transform;
+						this.chargeVfxInstance = UnityEngine.Object.Instantiate<GameObject>(ChargeFireball.chargeVfxPrefab, transform.position, transform.rotation);
+						this.chargeVfxInstance.transform.parent = transform;
 					}
 				}
 			}
 			base.PlayAnimation("Gesture", "ChargeFireball", "ChargeFireball.playbackRate", this.duration);
 		}
 
-		// Token: 0x060005A3 RID: 1443 RVA: 0x00019DBD File Offset: 0x00017FBD
+		// Token: 0x06002E49 RID: 11849 RVA: 0x000C50B5 File Offset: 0x000C32B5
 		public override void OnExit()
 		{
 			base.OnExit();
-			if (this.chargeEffect)
+			if (this.chargeVfxInstance)
 			{
-				EntityState.Destroy(this.chargeEffect);
+				EntityState.Destroy(this.chargeVfxInstance);
 			}
 		}
 
-		// Token: 0x060005A4 RID: 1444 RVA: 0x00019DE0 File Offset: 0x00017FE0
+		// Token: 0x06002E4A RID: 11850 RVA: 0x000C50D8 File Offset: 0x000C32D8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -53,25 +53,25 @@ namespace EntityStates.LemurianMonster
 			}
 		}
 
-		// Token: 0x060005A5 RID: 1445 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002E4B RID: 11851 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x0400066F RID: 1647
+		// Token: 0x04002B70 RID: 11120
 		public static float baseDuration = 1f;
 
-		// Token: 0x04000670 RID: 1648
-		public static GameObject effectPrefab;
+		// Token: 0x04002B71 RID: 11121
+		public static GameObject chargeVfxPrefab;
 
-		// Token: 0x04000671 RID: 1649
+		// Token: 0x04002B72 RID: 11122
 		public static string attackString;
 
-		// Token: 0x04000672 RID: 1650
+		// Token: 0x04002B73 RID: 11123
 		private float duration;
 
-		// Token: 0x04000673 RID: 1651
-		private GameObject chargeEffect;
+		// Token: 0x04002B74 RID: 11124
+		private GameObject chargeVfxInstance;
 	}
 }

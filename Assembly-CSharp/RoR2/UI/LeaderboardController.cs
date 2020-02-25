@@ -8,10 +8,10 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005F3 RID: 1523
+	// Token: 0x020005D8 RID: 1496
 	public class LeaderboardController : MonoBehaviour
 	{
-		// Token: 0x0600222E RID: 8750 RVA: 0x000A19B8 File Offset: 0x0009FBB8
+		// Token: 0x06002373 RID: 9075 RVA: 0x0009ADC0 File Offset: 0x00098FC0
 		private void Update()
 		{
 			if (this.currentLeaderboard != null && this.currentLeaderboard.IsValid && !this.currentLeaderboard.IsQuerying)
@@ -29,7 +29,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600222F RID: 8751 RVA: 0x000A1A28 File Offset: 0x0009FC28
+		// Token: 0x06002374 RID: 9076 RVA: 0x0009AE30 File Offset: 0x00099030
 		private void SetStripCount(int newCount)
 		{
 			while (this.stripList.Count > newCount)
@@ -44,7 +44,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002230 RID: 8752 RVA: 0x000A1AB4 File Offset: 0x0009FCB4
+		// Token: 0x06002375 RID: 9077 RVA: 0x0009AEBC File Offset: 0x000990BC
 		private void Rebuild()
 		{
 			this.SetStripCount(this.leaderboardInfoList.Count);
@@ -73,7 +73,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002231 RID: 8753 RVA: 0x000A1C60 File Offset: 0x0009FE60
+		// Token: 0x06002376 RID: 9078 RVA: 0x0009B068 File Offset: 0x00099268
 		private void GenerateFakeLeaderboardList(int count)
 		{
 			this.leaderboardInfoList.Clear();
@@ -81,13 +81,13 @@ namespace RoR2.UI
 			{
 				LeaderboardController.LeaderboardInfo item = default(LeaderboardController.LeaderboardInfo);
 				item.userSteamID = 76561197995890564UL;
-				item.survivorIndex = (SurvivorIndex)UnityEngine.Random.Range(0, 6);
+				item.survivorIndex = (SurvivorIndex)UnityEngine.Random.Range(0, SurvivorCatalog.survivorCount - 1);
 				item.timeInSeconds = UnityEngine.Random.Range(120f, 600f);
 				this.leaderboardInfoList.Add(item);
 			}
 		}
 
-		// Token: 0x06002232 RID: 8754 RVA: 0x000A1CCC File Offset: 0x0009FECC
+		// Token: 0x06002377 RID: 9079 RVA: 0x0009B0DC File Offset: 0x000992DC
 		private void SetLeaderboardInfo(LeaderboardController.LeaderboardInfo[] leaderboardInfos)
 		{
 			this.leaderboardInfoList.Clear();
@@ -98,17 +98,17 @@ namespace RoR2.UI
 			this.Rebuild();
 		}
 
-		// Token: 0x170002FD RID: 765
-		// (get) Token: 0x06002233 RID: 8755 RVA: 0x000A1D0E File Offset: 0x0009FF0E
-		// (set) Token: 0x06002234 RID: 8756 RVA: 0x000A1D16 File Offset: 0x0009FF16
+		// Token: 0x170003B2 RID: 946
+		// (get) Token: 0x06002378 RID: 9080 RVA: 0x0009B11E File Offset: 0x0009931E
+		// (set) Token: 0x06002379 RID: 9081 RVA: 0x0009B126 File Offset: 0x00099326
 		public int currentPage { get; private set; }
 
-		// Token: 0x170002FE RID: 766
-		// (get) Token: 0x06002235 RID: 8757 RVA: 0x000A1D1F File Offset: 0x0009FF1F
-		// (set) Token: 0x06002236 RID: 8758 RVA: 0x000A1D27 File Offset: 0x0009FF27
+		// Token: 0x170003B3 RID: 947
+		// (get) Token: 0x0600237A RID: 9082 RVA: 0x0009B12F File Offset: 0x0009932F
+		// (set) Token: 0x0600237B RID: 9083 RVA: 0x0009B137 File Offset: 0x00099337
 		public string currentLeaderboardName { get; private set; }
 
-		// Token: 0x06002237 RID: 8759 RVA: 0x000A1D30 File Offset: 0x0009FF30
+		// Token: 0x0600237C RID: 9084 RVA: 0x0009B140 File Offset: 0x00099340
 		public void SetRequestType(string requestTypeName)
 		{
 			LeaderboardController.RequestType requestType;
@@ -118,12 +118,12 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002238 RID: 8760 RVA: 0x000A1D50 File Offset: 0x0009FF50
+		// Token: 0x0600237D RID: 9085 RVA: 0x0009B160 File Offset: 0x00099360
 		private static LeaderboardController.LeaderboardInfo LeaderboardInfoFromSteamLeaderboardEntry(Leaderboard.Entry entry)
 		{
 			SurvivorIndex survivorIndex = SurvivorIndex.None;
 			int num = (entry.SubScores != null && entry.SubScores.Length >= 1) ? entry.SubScores[1] : 0;
-			if (num >= 0 && num < 7)
+			if (num >= 0 && num < SurvivorCatalog.survivorCount)
 			{
 				survivorIndex = (SurvivorIndex)num;
 			}
@@ -136,7 +136,7 @@ namespace RoR2.UI
 			};
 		}
 
-		// Token: 0x06002239 RID: 8761 RVA: 0x000A1DC8 File Offset: 0x0009FFC8
+		// Token: 0x0600237E RID: 9086 RVA: 0x0009B1DC File Offset: 0x000993DC
 		public void SetRequestedInfo(string newLeaderboardName, LeaderboardController.RequestType newRequestType, int newPage)
 		{
 			bool flag = this.currentLeaderboardName != newLeaderboardName;
@@ -162,7 +162,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600223A RID: 8762 RVA: 0x000A1E54 File Offset: 0x000A0054
+		// Token: 0x0600237F RID: 9087 RVA: 0x0009B268 File Offset: 0x00099468
 		private Action GenerateRequest(Leaderboard leaderboard, LeaderboardController.RequestType callRequestType, int page)
 		{
 			Leaderboard.FetchScoresCallback <>9__1;
@@ -191,84 +191,84 @@ namespace RoR2.UI
 			};
 		}
 
-		// Token: 0x0600223B RID: 8763 RVA: 0x000A1E82 File Offset: 0x000A0082
+		// Token: 0x06002380 RID: 9088 RVA: 0x0009B296 File Offset: 0x00099496
 		private void OrderLeaderboardListByTime(ref List<LeaderboardController.LeaderboardInfo> leaderboardInfoList)
 		{
 			leaderboardInfoList.Sort(new Comparison<LeaderboardController.LeaderboardInfo>(LeaderboardController.SortByTime));
 		}
 
-		// Token: 0x0600223C RID: 8764 RVA: 0x000A1E97 File Offset: 0x000A0097
+		// Token: 0x06002381 RID: 9089 RVA: 0x0009B2AB File Offset: 0x000994AB
 		private static int SortByTime(LeaderboardController.LeaderboardInfo p1, LeaderboardController.LeaderboardInfo p2)
 		{
 			return p1.timeInSeconds.CompareTo(p2.timeInSeconds);
 		}
 
-		// Token: 0x04002534 RID: 9524
+		// Token: 0x04002153 RID: 8531
 		public GameObject stripPrefab;
 
-		// Token: 0x04002535 RID: 9525
+		// Token: 0x04002154 RID: 8532
 		public RectTransform container;
 
-		// Token: 0x04002536 RID: 9526
+		// Token: 0x04002155 RID: 8533
 		public GameObject noEntryObject;
 
-		// Token: 0x04002537 RID: 9527
+		// Token: 0x04002156 RID: 8534
 		public AnimateImageAlpha animateImageAlpha;
 
-		// Token: 0x04002538 RID: 9528
+		// Token: 0x04002157 RID: 8535
 		private List<LeaderboardStrip> stripList = new List<LeaderboardStrip>();
 
-		// Token: 0x04002539 RID: 9529
+		// Token: 0x04002158 RID: 8536
 		private List<LeaderboardController.LeaderboardInfo> leaderboardInfoList = new List<LeaderboardController.LeaderboardInfo>();
 
-		// Token: 0x0400253A RID: 9530
+		// Token: 0x04002159 RID: 8537
 		public MPButton nextPageButton;
 
-		// Token: 0x0400253B RID: 9531
+		// Token: 0x0400215A RID: 8538
 		public MPButton previousPageButton;
 
-		// Token: 0x0400253C RID: 9532
+		// Token: 0x0400215B RID: 8539
 		public MPButton resetPageButton;
 
-		// Token: 0x0400253D RID: 9533
+		// Token: 0x0400215C RID: 8540
 		public int entriesPerPage = 16;
 
-		// Token: 0x04002540 RID: 9536
+		// Token: 0x0400215F RID: 8543
 		public LeaderboardController.RequestType currentRequestType;
 
-		// Token: 0x04002541 RID: 9537
+		// Token: 0x04002160 RID: 8544
 		private Leaderboard currentLeaderboard;
 
-		// Token: 0x04002542 RID: 9538
+		// Token: 0x04002161 RID: 8545
 		private Action queuedRequest;
 
-		// Token: 0x020005F4 RID: 1524
+		// Token: 0x020005D9 RID: 1497
 		private struct LeaderboardInfo
 		{
-			// Token: 0x04002543 RID: 9539
+			// Token: 0x04002162 RID: 8546
 			public int rank;
 
-			// Token: 0x04002544 RID: 9540
+			// Token: 0x04002163 RID: 8547
 			public ulong userSteamID;
 
-			// Token: 0x04002545 RID: 9541
+			// Token: 0x04002164 RID: 8548
 			public SurvivorIndex survivorIndex;
 
-			// Token: 0x04002546 RID: 9542
+			// Token: 0x04002165 RID: 8549
 			public float timeInSeconds;
 
-			// Token: 0x04002547 RID: 9543
+			// Token: 0x04002166 RID: 8550
 			public bool isMe;
 		}
 
-		// Token: 0x020005F5 RID: 1525
+		// Token: 0x020005DA RID: 1498
 		public enum RequestType
 		{
-			// Token: 0x04002549 RID: 9545
+			// Token: 0x04002168 RID: 8552
 			Global,
-			// Token: 0x0400254A RID: 9546
+			// Token: 0x04002169 RID: 8553
 			GlobalAroundUser,
-			// Token: 0x0400254B RID: 9547
+			// Token: 0x0400216A RID: 8554
 			Friends
 		}
 	}

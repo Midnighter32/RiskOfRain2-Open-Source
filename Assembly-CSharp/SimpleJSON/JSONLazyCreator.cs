@@ -3,11 +3,11 @@ using System.Text;
 
 namespace SimpleJSON
 {
-	// Token: 0x0200008C RID: 140
+	// Token: 0x02000091 RID: 145
 	internal class JSONLazyCreator : JSONNode
 	{
-		// Token: 0x1700006E RID: 110
-		// (get) Token: 0x060002DF RID: 735 RVA: 0x0000BE1E File Offset: 0x0000A01E
+		// Token: 0x17000074 RID: 116
+		// (get) Token: 0x0600031B RID: 795 RVA: 0x0000C8C6 File Offset: 0x0000AAC6
 		public override JSONNodeType Tag
 		{
 			get
@@ -16,21 +16,21 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x060002E0 RID: 736 RVA: 0x0000BE21 File Offset: 0x0000A021
+		// Token: 0x0600031C RID: 796 RVA: 0x0000C8C9 File Offset: 0x0000AAC9
 		public JSONLazyCreator(JSONNode aNode)
 		{
 			this.m_Node = aNode;
 			this.m_Key = null;
 		}
 
-		// Token: 0x060002E1 RID: 737 RVA: 0x0000BE37 File Offset: 0x0000A037
+		// Token: 0x0600031D RID: 797 RVA: 0x0000C8DF File Offset: 0x0000AADF
 		public JSONLazyCreator(JSONNode aNode, string aKey)
 		{
 			this.m_Node = aNode;
 			this.m_Key = aKey;
 		}
 
-		// Token: 0x060002E2 RID: 738 RVA: 0x0000BE4D File Offset: 0x0000A04D
+		// Token: 0x0600031E RID: 798 RVA: 0x0000C8F5 File Offset: 0x0000AAF5
 		private void Set(JSONNode aVal)
 		{
 			if (this.m_Key == null)
@@ -44,7 +44,7 @@ namespace SimpleJSON
 			this.m_Node = null;
 		}
 
-		// Token: 0x1700006F RID: 111
+		// Token: 0x17000075 RID: 117
 		public override JSONNode this[int aIndex]
 		{
 			get
@@ -60,7 +60,7 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x17000070 RID: 112
+		// Token: 0x17000076 RID: 118
 		public override JSONNode this[string aKey]
 		{
 			get
@@ -79,7 +79,7 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x060002E7 RID: 743 RVA: 0x0000BED0 File Offset: 0x0000A0D0
+		// Token: 0x06000323 RID: 803 RVA: 0x0000C978 File Offset: 0x0000AB78
 		public override void Add(JSONNode aItem)
 		{
 			this.Set(new JSONArray
@@ -88,7 +88,7 @@ namespace SimpleJSON
 			});
 		}
 
-		// Token: 0x060002E8 RID: 744 RVA: 0x0000BEF4 File Offset: 0x0000A0F4
+		// Token: 0x06000324 RID: 804 RVA: 0x0000C99C File Offset: 0x0000AB9C
 		public override void Add(string aKey, JSONNode aItem)
 		{
 			this.Set(new JSONObject
@@ -100,33 +100,33 @@ namespace SimpleJSON
 			});
 		}
 
-		// Token: 0x060002E9 RID: 745 RVA: 0x0000BF16 File Offset: 0x0000A116
+		// Token: 0x06000325 RID: 805 RVA: 0x0000C9BE File Offset: 0x0000ABBE
 		public static bool operator ==(JSONLazyCreator a, object b)
 		{
 			return b == null || a == b;
 		}
 
-		// Token: 0x060002EA RID: 746 RVA: 0x0000BF21 File Offset: 0x0000A121
+		// Token: 0x06000326 RID: 806 RVA: 0x0000C9C9 File Offset: 0x0000ABC9
 		public static bool operator !=(JSONLazyCreator a, object b)
 		{
 			return !(a == b);
 		}
 
-		// Token: 0x060002EB RID: 747 RVA: 0x0000BF16 File Offset: 0x0000A116
+		// Token: 0x06000327 RID: 807 RVA: 0x0000C9BE File Offset: 0x0000ABBE
 		public override bool Equals(object obj)
 		{
 			return obj == null || this == obj;
 		}
 
-		// Token: 0x060002EC RID: 748 RVA: 0x0000A1ED File Offset: 0x000083ED
+		// Token: 0x06000328 RID: 808 RVA: 0x0000AC89 File Offset: 0x00008E89
 		public override int GetHashCode()
 		{
 			return 0;
 		}
 
-		// Token: 0x17000071 RID: 113
-		// (get) Token: 0x060002ED RID: 749 RVA: 0x0000BF30 File Offset: 0x0000A130
-		// (set) Token: 0x060002EE RID: 750 RVA: 0x0000BF54 File Offset: 0x0000A154
+		// Token: 0x17000077 RID: 119
+		// (get) Token: 0x06000329 RID: 809 RVA: 0x0000C9D8 File Offset: 0x0000ABD8
+		// (set) Token: 0x0600032A RID: 810 RVA: 0x0000C9FC File Offset: 0x0000ABFC
 		public override int AsInt
 		{
 			get
@@ -142,9 +142,9 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x17000072 RID: 114
-		// (get) Token: 0x060002EF RID: 751 RVA: 0x0000BF70 File Offset: 0x0000A170
-		// (set) Token: 0x060002F0 RID: 752 RVA: 0x0000BF98 File Offset: 0x0000A198
+		// Token: 0x17000078 RID: 120
+		// (get) Token: 0x0600032B RID: 811 RVA: 0x0000CA18 File Offset: 0x0000AC18
+		// (set) Token: 0x0600032C RID: 812 RVA: 0x0000CA40 File Offset: 0x0000AC40
 		public override float AsFloat
 		{
 			get
@@ -160,9 +160,9 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x17000073 RID: 115
-		// (get) Token: 0x060002F1 RID: 753 RVA: 0x0000BFB4 File Offset: 0x0000A1B4
-		// (set) Token: 0x060002F2 RID: 754 RVA: 0x0000BFE0 File Offset: 0x0000A1E0
+		// Token: 0x17000079 RID: 121
+		// (get) Token: 0x0600032D RID: 813 RVA: 0x0000CA5C File Offset: 0x0000AC5C
+		// (set) Token: 0x0600032E RID: 814 RVA: 0x0000CA88 File Offset: 0x0000AC88
 		public override double AsDouble
 		{
 			get
@@ -178,9 +178,9 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x17000074 RID: 116
-		// (get) Token: 0x060002F3 RID: 755 RVA: 0x0000BFFC File Offset: 0x0000A1FC
-		// (set) Token: 0x060002F4 RID: 756 RVA: 0x0000C018 File Offset: 0x0000A218
+		// Token: 0x1700007A RID: 122
+		// (get) Token: 0x0600032F RID: 815 RVA: 0x0000CAA4 File Offset: 0x0000ACA4
+		// (set) Token: 0x06000330 RID: 816 RVA: 0x0000CAC0 File Offset: 0x0000ACC0
 		public override bool AsBool
 		{
 			get
@@ -196,8 +196,8 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x17000075 RID: 117
-		// (get) Token: 0x060002F5 RID: 757 RVA: 0x0000C034 File Offset: 0x0000A234
+		// Token: 0x1700007B RID: 123
+		// (get) Token: 0x06000331 RID: 817 RVA: 0x0000CADC File Offset: 0x0000ACDC
 		public override JSONArray AsArray
 		{
 			get
@@ -208,8 +208,8 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x17000076 RID: 118
-		// (get) Token: 0x060002F6 RID: 758 RVA: 0x0000C050 File Offset: 0x0000A250
+		// Token: 0x1700007C RID: 124
+		// (get) Token: 0x06000332 RID: 818 RVA: 0x0000CAF8 File Offset: 0x0000ACF8
 		public override JSONObject AsObject
 		{
 			get
@@ -220,16 +220,16 @@ namespace SimpleJSON
 			}
 		}
 
-		// Token: 0x060002F7 RID: 759 RVA: 0x0000BE08 File Offset: 0x0000A008
+		// Token: 0x06000333 RID: 819 RVA: 0x0000C8B0 File Offset: 0x0000AAB0
 		internal override void WriteToStringBuilder(StringBuilder aSB, int aIndent, int aIndentInc, JSONTextMode aMode)
 		{
 			aSB.Append("null");
 		}
 
-		// Token: 0x04000248 RID: 584
+		// Token: 0x04000253 RID: 595
 		private JSONNode m_Node;
 
-		// Token: 0x04000249 RID: 585
+		// Token: 0x04000254 RID: 596
 		private string m_Key;
 	}
 }

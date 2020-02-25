@@ -4,16 +4,16 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000355 RID: 853
+	// Token: 0x0200027F RID: 639
 	public class MasterSuicideOnTimer : MonoBehaviour
 	{
-		// Token: 0x06001192 RID: 4498 RVA: 0x0005720F File Offset: 0x0005540F
+		// Token: 0x06000E2D RID: 3629 RVA: 0x0003F347 File Offset: 0x0003D547
 		private void Start()
 		{
 			this.characterMaster = base.GetComponent<CharacterMaster>();
 		}
 
-		// Token: 0x06001193 RID: 4499 RVA: 0x00057220 File Offset: 0x00055420
+		// Token: 0x06000E2E RID: 3630 RVA: 0x0003F358 File Offset: 0x0003D558
 		private void FixedUpdate()
 		{
 			if (NetworkServer.active)
@@ -27,7 +27,7 @@ namespace RoR2
 						HealthComponent component = bodyObject.GetComponent<HealthComponent>();
 						if (component)
 						{
-							component.Suicide(null);
+							component.Suicide(null, null, DamageType.Generic);
 							this.hasDied = true;
 						}
 					}
@@ -35,16 +35,16 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0400159C RID: 5532
+		// Token: 0x04000E19 RID: 3609
 		public float lifeTimer;
 
-		// Token: 0x0400159D RID: 5533
+		// Token: 0x04000E1A RID: 3610
 		private float timer;
 
-		// Token: 0x0400159E RID: 5534
+		// Token: 0x04000E1B RID: 3611
 		private bool hasDied;
 
-		// Token: 0x0400159F RID: 5535
+		// Token: 0x04000E1C RID: 3612
 		private CharacterMaster characterMaster;
 	}
 }

@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 namespace RoR2.UI.LogBook
 {
-	// Token: 0x02000680 RID: 1664
+	// Token: 0x02000675 RID: 1653
 	public class LogBookPage : MonoBehaviour
 	{
-		// Token: 0x0600251A RID: 9498 RVA: 0x000AE41C File Offset: 0x000AC61C
+		// Token: 0x060026BF RID: 9919 RVA: 0x000A8F28 File Offset: 0x000A7128
 		public void SetEntry(UserProfile userProfile, Entry entry)
 		{
 			PageBuilder pageBuilder = this.pageBuilder;
@@ -31,28 +31,28 @@ namespace RoR2.UI.LogBook
 			this.modelPanel.modelPrefab = entry.modelPrefab;
 		}
 
-		// Token: 0x04002841 RID: 10305
+		// Token: 0x040024A8 RID: 9384
 		private int currentEntryIndex;
 
-		// Token: 0x04002842 RID: 10306
+		// Token: 0x040024A9 RID: 9385
 		public RawImage iconImage;
 
-		// Token: 0x04002843 RID: 10307
+		// Token: 0x040024AA RID: 9386
 		public ModelPanel modelPanel;
 
-		// Token: 0x04002844 RID: 10308
+		// Token: 0x040024AB RID: 9387
 		public TextMeshProUGUI titleText;
 
-		// Token: 0x04002845 RID: 10309
+		// Token: 0x040024AC RID: 9388
 		public TextMeshProUGUI categoryText;
 
-		// Token: 0x04002846 RID: 10310
+		// Token: 0x040024AD RID: 9389
 		public TextMeshProUGUI pageNumberText;
 
-		// Token: 0x04002847 RID: 10311
+		// Token: 0x040024AE RID: 9390
 		public RectTransform contentContainer;
 
-		// Token: 0x04002848 RID: 10312
+		// Token: 0x040024AF RID: 9391
 		private PageBuilder pageBuilder;
 	}
 }

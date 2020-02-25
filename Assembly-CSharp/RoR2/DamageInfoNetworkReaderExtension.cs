@@ -3,10 +3,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000236 RID: 566
+	// Token: 0x0200011A RID: 282
 	internal static class DamageInfoNetworkReaderExtension
 	{
-		// Token: 0x06000ABD RID: 2749 RVA: 0x00035150 File Offset: 0x00033350
+		// Token: 0x06000521 RID: 1313 RVA: 0x00014870 File Offset: 0x00012A70
 		public static DamageInfo ReadDamageInfo(this NetworkReader reader)
 		{
 			return new DamageInfo
@@ -20,7 +20,8 @@ namespace RoR2
 				procChainMask = reader.ReadProcChainMask(),
 				procCoefficient = reader.ReadSingle(),
 				damageType = (DamageType)reader.ReadByte(),
-				damageColorIndex = (DamageColorIndex)reader.ReadByte()
+				damageColorIndex = (DamageColorIndex)reader.ReadByte(),
+				dotIndex = (DotController.DotIndex)(reader.ReadByte() - 1)
 			};
 		}
 	}

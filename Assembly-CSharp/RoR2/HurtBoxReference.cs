@@ -4,11 +4,11 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000325 RID: 805
+	// Token: 0x02000246 RID: 582
 	[Serializable]
-	public struct HurtBoxReference
+	public struct HurtBoxReference : IEquatable<HurtBoxReference>
 	{
-		// Token: 0x0600108F RID: 4239 RVA: 0x00052B70 File Offset: 0x00050D70
+		// Token: 0x06000CD6 RID: 3286 RVA: 0x000399D8 File Offset: 0x00037BD8
 		public static HurtBoxReference FromHurtBox(HurtBox hurtBox)
 		{
 			HurtBoxReference result;
@@ -25,7 +25,7 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x06001090 RID: 4240 RVA: 0x00052BCC File Offset: 0x00050DCC
+		// Token: 0x06000CD7 RID: 3287 RVA: 0x00039A34 File Offset: 0x00037C34
 		public static HurtBoxReference FromRootObject(GameObject rootObject)
 		{
 			return new HurtBoxReference
@@ -35,7 +35,7 @@ namespace RoR2
 			};
 		}
 
-		// Token: 0x06001091 RID: 4241 RVA: 0x00052BF4 File Offset: 0x00050DF4
+		// Token: 0x06000CD8 RID: 3288 RVA: 0x00039A5C File Offset: 0x00037C5C
 		public GameObject ResolveGameObject()
 		{
 			if (this.hurtBoxIndexPlusOne == 0)
@@ -81,7 +81,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06001092 RID: 4242 RVA: 0x00052C64 File Offset: 0x00050E64
+		// Token: 0x06000CD9 RID: 3289 RVA: 0x00039ACC File Offset: 0x00037CCC
 		public HurtBox ResolveHurtBox()
 		{
 			GameObject gameObject = this.ResolveGameObject();
@@ -92,24 +92,47 @@ namespace RoR2
 			return gameObject.GetComponent<HurtBox>();
 		}
 
-		// Token: 0x06001093 RID: 4243 RVA: 0x00052C88 File Offset: 0x00050E88
+		// Token: 0x06000CDA RID: 3290 RVA: 0x00039AF0 File Offset: 0x00037CF0
 		public void Write(NetworkWriter writer)
 		{
 			writer.Write(this.rootObject);
 			writer.Write(this.hurtBoxIndexPlusOne);
 		}
 
-		// Token: 0x06001094 RID: 4244 RVA: 0x00052CA2 File Offset: 0x00050EA2
+		// Token: 0x06000CDB RID: 3291 RVA: 0x00039B0A File Offset: 0x00037D0A
 		public void Read(NetworkReader reader)
 		{
 			this.rootObject = reader.ReadGameObject();
 			this.hurtBoxIndexPlusOne = reader.ReadByte();
 		}
 
-		// Token: 0x040014AF RID: 5295
+		// Token: 0x06000CDC RID: 3292 RVA: 0x00039B24 File Offset: 0x00037D24
+		public bool Equals(HurtBoxReference other)
+		{
+			return object.Equals(this.rootObject, other.rootObject) && this.hurtBoxIndexPlusOne == other.hurtBoxIndexPlusOne;
+		}
+
+		// Token: 0x06000CDD RID: 3293 RVA: 0x00039B4C File Offset: 0x00037D4C
+		public override bool Equals(object obj)
+		{
+			if (obj is HurtBoxReference)
+			{
+				HurtBoxReference other = (HurtBoxReference)obj;
+				return this.Equals(other);
+			}
+			return false;
+		}
+
+		// Token: 0x06000CDE RID: 3294 RVA: 0x00039B73 File Offset: 0x00037D73
+		public override int GetHashCode()
+		{
+			return ((this.rootObject != null) ? this.rootObject.GetHashCode() : 0) * 397 ^ this.hurtBoxIndexPlusOne.GetHashCode();
+		}
+
+		// Token: 0x04000CED RID: 3309
 		public GameObject rootObject;
 
-		// Token: 0x040014B0 RID: 5296
+		// Token: 0x04000CEE RID: 3310
 		public byte hurtBoxIndexPlusOne;
 	}
 }

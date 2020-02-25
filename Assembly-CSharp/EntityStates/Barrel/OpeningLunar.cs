@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Barrel
 {
-	// Token: 0x020001DF RID: 479
+	// Token: 0x020008FA RID: 2298
 	public class OpeningLunar : BaseState
 	{
-		// Token: 0x06000954 RID: 2388 RVA: 0x0002ED6C File Offset: 0x0002CF6C
+		// Token: 0x06003354 RID: 13140 RVA: 0x000DE990 File Offset: 0x000DCB90
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -19,7 +19,7 @@ namespace EntityStates.Barrel
 			this.StopSteamEffect();
 		}
 
-		// Token: 0x06000955 RID: 2389 RVA: 0x0002EDC3 File Offset: 0x0002CFC3
+		// Token: 0x06003355 RID: 13141 RVA: 0x000DE9E7 File Offset: 0x000DCBE7
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -30,7 +30,7 @@ namespace EntityStates.Barrel
 			}
 		}
 
-		// Token: 0x06000956 RID: 2390 RVA: 0x0002EDEC File Offset: 0x0002CFEC
+		// Token: 0x06003356 RID: 13142 RVA: 0x000DEA10 File Offset: 0x000DCC10
 		private void StopSteamEffect()
 		{
 			Transform modelTransform = base.GetModelTransform();
@@ -52,7 +52,7 @@ namespace EntityStates.Barrel
 			}
 		}
 
-		// Token: 0x04000CA5 RID: 3237
+		// Token: 0x040032CE RID: 13006
 		public static float duration = 1f;
 	}
 }

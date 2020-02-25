@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020002F7 RID: 759
+	// Token: 0x02000206 RID: 518
 	public class GameObjectUnlockableFilter : NetworkBehaviour
 	{
-		// Token: 0x06000F52 RID: 3922 RVA: 0x0004BCC8 File Offset: 0x00049EC8
+		// Token: 0x06000B09 RID: 2825 RVA: 0x00031121 File Offset: 0x0002F321
 		private void Start()
 		{
 			if (NetworkServer.active)
@@ -15,13 +16,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000F53 RID: 3923 RVA: 0x0004BCDD File Offset: 0x00049EDD
+		// Token: 0x06000B0A RID: 2826 RVA: 0x00031136 File Offset: 0x0002F336
 		private void FixedUpdate()
 		{
 			base.gameObject.SetActive(this.active);
 		}
 
-		// Token: 0x06000F54 RID: 3924 RVA: 0x0004BCF0 File Offset: 0x00049EF0
+		// Token: 0x06000B0B RID: 2827 RVA: 0x0003114C File Offset: 0x0002F34C
 		private bool GameObjectIsValid()
 		{
 			if (Run.instance)
@@ -33,27 +34,28 @@ namespace RoR2
 			return true;
 		}
 
-		// Token: 0x06000F56 RID: 3926 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000B0D RID: 2829 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x1700014A RID: 330
-		// (get) Token: 0x06000F57 RID: 3927 RVA: 0x0004BD54 File Offset: 0x00049F54
-		// (set) Token: 0x06000F58 RID: 3928 RVA: 0x0004BD67 File Offset: 0x00049F67
+		// Token: 0x1700015F RID: 351
+		// (get) Token: 0x06000B0E RID: 2830 RVA: 0x000311B0 File Offset: 0x0002F3B0
+		// (set) Token: 0x06000B0F RID: 2831 RVA: 0x000311C3 File Offset: 0x0002F3C3
 		public bool Networkactive
 		{
 			get
 			{
 				return this.active;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<bool>(value, ref this.active, 1u);
+				base.SetSyncVar<bool>(value, ref this.active, 1U);
 			}
 		}
 
-		// Token: 0x06000F59 RID: 3929 RVA: 0x0004BD7C File Offset: 0x00049F7C
+		// Token: 0x06000B10 RID: 2832 RVA: 0x000311D8 File Offset: 0x0002F3D8
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -62,7 +64,7 @@ namespace RoR2
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -78,7 +80,7 @@ namespace RoR2
 			return flag;
 		}
 
-		// Token: 0x06000F5A RID: 3930 RVA: 0x0004BDE8 File Offset: 0x00049FE8
+		// Token: 0x06000B11 RID: 2833 RVA: 0x00031244 File Offset: 0x0002F444
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -93,13 +95,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001380 RID: 4992
+		// Token: 0x04000B80 RID: 2944
 		public string requiredUnlockable;
 
-		// Token: 0x04001381 RID: 4993
+		// Token: 0x04000B81 RID: 2945
 		public string forbiddenUnlockable;
 
-		// Token: 0x04001382 RID: 4994
+		// Token: 0x04000B82 RID: 2946
 		[SyncVar]
 		private bool active;
 	}

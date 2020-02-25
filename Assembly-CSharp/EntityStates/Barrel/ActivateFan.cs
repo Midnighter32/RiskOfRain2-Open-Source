@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Barrel
 {
-	// Token: 0x020001DC RID: 476
+	// Token: 0x020008F7 RID: 2295
 	public class ActivateFan : EntityState
 	{
-		// Token: 0x0600094C RID: 2380 RVA: 0x0002EC28 File Offset: 0x0002CE28
+		// Token: 0x0600334C RID: 13132 RVA: 0x000DE84C File Offset: 0x000DCA4C
 		public override void OnEnter()
 		{
 			base.OnEnter();

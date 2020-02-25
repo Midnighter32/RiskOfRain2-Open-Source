@@ -7,15 +7,15 @@ using UnityEngine.Networking;
 
 namespace EntityStates.ClayBoss
 {
-	// Token: 0x020001BA RID: 442
+	// Token: 0x020008D5 RID: 2261
 	public class Recover : BaseState
 	{
-		// Token: 0x060008A8 RID: 2216 RVA: 0x0002B5D4 File Offset: 0x000297D4
+		// Token: 0x060032A7 RID: 12967 RVA: 0x000DB1EC File Offset: 0x000D93EC
 		public override void OnEnter()
 		{
 			base.OnEnter();
 			this.stopwatch = 0f;
-			if (base.characterBody)
+			if (NetworkServer.active && base.characterBody)
 			{
 				base.characterBody.AddBuff(BuffIndex.ArmorBoost);
 			}
@@ -32,7 +32,7 @@ namespace EntityStates.ClayBoss
 			this.soundID = Util.PlayScaledSound(Recover.enterSoundString, base.gameObject, this.attackSpeedStat);
 		}
 
-		// Token: 0x060008A9 RID: 2217 RVA: 0x0002B684 File Offset: 0x00029884
+		// Token: 0x060032A8 RID: 12968 RVA: 0x000DB2A4 File Offset: 0x000D94A4
 		private void FireTethers()
 		{
 			Vector3 position = this.muzzleTransform.position;
@@ -80,7 +80,7 @@ namespace EntityStates.ClayBoss
 			}
 		}
 
-		// Token: 0x060008AA RID: 2218 RVA: 0x0002B830 File Offset: 0x00029A30
+		// Token: 0x060032A9 RID: 12969 RVA: 0x000DB450 File Offset: 0x000D9650
 		private void DestroyTethers()
 		{
 			if (this.tetherControllers != null)
@@ -95,7 +95,7 @@ namespace EntityStates.ClayBoss
 			}
 		}
 
-		// Token: 0x060008AB RID: 2219 RVA: 0x0002B888 File Offset: 0x00029A88
+		// Token: 0x060032AA RID: 12970 RVA: 0x000DB4A8 File Offset: 0x000D96A8
 		public override void OnExit()
 		{
 			this.DestroyTethers();
@@ -105,11 +105,14 @@ namespace EntityStates.ClayBoss
 			}
 			AkSoundEngine.StopPlayingID(this.soundID);
 			Util.PlaySound(Recover.stopMulchSoundString, base.gameObject);
-			base.characterBody.RemoveBuff(BuffIndex.ArmorBoost);
+			if (NetworkServer.active && base.characterBody)
+			{
+				base.characterBody.RemoveBuff(BuffIndex.ArmorBoost);
+			}
 			base.OnExit();
 		}
 
-		// Token: 0x060008AC RID: 2220 RVA: 0x0002B8E4 File Offset: 0x00029AE4
+		// Token: 0x060032AB RID: 12971 RVA: 0x000DB518 File Offset: 0x000D9718
 		private static void RemoveDeadTethersFromList(List<TarTetherController> tethersList)
 		{
 			for (int i = tethersList.Count - 1; i >= 0; i--)
@@ -121,7 +124,7 @@ namespace EntityStates.ClayBoss
 			}
 		}
 
-		// Token: 0x060008AD RID: 2221 RVA: 0x0002B91C File Offset: 0x00029B1C
+		// Token: 0x060032AC RID: 12972 RVA: 0x000DB550 File Offset: 0x000D9750
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -159,66 +162,66 @@ namespace EntityStates.ClayBoss
 			}
 		}
 
-		// Token: 0x04000B95 RID: 2965
+		// Token: 0x040031BD RID: 12733
 		public static float duration = 15f;
 
-		// Token: 0x04000B96 RID: 2966
+		// Token: 0x040031BE RID: 12734
 		public static float maxTetherDistance = 40f;
 
-		// Token: 0x04000B97 RID: 2967
+		// Token: 0x040031BF RID: 12735
 		public static float tetherMulchDistance = 5f;
 
-		// Token: 0x04000B98 RID: 2968
+		// Token: 0x040031C0 RID: 12736
 		public static float tetherMulchDamageScale = 2f;
 
-		// Token: 0x04000B99 RID: 2969
+		// Token: 0x040031C1 RID: 12737
 		public static float tetherMulchTickIntervalScale = 0.5f;
 
-		// Token: 0x04000B9A RID: 2970
+		// Token: 0x040031C2 RID: 12738
 		public static float damagePerSecond = 2f;
 
-		// Token: 0x04000B9B RID: 2971
+		// Token: 0x040031C3 RID: 12739
 		public static float damageTickFrequency = 3f;
 
-		// Token: 0x04000B9C RID: 2972
+		// Token: 0x040031C4 RID: 12740
 		public static float entryDuration = 1f;
 
-		// Token: 0x04000B9D RID: 2973
+		// Token: 0x040031C5 RID: 12741
 		public static GameObject mulchEffectPrefab;
 
-		// Token: 0x04000B9E RID: 2974
+		// Token: 0x040031C6 RID: 12742
 		public static string enterSoundString;
 
-		// Token: 0x04000B9F RID: 2975
+		// Token: 0x040031C7 RID: 12743
 		public static string beginMulchSoundString;
 
-		// Token: 0x04000BA0 RID: 2976
+		// Token: 0x040031C8 RID: 12744
 		public static string stopMulchSoundString;
 
-		// Token: 0x04000BA1 RID: 2977
+		// Token: 0x040031C9 RID: 12745
 		private GameObject mulchEffect;
 
-		// Token: 0x04000BA2 RID: 2978
+		// Token: 0x040031CA RID: 12746
 		private Transform muzzleTransform;
 
-		// Token: 0x04000BA3 RID: 2979
+		// Token: 0x040031CB RID: 12747
 		private List<TarTetherController> tetherControllers;
 
-		// Token: 0x04000BA4 RID: 2980
+		// Token: 0x040031CC RID: 12748
 		private float stopwatch;
 
-		// Token: 0x04000BA5 RID: 2981
+		// Token: 0x040031CD RID: 12749
 		private uint soundID;
 
-		// Token: 0x04000BA6 RID: 2982
+		// Token: 0x040031CE RID: 12750
 		private Recover.SubState subState;
 
-		// Token: 0x020001BB RID: 443
+		// Token: 0x020008D6 RID: 2262
 		private enum SubState
 		{
-			// Token: 0x04000BA8 RID: 2984
+			// Token: 0x040031D0 RID: 12752
 			Entry,
-			// Token: 0x04000BA9 RID: 2985
+			// Token: 0x040031D1 RID: 12753
 			Tethers
 		}
 	}

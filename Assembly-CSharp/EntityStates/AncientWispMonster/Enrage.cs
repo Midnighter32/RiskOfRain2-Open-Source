@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.AncientWispMonster
 {
-	// Token: 0x020000D4 RID: 212
+	// Token: 0x02000733 RID: 1843
 	public class Enrage : BaseState
 	{
-		// Token: 0x0600042C RID: 1068 RVA: 0x00011414 File Offset: 0x0000F614
+		// Token: 0x06002AD5 RID: 10965 RVA: 0x000B4460 File Offset: 0x000B2660
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -20,7 +20,7 @@ namespace EntityStates.AncientWispMonster
 			}
 		}
 
-		// Token: 0x0600042D RID: 1069 RVA: 0x00011474 File Offset: 0x0000F674
+		// Token: 0x06002AD6 RID: 10966 RVA: 0x000B44C0 File Offset: 0x000B26C0
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -29,7 +29,7 @@ namespace EntityStates.AncientWispMonster
 				EffectData effectData = new EffectData();
 				effectData.origin = base.transform.position;
 				effectData.SetNetworkedObjectReference(base.gameObject);
-				EffectManager.instance.SpawnEffect(Enrage.enragePrefab, effectData, true);
+				EffectManager.SpawnEffect(Enrage.enragePrefab, effectData, true);
 				this.hasCastBuff = true;
 				base.characterBody.AddBuff(BuffIndex.EnrageAncientWisp);
 			}
@@ -40,13 +40,13 @@ namespace EntityStates.AncientWispMonster
 			}
 		}
 
-		// Token: 0x0600042E RID: 1070 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06002AD7 RID: 10967 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x0600042F RID: 1071 RVA: 0x00011524 File Offset: 0x0000F724
+		// Token: 0x06002AD8 RID: 10968 RVA: 0x000B456C File Offset: 0x000B276C
 		private static void PullEnemies(Vector3 position, Vector3 direction, float coneAngle, float maxDistance, float force, TeamIndex excludedTeam)
 		{
 			float num = Mathf.Cos(coneAngle * 0.5f * 0.017453292f);
@@ -65,7 +65,7 @@ namespace EntityStates.AncientWispMonster
 							CharacterMotor component2 = collider.GetComponent<CharacterMotor>();
 							if (component2)
 							{
-								component2.ApplyForce(normalized * force, false);
+								component2.ApplyForce(normalized * force, false, false);
 							}
 							Rigidbody component3 = collider.GetComponent<Rigidbody>();
 							if (component3)
@@ -78,19 +78,19 @@ namespace EntityStates.AncientWispMonster
 			}
 		}
 
-		// Token: 0x040003E9 RID: 1001
+		// Token: 0x040026AF RID: 9903
 		public static float baseDuration = 3.5f;
 
-		// Token: 0x040003EA RID: 1002
+		// Token: 0x040026B0 RID: 9904
 		public static GameObject enragePrefab;
 
-		// Token: 0x040003EB RID: 1003
+		// Token: 0x040026B1 RID: 9905
 		private Animator modelAnimator;
 
-		// Token: 0x040003EC RID: 1004
+		// Token: 0x040026B2 RID: 9906
 		private float duration;
 
-		// Token: 0x040003ED RID: 1005
+		// Token: 0x040026B3 RID: 9907
 		private bool hasCastBuff;
 	}
 }

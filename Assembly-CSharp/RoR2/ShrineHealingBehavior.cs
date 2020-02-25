@@ -5,28 +5,28 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020003E0 RID: 992
+	// Token: 0x02000332 RID: 818
 	[RequireComponent(typeof(PurchaseInteraction))]
 	public class ShrineHealingBehavior : NetworkBehaviour
 	{
-		// Token: 0x06001599 RID: 5529 RVA: 0x00037FB6 File Offset: 0x000361B6
+		// Token: 0x0600136E RID: 4974 RVA: 0x00019B5A File Offset: 0x00017D5A
 		public override int GetNetworkChannel()
 		{
 			return QosChannelIndex.defaultReliable.intVal;
 		}
 
-		// Token: 0x170001F2 RID: 498
-		// (get) Token: 0x0600159A RID: 5530 RVA: 0x000678AA File Offset: 0x00065AAA
-		// (set) Token: 0x0600159B RID: 5531 RVA: 0x000678B2 File Offset: 0x00065AB2
+		// Token: 0x17000254 RID: 596
+		// (get) Token: 0x0600136F RID: 4975 RVA: 0x00053292 File Offset: 0x00051492
+		// (set) Token: 0x06001370 RID: 4976 RVA: 0x0005329A File Offset: 0x0005149A
 		public int purchaseCount { get; private set; }
 
-		// Token: 0x0600159C RID: 5532 RVA: 0x000678BB File Offset: 0x00065ABB
+		// Token: 0x06001371 RID: 4977 RVA: 0x000532A3 File Offset: 0x000514A3
 		private void Awake()
 		{
 			this.purchaseInteraction = base.GetComponent<PurchaseInteraction>();
 		}
 
-		// Token: 0x0600159D RID: 5533 RVA: 0x000678CC File Offset: 0x00065ACC
+		// Token: 0x06001372 RID: 4978 RVA: 0x000532B4 File Offset: 0x000514B4
 		public void FixedUpdate()
 		{
 			if (this.waitingForRefresh)
@@ -41,7 +41,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600159E RID: 5534 RVA: 0x00067940 File Offset: 0x00065B40
+		// Token: 0x06001373 RID: 4979 RVA: 0x00053328 File Offset: 0x00051528
 		[Server]
 		private void SetWardEnabled(bool enableWard)
 		{
@@ -66,7 +66,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600159F RID: 5535 RVA: 0x000679E4 File Offset: 0x00065BE4
+		// Token: 0x06001374 RID: 4980 RVA: 0x000533CC File Offset: 0x000515CC
 		[Server]
 		public void AddShrineStack(Interactor activator)
 		{
@@ -78,7 +78,7 @@ namespace RoR2
 			this.SetWardEnabled(true);
 			Chat.SendBroadcastChat(new Chat.SubjectFormatChatMessage
 			{
-				subjectCharacterBodyGameObject = activator.gameObject,
+				subjectAsCharacterBody = activator.gameObject.GetComponent<CharacterBody>(),
 				baseToken = "SHRINE_HEALING_USE_MESSAGE"
 			});
 			this.waitingForRefresh = true;
@@ -87,7 +87,7 @@ namespace RoR2
 			float networkradius = this.baseRadius + this.radiusBonusPerPurchase * (float)(this.purchaseCount - 1);
 			this.healingWard.Networkradius = networkradius;
 			this.refreshTimer = 2f;
-			EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ShrineUseEffect"), new EffectData
+			EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ShrineUseEffect"), new EffectData
 			{
 				origin = base.transform.position,
 				rotation = Quaternion.identity,
@@ -106,62 +106,62 @@ namespace RoR2
 			action(this, activator);
 		}
 
-		// Token: 0x1400002B RID: 43
-		// (add) Token: 0x060015A0 RID: 5536 RVA: 0x00067AF8 File Offset: 0x00065CF8
-		// (remove) Token: 0x060015A1 RID: 5537 RVA: 0x00067B2C File Offset: 0x00065D2C
+		// Token: 0x14000041 RID: 65
+		// (add) Token: 0x06001375 RID: 4981 RVA: 0x000534E0 File Offset: 0x000516E0
+		// (remove) Token: 0x06001376 RID: 4982 RVA: 0x00053514 File Offset: 0x00051714
 		public static event Action<ShrineHealingBehavior, Interactor> onActivated;
 
-		// Token: 0x060015A3 RID: 5539 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001378 RID: 4984 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x060015A4 RID: 5540 RVA: 0x00067B60 File Offset: 0x00065D60
+		// Token: 0x06001379 RID: 4985 RVA: 0x00053548 File Offset: 0x00051748
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			bool result;
 			return result;
 		}
 
-		// Token: 0x060015A5 RID: 5541 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x0600137A RID: 4986 RVA: 0x0000409B File Offset: 0x0000229B
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 		}
 
-		// Token: 0x040018EF RID: 6383
+		// Token: 0x04001232 RID: 4658
 		public GameObject wardPrefab;
 
-		// Token: 0x040018F0 RID: 6384
+		// Token: 0x04001233 RID: 4659
 		private GameObject wardInstance;
 
-		// Token: 0x040018F1 RID: 6385
+		// Token: 0x04001234 RID: 4660
 		public float baseRadius;
 
-		// Token: 0x040018F2 RID: 6386
+		// Token: 0x04001235 RID: 4661
 		public float radiusBonusPerPurchase;
 
-		// Token: 0x040018F3 RID: 6387
+		// Token: 0x04001236 RID: 4662
 		public int maxPurchaseCount;
 
-		// Token: 0x040018F4 RID: 6388
+		// Token: 0x04001237 RID: 4663
 		public float costMultiplierPerPurchase;
 
-		// Token: 0x040018F5 RID: 6389
+		// Token: 0x04001238 RID: 4664
 		public Transform symbolTransform;
 
-		// Token: 0x040018F6 RID: 6390
+		// Token: 0x04001239 RID: 4665
 		private PurchaseInteraction purchaseInteraction;
 
-		// Token: 0x040018F8 RID: 6392
+		// Token: 0x0400123B RID: 4667
 		private float refreshTimer;
 
-		// Token: 0x040018F9 RID: 6393
+		// Token: 0x0400123C RID: 4668
 		private const float refreshDuration = 2f;
 
-		// Token: 0x040018FA RID: 6394
+		// Token: 0x0400123D RID: 4669
 		private bool waitingForRefresh;
 
-		// Token: 0x040018FB RID: 6395
+		// Token: 0x0400123E RID: 4670
 		private HealingWard healingWard;
 	}
 }

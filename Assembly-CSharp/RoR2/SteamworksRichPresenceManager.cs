@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Facepunch.Steamworks;
 using JetBrains.Annotations;
 using RoR2.Networking;
@@ -10,16 +11,16 @@ using UnityEngine.SceneManagement;
 
 namespace RoR2
 {
-	// Token: 0x020004AB RID: 1195
+	// Token: 0x0200043C RID: 1084
 	internal static class SteamworksRichPresenceManager
 	{
-		// Token: 0x06001AF2 RID: 6898 RVA: 0x0007EB23 File Offset: 0x0007CD23
+		// Token: 0x06001A58 RID: 6744 RVA: 0x000705A3 File Offset: 0x0006E7A3
 		private static void SetKeyValue([NotNull] string key, [CanBeNull] string value)
 		{
 			Client.Instance.User.SetRichPresence(key, value);
 		}
 
-		// Token: 0x06001AF3 RID: 6899 RVA: 0x0007EB38 File Offset: 0x0007CD38
+		// Token: 0x06001A59 RID: 6745 RVA: 0x000705B8 File Offset: 0x0006E7B8
 		private static void OnNetworkStart()
 		{
 			string text = null;
@@ -28,7 +29,7 @@ namespace RoR2
 			string[] commandLineArgs = Environment.GetCommandLineArgs();
 			for (int i = 0; i < commandLineArgs.Length - 1; i++)
 			{
-				string a = commandLineArgs[i].ToLower();
+				string a = commandLineArgs[i].ToLower(CultureInfo.InvariantCulture);
 				CSteamID csteamID4;
 				if (a == "+connect")
 				{
@@ -67,7 +68,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001AF4 RID: 6900 RVA: 0x0007EC78 File Offset: 0x0007CE78
+		// Token: 0x06001A5A RID: 6746 RVA: 0x000706FC File Offset: 0x0006E8FC
 		private static void OnLobbyChanged()
 		{
 			if (Client.Instance.Lobby.IsValid)
@@ -78,7 +79,7 @@ namespace RoR2
 			SteamworksRichPresenceManager.SetKeyValue("connect", null);
 		}
 
-		// Token: 0x06001AF5 RID: 6901 RVA: 0x0007ECCC File Offset: 0x0007CECC
+		// Token: 0x06001A5B RID: 6747 RVA: 0x00070750 File Offset: 0x0006E950
 		private static void OnInvitedToGame(SteamFriend steamFriend, string connectString)
 		{
 			Debug.LogFormat("OnGameRichPresenceJoinRequested connectString=\"{0}\" steamFriend=\"{1}\"", new object[]
@@ -99,7 +100,7 @@ namespace RoR2
 					{
 						SteamworksLobbyManager.LeaveLobby();
 					}
-					Console.instance.SubmitCmd(null, "connect_steamworks_p2p " + csteamID.value, false);
+					QuitConfirmationHelper.IssueQuitCommand(null, "connect_steamworks_p2p " + csteamID.value);
 				}
 				CSteamID csteamID2;
 				if (array[0] == "+steam_lobby_join" && CSteamID.TryParse(array[1], out csteamID2))
@@ -108,12 +109,12 @@ namespace RoR2
 					{
 						SteamworksLobbyManager.LeaveLobby();
 					}
-					Console.instance.SubmitCmd(null, "steam_lobby_join " + csteamID2.value, false);
+					QuitConfirmationHelper.IssueQuitCommand(null, "steam_lobby_join " + csteamID2.value);
 				}
 			}
 		}
 
-		// Token: 0x06001AF6 RID: 6902 RVA: 0x0007EDA1 File Offset: 0x0007CFA1
+		// Token: 0x06001A5C RID: 6748 RVA: 0x0007081C File Offset: 0x0006EA1C
 		private static void OnGameServerChangeRequested(string address, string password)
 		{
 			Debug.LogFormat("OnGameServerChangeRequested address=\"{0}\"", new object[]
@@ -124,10 +125,11 @@ namespace RoR2
 			{
 				SteamworksLobbyManager.LeaveLobby();
 			}
-			Console.instance.SubmitCmd(null, string.Format("connect \"{0}\"", address), false);
+			string consoleCmd = string.Format("cl_password \"{0}\"; connect \"{1}\"", Util.EscapeQuotes(password), Util.EscapeQuotes(address));
+			QuitConfirmationHelper.IssueQuitCommand(null, consoleCmd);
 		}
 
-		// Token: 0x06001AF7 RID: 6903 RVA: 0x0007EDDC File Offset: 0x0007CFDC
+		// Token: 0x06001A5D RID: 6749 RVA: 0x00070868 File Offset: 0x0006EA68
 		private static void SetupCallbacks()
 		{
 			GameNetworkManager.onStartGlobal += SteamworksRichPresenceManager.OnNetworkStart;
@@ -146,44 +148,44 @@ namespace RoR2
 			RoR2Application.onUpdate += SteamworksRichPresenceManager.BaseRichPresenceField.ProcessDirtyFields;
 		}
 
-		// Token: 0x06001AF8 RID: 6904 RVA: 0x0007EE95 File Offset: 0x0007D095
+		// Token: 0x06001A5E RID: 6750 RVA: 0x00070921 File Offset: 0x0006EB21
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void Init()
 		{
-			RoR2Application.onLoad = (Action)Delegate.Combine(RoR2Application.onLoad, new Action(SteamworksRichPresenceManager.SetupCallbacks));
+			SteamworksClientManager.onLoaded += SteamworksRichPresenceManager.SetupCallbacks;
 		}
 
-		// Token: 0x04001DBD RID: 7613
+		// Token: 0x04001823 RID: 6179
 		private const string rpConnect = "connect";
 
-		// Token: 0x04001DBE RID: 7614
+		// Token: 0x04001824 RID: 6180
 		private const string rpStatus = "status";
 
-		// Token: 0x04001DBF RID: 7615
+		// Token: 0x04001825 RID: 6181
 		private const string rpSteamDisplay = "steam_display";
 
-		// Token: 0x04001DC0 RID: 7616
+		// Token: 0x04001826 RID: 6182
 		private const string rpSteamPlayerGroup = "steam_player_group";
 
-		// Token: 0x04001DC1 RID: 7617
+		// Token: 0x04001827 RID: 6183
 		private const string rpSteamPlayerGroupSize = "steam_player_group_size";
 
-		// Token: 0x04001DC2 RID: 7618
+		// Token: 0x04001828 RID: 6184
 		private const string rpDifficulty = "difficulty";
 
-		// Token: 0x04001DC3 RID: 7619
+		// Token: 0x04001829 RID: 6185
 		private const string rpGameMode = "gamemode";
 
-		// Token: 0x04001DC4 RID: 7620
+		// Token: 0x0400182A RID: 6186
 		private const string rpParticipationType = "participation_type";
 
-		// Token: 0x04001DC5 RID: 7621
+		// Token: 0x0400182B RID: 6187
 		private const string rpMinutes = "minutes";
 
-		// Token: 0x020004AC RID: 1196
+		// Token: 0x0200043D RID: 1085
 		private abstract class BaseRichPresenceField
 		{
-			// Token: 0x06001AF9 RID: 6905 RVA: 0x0007EEB7 File Offset: 0x0007D0B7
+			// Token: 0x06001A5F RID: 6751 RVA: 0x00070934 File Offset: 0x0006EB34
 			public static void ProcessDirtyFields()
 			{
 				while (SteamworksRichPresenceManager.BaseRichPresenceField.dirtyFields.Count > 0)
@@ -192,20 +194,20 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x1700027D RID: 637
-			// (get) Token: 0x06001AFA RID: 6906
+			// Token: 0x17000304 RID: 772
+			// (get) Token: 0x06001A60 RID: 6752
 			protected abstract string key { get; }
 
-			// Token: 0x06001AFB RID: 6907
+			// Token: 0x06001A61 RID: 6753
 			[CanBeNull]
 			protected abstract string RebuildValue();
 
-			// Token: 0x06001AFC RID: 6908 RVA: 0x00004507 File Offset: 0x00002707
+			// Token: 0x06001A62 RID: 6754 RVA: 0x0000409B File Offset: 0x0000229B
 			protected virtual void OnChanged()
 			{
 			}
 
-			// Token: 0x06001AFD RID: 6909 RVA: 0x0007EED7 File Offset: 0x0007D0D7
+			// Token: 0x06001A63 RID: 6755 RVA: 0x00070954 File Offset: 0x0006EB54
 			public void SetDirty()
 			{
 				if (!this.isDirty)
@@ -215,7 +217,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001AFE RID: 6910 RVA: 0x0007EEF4 File Offset: 0x0007D0F4
+			// Token: 0x06001A64 RID: 6756 RVA: 0x00070970 File Offset: 0x0006EB70
 			private void UpdateIfNecessary()
 			{
 				if (!this.installed)
@@ -232,17 +234,17 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001AFF RID: 6911 RVA: 0x00004507 File Offset: 0x00002707
+			// Token: 0x06001A65 RID: 6757 RVA: 0x0000409B File Offset: 0x0000229B
 			protected virtual void OnInstall()
 			{
 			}
 
-			// Token: 0x06001B00 RID: 6912 RVA: 0x00004507 File Offset: 0x00002707
+			// Token: 0x06001A66 RID: 6758 RVA: 0x0000409B File Offset: 0x0000229B
 			protected virtual void OnUninstall()
 			{
 			}
 
-			// Token: 0x06001B01 RID: 6913 RVA: 0x0007EF44 File Offset: 0x0007D144
+			// Token: 0x06001A67 RID: 6759 RVA: 0x000709C0 File Offset: 0x0006EBC0
 			public void Install()
 			{
 				if (!this.installed)
@@ -253,7 +255,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B02 RID: 6914 RVA: 0x0007EF61 File Offset: 0x0007D161
+			// Token: 0x06001A68 RID: 6760 RVA: 0x000709DD File Offset: 0x0006EBDD
 			public void Uninstall()
 			{
 				if (this.installed)
@@ -264,7 +266,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B03 RID: 6915 RVA: 0x0007EF84 File Offset: 0x0007D184
+			// Token: 0x06001A69 RID: 6761 RVA: 0x00070A00 File Offset: 0x0006EC00
 			protected void SetDirtyableValue<T>(ref T field, T value) where T : struct, IEquatable<T>
 			{
 				if (!field.Equals(value))
@@ -274,7 +276,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B04 RID: 6916 RVA: 0x0007EFA2 File Offset: 0x0007D1A2
+			// Token: 0x06001A6A RID: 6762 RVA: 0x00070A1E File Offset: 0x0006EC1E
 			protected void SetDirtyableReference<T>(ref T field, T value) where T : class
 			{
 				if (field != value)
@@ -284,25 +286,25 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x04001DC6 RID: 7622
+			// Token: 0x0400182C RID: 6188
 			private static readonly Queue<SteamworksRichPresenceManager.BaseRichPresenceField> dirtyFields = new Queue<SteamworksRichPresenceManager.BaseRichPresenceField>();
 
-			// Token: 0x04001DC7 RID: 7623
+			// Token: 0x0400182D RID: 6189
 			private bool isDirty;
 
-			// Token: 0x04001DC8 RID: 7624
+			// Token: 0x0400182E RID: 6190
 			[CanBeNull]
 			private string currentValue;
 
-			// Token: 0x04001DC9 RID: 7625
+			// Token: 0x0400182F RID: 6191
 			private bool installed;
 		}
 
-		// Token: 0x020004AD RID: 1197
+		// Token: 0x0200043E RID: 1086
 		private sealed class DifficultyField : SteamworksRichPresenceManager.BaseRichPresenceField
 		{
-			// Token: 0x1700027E RID: 638
-			// (get) Token: 0x06001B07 RID: 6919 RVA: 0x0007EFD0 File Offset: 0x0007D1D0
+			// Token: 0x17000305 RID: 773
+			// (get) Token: 0x06001A6D RID: 6765 RVA: 0x00070A4C File Offset: 0x0006EC4C
 			protected override string key
 			{
 				get
@@ -311,7 +313,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B08 RID: 6920 RVA: 0x0007EFD8 File Offset: 0x0007D1D8
+			// Token: 0x06001A6E RID: 6766 RVA: 0x00070A54 File Offset: 0x0006EC54
 			protected override string RebuildValue()
 			{
 				if (!Run.instance)
@@ -331,13 +333,13 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B09 RID: 6921 RVA: 0x0007F025 File Offset: 0x0007D225
+			// Token: 0x06001A6F RID: 6767 RVA: 0x00070AA1 File Offset: 0x0006ECA1
 			private void SetDirty(Run run)
 			{
 				base.SetDirty();
 			}
 
-			// Token: 0x06001B0A RID: 6922 RVA: 0x0007F02D File Offset: 0x0007D22D
+			// Token: 0x06001A70 RID: 6768 RVA: 0x00070AA9 File Offset: 0x0006ECA9
 			protected override void OnInstall()
 			{
 				base.OnInstall();
@@ -345,7 +347,7 @@ namespace RoR2
 				Run.onRunDestroyGlobal += this.SetDirty;
 			}
 
-			// Token: 0x06001B0B RID: 6923 RVA: 0x0007F057 File Offset: 0x0007D257
+			// Token: 0x06001A71 RID: 6769 RVA: 0x00070AD3 File Offset: 0x0006ECD3
 			protected override void OnUninstall()
 			{
 				Run.onRunStartGlobal -= this.SetDirty;
@@ -354,11 +356,11 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x020004AE RID: 1198
+		// Token: 0x0200043F RID: 1087
 		private sealed class GameModeField : SteamworksRichPresenceManager.BaseRichPresenceField
 		{
-			// Token: 0x1700027F RID: 639
-			// (get) Token: 0x06001B0D RID: 6925 RVA: 0x0007F089 File Offset: 0x0007D289
+			// Token: 0x17000306 RID: 774
+			// (get) Token: 0x06001A73 RID: 6771 RVA: 0x00070B05 File Offset: 0x0006ED05
 			protected override string key
 			{
 				get
@@ -367,7 +369,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B0E RID: 6926 RVA: 0x0007F090 File Offset: 0x0007D290
+			// Token: 0x06001A74 RID: 6772 RVA: 0x00070B0C File Offset: 0x0006ED0C
 			protected override string RebuildValue()
 			{
 				if (!Run.instance)
@@ -382,13 +384,13 @@ namespace RoR2
 				return run.name;
 			}
 
-			// Token: 0x06001B0F RID: 6927 RVA: 0x0007F025 File Offset: 0x0007D225
+			// Token: 0x06001A75 RID: 6773 RVA: 0x00070AA1 File Offset: 0x0006ECA1
 			private void SetDirty(Run run)
 			{
 				base.SetDirty();
 			}
 
-			// Token: 0x06001B10 RID: 6928 RVA: 0x0007F0BA File Offset: 0x0007D2BA
+			// Token: 0x06001A76 RID: 6774 RVA: 0x00070B36 File Offset: 0x0006ED36
 			protected override void OnInstall()
 			{
 				base.OnInstall();
@@ -396,7 +398,7 @@ namespace RoR2
 				Run.onRunDestroyGlobal += this.SetDirty;
 			}
 
-			// Token: 0x06001B11 RID: 6929 RVA: 0x0007F0E4 File Offset: 0x0007D2E4
+			// Token: 0x06001A77 RID: 6775 RVA: 0x00070B60 File Offset: 0x0006ED60
 			protected override void OnUninstall()
 			{
 				Run.onRunStartGlobal -= this.SetDirty;
@@ -405,11 +407,11 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x020004AF RID: 1199
+		// Token: 0x02000440 RID: 1088
 		private sealed class ParticipationField : SteamworksRichPresenceManager.BaseRichPresenceField
 		{
-			// Token: 0x17000280 RID: 640
-			// (get) Token: 0x06001B13 RID: 6931 RVA: 0x0007F10E File Offset: 0x0007D30E
+			// Token: 0x17000307 RID: 775
+			// (get) Token: 0x06001A79 RID: 6777 RVA: 0x00070B8A File Offset: 0x0006ED8A
 			protected override string key
 			{
 				get
@@ -418,7 +420,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B14 RID: 6932 RVA: 0x0007F115 File Offset: 0x0007D315
+			// Token: 0x06001A7A RID: 6778 RVA: 0x00070B91 File Offset: 0x0006ED91
 			private void SetParticipationType(SteamworksRichPresenceManager.ParticipationField.ParticipationType newParticipationType)
 			{
 				if (this.participationType != newParticipationType)
@@ -428,7 +430,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B15 RID: 6933 RVA: 0x0007F130 File Offset: 0x0007D330
+			// Token: 0x06001A7B RID: 6779 RVA: 0x00070BAC File Offset: 0x0006EDAC
 			protected override string RebuildValue()
 			{
 				switch (this.participationType)
@@ -444,7 +446,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B16 RID: 6934 RVA: 0x0007F170 File Offset: 0x0007D370
+			// Token: 0x06001A7C RID: 6780 RVA: 0x00070BEC File Offset: 0x0006EDEC
 			protected override void OnInstall()
 			{
 				base.OnInstall();
@@ -454,7 +456,7 @@ namespace RoR2
 				Run.onRunDestroyGlobal += this.OnRunDestroy;
 			}
 
-			// Token: 0x06001B17 RID: 6935 RVA: 0x0007F1C8 File Offset: 0x0007D3C8
+			// Token: 0x06001A7D RID: 6781 RVA: 0x00070C44 File Offset: 0x0006EE44
 			protected override void OnUninstall()
 			{
 				LocalUserManager.onUserSignIn -= this.OnLocalUserDiscovered;
@@ -464,7 +466,7 @@ namespace RoR2
 				this.SetCurrentMaster(null);
 			}
 
-			// Token: 0x06001B18 RID: 6936 RVA: 0x0007F220 File Offset: 0x0007D420
+			// Token: 0x06001A7E RID: 6782 RVA: 0x00070C9C File Offset: 0x0006EE9C
 			private void SetTrackedUser(LocalUser newTrackedUser)
 			{
 				if (this.trackedUser != null)
@@ -478,7 +480,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B19 RID: 6937 RVA: 0x0007F272 File Offset: 0x0007D472
+			// Token: 0x06001A7F RID: 6783 RVA: 0x00070CEE File Offset: 0x0006EEEE
 			private void OnLocalUserDiscovered(LocalUser localUser)
 			{
 				if (this.trackedUser == null)
@@ -487,7 +489,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B1A RID: 6938 RVA: 0x0007F283 File Offset: 0x0007D483
+			// Token: 0x06001A80 RID: 6784 RVA: 0x00070CFF File Offset: 0x0006EEFF
 			private void OnLocalUserLost(LocalUser localUser)
 			{
 				if (this.trackedUser == localUser)
@@ -496,7 +498,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B1B RID: 6939 RVA: 0x0007F295 File Offset: 0x0007D495
+			// Token: 0x06001A81 RID: 6785 RVA: 0x00070D11 File Offset: 0x0006EF11
 			private void OnRunStart(Run run)
 			{
 				if (this.trackedUser != null && !this.trackedUser.cachedMasterObject)
@@ -505,7 +507,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B1C RID: 6940 RVA: 0x0007F2B8 File Offset: 0x0007D4B8
+			// Token: 0x06001A82 RID: 6786 RVA: 0x00070D34 File Offset: 0x0006EF34
 			private void OnRunDestroy(Run run)
 			{
 				if (this.trackedUser != null)
@@ -514,14 +516,14 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B1D RID: 6941 RVA: 0x0007F2CC File Offset: 0x0007D4CC
+			// Token: 0x06001A83 RID: 6787 RVA: 0x00070D48 File Offset: 0x0006EF48
 			private void OnMasterChanged()
 			{
 				PlayerCharacterMasterController cachedMasterController = this.trackedUser.cachedMasterController;
 				this.SetCurrentMaster(cachedMasterController ? cachedMasterController.master : null);
 			}
 
-			// Token: 0x06001B1E RID: 6942 RVA: 0x0007F2FC File Offset: 0x0007D4FC
+			// Token: 0x06001A84 RID: 6788 RVA: 0x00070D78 File Offset: 0x0006EF78
 			private void SetCurrentMaster(CharacterMaster newMaster)
 			{
 				if (this.currentMaster != null)
@@ -537,46 +539,46 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B1F RID: 6943 RVA: 0x0007F386 File Offset: 0x0007D586
+			// Token: 0x06001A85 RID: 6789 RVA: 0x00070E02 File Offset: 0x0006F002
 			private void OnBodyDeath()
 			{
 				this.SetParticipationType(SteamworksRichPresenceManager.ParticipationField.ParticipationType.Dead);
 			}
 
-			// Token: 0x06001B20 RID: 6944 RVA: 0x0007F38F File Offset: 0x0007D58F
+			// Token: 0x06001A86 RID: 6790 RVA: 0x00070E0B File Offset: 0x0006F00B
 			private void OnBodyStart(CharacterBody body)
 			{
 				this.SetParticipationType(SteamworksRichPresenceManager.ParticipationField.ParticipationType.Alive);
 			}
 
-			// Token: 0x04001DCA RID: 7626
+			// Token: 0x04001830 RID: 6192
 			private SteamworksRichPresenceManager.ParticipationField.ParticipationType participationType;
 
-			// Token: 0x04001DCB RID: 7627
+			// Token: 0x04001831 RID: 6193
 			private LocalUser trackedUser;
 
-			// Token: 0x04001DCC RID: 7628
+			// Token: 0x04001832 RID: 6194
 			private CharacterMaster currentMaster;
 
-			// Token: 0x020004B0 RID: 1200
+			// Token: 0x02000441 RID: 1089
 			private enum ParticipationType
 			{
-				// Token: 0x04001DCE RID: 7630
+				// Token: 0x04001834 RID: 6196
 				None,
-				// Token: 0x04001DCF RID: 7631
+				// Token: 0x04001835 RID: 6197
 				Alive,
-				// Token: 0x04001DD0 RID: 7632
+				// Token: 0x04001836 RID: 6198
 				Dead,
-				// Token: 0x04001DD1 RID: 7633
+				// Token: 0x04001837 RID: 6199
 				Spectator
 			}
 		}
 
-		// Token: 0x020004B1 RID: 1201
+		// Token: 0x02000442 RID: 1090
 		private sealed class MinutesField : SteamworksRichPresenceManager.BaseRichPresenceField
 		{
-			// Token: 0x17000281 RID: 641
-			// (get) Token: 0x06001B22 RID: 6946 RVA: 0x0007F398 File Offset: 0x0007D598
+			// Token: 0x17000308 RID: 776
+			// (get) Token: 0x06001A88 RID: 6792 RVA: 0x00070E14 File Offset: 0x0006F014
 			protected override string key
 			{
 				get
@@ -585,46 +587,46 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B23 RID: 6947 RVA: 0x0007F39F File Offset: 0x0007D59F
+			// Token: 0x06001A89 RID: 6793 RVA: 0x00070E1B File Offset: 0x0006F01B
 			protected override string RebuildValue()
 			{
 				return TextSerialization.ToStringInvariant(this.minutes);
 			}
 
-			// Token: 0x06001B24 RID: 6948 RVA: 0x0007F3AC File Offset: 0x0007D5AC
+			// Token: 0x06001A8A RID: 6794 RVA: 0x00070E28 File Offset: 0x0006F028
 			private void FixedUpdate()
 			{
-				uint value = 0u;
+				uint value = 0U;
 				if (Run.instance)
 				{
-					value = (uint)Mathf.FloorToInt(Run.instance.fixedTime / 60f);
+					value = (uint)Mathf.FloorToInt(Run.instance.GetRunStopwatch() / 60f);
 				}
 				base.SetDirtyableValue<uint>(ref this.minutes, value);
 			}
 
-			// Token: 0x06001B25 RID: 6949 RVA: 0x0007F3EA File Offset: 0x0007D5EA
+			// Token: 0x06001A8B RID: 6795 RVA: 0x00070E66 File Offset: 0x0006F066
 			protected override void OnInstall()
 			{
 				base.OnInstall();
 				RoR2Application.onFixedUpdate += this.FixedUpdate;
 			}
 
-			// Token: 0x06001B26 RID: 6950 RVA: 0x0007F403 File Offset: 0x0007D603
+			// Token: 0x06001A8C RID: 6796 RVA: 0x00070E7F File Offset: 0x0006F07F
 			protected override void OnUninstall()
 			{
 				RoR2Application.onFixedUpdate -= this.FixedUpdate;
 				base.OnUninstall();
 			}
 
-			// Token: 0x04001DD2 RID: 7634
+			// Token: 0x04001838 RID: 6200
 			private uint minutes;
 		}
 
-		// Token: 0x020004B2 RID: 1202
+		// Token: 0x02000443 RID: 1091
 		private sealed class SteamPlayerGroupField : SteamworksRichPresenceManager.BaseRichPresenceField
 		{
-			// Token: 0x17000282 RID: 642
-			// (get) Token: 0x06001B28 RID: 6952 RVA: 0x0007F41C File Offset: 0x0007D61C
+			// Token: 0x17000309 RID: 777
+			// (get) Token: 0x06001A8E RID: 6798 RVA: 0x00070E98 File Offset: 0x0006F098
 			protected override string key
 			{
 				get
@@ -633,7 +635,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B29 RID: 6953 RVA: 0x0007F423 File Offset: 0x0007D623
+			// Token: 0x06001A8F RID: 6799 RVA: 0x00070E9F File Offset: 0x0006F09F
 			private void SetLobbyId(CSteamID newLobbyId)
 			{
 				if (this.lobbyId != newLobbyId)
@@ -643,7 +645,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B2A RID: 6954 RVA: 0x0007F440 File Offset: 0x0007D640
+			// Token: 0x06001A90 RID: 6800 RVA: 0x00070EBC File Offset: 0x0006F0BC
 			private void SetHostId(CSteamID newHostId)
 			{
 				if (this.hostId != newHostId)
@@ -653,7 +655,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B2B RID: 6955 RVA: 0x0007F45D File Offset: 0x0007D65D
+			// Token: 0x06001A91 RID: 6801 RVA: 0x00070ED9 File Offset: 0x0006F0D9
 			private void SetGroupId(CSteamID newGroupId)
 			{
 				if (this.groupId != newGroupId)
@@ -663,7 +665,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B2C RID: 6956 RVA: 0x0007F47C File Offset: 0x0007D67C
+			// Token: 0x06001A92 RID: 6802 RVA: 0x00070EF8 File Offset: 0x0006F0F8
 			private void UpdateGroupID()
 			{
 				if (this.hostId != CSteamID.nil)
@@ -697,7 +699,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B2D RID: 6957 RVA: 0x0007F51C File Offset: 0x0007D71C
+			// Token: 0x06001A93 RID: 6803 RVA: 0x00070F98 File Offset: 0x0006F198
 			protected override void OnInstall()
 			{
 				base.OnInstall();
@@ -708,7 +710,7 @@ namespace RoR2
 				SteamworksLobbyManager.onLobbyChanged += this.OnLobbyChanged;
 			}
 
-			// Token: 0x06001B2E RID: 6958 RVA: 0x0007F584 File Offset: 0x0007D784
+			// Token: 0x06001A94 RID: 6804 RVA: 0x00071000 File Offset: 0x0006F200
 			protected override void OnUninstall()
 			{
 				GameNetworkManager.onClientConnectGlobal -= this.OnClientConnectGlobal;
@@ -725,7 +727,7 @@ namespace RoR2
 				base.OnUninstall();
 			}
 
-			// Token: 0x06001B2F RID: 6959 RVA: 0x0007F604 File Offset: 0x0007D804
+			// Token: 0x06001A95 RID: 6805 RVA: 0x00071080 File Offset: 0x0006F280
 			protected override string RebuildValue()
 			{
 				if (this.groupId == CSteamID.nil)
@@ -735,7 +737,7 @@ namespace RoR2
 				return TextSerialization.ToStringInvariant(this.groupId.value);
 			}
 
-			// Token: 0x06001B30 RID: 6960 RVA: 0x0007F62C File Offset: 0x0007D82C
+			// Token: 0x06001A96 RID: 6806 RVA: 0x000710A8 File Offset: 0x0006F2A8
 			private void OnClientConnectGlobal(NetworkConnection conn)
 			{
 				SteamNetworkConnection steamNetworkConnection;
@@ -745,48 +747,48 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B31 RID: 6961 RVA: 0x0007F64F File Offset: 0x0007D84F
+			// Token: 0x06001A97 RID: 6807 RVA: 0x000710CB File Offset: 0x0006F2CB
 			private void OnClientDisconnectGlobal(NetworkConnection conn)
 			{
 				this.hostId = CSteamID.nil;
 			}
 
-			// Token: 0x06001B32 RID: 6962 RVA: 0x0007F65C File Offset: 0x0007D85C
+			// Token: 0x06001A98 RID: 6808 RVA: 0x000710D8 File Offset: 0x0006F2D8
 			private void OnStartServerGlobal()
 			{
 				this.hostId = new CSteamID(Client.Instance.SteamId);
 			}
 
-			// Token: 0x06001B33 RID: 6963 RVA: 0x0007F64F File Offset: 0x0007D84F
+			// Token: 0x06001A99 RID: 6809 RVA: 0x000710CB File Offset: 0x0006F2CB
 			private void OnStopServerGlobal()
 			{
 				this.hostId = CSteamID.nil;
 			}
 
-			// Token: 0x06001B34 RID: 6964 RVA: 0x0007F673 File Offset: 0x0007D873
+			// Token: 0x06001A9A RID: 6810 RVA: 0x000710EF File Offset: 0x0006F2EF
 			private void OnLobbyChanged()
 			{
 				this.SetLobbyId(new CSteamID(Client.Instance.Lobby.CurrentLobby));
 			}
 
-			// Token: 0x04001DD3 RID: 7635
+			// Token: 0x04001839 RID: 6201
 			private CSteamID lobbyId = CSteamID.nil;
 
-			// Token: 0x04001DD4 RID: 7636
+			// Token: 0x0400183A RID: 6202
 			private CSteamID hostId = CSteamID.nil;
 
-			// Token: 0x04001DD5 RID: 7637
+			// Token: 0x0400183B RID: 6203
 			private CSteamID groupId = CSteamID.nil;
 
-			// Token: 0x04001DD6 RID: 7638
+			// Token: 0x0400183C RID: 6204
 			private SteamworksRichPresenceManager.SteamPlayerGroupSizeField groupSizeField;
 		}
 
-		// Token: 0x020004B3 RID: 1203
+		// Token: 0x02000444 RID: 1092
 		private abstract class SteamPlayerGroupSizeField : SteamworksRichPresenceManager.BaseRichPresenceField
 		{
-			// Token: 0x17000283 RID: 643
-			// (get) Token: 0x06001B36 RID: 6966 RVA: 0x0007F6B8 File Offset: 0x0007D8B8
+			// Token: 0x1700030A RID: 778
+			// (get) Token: 0x06001A9C RID: 6812 RVA: 0x00071134 File Offset: 0x0006F334
 			protected override string key
 			{
 				get
@@ -795,20 +797,20 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B37 RID: 6967 RVA: 0x0007F6BF File Offset: 0x0007D8BF
+			// Token: 0x06001A9D RID: 6813 RVA: 0x0007113B File Offset: 0x0006F33B
 			protected override string RebuildValue()
 			{
 				return TextSerialization.ToStringInvariant(this.groupSize);
 			}
 
-			// Token: 0x04001DD7 RID: 7639
+			// Token: 0x0400183D RID: 6205
 			protected int groupSize;
 		}
 
-		// Token: 0x020004B4 RID: 1204
+		// Token: 0x02000445 RID: 1093
 		private sealed class SteamPlayerGroupSizeFieldLobby : SteamworksRichPresenceManager.SteamPlayerGroupSizeField
 		{
-			// Token: 0x06001B39 RID: 6969 RVA: 0x0007F6CC File Offset: 0x0007D8CC
+			// Token: 0x06001A9F RID: 6815 RVA: 0x00071148 File Offset: 0x0006F348
 			protected override void OnInstall()
 			{
 				base.OnInstall();
@@ -816,24 +818,24 @@ namespace RoR2
 				this.UpdateGroupSize();
 			}
 
-			// Token: 0x06001B3A RID: 6970 RVA: 0x0007F6EB File Offset: 0x0007D8EB
+			// Token: 0x06001AA0 RID: 6816 RVA: 0x00071167 File Offset: 0x0006F367
 			protected override void OnUninstall()
 			{
 				SteamworksLobbyManager.onPlayerCountUpdated -= this.UpdateGroupSize;
 				base.OnUninstall();
 			}
 
-			// Token: 0x06001B3B RID: 6971 RVA: 0x0007F704 File Offset: 0x0007D904
+			// Token: 0x06001AA1 RID: 6817 RVA: 0x00071180 File Offset: 0x0006F380
 			private void UpdateGroupSize()
 			{
 				base.SetDirtyableValue<int>(ref this.groupSize, SteamworksLobbyManager.calculatedTotalPlayerCount);
 			}
 		}
 
-		// Token: 0x020004B5 RID: 1205
+		// Token: 0x02000446 RID: 1094
 		private sealed class SteamPlayerGroupSizeFieldGame : SteamworksRichPresenceManager.SteamPlayerGroupSizeField
 		{
-			// Token: 0x06001B3D RID: 6973 RVA: 0x0007F71F File Offset: 0x0007D91F
+			// Token: 0x06001AA3 RID: 6819 RVA: 0x0007119B File Offset: 0x0006F39B
 			protected override void OnInstall()
 			{
 				base.OnInstall();
@@ -842,7 +844,7 @@ namespace RoR2
 				this.UpdateGroupSize();
 			}
 
-			// Token: 0x06001B3E RID: 6974 RVA: 0x0007F74F File Offset: 0x0007D94F
+			// Token: 0x06001AA4 RID: 6820 RVA: 0x000711CB File Offset: 0x0006F3CB
 			protected override void OnUninstall()
 			{
 				NetworkUser.onNetworkUserDiscovered -= this.OnNetworkUserDiscovered;
@@ -850,30 +852,30 @@ namespace RoR2
 				base.OnUninstall();
 			}
 
-			// Token: 0x06001B3F RID: 6975 RVA: 0x0007F779 File Offset: 0x0007D979
+			// Token: 0x06001AA5 RID: 6821 RVA: 0x000711F5 File Offset: 0x0006F3F5
 			private void UpdateGroupSize()
 			{
 				base.SetDirtyableValue<int>(ref this.groupSize, NetworkUser.readOnlyInstancesList.Count);
 			}
 
-			// Token: 0x06001B40 RID: 6976 RVA: 0x0007F791 File Offset: 0x0007D991
+			// Token: 0x06001AA6 RID: 6822 RVA: 0x0007120D File Offset: 0x0006F40D
 			private void OnNetworkUserLost(NetworkUser networkuser)
 			{
 				this.UpdateGroupSize();
 			}
 
-			// Token: 0x06001B41 RID: 6977 RVA: 0x0007F791 File Offset: 0x0007D991
+			// Token: 0x06001AA7 RID: 6823 RVA: 0x0007120D File Offset: 0x0006F40D
 			private void OnNetworkUserDiscovered(NetworkUser networkUser)
 			{
 				this.UpdateGroupSize();
 			}
 		}
 
-		// Token: 0x020004B6 RID: 1206
+		// Token: 0x02000447 RID: 1095
 		private sealed class SteamDisplayField : SteamworksRichPresenceManager.BaseRichPresenceField
 		{
-			// Token: 0x17000284 RID: 644
-			// (get) Token: 0x06001B43 RID: 6979 RVA: 0x0007F799 File Offset: 0x0007D999
+			// Token: 0x1700030B RID: 779
+			// (get) Token: 0x06001AA9 RID: 6825 RVA: 0x00071215 File Offset: 0x0006F415
 			protected override string key
 			{
 				get
@@ -882,7 +884,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B44 RID: 6980 RVA: 0x0007F7A0 File Offset: 0x0007D9A0
+			// Token: 0x06001AAA RID: 6826 RVA: 0x0007121C File Offset: 0x0006F41C
 			protected override string RebuildValue()
 			{
 				Scene activeScene = SceneManager.GetActiveScene();
@@ -916,14 +918,14 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001B45 RID: 6981 RVA: 0x0007F821 File Offset: 0x0007DA21
+			// Token: 0x06001AAB RID: 6827 RVA: 0x0007129D File Offset: 0x0006F49D
 			protected override void OnInstall()
 			{
 				base.OnInstall();
 				RoR2Application.onUpdate += base.SetDirty;
 			}
 
-			// Token: 0x06001B46 RID: 6982 RVA: 0x0007F83A File Offset: 0x0007DA3A
+			// Token: 0x06001AAC RID: 6828 RVA: 0x000712B6 File Offset: 0x0006F4B6
 			protected override void OnUninstall()
 			{
 				RoR2Application.onUpdate -= base.SetDirty;

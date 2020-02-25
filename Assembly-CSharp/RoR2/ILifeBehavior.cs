@@ -2,10 +2,10 @@
 
 namespace RoR2
 {
-	// Token: 0x02000336 RID: 822
+	// Token: 0x02000258 RID: 600
 	public interface ILifeBehavior
 	{
-		// Token: 0x060010D8 RID: 4312
+		// Token: 0x06000D25 RID: 3365
 		void OnDeathStart();
 	}
 }

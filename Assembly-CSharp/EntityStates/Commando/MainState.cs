@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Commando
 {
-	// Token: 0x020001A1 RID: 417
+	// Token: 0x020008B2 RID: 2226
 	public class MainState : BaseState
 	{
-		// Token: 0x06000816 RID: 2070 RVA: 0x000282E4 File Offset: 0x000264E4
+		// Token: 0x060031E8 RID: 12776 RVA: 0x000D7250 File Offset: 0x000D5450
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -50,7 +50,7 @@ namespace EntityStates.Commando
 			}
 		}
 
-		// Token: 0x06000817 RID: 2071 RVA: 0x00028418 File Offset: 0x00026618
+		// Token: 0x060031E9 RID: 12777 RVA: 0x000D7384 File Offset: 0x000D5584
 		public override void OnExit()
 		{
 			Transform modelTransform = base.GetModelTransform();
@@ -69,7 +69,7 @@ namespace EntityStates.Commando
 			base.OnExit();
 		}
 
-		// Token: 0x06000818 RID: 2072 RVA: 0x00028478 File Offset: 0x00026678
+		// Token: 0x060031EA RID: 12778 RVA: 0x000D73E4 File Offset: 0x000D55E4
 		public override void Update()
 		{
 			base.Update();
@@ -91,7 +91,7 @@ namespace EntityStates.Commando
 			}
 		}
 
-		// Token: 0x06000819 RID: 2073 RVA: 0x000284F0 File Offset: 0x000266F0
+		// Token: 0x060031EB RID: 12779 RVA: 0x000D745C File Offset: 0x000D565C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -168,37 +168,37 @@ namespace EntityStates.Commando
 			this.previousPosition = position;
 		}
 
-		// Token: 0x04000A93 RID: 2707
+		// Token: 0x0400307B RID: 12411
 		private Animator modelAnimator;
 
-		// Token: 0x04000A94 RID: 2708
+		// Token: 0x0400307C RID: 12412
 		private GenericSkill skill1;
 
-		// Token: 0x04000A95 RID: 2709
+		// Token: 0x0400307D RID: 12413
 		private GenericSkill skill2;
 
-		// Token: 0x04000A96 RID: 2710
+		// Token: 0x0400307E RID: 12414
 		private GenericSkill skill3;
 
-		// Token: 0x04000A97 RID: 2711
+		// Token: 0x0400307F RID: 12415
 		private GenericSkill skill4;
 
-		// Token: 0x04000A98 RID: 2712
+		// Token: 0x04003080 RID: 12416
 		private bool skill1InputRecieved;
 
-		// Token: 0x04000A99 RID: 2713
+		// Token: 0x04003081 RID: 12417
 		private bool skill2InputRecieved;
 
-		// Token: 0x04000A9A RID: 2714
+		// Token: 0x04003082 RID: 12418
 		private bool skill3InputRecieved;
 
-		// Token: 0x04000A9B RID: 2715
+		// Token: 0x04003083 RID: 12419
 		private bool skill4InputRecieved;
 
-		// Token: 0x04000A9C RID: 2716
+		// Token: 0x04003084 RID: 12420
 		private Vector3 previousPosition;
 
-		// Token: 0x04000A9D RID: 2717
+		// Token: 0x04003085 RID: 12421
 		private Vector3 estimatedVelocity;
 	}
 }

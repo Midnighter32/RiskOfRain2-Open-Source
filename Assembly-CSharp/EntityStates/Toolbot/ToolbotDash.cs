@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Toolbot
 {
-	// Token: 0x020000DE RID: 222
+	// Token: 0x02000765 RID: 1893
 	public class ToolbotDash : BaseCharacterMain
 	{
-		// Token: 0x06000457 RID: 1111 RVA: 0x00011FE4 File Offset: 0x000101E4
+		// Token: 0x06002BB2 RID: 11186 RVA: 0x000B88AC File Offset: 0x000B6AAC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -29,7 +29,7 @@ namespace EntityStates.Toolbot
 			}
 			if (this.startEffectPrefab && base.characterBody)
 			{
-				EffectManager.instance.SpawnEffect(this.startEffectPrefab, new EffectData
+				EffectManager.SpawnEffect(this.startEffectPrefab, new EffectData
 				{
 					origin = base.characterBody.corePosition
 				}, false);
@@ -40,6 +40,7 @@ namespace EntityStates.Toolbot
 			}
 			Util.PlaySound(ToolbotDash.startSoundString, base.gameObject);
 			base.PlayCrossfade("Body", "BoxModeEnter", 0.1f);
+			base.PlayCrossfade("Stance, Override", "PutAwayGun", 0.1f);
 			base.modelAnimator.SetFloat("aimWeight", 0f);
 			if (NetworkServer.active)
 			{
@@ -60,21 +61,23 @@ namespace EntityStates.Toolbot
 			this.attack.forceVector = Vector3.up * ToolbotDash.upwardForceMagnitude;
 			this.attack.pushAwayForce = ToolbotDash.awayForceMagnitude;
 			this.attack.hitBoxGroup = hitBoxGroup;
+			this.attack.isCrit = base.RollCrit();
 		}
 
-		// Token: 0x06000458 RID: 1112 RVA: 0x000121E8 File Offset: 0x000103E8
+		// Token: 0x06002BB3 RID: 11187 RVA: 0x000B8AD0 File Offset: 0x000B6CD0
 		public override void OnExit()
 		{
 			if (base.characterBody)
 			{
 				if (!this.outer.destroying && this.endEffectPrefab)
 				{
-					EffectManager.instance.SpawnEffect(this.endEffectPrefab, new EffectData
+					EffectManager.SpawnEffect(this.endEffectPrefab, new EffectData
 					{
 						origin = base.characterBody.corePosition
 					}, false);
 				}
 				base.PlayAnimation("Body", "BoxModeExit");
+				base.PlayCrossfade("Stance, Override", "Empty", 0.1f);
 				base.characterBody.isSprinting = false;
 				if (NetworkServer.active)
 				{
@@ -94,13 +97,13 @@ namespace EntityStates.Toolbot
 			base.OnExit();
 		}
 
-		// Token: 0x06000459 RID: 1113 RVA: 0x000122ED File Offset: 0x000104ED
+		// Token: 0x06002BB4 RID: 11188 RVA: 0x000B8BE8 File Offset: 0x000B6DE8
 		private float GetDamageBoostFromSpeed()
 		{
 			return Mathf.Max(1f, base.characterBody.moveSpeed / base.characterBody.baseMoveSpeed);
 		}
 
-		// Token: 0x0600045A RID: 1114 RVA: 0x00012310 File Offset: 0x00010510
+		// Token: 0x06002BB5 RID: 11189 RVA: 0x000B8C0C File Offset: 0x000B6E0C
 		private void UpdateDirection()
 		{
 			if (base.inputBank)
@@ -114,13 +117,13 @@ namespace EntityStates.Toolbot
 			}
 		}
 
-		// Token: 0x0600045B RID: 1115 RVA: 0x00012373 File Offset: 0x00010573
+		// Token: 0x06002BB6 RID: 11190 RVA: 0x000B8C6F File Offset: 0x000B6E6F
 		private Vector3 GetIdealVelocity()
 		{
 			return base.characterDirection.forward * base.characterBody.moveSpeed * this.speedMultiplier;
 		}
 
-		// Token: 0x0600045C RID: 1116 RVA: 0x0001239C File Offset: 0x0001059C
+		// Token: 0x06002BB7 RID: 11191 RVA: 0x000B8C98 File Offset: 0x000B6E98
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -188,8 +191,8 @@ namespace EntityStates.Toolbot
 									position = base.characterBody.corePosition
 								});
 								base.AddRecoil(-0.5f * ToolbotDash.recoilAmplitude * 3f, -0.5f * ToolbotDash.recoilAmplitude * 3f, -0.5f * ToolbotDash.recoilAmplitude * 8f, 0.5f * ToolbotDash.recoilAmplitude * 3f);
-								base.healthComponent.TakeDamageForce(this.idealDirection * -ToolbotDash.knockbackForce, true);
-								EffectManager.instance.SimpleImpactEffect(ToolbotDash.knockbackEffectPrefab, base.characterBody.corePosition, base.characterDirection.forward, true);
+								base.healthComponent.TakeDamageForce(this.idealDirection * -ToolbotDash.knockbackForce, true, false);
+								EffectManager.SimpleImpactEffect(ToolbotDash.knockbackEffectPrefab, base.characterBody.corePosition, base.characterDirection.forward, true);
 								this.outer.SetNextStateToMain();
 								return;
 							}
@@ -209,83 +212,83 @@ namespace EntityStates.Toolbot
 			}
 		}
 
-		// Token: 0x0600045D RID: 1117 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x06002BB8 RID: 11192 RVA: 0x0000C68F File Offset: 0x0000A88F
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
-			return InterruptPriority.Death;
+			return InterruptPriority.Frozen;
 		}
 
-		// Token: 0x04000419 RID: 1049
+		// Token: 0x040027D4 RID: 10196
 		[SerializeField]
 		public float baseDuration;
 
-		// Token: 0x0400041A RID: 1050
+		// Token: 0x040027D5 RID: 10197
 		[SerializeField]
 		public float speedMultiplier;
 
-		// Token: 0x0400041B RID: 1051
+		// Token: 0x040027D6 RID: 10198
 		public static float chargeDamageCoefficient;
 
-		// Token: 0x0400041C RID: 1052
+		// Token: 0x040027D7 RID: 10199
 		public static float awayForceMagnitude;
 
-		// Token: 0x0400041D RID: 1053
+		// Token: 0x040027D8 RID: 10200
 		public static float upwardForceMagnitude;
 
-		// Token: 0x0400041E RID: 1054
+		// Token: 0x040027D9 RID: 10201
 		public static GameObject impactEffectPrefab;
 
-		// Token: 0x0400041F RID: 1055
+		// Token: 0x040027DA RID: 10202
 		public static float hitPauseDuration;
 
-		// Token: 0x04000420 RID: 1056
+		// Token: 0x040027DB RID: 10203
 		public static string impactSoundString;
 
-		// Token: 0x04000421 RID: 1057
+		// Token: 0x040027DC RID: 10204
 		public static float recoilAmplitude;
 
-		// Token: 0x04000422 RID: 1058
+		// Token: 0x040027DD RID: 10205
 		public static string startSoundString;
 
-		// Token: 0x04000423 RID: 1059
+		// Token: 0x040027DE RID: 10206
 		public static string endSoundString;
 
-		// Token: 0x04000424 RID: 1060
+		// Token: 0x040027DF RID: 10207
 		public static GameObject knockbackEffectPrefab;
 
-		// Token: 0x04000425 RID: 1061
+		// Token: 0x040027E0 RID: 10208
 		public static float knockbackDamageCoefficient;
 
-		// Token: 0x04000426 RID: 1062
+		// Token: 0x040027E1 RID: 10209
 		public static float massThresholdForKnockback;
 
-		// Token: 0x04000427 RID: 1063
+		// Token: 0x040027E2 RID: 10210
 		public static float knockbackForce;
 
-		// Token: 0x04000428 RID: 1064
+		// Token: 0x040027E3 RID: 10211
 		[SerializeField]
 		public GameObject startEffectPrefab;
 
-		// Token: 0x04000429 RID: 1065
+		// Token: 0x040027E4 RID: 10212
 		[SerializeField]
 		public GameObject endEffectPrefab;
 
-		// Token: 0x0400042A RID: 1066
+		// Token: 0x040027E5 RID: 10213
 		private float duration;
 
-		// Token: 0x0400042B RID: 1067
+		// Token: 0x040027E6 RID: 10214
 		private float hitPauseTimer;
 
-		// Token: 0x0400042C RID: 1068
+		// Token: 0x040027E7 RID: 10215
 		private Vector3 idealDirection;
 
-		// Token: 0x0400042D RID: 1069
+		// Token: 0x040027E8 RID: 10216
 		private OverlapAttack attack;
 
-		// Token: 0x0400042E RID: 1070
+		// Token: 0x040027E9 RID: 10217
 		private bool inHitPause;
 
-		// Token: 0x0400042F RID: 1071
+		// Token: 0x040027EA RID: 10218
 		private List<HealthComponent> victimsStruck = new List<HealthComponent>();
 	}
 }

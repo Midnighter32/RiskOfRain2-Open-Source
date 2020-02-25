@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000659 RID: 1625
+	// Token: 0x0200064E RID: 1614
 	public class VoteInfoPanelController : MonoBehaviour
 	{
-		// Token: 0x06002458 RID: 9304 RVA: 0x000AA756 File Offset: 0x000A8956
+		// Token: 0x060025FC RID: 9724 RVA: 0x000A5292 File Offset: 0x000A3492
 		private void Awake()
 		{
 			if (RoR2Application.isInSinglePlayer)
@@ -18,7 +18,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002459 RID: 9305 RVA: 0x000AA76C File Offset: 0x000A896C
+		// Token: 0x060025FD RID: 9725 RVA: 0x000A52A8 File Offset: 0x000A34A8
 		private void AllocateIndicators(int desiredIndicatorCount)
 		{
 			while (this.indicators.Count > desiredIndicatorCount)
@@ -41,7 +41,7 @@ namespace RoR2.UI
 			this.timerPanelObject.transform.SetAsLastSibling();
 		}
 
-		// Token: 0x0600245A RID: 9306 RVA: 0x000AA828 File Offset: 0x000A8A28
+		// Token: 0x060025FE RID: 9726 RVA: 0x000A5364 File Offset: 0x000A3564
 		public void UpdateElements()
 		{
 			int num = 0;
@@ -88,46 +88,46 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600245B RID: 9307 RVA: 0x000AA99C File Offset: 0x000A8B9C
+		// Token: 0x060025FF RID: 9727 RVA: 0x000A54D8 File Offset: 0x000A36D8
 		private void Update()
 		{
 			this.UpdateElements();
 		}
 
-		// Token: 0x04002751 RID: 10065
+		// Token: 0x040023B8 RID: 9144
 		public GameObject indicatorPrefab;
 
-		// Token: 0x04002752 RID: 10066
+		// Token: 0x040023B9 RID: 9145
 		public Sprite hasNotVotedSprite;
 
-		// Token: 0x04002753 RID: 10067
+		// Token: 0x040023BA RID: 9146
 		public Sprite hasVotedSprite;
 
-		// Token: 0x04002754 RID: 10068
+		// Token: 0x040023BB RID: 9147
 		public RectTransform container;
 
-		// Token: 0x04002755 RID: 10069
+		// Token: 0x040023BC RID: 9148
 		public GameObject timerPanelObject;
 
-		// Token: 0x04002756 RID: 10070
+		// Token: 0x040023BD RID: 9149
 		public TextMeshProUGUI timerLabel;
 
-		// Token: 0x04002757 RID: 10071
+		// Token: 0x040023BE RID: 9150
 		public VoteController voteController;
 
-		// Token: 0x04002758 RID: 10072
+		// Token: 0x040023BF RID: 9151
 		private readonly List<VoteInfoPanelController.IndicatorInfo> indicators = new List<VoteInfoPanelController.IndicatorInfo>();
 
-		// Token: 0x0200065A RID: 1626
+		// Token: 0x0200064F RID: 1615
 		private struct IndicatorInfo
 		{
-			// Token: 0x04002759 RID: 10073
+			// Token: 0x040023C0 RID: 9152
 			public GameObject gameObject;
 
-			// Token: 0x0400275A RID: 10074
+			// Token: 0x040023C1 RID: 9153
 			public Image image;
 
-			// Token: 0x0400275B RID: 10075
+			// Token: 0x040023C2 RID: 9154
 			public TooltipProvider tooltipProvider;
 		}
 	}

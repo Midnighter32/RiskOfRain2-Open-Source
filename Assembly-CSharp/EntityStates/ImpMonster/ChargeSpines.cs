@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace EntityStates.ImpMonster
 {
-	// Token: 0x02000146 RID: 326
-	internal class ChargeSpines : BaseState
+	// Token: 0x02000822 RID: 2082
+	public class ChargeSpines : BaseState
 	{
-		// Token: 0x06000641 RID: 1601 RVA: 0x0001D478 File Offset: 0x0001B678
+		// Token: 0x06002F2E RID: 12078 RVA: 0x000C97FC File Offset: 0x000C79FC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -28,7 +28,7 @@ namespace EntityStates.ImpMonster
 			base.PlayAnimation("Gesture", "ChargeSpines", "ChargeSpines.playbackRate", this.duration);
 		}
 
-		// Token: 0x06000642 RID: 1602 RVA: 0x0001D523 File Offset: 0x0001B723
+		// Token: 0x06002F2F RID: 12079 RVA: 0x000C98A7 File Offset: 0x000C7AA7
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -38,13 +38,13 @@ namespace EntityStates.ImpMonster
 			}
 		}
 
-		// Token: 0x06000643 RID: 1603 RVA: 0x0000DDD0 File Offset: 0x0000BFD0
+		// Token: 0x06002F30 RID: 12080 RVA: 0x000B02F8 File Offset: 0x000AE4F8
 		public override void Update()
 		{
 			base.Update();
 		}
 
-		// Token: 0x06000644 RID: 1604 RVA: 0x0001D544 File Offset: 0x0001B744
+		// Token: 0x06002F31 RID: 12081 RVA: 0x000C98C8 File Offset: 0x000C7AC8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -56,22 +56,22 @@ namespace EntityStates.ImpMonster
 			}
 		}
 
-		// Token: 0x06000645 RID: 1605 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002F32 RID: 12082 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x0400076D RID: 1901
+		// Token: 0x04002CAD RID: 11437
 		public static float baseDuration = 1f;
 
-		// Token: 0x0400076E RID: 1902
+		// Token: 0x04002CAE RID: 11438
 		public static GameObject effectPrefab;
 
-		// Token: 0x0400076F RID: 1903
+		// Token: 0x04002CAF RID: 11439
 		private float duration;
 
-		// Token: 0x04000770 RID: 1904
+		// Token: 0x04002CB0 RID: 11440
 		private GameObject chargeEffect;
 	}
 }

@@ -1,43 +1,27 @@
 ﻿using System;
-using UnityEngine;
+using RoR2;
 using UnityEngine.Networking;
 
 namespace EntityStates.Toolbot
 {
-	// Token: 0x020000E8 RID: 232
+	// Token: 0x02000770 RID: 1904
 	public class ToolbotStanceB : ToolbotStanceBase
 	{
-		// Token: 0x0600047F RID: 1151 RVA: 0x00012D98 File Offset: 0x00010F98
+		// Token: 0x06002BE0 RID: 11232 RVA: 0x000B9794 File Offset: 0x000B7994
 		public override void OnEnter()
 		{
 			base.OnEnter();
 			this.swapStateType = typeof(ToolbotStanceA);
-			base.SetPrimarySkill(this.primarySkillName);
-			base.SetCrosshairParameters(ToolbotStanceB.crosshairPrefab, ToolbotStanceB.spreadCurve);
 			if (NetworkServer.active)
 			{
 				base.SetEquipmentSlot(1);
 			}
 		}
 
-		// Token: 0x06000480 RID: 1152 RVA: 0x00010288 File Offset: 0x0000E488
-		public override void OnExit()
+		// Token: 0x06002BE1 RID: 11233 RVA: 0x000B97BA File Offset: 0x000B79BA
+		protected override GenericSkill GetCurrentPrimarySkill()
 		{
-			base.OnExit();
+			return base.GetPrimarySkill2();
 		}
-
-		// Token: 0x04000447 RID: 1095
-		[SerializeField]
-		public string primarySkillName;
-
-		// Token: 0x04000448 RID: 1096
-		[SerializeField]
-		public string secondarySkillName;
-
-		// Token: 0x04000449 RID: 1097
-		public static GameObject crosshairPrefab;
-
-		// Token: 0x0400044A RID: 1098
-		public static AnimationCurve spreadCurve;
 	}
 }

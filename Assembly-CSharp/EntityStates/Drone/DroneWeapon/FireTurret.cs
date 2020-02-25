@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Drone.DroneWeapon
 {
-	// Token: 0x02000198 RID: 408
-	internal class FireTurret : BaseState
+	// Token: 0x0200089D RID: 2205
+	public class FireTurret : BaseState
 	{
-		// Token: 0x060007DC RID: 2012 RVA: 0x00026F7C File Offset: 0x0002517C
+		// Token: 0x06003171 RID: 12657 RVA: 0x000D4F50 File Offset: 0x000D3150
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -16,7 +16,7 @@ namespace EntityStates.Drone.DroneWeapon
 			Util.PlaySound(FireTurret.attackSoundString, base.gameObject);
 			if (FireTurret.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireTurret.effectPrefab, base.gameObject, muzzleName, false);
+				EffectManager.SimpleMuzzleFlash(FireTurret.effectPrefab, base.gameObject, muzzleName, false);
 			}
 			if (base.isAuthority)
 			{
@@ -39,13 +39,13 @@ namespace EntityStates.Drone.DroneWeapon
 			}
 		}
 
-		// Token: 0x060007DD RID: 2013 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06003172 RID: 12658 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x060007DE RID: 2014 RVA: 0x00027098 File Offset: 0x00025298
+		// Token: 0x06003173 RID: 12659 RVA: 0x000D5064 File Offset: 0x000D3264
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -63,49 +63,49 @@ namespace EntityStates.Drone.DroneWeapon
 			}
 		}
 
-		// Token: 0x060007DF RID: 2015 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06003174 RID: 12660 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000A41 RID: 2625
+		// Token: 0x04002FE0 RID: 12256
 		public static GameObject effectPrefab;
 
-		// Token: 0x04000A42 RID: 2626
+		// Token: 0x04002FE1 RID: 12257
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000A43 RID: 2627
+		// Token: 0x04002FE2 RID: 12258
 		public static GameObject tracerEffectPrefab;
 
-		// Token: 0x04000A44 RID: 2628
+		// Token: 0x04002FE3 RID: 12259
 		public static string attackSoundString;
 
-		// Token: 0x04000A45 RID: 2629
+		// Token: 0x04002FE4 RID: 12260
 		public static float damageCoefficient;
 
-		// Token: 0x04000A46 RID: 2630
+		// Token: 0x04002FE5 RID: 12261
 		public static float force;
 
-		// Token: 0x04000A47 RID: 2631
+		// Token: 0x04002FE6 RID: 12262
 		public static float minSpread;
 
-		// Token: 0x04000A48 RID: 2632
+		// Token: 0x04002FE7 RID: 12263
 		public static float maxSpread;
 
-		// Token: 0x04000A49 RID: 2633
+		// Token: 0x04002FE8 RID: 12264
 		public static int bulletCount;
 
-		// Token: 0x04000A4A RID: 2634
+		// Token: 0x04002FE9 RID: 12265
 		public static float durationBetweenShots = 1f;
 
-		// Token: 0x04000A4B RID: 2635
+		// Token: 0x04002FEA RID: 12266
 		public static float baseDuration = 2f;
 
-		// Token: 0x04000A4C RID: 2636
+		// Token: 0x04002FEB RID: 12267
 		public int bulletCountCurrent = 1;
 
-		// Token: 0x04000A4D RID: 2637
+		// Token: 0x04002FEC RID: 12268
 		private float duration = 2f;
 	}
 }

@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000265 RID: 613
-	public class BazaarUpgradeInteraction : NetworkBehaviour, IInteractable, IHologramContentProvider, IDisplayNameProvider
+	// Token: 0x0200015B RID: 347
+	public sealed class BazaarUpgradeInteraction : NetworkBehaviour, IInteractable, IHologramContentProvider, IDisplayNameProvider
 	{
-		// Token: 0x06000B74 RID: 2932 RVA: 0x00038424 File Offset: 0x00036624
+		// Token: 0x0600064F RID: 1615 RVA: 0x0001A114 File Offset: 0x00018314
 		private void Awake()
 		{
 			this.unlockableProgressionDefs = new UnlockableDef[this.unlockableProgression.Length];
@@ -17,7 +18,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000B75 RID: 2933 RVA: 0x0003846C File Offset: 0x0003666C
+		// Token: 0x06000650 RID: 1616 RVA: 0x0001A15C File Offset: 0x0001835C
 		private void FixedUpdate()
 		{
 			if (NetworkServer.active && !this.available)
@@ -30,13 +31,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000B76 RID: 2934 RVA: 0x0000A1ED File Offset: 0x000083ED
+		// Token: 0x06000651 RID: 1617 RVA: 0x0000AC89 File Offset: 0x00008E89
 		public bool ShouldIgnoreSpherecastForInteractibility(Interactor activator)
 		{
 			return false;
 		}
 
-		// Token: 0x06000B77 RID: 2935 RVA: 0x000384A4 File Offset: 0x000366A4
+		// Token: 0x06000652 RID: 1618 RVA: 0x0001A194 File Offset: 0x00018394
 		private UnlockableDef GetInteractorNextUnlockable(GameObject activatorGameObject)
 		{
 			NetworkUser networkUser = Util.LookUpBodyNetworkUser(activatorGameObject);
@@ -69,7 +70,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06000B78 RID: 2936 RVA: 0x00038530 File Offset: 0x00036730
+		// Token: 0x06000653 RID: 1619 RVA: 0x0001A220 File Offset: 0x00018420
 		private static bool ActivatorHasUnlockable(Interactor activator, string unlockableName)
 		{
 			NetworkUser networkUser = Util.LookUpBodyNetworkUser(activator.gameObject);
@@ -85,19 +86,19 @@ namespace RoR2
 			return networkUser.unlockables.Contains(UnlockableCatalog.GetUnlockableDef(unlockableName));
 		}
 
-		// Token: 0x06000B79 RID: 2937 RVA: 0x0003857B File Offset: 0x0003677B
+		// Token: 0x06000654 RID: 1620 RVA: 0x0001A26B File Offset: 0x0001846B
 		public string GetDisplayName()
 		{
 			return Language.GetString(this.displayNameToken);
 		}
 
-		// Token: 0x06000B7A RID: 2938 RVA: 0x00038588 File Offset: 0x00036788
+		// Token: 0x06000655 RID: 1621 RVA: 0x0001A278 File Offset: 0x00018478
 		private string GetCostString()
 		{
 			return string.Format(" (<color=#{1}>{0}</color>)", this.cost, BazaarUpgradeInteraction.lunarCoinColorString);
 		}
 
-		// Token: 0x06000B7B RID: 2939 RVA: 0x000385A4 File Offset: 0x000367A4
+		// Token: 0x06000656 RID: 1622 RVA: 0x0001A294 File Offset: 0x00018494
 		public string GetContextString(Interactor activator)
 		{
 			if (!this.CanBeAffordedByInteractor(activator))
@@ -107,7 +108,7 @@ namespace RoR2
 			return Language.GetString(this.contextToken) + this.GetCostString();
 		}
 
-		// Token: 0x06000B7C RID: 2940 RVA: 0x000385C7 File Offset: 0x000367C7
+		// Token: 0x06000657 RID: 1623 RVA: 0x0001A2B7 File Offset: 0x000184B7
 		public Interactability GetInteractability(Interactor activator)
 		{
 			if (this.GetInteractorNextUnlockable(activator.gameObject) == null || !this.available)
@@ -121,68 +122,87 @@ namespace RoR2
 			return Interactability.Available;
 		}
 
-		// Token: 0x06000B7D RID: 2941 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000658 RID: 1624 RVA: 0x0000409B File Offset: 0x0000229B
 		public void OnInteractionBegin(Interactor activator)
 		{
 		}
 
-		// Token: 0x06000B7E RID: 2942 RVA: 0x000385ED File Offset: 0x000367ED
+		// Token: 0x06000659 RID: 1625 RVA: 0x0001A2DD File Offset: 0x000184DD
 		private int GetCostForInteractor(Interactor activator)
 		{
 			return this.cost;
 		}
 
-		// Token: 0x06000B7F RID: 2943 RVA: 0x000385F8 File Offset: 0x000367F8
+		// Token: 0x0600065A RID: 1626 RVA: 0x0001A2E8 File Offset: 0x000184E8
 		public bool CanBeAffordedByInteractor(Interactor activator)
 		{
 			NetworkUser networkUser = Util.LookUpBodyNetworkUser(activator.gameObject);
 			return networkUser && (ulong)networkUser.lunarCoins >= (ulong)((long)this.GetCostForInteractor(activator));
 		}
 
-		// Token: 0x06000B80 RID: 2944 RVA: 0x0003862F File Offset: 0x0003682F
+		// Token: 0x0600065B RID: 1627 RVA: 0x0001A31F File Offset: 0x0001851F
 		public bool ShouldDisplayHologram(GameObject viewer)
 		{
 			return this.GetInteractorNextUnlockable(viewer) != null;
 		}
 
-		// Token: 0x06000B81 RID: 2945 RVA: 0x0003863B File Offset: 0x0003683B
+		// Token: 0x0600065C RID: 1628 RVA: 0x0001A32B File Offset: 0x0001852B
 		public GameObject GetHologramContentPrefab()
 		{
 			return Resources.Load<GameObject>("Prefabs/CostHologramContent");
 		}
 
-		// Token: 0x06000B82 RID: 2946 RVA: 0x00038648 File Offset: 0x00036848
+		// Token: 0x0600065D RID: 1629 RVA: 0x0001A338 File Offset: 0x00018538
 		public void UpdateHologramContent(GameObject hologramContentObject)
 		{
 			CostHologramContent component = hologramContentObject.GetComponent<CostHologramContent>();
 			if (component)
 			{
 				component.displayValue = this.cost;
-				component.costType = CostType.Lunar;
+				component.costType = CostTypeIndex.LunarCoin;
 			}
 		}
 
-		// Token: 0x06000B85 RID: 2949 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x0600065E RID: 1630 RVA: 0x0001A367 File Offset: 0x00018567
+		private void OnEnable()
+		{
+			InstanceTracker.Add<BazaarUpgradeInteraction>(this);
+		}
+
+		// Token: 0x0600065F RID: 1631 RVA: 0x0001A36F File Offset: 0x0001856F
+		private void OnDisable()
+		{
+			InstanceTracker.Remove<BazaarUpgradeInteraction>(this);
+		}
+
+		// Token: 0x06000660 RID: 1632 RVA: 0x0001A377 File Offset: 0x00018577
+		public bool ShouldShowOnScanner()
+		{
+			return this.available;
+		}
+
+		// Token: 0x06000663 RID: 1635 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x170000CC RID: 204
-		// (get) Token: 0x06000B86 RID: 2950 RVA: 0x000386C0 File Offset: 0x000368C0
-		// (set) Token: 0x06000B87 RID: 2951 RVA: 0x000386D3 File Offset: 0x000368D3
+		// Token: 0x170000BD RID: 189
+		// (get) Token: 0x06000664 RID: 1636 RVA: 0x0001A3C8 File Offset: 0x000185C8
+		// (set) Token: 0x06000665 RID: 1637 RVA: 0x0001A3DB File Offset: 0x000185DB
 		public bool Networkavailable
 		{
 			get
 			{
 				return this.available;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<bool>(value, ref this.available, 1u);
+				base.SetSyncVar<bool>(value, ref this.available, 1U);
 			}
 		}
 
-		// Token: 0x06000B88 RID: 2952 RVA: 0x000386E8 File Offset: 0x000368E8
+		// Token: 0x06000666 RID: 1638 RVA: 0x0001A3F0 File Offset: 0x000185F0
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -191,7 +211,7 @@ namespace RoR2
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -207,7 +227,7 @@ namespace RoR2
 			return flag;
 		}
 
-		// Token: 0x06000B89 RID: 2953 RVA: 0x00038754 File Offset: 0x00036954
+		// Token: 0x06000667 RID: 1639 RVA: 0x0001A45C File Offset: 0x0001865C
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -222,38 +242,38 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04000F6A RID: 3946
+		// Token: 0x040006B2 RID: 1714
 		[SyncVar]
 		public bool available = true;
 
-		// Token: 0x04000F6B RID: 3947
+		// Token: 0x040006B3 RID: 1715
 		public string displayNameToken;
 
-		// Token: 0x04000F6C RID: 3948
+		// Token: 0x040006B4 RID: 1716
 		public int cost;
 
-		// Token: 0x04000F6D RID: 3949
+		// Token: 0x040006B5 RID: 1717
 		public string contextToken;
 
-		// Token: 0x04000F6E RID: 3950
+		// Token: 0x040006B6 RID: 1718
 		public string[] unlockableProgression;
 
-		// Token: 0x04000F6F RID: 3951
+		// Token: 0x040006B7 RID: 1719
 		private UnlockableDef[] unlockableProgressionDefs;
 
-		// Token: 0x04000F70 RID: 3952
+		// Token: 0x040006B8 RID: 1720
 		public float activationCooldownDuration = 1f;
 
-		// Token: 0x04000F71 RID: 3953
+		// Token: 0x040006B9 RID: 1721
 		private float activationTimer;
 
-		// Token: 0x04000F72 RID: 3954
+		// Token: 0x040006BA RID: 1722
 		public GameObject purchaseEffect;
 
-		// Token: 0x04000F73 RID: 3955
+		// Token: 0x040006BB RID: 1723
 		private static readonly Color32 lunarCoinColor = new Color32(198, 173, 250, byte.MaxValue);
 
-		// Token: 0x04000F74 RID: 3956
+		// Token: 0x040006BC RID: 1724
 		private static readonly string lunarCoinColorString = Util.RGBToHex(BazaarUpgradeInteraction.lunarCoinColor);
 	}
 }

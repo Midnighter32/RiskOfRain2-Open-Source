@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.VagrantMonster.Weapon
 {
-	// Token: 0x02000131 RID: 305
+	// Token: 0x02000807 RID: 2055
 	public class JellyStorm : BaseState
 	{
-		// Token: 0x060005E1 RID: 1505 RVA: 0x0001AEC0 File Offset: 0x000190C0
+		// Token: 0x06002EB8 RID: 11960 RVA: 0x000C6B68 File Offset: 0x000C4D68
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -29,14 +29,14 @@ namespace EntityStates.VagrantMonster.Weapon
 			}
 		}
 
-		// Token: 0x060005E2 RID: 1506 RVA: 0x0001AF70 File Offset: 0x00019170
+		// Token: 0x06002EB9 RID: 11961 RVA: 0x000C6C18 File Offset: 0x000C4E18
 		private void FireBlob(Ray aimRay, float bonusPitch, float bonusYaw, float speed)
 		{
 			Vector3 forward = Util.ApplySpread(aimRay.direction, 0f, 0f, 1f, 1f, bonusYaw, bonusPitch);
 			ProjectileManager.instance.FireProjectile(JellyStorm.projectilePrefab, aimRay.origin, Util.QuaternionSafeLookRotation(forward), base.gameObject, this.damageStat * JellyStorm.damageCoefficient, 0f, Util.CheckRoll(this.critStat, base.characterBody.master), DamageColorIndex.Default, null, speed);
 		}
 
-		// Token: 0x060005E3 RID: 1507 RVA: 0x0001AFF0 File Offset: 0x000191F0
+		// Token: 0x06002EBA RID: 11962 RVA: 0x000C6C98 File Offset: 0x000C4E98
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -71,55 +71,55 @@ namespace EntityStates.VagrantMonster.Weapon
 			}
 		}
 
-		// Token: 0x040006C3 RID: 1731
+		// Token: 0x04002BE7 RID: 11239
 		private float stopwatch;
 
-		// Token: 0x040006C4 RID: 1732
+		// Token: 0x04002BE8 RID: 11240
 		private float missileStopwatch;
 
-		// Token: 0x040006C5 RID: 1733
+		// Token: 0x04002BE9 RID: 11241
 		public static float stormDuration;
 
-		// Token: 0x040006C6 RID: 1734
+		// Token: 0x04002BEA RID: 11242
 		public static float stormToIdleTransitionDuration;
 
-		// Token: 0x040006C7 RID: 1735
+		// Token: 0x04002BEB RID: 11243
 		public static string stormPointChildString;
 
-		// Token: 0x040006C8 RID: 1736
+		// Token: 0x04002BEC RID: 11244
 		public static float missileSpawnFrequency;
 
-		// Token: 0x040006C9 RID: 1737
+		// Token: 0x04002BED RID: 11245
 		public static float missileSpawnDelay;
 
-		// Token: 0x040006CA RID: 1738
+		// Token: 0x04002BEE RID: 11246
 		public static int missileTurretCount;
 
-		// Token: 0x040006CB RID: 1739
+		// Token: 0x04002BEF RID: 11247
 		public static float missileTurretYawFrequency;
 
-		// Token: 0x040006CC RID: 1740
+		// Token: 0x04002BF0 RID: 11248
 		public static float missileTurretPitchFrequency;
 
-		// Token: 0x040006CD RID: 1741
+		// Token: 0x04002BF1 RID: 11249
 		public static float missileTurretPitchMagnitude;
 
-		// Token: 0x040006CE RID: 1742
+		// Token: 0x04002BF2 RID: 11250
 		public static float missileSpeed;
 
-		// Token: 0x040006CF RID: 1743
+		// Token: 0x04002BF3 RID: 11251
 		public static float damageCoefficient;
 
-		// Token: 0x040006D0 RID: 1744
+		// Token: 0x04002BF4 RID: 11252
 		public static GameObject projectilePrefab;
 
-		// Token: 0x040006D1 RID: 1745
+		// Token: 0x04002BF5 RID: 11253
 		public static GameObject effectPrefab;
 
-		// Token: 0x040006D2 RID: 1746
+		// Token: 0x04002BF6 RID: 11254
 		private bool beginExitTransition;
 
-		// Token: 0x040006D3 RID: 1747
+		// Token: 0x04002BF7 RID: 11255
 		private ChildLocator childLocator;
 	}
 }

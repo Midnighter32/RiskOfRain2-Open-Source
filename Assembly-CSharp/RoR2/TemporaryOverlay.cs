@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003FB RID: 1019
+	// Token: 0x02000353 RID: 851
 	public class TemporaryOverlay : MonoBehaviour
 	{
-		// Token: 0x060016B5 RID: 5813 RVA: 0x0006C3E1 File Offset: 0x0006A5E1
+		// Token: 0x060014B4 RID: 5300 RVA: 0x000586AD File Offset: 0x000568AD
 		private void Start()
 		{
 			this.SetupMaterial();
@@ -16,7 +16,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060016B6 RID: 5814 RVA: 0x0006C402 File Offset: 0x0006A602
+		// Token: 0x060014B5 RID: 5301 RVA: 0x000586CE File Offset: 0x000568CE
 		private void SetupMaterial()
 		{
 			if (!this.materialInstance)
@@ -25,7 +25,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060016B7 RID: 5815 RVA: 0x0006C422 File Offset: 0x0006A622
+		// Token: 0x060014B6 RID: 5302 RVA: 0x000586EE File Offset: 0x000568EE
 		public void AddToCharacerModel(CharacterModel characterModel)
 		{
 			this.SetupMaterial();
@@ -37,7 +37,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060016B8 RID: 5816 RVA: 0x0006C44C File Offset: 0x0006A64C
+		// Token: 0x060014B7 RID: 5303 RVA: 0x00058718 File Offset: 0x00056918
 		public void RemoveFromCharacterModel()
 		{
 			if (this.assignedCharacterModel)
@@ -48,7 +48,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060016B9 RID: 5817 RVA: 0x0006C47B File Offset: 0x0006A67B
+		// Token: 0x060014B8 RID: 5304 RVA: 0x00058747 File Offset: 0x00056947
 		private void OnDestroy()
 		{
 			this.RemoveFromCharacterModel();
@@ -58,7 +58,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060016BA RID: 5818 RVA: 0x0006C49C File Offset: 0x0006A69C
+		// Token: 0x060014B9 RID: 5305 RVA: 0x00058768 File Offset: 0x00056968
 		private void Update()
 		{
 			if (this.animateShaderAlpha)
@@ -76,7 +76,7 @@ namespace RoR2
 							Transform transform = component.FindChild(this.destroyEffectChildString);
 							if (transform)
 							{
-								EffectManager.instance.SpawnEffect(this.destroyEffectPrefab, new EffectData
+								EffectManager.SpawnEffect(this.destroyEffectPrefab, new EffectData
 								{
 									origin = transform.position,
 									rotation = transform.rotation
@@ -94,44 +94,44 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x040019D6 RID: 6614
+		// Token: 0x0400133D RID: 4925
 		public Material originalMaterial;
 
-		// Token: 0x040019D7 RID: 6615
+		// Token: 0x0400133E RID: 4926
 		[HideInInspector]
 		public Material materialInstance;
 
-		// Token: 0x040019D8 RID: 6616
+		// Token: 0x0400133F RID: 4927
 		private bool isAssigned;
 
-		// Token: 0x040019D9 RID: 6617
+		// Token: 0x04001340 RID: 4928
 		private CharacterModel assignedCharacterModel;
 
-		// Token: 0x040019DA RID: 6618
+		// Token: 0x04001341 RID: 4929
 		public CharacterModel inspectorCharacterModel;
 
-		// Token: 0x040019DB RID: 6619
+		// Token: 0x04001342 RID: 4930
 		public bool animateShaderAlpha;
 
-		// Token: 0x040019DC RID: 6620
+		// Token: 0x04001343 RID: 4931
 		public AnimationCurve alphaCurve;
 
-		// Token: 0x040019DD RID: 6621
+		// Token: 0x04001344 RID: 4932
 		public float duration;
 
-		// Token: 0x040019DE RID: 6622
+		// Token: 0x04001345 RID: 4933
 		public bool destroyComponentOnEnd;
 
-		// Token: 0x040019DF RID: 6623
+		// Token: 0x04001346 RID: 4934
 		public bool destroyObjectOnEnd;
 
-		// Token: 0x040019E0 RID: 6624
+		// Token: 0x04001347 RID: 4935
 		public GameObject destroyEffectPrefab;
 
-		// Token: 0x040019E1 RID: 6625
+		// Token: 0x04001348 RID: 4936
 		public string destroyEffectChildString;
 
-		// Token: 0x040019E2 RID: 6626
+		// Token: 0x04001349 RID: 4937
 		private float stopwatch;
 	}
 }

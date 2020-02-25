@@ -2,16 +2,16 @@
 
 namespace RoR2
 {
-	// Token: 0x0200022C RID: 556
+	// Token: 0x0200010F RID: 271
 	public enum SceneType
 	{
-		// Token: 0x04000E37 RID: 3639
+		// Token: 0x040004EB RID: 1259
 		Invalid = -1,
-		// Token: 0x04000E38 RID: 3640
+		// Token: 0x040004EC RID: 1260
 		Menu,
-		// Token: 0x04000E39 RID: 3641
+		// Token: 0x040004ED RID: 1261
 		Stage,
-		// Token: 0x04000E3A RID: 3642
+		// Token: 0x040004EE RID: 1262
 		Intermission
 	}
 }

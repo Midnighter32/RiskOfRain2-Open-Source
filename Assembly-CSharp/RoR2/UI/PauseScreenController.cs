@@ -5,18 +5,18 @@ using UnityEngine.Networking;
 
 namespace RoR2.UI
 {
-	// Token: 0x0200061E RID: 1566
+	// Token: 0x0200060D RID: 1549
 	[RequireComponent(typeof(MPEventSystemProvider))]
 	[RequireComponent(typeof(RectTransform))]
 	public class PauseScreenController : MonoBehaviour
 	{
-		// Token: 0x06002339 RID: 9017 RVA: 0x000A5CCF File Offset: 0x000A3ECF
+		// Token: 0x060024AF RID: 9391 RVA: 0x0009FF9B File Offset: 0x0009E19B
 		private void Awake()
 		{
 			this.eventSystemProvider = base.GetComponent<MPEventSystemProvider>();
 		}
 
-		// Token: 0x0600233A RID: 9018 RVA: 0x000A5CE0 File Offset: 0x000A3EE0
+		// Token: 0x060024B0 RID: 9392 RVA: 0x0009FFAC File Offset: 0x0009E1AC
 		private void OnEnable()
 		{
 			if (PauseScreenController.instancesList.Count == 0)
@@ -35,7 +35,7 @@ namespace RoR2.UI
 			PauseScreenController.instancesList.Add(this);
 		}
 
-		// Token: 0x0600233B RID: 9019 RVA: 0x000A5D3C File Offset: 0x000A3F3C
+		// Token: 0x060024B1 RID: 9393 RVA: 0x000A0008 File Offset: 0x0009E208
 		private void OnDisable()
 		{
 			PauseScreenController.instancesList.Remove(this);
@@ -50,7 +50,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600233C RID: 9020 RVA: 0x000A5D89 File Offset: 0x000A3F89
+		// Token: 0x060024B2 RID: 9394 RVA: 0x000A0055 File Offset: 0x0009E255
 		public void OpenSettingsMenu()
 		{
 			UnityEngine.Object.Destroy(this.submenuObject);
@@ -58,39 +58,43 @@ namespace RoR2.UI
 			this.mainPanel.gameObject.SetActive(false);
 		}
 
-		// Token: 0x0600233D RID: 9021 RVA: 0x000A5DBE File Offset: 0x000A3FBE
+		// Token: 0x060024B3 RID: 9395 RVA: 0x000A008A File Offset: 0x0009E28A
 		public void Update()
 		{
 			if (!this.submenuObject)
 			{
 				this.mainPanel.gameObject.SetActive(true);
 			}
+			if (!NetworkManager.singleton.isNetworkActive)
+			{
+				UnityEngine.Object.Destroy(base.gameObject);
+			}
 		}
 
-		// Token: 0x0400261E RID: 9758
+		// Token: 0x04002265 RID: 8805
 		public static readonly List<PauseScreenController> instancesList = new List<PauseScreenController>();
 
-		// Token: 0x0400261F RID: 9759
+		// Token: 0x04002266 RID: 8806
 		private MPEventSystemProvider eventSystemProvider;
 
-		// Token: 0x04002620 RID: 9760
+		// Token: 0x04002267 RID: 8807
 		[Tooltip("The main panel to which any submenus will be parented.")]
 		public RectTransform rootPanel;
 
-		// Token: 0x04002621 RID: 9761
+		// Token: 0x04002268 RID: 8808
 		[Tooltip("The panel which contains the main controls. This will be disabled while in a submenu.")]
 		public RectTransform mainPanel;
 
-		// Token: 0x04002622 RID: 9762
+		// Token: 0x04002269 RID: 8809
 		public GameObject settingsPanelPrefab;
 
-		// Token: 0x04002623 RID: 9763
+		// Token: 0x0400226A RID: 8810
 		private GameObject submenuObject;
 
-		// Token: 0x04002624 RID: 9764
+		// Token: 0x0400226B RID: 8811
 		private static float oldTimeScale;
 
-		// Token: 0x04002625 RID: 9765
+		// Token: 0x0400226C RID: 8812
 		private static bool paused = false;
 	}
 }

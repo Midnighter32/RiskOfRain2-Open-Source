@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Assassin.Weapon
 {
-	// Token: 0x020001E0 RID: 480
+	// Token: 0x020008FB RID: 2299
 	public class SlashCombo : BaseState
 	{
-		// Token: 0x06000959 RID: 2393 RVA: 0x0002EE58 File Offset: 0x0002D058
+		// Token: 0x06003359 RID: 13145 RVA: 0x000DEA7C File Offset: 0x000DCC7C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -55,7 +55,7 @@ namespace EntityStates.Assassin.Weapon
 			}
 		}
 
-		// Token: 0x0600095A RID: 2394 RVA: 0x0002F028 File Offset: 0x0002D228
+		// Token: 0x0600335A RID: 13146 RVA: 0x000DEC4C File Offset: 0x000DCE4C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -63,12 +63,12 @@ namespace EntityStates.Assassin.Weapon
 			{
 				if (!this.hasSlashed)
 				{
-					EffectManager.instance.SimpleMuzzleFlash(SlashCombo.swingEffectPrefab, base.gameObject, "SwingCenter", true);
+					EffectManager.SimpleMuzzleFlash(SlashCombo.swingEffectPrefab, base.gameObject, "SwingCenter", true);
 					HealthComponent healthComponent = base.characterBody.healthComponent;
 					CharacterDirection component = base.characterBody.GetComponent<CharacterDirection>();
 					if (healthComponent)
 					{
-						healthComponent.TakeDamageForce(SlashCombo.selfForceMagnitude * component.forward, true);
+						healthComponent.TakeDamageForce(SlashCombo.selfForceMagnitude * component.forward, true, false);
 					}
 					this.hasSlashed = true;
 				}
@@ -97,62 +97,62 @@ namespace EntityStates.Assassin.Weapon
 			this.outer.SetNextStateToMain();
 		}
 
-		// Token: 0x0600095B RID: 2395 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x0600335B RID: 13147 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000CA6 RID: 3238
+		// Token: 0x040032CF RID: 13007
 		public static float baseDuration = 3.5f;
 
-		// Token: 0x04000CA7 RID: 3239
+		// Token: 0x040032D0 RID: 13008
 		public static float mecanimDurationCoefficient;
 
-		// Token: 0x04000CA8 RID: 3240
+		// Token: 0x040032D1 RID: 13009
 		public static float damageCoefficient = 4f;
 
-		// Token: 0x04000CA9 RID: 3241
+		// Token: 0x040032D2 RID: 13010
 		public static float forceMagnitude = 16f;
 
-		// Token: 0x04000CAA RID: 3242
+		// Token: 0x040032D3 RID: 13011
 		public static float selfForceMagnitude;
 
-		// Token: 0x04000CAB RID: 3243
+		// Token: 0x040032D4 RID: 13012
 		public static float radius = 3f;
 
-		// Token: 0x04000CAC RID: 3244
+		// Token: 0x040032D5 RID: 13013
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000CAD RID: 3245
+		// Token: 0x040032D6 RID: 13014
 		public static GameObject swingEffectPrefab;
 
-		// Token: 0x04000CAE RID: 3246
+		// Token: 0x040032D7 RID: 13015
 		public static string attackString;
 
-		// Token: 0x04000CAF RID: 3247
+		// Token: 0x040032D8 RID: 13016
 		private OverlapAttack attack;
 
-		// Token: 0x04000CB0 RID: 3248
+		// Token: 0x040032D9 RID: 13017
 		private Animator modelAnimator;
 
-		// Token: 0x04000CB1 RID: 3249
+		// Token: 0x040032DA RID: 13018
 		private float duration;
 
-		// Token: 0x04000CB2 RID: 3250
+		// Token: 0x040032DB RID: 13019
 		private bool hasSlashed;
 
-		// Token: 0x04000CB3 RID: 3251
+		// Token: 0x040032DC RID: 13020
 		public SlashCombo.SlashComboPermutation slashComboPermutation;
 
-		// Token: 0x020001E1 RID: 481
+		// Token: 0x020008FC RID: 2300
 		public enum SlashComboPermutation
 		{
-			// Token: 0x04000CB5 RID: 3253
+			// Token: 0x040032DE RID: 13022
 			Slash1,
-			// Token: 0x04000CB6 RID: 3254
+			// Token: 0x040032DF RID: 13023
 			Slash2,
-			// Token: 0x04000CB7 RID: 3255
+			// Token: 0x040032E0 RID: 13024
 			Final
 		}
 	}

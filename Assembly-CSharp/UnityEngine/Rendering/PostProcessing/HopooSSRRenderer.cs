@@ -2,16 +2,16 @@
 
 namespace UnityEngine.Rendering.PostProcessing
 {
-	// Token: 0x020001EA RID: 490
+	// Token: 0x020000AB RID: 171
 	public sealed class HopooSSRRenderer : PostProcessEffectRenderer<HopooSSR>
 	{
-		// Token: 0x06000987 RID: 2439 RVA: 0x0000BDE4 File Offset: 0x00009FE4
+		// Token: 0x06000347 RID: 839 RVA: 0x0000C88C File Offset: 0x0000AA8C
 		public override DepthTextureMode GetCameraFlags()
 		{
 			return DepthTextureMode.Depth | DepthTextureMode.MotionVectors;
 		}
 
-		// Token: 0x06000988 RID: 2440 RVA: 0x000300C0 File Offset: 0x0002E2C0
+		// Token: 0x06000348 RID: 840 RVA: 0x0000CE10 File Offset: 0x0000B010
 		internal void CheckRT(ref RenderTexture rt, int width, int height, RenderTextureFormat format, FilterMode filterMode, bool useMipMap)
 		{
 			if (rt == null || !rt.IsCreated() || rt.width != width || rt.height != height || rt.format != format)
@@ -31,7 +31,7 @@ namespace UnityEngine.Rendering.PostProcessing
 			}
 		}
 
-		// Token: 0x06000989 RID: 2441 RVA: 0x00030144 File Offset: 0x0002E344
+		// Token: 0x06000349 RID: 841 RVA: 0x0000CE94 File Offset: 0x0000B094
 		public override void Render(PostProcessRenderContext context)
 		{
 			CommandBuffer command = context.command;
@@ -125,7 +125,7 @@ namespace UnityEngine.Rendering.PostProcessing
 			command.EndSample("Screen-space Reflections");
 		}
 
-		// Token: 0x0600098A RID: 2442 RVA: 0x000307DE File Offset: 0x0002E9DE
+		// Token: 0x0600034A RID: 842 RVA: 0x0000D52E File Offset: 0x0000B72E
 		public override void Release()
 		{
 			RuntimeUtilities.Destroy(this.m_Resolve);
@@ -134,16 +134,16 @@ namespace UnityEngine.Rendering.PostProcessing
 			this.m_History = null;
 		}
 
-		// Token: 0x04000CE6 RID: 3302
+		// Token: 0x040002F8 RID: 760
 		private RenderTexture m_Resolve;
 
-		// Token: 0x04000CE7 RID: 3303
+		// Token: 0x040002F9 RID: 761
 		private RenderTexture m_History;
 
-		// Token: 0x04000CE8 RID: 3304
+		// Token: 0x040002FA RID: 762
 		private int[] m_MipIDs;
 
-		// Token: 0x04000CE9 RID: 3305
+		// Token: 0x040002FB RID: 763
 		private readonly HopooSSRRenderer.QualityPreset[] m_Presets = new HopooSSRRenderer.QualityPreset[]
 		{
 			new HopooSSRRenderer.QualityPreset
@@ -190,29 +190,29 @@ namespace UnityEngine.Rendering.PostProcessing
 			}
 		};
 
-		// Token: 0x020001EB RID: 491
+		// Token: 0x020000AC RID: 172
 		private class QualityPreset
 		{
-			// Token: 0x04000CEA RID: 3306
+			// Token: 0x040002FC RID: 764
 			public int maximumIterationCount;
 
-			// Token: 0x04000CEB RID: 3307
+			// Token: 0x040002FD RID: 765
 			public float thickness;
 
-			// Token: 0x04000CEC RID: 3308
+			// Token: 0x040002FE RID: 766
 			public ScreenSpaceReflectionResolution downsampling;
 		}
 
-		// Token: 0x020001EC RID: 492
+		// Token: 0x020000AD RID: 173
 		private enum Pass
 		{
-			// Token: 0x04000CEE RID: 3310
+			// Token: 0x04000300 RID: 768
 			Test,
-			// Token: 0x04000CEF RID: 3311
+			// Token: 0x04000301 RID: 769
 			Resolve,
-			// Token: 0x04000CF0 RID: 3312
+			// Token: 0x04000302 RID: 770
 			Reproject,
-			// Token: 0x04000CF1 RID: 3313
+			// Token: 0x04000303 RID: 771
 			Composite
 		}
 	}

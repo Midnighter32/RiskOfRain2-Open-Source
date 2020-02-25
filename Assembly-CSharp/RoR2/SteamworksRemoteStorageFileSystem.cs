@@ -11,11 +11,11 @@ using Zio.FileSystems;
 
 namespace RoR2
 {
-	// Token: 0x020004A4 RID: 1188
+	// Token: 0x02000435 RID: 1077
 	public class SteamworksRemoteStorageFileSystem : FileSystem
 	{
-		// Token: 0x17000277 RID: 631
-		// (get) Token: 0x06001AAC RID: 6828 RVA: 0x0007C779 File Offset: 0x0007A979
+		// Token: 0x170002FE RID: 766
+		// (get) Token: 0x06001A12 RID: 6674 RVA: 0x0006E17A File Offset: 0x0006C37A
 		private static Client steamworksClient
 		{
 			get
@@ -24,8 +24,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000278 RID: 632
-		// (get) Token: 0x06001AAD RID: 6829 RVA: 0x0007E0BA File Offset: 0x0007C2BA
+		// Token: 0x170002FF RID: 767
+		// (get) Token: 0x06001A13 RID: 6675 RVA: 0x0006FB3E File Offset: 0x0006DD3E
 		private static RemoteStorage remoteStorage
 		{
 			get
@@ -34,50 +34,50 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001AAE RID: 6830 RVA: 0x0007E0C8 File Offset: 0x0007C2C8
+		// Token: 0x06001A14 RID: 6676 RVA: 0x0006FB4C File Offset: 0x0006DD4C
 		public SteamworksRemoteStorageFileSystem()
 		{
 			this.pathToNodeMap[UPath.Root] = this.rootNode;
 		}
 
-		// Token: 0x06001AAF RID: 6831 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001A15 RID: 6677 RVA: 0x0000409B File Offset: 0x0000229B
 		protected override void CreateDirectoryImpl(UPath path)
 		{
 		}
 
-		// Token: 0x06001AB0 RID: 6832 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06001A16 RID: 6678 RVA: 0x0000B933 File Offset: 0x00009B33
 		protected override bool DirectoryExistsImpl(UPath path)
 		{
 			return true;
 		}
 
-		// Token: 0x06001AB1 RID: 6833 RVA: 0x0007E11E File Offset: 0x0007C31E
+		// Token: 0x06001A17 RID: 6679 RVA: 0x0006FBA2 File Offset: 0x0006DDA2
 		protected override void MoveDirectoryImpl(UPath srcPath, UPath destPath)
 		{
 			this.treeIsDirty = true;
 			throw new NotImplementedException();
 		}
 
-		// Token: 0x06001AB2 RID: 6834 RVA: 0x0007E12C File Offset: 0x0007C32C
+		// Token: 0x06001A18 RID: 6680 RVA: 0x0006FBB0 File Offset: 0x0006DDB0
 		protected override void DeleteDirectoryImpl(UPath path, bool isRecursive)
 		{
 			throw new NotImplementedException();
 		}
 
-		// Token: 0x06001AB3 RID: 6835 RVA: 0x0007E11E File Offset: 0x0007C31E
+		// Token: 0x06001A19 RID: 6681 RVA: 0x0006FBA2 File Offset: 0x0006DDA2
 		protected override void CopyFileImpl(UPath srcPath, UPath destPath, bool overwrite)
 		{
 			this.treeIsDirty = true;
 			throw new NotImplementedException();
 		}
 
-		// Token: 0x06001AB4 RID: 6836 RVA: 0x0007E12C File Offset: 0x0007C32C
+		// Token: 0x06001A1A RID: 6682 RVA: 0x0006FBB0 File Offset: 0x0006DDB0
 		protected override void ReplaceFileImpl(UPath srcPath, UPath destPath, UPath destBackupPath, bool ignoreMetadataErrors)
 		{
 			throw new NotImplementedException();
 		}
 
-		// Token: 0x06001AB5 RID: 6837 RVA: 0x0007E134 File Offset: 0x0007C334
+		// Token: 0x06001A1B RID: 6683 RVA: 0x0006FBB8 File Offset: 0x0006DDB8
 		protected override long GetFileLengthImpl(UPath path)
 		{
 			int num = 0;
@@ -95,21 +95,21 @@ namespace RoR2
 			return (long)num;
 		}
 
-		// Token: 0x06001AB6 RID: 6838 RVA: 0x0007E17C File Offset: 0x0007C37C
+		// Token: 0x06001A1C RID: 6684 RVA: 0x0006FC00 File Offset: 0x0006DE00
 		protected override bool FileExistsImpl(UPath path)
 		{
 			this.UpdateDirectories();
 			return this.GetFileNode(path) != null;
 		}
 
-		// Token: 0x06001AB7 RID: 6839 RVA: 0x0007E11E File Offset: 0x0007C31E
+		// Token: 0x06001A1D RID: 6685 RVA: 0x0006FBA2 File Offset: 0x0006DDA2
 		protected override void MoveFileImpl(UPath srcPath, UPath destPath)
 		{
 			this.treeIsDirty = true;
 			throw new NotImplementedException();
 		}
 
-		// Token: 0x06001AB8 RID: 6840 RVA: 0x0007E190 File Offset: 0x0007C390
+		// Token: 0x06001A1E RID: 6686 RVA: 0x0006FC14 File Offset: 0x0006DE14
 		protected override void DeleteFileImpl(UPath path)
 		{
 			SteamworksRemoteStorageFileSystem.EnterFileSystemShared();
@@ -128,7 +128,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001AB9 RID: 6841 RVA: 0x0007E1D4 File Offset: 0x0007C3D4
+		// Token: 0x06001A1F RID: 6687 RVA: 0x0006FC58 File Offset: 0x0006DE58
 		protected override Stream OpenFileImpl(UPath path, FileMode mode, FileAccess access, FileShare share)
 		{
 			SteamworksRemoteStorageFileSystem.EnterFileSystemShared();
@@ -179,51 +179,51 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x06001ABA RID: 6842 RVA: 0x0007E12C File Offset: 0x0007C32C
+		// Token: 0x06001A20 RID: 6688 RVA: 0x0006FBB0 File Offset: 0x0006DDB0
 		protected override FileAttributes GetAttributesImpl(UPath path)
 		{
 			throw new NotImplementedException();
 		}
 
-		// Token: 0x06001ABB RID: 6843 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001A21 RID: 6689 RVA: 0x0000409B File Offset: 0x0000229B
 		protected override void SetAttributesImpl(UPath path, FileAttributes attributes)
 		{
 		}
 
-		// Token: 0x06001ABC RID: 6844 RVA: 0x0007E12C File Offset: 0x0007C32C
+		// Token: 0x06001A22 RID: 6690 RVA: 0x0006FBB0 File Offset: 0x0006DDB0
 		protected override DateTime GetCreationTimeImpl(UPath path)
 		{
 			throw new NotImplementedException();
 		}
 
-		// Token: 0x06001ABD RID: 6845 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001A23 RID: 6691 RVA: 0x0000409B File Offset: 0x0000229B
 		protected override void SetCreationTimeImpl(UPath path, DateTime time)
 		{
 		}
 
-		// Token: 0x06001ABE RID: 6846 RVA: 0x0007E12C File Offset: 0x0007C32C
+		// Token: 0x06001A24 RID: 6692 RVA: 0x0006FBB0 File Offset: 0x0006DDB0
 		protected override DateTime GetLastAccessTimeImpl(UPath path)
 		{
 			throw new NotImplementedException();
 		}
 
-		// Token: 0x06001ABF RID: 6847 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001A25 RID: 6693 RVA: 0x0000409B File Offset: 0x0000229B
 		protected override void SetLastAccessTimeImpl(UPath path, DateTime time)
 		{
 		}
 
-		// Token: 0x06001AC0 RID: 6848 RVA: 0x0007E12C File Offset: 0x0007C32C
+		// Token: 0x06001A26 RID: 6694 RVA: 0x0006FBB0 File Offset: 0x0006DDB0
 		protected override DateTime GetLastWriteTimeImpl(UPath path)
 		{
 			throw new NotImplementedException();
 		}
 
-		// Token: 0x06001AC1 RID: 6849 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001A27 RID: 6695 RVA: 0x0000409B File Offset: 0x0000229B
 		protected override void SetLastWriteTimeImpl(UPath path, DateTime time)
 		{
 		}
 
-		// Token: 0x06001AC2 RID: 6850 RVA: 0x0007E2C0 File Offset: 0x0007C4C0
+		// Token: 0x06001A28 RID: 6696 RVA: 0x0006FD44 File Offset: 0x0006DF44
 		private SteamworksRemoteStorageFileSystem.FileNode AddFileToTree(string path)
 		{
 			SteamworksRemoteStorageFileSystem.FileNode fileNode = new SteamworksRemoteStorageFileSystem.FileNode(path);
@@ -231,7 +231,7 @@ namespace RoR2
 			return fileNode;
 		}
 
-		// Token: 0x06001AC3 RID: 6851 RVA: 0x0007E2E4 File Offset: 0x0007C4E4
+		// Token: 0x06001A29 RID: 6697 RVA: 0x0006FD68 File Offset: 0x0006DF68
 		private SteamworksRemoteStorageFileSystem.DirectoryNode AddDirectoryToTree(UPath path)
 		{
 			SteamworksRemoteStorageFileSystem.DirectoryNode directoryNode = new SteamworksRemoteStorageFileSystem.DirectoryNode(path);
@@ -239,7 +239,7 @@ namespace RoR2
 			return directoryNode;
 		}
 
-		// Token: 0x06001AC4 RID: 6852 RVA: 0x0007E300 File Offset: 0x0007C500
+		// Token: 0x06001A2A RID: 6698 RVA: 0x0006FD84 File Offset: 0x0006DF84
 		private void AddNodeToTree(SteamworksRemoteStorageFileSystem.Node newNode)
 		{
 			UPath directory = newNode.path.GetDirectory();
@@ -247,7 +247,7 @@ namespace RoR2
 			this.pathToNodeMap[newNode.path] = newNode;
 		}
 
-		// Token: 0x06001AC5 RID: 6853 RVA: 0x0007E338 File Offset: 0x0007C538
+		// Token: 0x06001A2B RID: 6699 RVA: 0x0006FDBC File Offset: 0x0006DFBC
 		[CanBeNull]
 		private SteamworksRemoteStorageFileSystem.DirectoryNode GetDirectoryNode(UPath directoryPath)
 		{
@@ -259,7 +259,7 @@ namespace RoR2
 			return this.AddDirectoryToTree(directoryPath);
 		}
 
-		// Token: 0x06001AC6 RID: 6854 RVA: 0x0007E364 File Offset: 0x0007C564
+		// Token: 0x06001A2C RID: 6700 RVA: 0x0006FDE8 File Offset: 0x0006DFE8
 		[CanBeNull]
 		private SteamworksRemoteStorageFileSystem.FileNode GetFileNode(UPath filePath)
 		{
@@ -271,7 +271,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06001AC7 RID: 6855 RVA: 0x0007E38C File Offset: 0x0007C58C
+		// Token: 0x06001A2D RID: 6701 RVA: 0x0006FE10 File Offset: 0x0006E010
 		private void UpdateDirectories()
 		{
 			SteamworksRemoteStorageFileSystem.EnterFileSystemShared();
@@ -301,7 +301,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001AC8 RID: 6856 RVA: 0x0007E464 File Offset: 0x0007C664
+		// Token: 0x06001A2E RID: 6702 RVA: 0x0006FEE8 File Offset: 0x0006E0E8
 		private void AssertDirectory(SteamworksRemoteStorageFileSystem.Node node, UPath srcPath)
 		{
 			if (node is SteamworksRemoteStorageFileSystem.FileNode)
@@ -310,13 +310,15 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001AC9 RID: 6857 RVA: 0x0007E486 File Offset: 0x0007C686
+		// Token: 0x06001A2F RID: 6703 RVA: 0x0006FF0A File Offset: 0x0006E10A
 		protected override IEnumerable<UPath> EnumeratePathsImpl(UPath path, string searchPattern, SearchOption searchOption, SearchTarget searchTarget)
 		{
 			this.UpdateDirectories();
 			SearchPattern search = SearchPattern.Parse(ref path, ref searchPattern);
-			List<UPath> foldersToProcess = new List<UPath>();
-			foldersToProcess.Add(path);
+			List<UPath> foldersToProcess = new List<UPath>
+			{
+				path
+			};
 			SortedSet<UPath> entries = new SortedSet<UPath>(UPath.DefaultComparerIgnoreCase);
 			while (foldersToProcess.Count > 0)
 			{
@@ -371,37 +373,37 @@ namespace RoR2
 			yield break;
 		}
 
-		// Token: 0x06001ACA RID: 6858 RVA: 0x0007E4B3 File Offset: 0x0007C6B3
+		// Token: 0x06001A30 RID: 6704 RVA: 0x0006FF37 File Offset: 0x0006E137
 		private static void EnterFileSystemShared()
 		{
 			Monitor.Enter(SteamworksRemoteStorageFileSystem.globalLock);
 		}
 
-		// Token: 0x06001ACB RID: 6859 RVA: 0x0007E4BF File Offset: 0x0007C6BF
+		// Token: 0x06001A31 RID: 6705 RVA: 0x0006FF43 File Offset: 0x0006E143
 		private static void ExitFileSystemShared()
 		{
 			Monitor.Exit(SteamworksRemoteStorageFileSystem.globalLock);
 		}
 
-		// Token: 0x06001ACC RID: 6860 RVA: 0x0007E12C File Offset: 0x0007C32C
+		// Token: 0x06001A32 RID: 6706 RVA: 0x0006FBB0 File Offset: 0x0006DDB0
 		protected override IFileSystemWatcher WatchImpl(UPath path)
 		{
 			throw new NotImplementedException();
 		}
 
-		// Token: 0x06001ACD RID: 6861 RVA: 0x0007E4CB File Offset: 0x0007C6CB
+		// Token: 0x06001A33 RID: 6707 RVA: 0x0006FF4F File Offset: 0x0006E14F
 		protected override string ConvertPathToInternalImpl(UPath path)
 		{
 			return path.FullName;
 		}
 
-		// Token: 0x06001ACE RID: 6862 RVA: 0x0007E4D4 File Offset: 0x0007C6D4
+		// Token: 0x06001A34 RID: 6708 RVA: 0x0006FF58 File Offset: 0x0006E158
 		protected override UPath ConvertPathFromInternalImpl(string innerPath)
 		{
 			return new UPath(innerPath);
 		}
 
-		// Token: 0x06001ACF RID: 6863 RVA: 0x0007E4DC File Offset: 0x0007C6DC
+		// Token: 0x06001A35 RID: 6709 RVA: 0x0006FF60 File Offset: 0x0006E160
 		[ConCommand(commandName = "steam_remote_storage_list_files", flags = ConVarFlags.None, helpText = "Lists the files currently being managed by Steamworks remote storage.")]
 		private static void CCSteamRemoteStorageListFiles(ConCommandArgs args)
 		{
@@ -409,43 +411,43 @@ namespace RoR2
 			select string.Format("{0} .. {1}b", file.FileName, file.SizeInBytes)).ToArray<string>()));
 		}
 
-		// Token: 0x04001D9F RID: 7583
+		// Token: 0x04001805 RID: 6149
 		private static readonly object globalLock = new object();
 
-		// Token: 0x04001DA0 RID: 7584
+		// Token: 0x04001806 RID: 6150
 		private string[] allFilePaths = Array.Empty<string>();
 
-		// Token: 0x04001DA1 RID: 7585
+		// Token: 0x04001807 RID: 6151
 		private readonly SteamworksRemoteStorageFileSystem.DirectoryNode rootNode = new SteamworksRemoteStorageFileSystem.DirectoryNode(UPath.Root);
 
-		// Token: 0x04001DA2 RID: 7586
+		// Token: 0x04001808 RID: 6152
 		private readonly Dictionary<UPath, SteamworksRemoteStorageFileSystem.Node> pathToNodeMap = new Dictionary<UPath, SteamworksRemoteStorageFileSystem.Node>();
 
-		// Token: 0x04001DA3 RID: 7587
+		// Token: 0x04001809 RID: 6153
 		private bool treeIsDirty = true;
 
-		// Token: 0x020004A5 RID: 1189
+		// Token: 0x02000436 RID: 1078
 		private struct SteamworksRemoteStoragePath : IEquatable<SteamworksRemoteStorageFileSystem.SteamworksRemoteStoragePath>
 		{
-			// Token: 0x06001AD1 RID: 6865 RVA: 0x0007E537 File Offset: 0x0007C737
+			// Token: 0x06001A37 RID: 6711 RVA: 0x0006FFBB File Offset: 0x0006E1BB
 			public SteamworksRemoteStoragePath(string path)
 			{
 				this.str = path;
 			}
 
-			// Token: 0x06001AD2 RID: 6866 RVA: 0x0007E540 File Offset: 0x0007C740
+			// Token: 0x06001A38 RID: 6712 RVA: 0x0006FFC4 File Offset: 0x0006E1C4
 			public static implicit operator SteamworksRemoteStorageFileSystem.SteamworksRemoteStoragePath(string str)
 			{
 				return new SteamworksRemoteStorageFileSystem.SteamworksRemoteStoragePath(str);
 			}
 
-			// Token: 0x06001AD3 RID: 6867 RVA: 0x0007E548 File Offset: 0x0007C748
+			// Token: 0x06001A39 RID: 6713 RVA: 0x0006FFCC File Offset: 0x0006E1CC
 			public bool Equals(SteamworksRemoteStorageFileSystem.SteamworksRemoteStoragePath other)
 			{
 				return string.Equals(this.str, other.str);
 			}
 
-			// Token: 0x06001AD4 RID: 6868 RVA: 0x0007E55C File Offset: 0x0007C75C
+			// Token: 0x06001A3A RID: 6714 RVA: 0x0006FFE0 File Offset: 0x0006E1E0
 			public override bool Equals(object obj)
 			{
 				if (obj == null)
@@ -460,7 +462,7 @@ namespace RoR2
 				return false;
 			}
 
-			// Token: 0x06001AD5 RID: 6869 RVA: 0x0007E588 File Offset: 0x0007C788
+			// Token: 0x06001A3B RID: 6715 RVA: 0x0007000C File Offset: 0x0006E20C
 			public override int GetHashCode()
 			{
 				if (this.str == null)
@@ -470,37 +472,37 @@ namespace RoR2
 				return this.str.GetHashCode();
 			}
 
-			// Token: 0x04001DA4 RID: 7588
+			// Token: 0x0400180A RID: 6154
 			public readonly string str;
 		}
 
-		// Token: 0x020004A6 RID: 1190
+		// Token: 0x02000437 RID: 1079
 		private class Node
 		{
-			// Token: 0x06001AD6 RID: 6870 RVA: 0x0007E59F File Offset: 0x0007C79F
+			// Token: 0x06001A3C RID: 6716 RVA: 0x00070023 File Offset: 0x0006E223
 			public Node(UPath path)
 			{
 				this.path = path.ToAbsolute();
 			}
 
-			// Token: 0x04001DA5 RID: 7589
+			// Token: 0x0400180B RID: 6155
 			public readonly UPath path;
 
-			// Token: 0x04001DA6 RID: 7590
+			// Token: 0x0400180C RID: 6156
 			public SteamworksRemoteStorageFileSystem.Node parent;
 		}
 
-		// Token: 0x020004A7 RID: 1191
+		// Token: 0x02000438 RID: 1080
 		private class FileNode : SteamworksRemoteStorageFileSystem.Node
 		{
-			// Token: 0x06001AD7 RID: 6871 RVA: 0x0007E5B3 File Offset: 0x0007C7B3
+			// Token: 0x06001A3D RID: 6717 RVA: 0x00070037 File Offset: 0x0006E237
 			public FileNode(SteamworksRemoteStorageFileSystem.SteamworksRemoteStoragePath steamworksRemoteStoragePath) : base(steamworksRemoteStoragePath.str)
 			{
 				this.steamworksRemoteStoragePath = steamworksRemoteStoragePath;
 			}
 
-			// Token: 0x17000279 RID: 633
-			// (get) Token: 0x06001AD8 RID: 6872 RVA: 0x0007E5CD File Offset: 0x0007C7CD
+			// Token: 0x17000300 RID: 768
+			// (get) Token: 0x06001A3E RID: 6718 RVA: 0x00070051 File Offset: 0x0006E251
 			private RemoteFile file
 			{
 				get
@@ -509,49 +511,49 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001AD9 RID: 6873 RVA: 0x0007E5E4 File Offset: 0x0007C7E4
+			// Token: 0x06001A3F RID: 6719 RVA: 0x00070068 File Offset: 0x0006E268
 			public int GetLength()
 			{
 				return this.file.SizeInBytes;
 			}
 
-			// Token: 0x06001ADA RID: 6874 RVA: 0x0007E5F1 File Offset: 0x0007C7F1
+			// Token: 0x06001A40 RID: 6720 RVA: 0x00070075 File Offset: 0x0006E275
 			public Stream OpenWrite()
 			{
 				return this.file.OpenWrite();
 			}
 
-			// Token: 0x06001ADB RID: 6875 RVA: 0x0007E5FE File Offset: 0x0007C7FE
+			// Token: 0x06001A41 RID: 6721 RVA: 0x00070082 File Offset: 0x0006E282
 			public Stream OpenRead()
 			{
 				return this.file.OpenRead();
 			}
 
-			// Token: 0x06001ADC RID: 6876 RVA: 0x0007E60B File Offset: 0x0007C80B
+			// Token: 0x06001A42 RID: 6722 RVA: 0x0007008F File Offset: 0x0006E28F
 			public void Delete()
 			{
 				this.file.Delete();
 			}
 
-			// Token: 0x04001DA7 RID: 7591
+			// Token: 0x0400180D RID: 6157
 			public readonly SteamworksRemoteStorageFileSystem.SteamworksRemoteStoragePath steamworksRemoteStoragePath;
 		}
 
-		// Token: 0x020004A8 RID: 1192
+		// Token: 0x02000439 RID: 1081
 		private class DirectoryNode : SteamworksRemoteStorageFileSystem.Node
 		{
-			// Token: 0x1700027A RID: 634
-			// (get) Token: 0x06001ADD RID: 6877 RVA: 0x0007E619 File Offset: 0x0007C819
-			// (set) Token: 0x06001ADE RID: 6878 RVA: 0x0007E621 File Offset: 0x0007C821
+			// Token: 0x17000301 RID: 769
+			// (get) Token: 0x06001A43 RID: 6723 RVA: 0x0007009D File Offset: 0x0006E29D
+			// (set) Token: 0x06001A44 RID: 6724 RVA: 0x000700A5 File Offset: 0x0006E2A5
 			public int childCount { get; private set; }
 
-			// Token: 0x06001ADF RID: 6879 RVA: 0x0007E62A File Offset: 0x0007C82A
+			// Token: 0x06001A45 RID: 6725 RVA: 0x000700AE File Offset: 0x0006E2AE
 			public SteamworksRemoteStorageFileSystem.Node GetChild(int i)
 			{
 				return this.childNodes[i];
 			}
 
-			// Token: 0x06001AE0 RID: 6880 RVA: 0x0007E634 File Offset: 0x0007C834
+			// Token: 0x06001A46 RID: 6726 RVA: 0x000700B8 File Offset: 0x0006E2B8
 			public void AddChild(SteamworksRemoteStorageFileSystem.Node node)
 			{
 				int childCount = this.childCount + 1;
@@ -564,7 +566,7 @@ namespace RoR2
 				node.parent = this;
 			}
 
-			// Token: 0x06001AE1 RID: 6881 RVA: 0x0007E68C File Offset: 0x0007C88C
+			// Token: 0x06001A47 RID: 6727 RVA: 0x00070110 File Offset: 0x0006E310
 			public void RemoveChildAt(int i)
 			{
 				if (this.childCount > 0)
@@ -585,7 +587,7 @@ namespace RoR2
 				this.childCount = childCount;
 			}
 
-			// Token: 0x06001AE2 RID: 6882 RVA: 0x0007E700 File Offset: 0x0007C900
+			// Token: 0x06001A48 RID: 6728 RVA: 0x00070184 File Offset: 0x0006E384
 			public void RemoveChild(SteamworksRemoteStorageFileSystem.Node node)
 			{
 				int num = Array.IndexOf<SteamworksRemoteStorageFileSystem.Node>(this.childNodes, node);
@@ -595,7 +597,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001AE3 RID: 6883 RVA: 0x0007E728 File Offset: 0x0007C928
+			// Token: 0x06001A49 RID: 6729 RVA: 0x000701AC File Offset: 0x0006E3AC
 			public void RemoveAllChildren()
 			{
 				for (int i = 0; i < this.childCount; i++)
@@ -606,12 +608,12 @@ namespace RoR2
 				this.childCount = 0;
 			}
 
-			// Token: 0x06001AE4 RID: 6884 RVA: 0x0007E764 File Offset: 0x0007C964
+			// Token: 0x06001A4A RID: 6730 RVA: 0x000701E8 File Offset: 0x0006E3E8
 			public DirectoryNode(UPath path) : base(path)
 			{
 			}
 
-			// Token: 0x04001DA8 RID: 7592
+			// Token: 0x0400180E RID: 6158
 			private SteamworksRemoteStorageFileSystem.Node[] childNodes = Array.Empty<SteamworksRemoteStorageFileSystem.Node>();
 		}
 	}

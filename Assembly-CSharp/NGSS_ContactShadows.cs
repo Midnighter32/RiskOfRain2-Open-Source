@@ -221,33 +221,33 @@ public class NGSS_ContactShadows : MonoBehaviour
 	public Shader contactShadowsShader;
 
 	// Token: 0x0400001E RID: 30
-	[Tooltip("Poisson Noise. Randomize samples to remove repeated patterns.")]
 	[Header("SHADOWS SETTINGS")]
+	[Tooltip("Poisson Noise. Randomize samples to remove repeated patterns.")]
 	public bool m_noiseFilter;
 
 	// Token: 0x0400001F RID: 31
-	[Tooltip("Tweak this value to remove soft-shadows leaking around edges.")]
 	[Range(0.01f, 1f)]
+	[Tooltip("Tweak this value to remove soft-shadows leaking around edges.")]
 	public float m_shadowsEdgeTolerance = 0.25f;
 
 	// Token: 0x04000020 RID: 32
-	[Range(0.01f, 1f)]
 	[Tooltip("Overall softness of the shadows.")]
+	[Range(0.01f, 1f)]
 	public float m_shadowsSoftness = 0.25f;
 
 	// Token: 0x04000021 RID: 33
-	[Tooltip("Overall distance of the shadows.")]
 	[Range(1f, 4f)]
+	[Tooltip("Overall distance of the shadows.")]
 	public float m_shadowsDistance = 1f;
 
 	// Token: 0x04000022 RID: 34
-	[Tooltip("The distance where shadows start to fade.")]
 	[Range(0.1f, 4f)]
+	[Tooltip("The distance where shadows start to fade.")]
 	public float m_shadowsFade = 1f;
 
 	// Token: 0x04000023 RID: 35
-	[Range(0f, 2f)]
 	[Tooltip("Tweak this value if your objects display backface shadows.")]
+	[Range(0f, 2f)]
 	public float m_shadowsOffset = 0.325f;
 
 	// Token: 0x04000024 RID: 36

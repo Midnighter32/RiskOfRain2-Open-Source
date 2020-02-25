@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000423 RID: 1059
+	// Token: 0x0200037F RID: 895
 	public class WinchControl : MonoBehaviour
 	{
-		// Token: 0x0600179B RID: 6043 RVA: 0x0006FE6E File Offset: 0x0006E06E
+		// Token: 0x060015D5 RID: 5589 RVA: 0x0005D18A File Offset: 0x0005B38A
 		private void Start()
 		{
 			this.attachmentTransform = this.FindAttachmentTransform();
@@ -17,7 +17,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600179C RID: 6044 RVA: 0x0006FE9F File Offset: 0x0006E09F
+		// Token: 0x060015D6 RID: 5590 RVA: 0x0005D1BB File Offset: 0x0005B3BB
 		private void Update()
 		{
 			if (!this.attachmentTransform)
@@ -30,7 +30,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600179D RID: 6045 RVA: 0x0006FEE0 File Offset: 0x0006E0E0
+		// Token: 0x060015D7 RID: 5591 RVA: 0x0005D1FC File Offset: 0x0005B3FC
 		private Transform FindAttachmentTransform()
 		{
 			this.projectileGhostController = base.GetComponent<ProjectileGhostController>();
@@ -65,16 +65,16 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x04001ACB RID: 6859
+		// Token: 0x04001461 RID: 5217
 		public Transform tailTransform;
 
-		// Token: 0x04001ACC RID: 6860
+		// Token: 0x04001462 RID: 5218
 		public string attachmentString;
 
-		// Token: 0x04001ACD RID: 6861
+		// Token: 0x04001463 RID: 5219
 		private ProjectileGhostController projectileGhostController;
 
-		// Token: 0x04001ACE RID: 6862
+		// Token: 0x04001464 RID: 5220
 		private Transform attachmentTransform;
 	}
 }

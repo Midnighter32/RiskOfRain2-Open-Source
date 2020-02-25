@@ -4,17 +4,21 @@ using UnityEngine.Events;
 
 namespace RoR2
 {
-	// Token: 0x02000403 RID: 1027
+	// Token: 0x0200035B RID: 859
 	[RequireComponent(typeof(EffectComponent))]
 	public class Tracer : MonoBehaviour
 	{
-		// Token: 0x060016E2 RID: 5858 RVA: 0x0006CF78 File Offset: 0x0006B178
+		// Token: 0x060014E4 RID: 5348 RVA: 0x00059280 File Offset: 0x00057480
 		private void Start()
 		{
 			EffectComponent component = base.GetComponent<EffectComponent>();
 			this.endPos = component.effectData.origin;
 			Transform transform = component.effectData.ResolveChildLocatorTransformReference();
 			this.startPos = (transform ? transform.position : component.effectData.start);
+			if (this.reverse)
+			{
+				Util.Swap<Vector3>(ref this.endPos, ref this.startPos);
+			}
 			Vector3 vector = this.endPos - this.startPos;
 			this.distanceTraveled = 0f;
 			this.totalDistance = Vector3.Magnitude(vector);
@@ -43,7 +47,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060016E3 RID: 5859 RVA: 0x0006D0D8 File Offset: 0x0006B2D8
+		// Token: 0x060014E5 RID: 5349 RVA: 0x000593F8 File Offset: 0x000575F8
 		private void Update()
 		{
 			if (this.distanceTraveled > this.totalDistance)
@@ -64,75 +68,55 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060016E4 RID: 5860 RVA: 0x0006D1AC File Offset: 0x0006B3AC
-		public static GameObject CreateTracer(GameObject tracerPrefab, Vector3 startPosition, Vector3 endPosition)
-		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(tracerPrefab, endPosition, (startPosition != endPosition) ? Util.QuaternionSafeLookRotation(endPosition - startPosition) : Quaternion.identity);
-			Tracer component = gameObject.GetComponent<Tracer>();
-			if (!component)
-			{
-				Debug.LogErrorFormat("Attempting to create tracer from a prefab that lacks a Tracer component! Prefab name: {0}", new object[]
-				{
-					tracerPrefab.name
-				});
-			}
-			else
-			{
-				component.startPos = startPosition;
-				component.endPos = endPosition;
-				if (component.startTransform)
-				{
-					component.startTransform.position = startPosition;
-				}
-			}
-			return gameObject;
-		}
-
-		// Token: 0x04001A0F RID: 6671
+		// Token: 0x04001376 RID: 4982
 		[Tooltip("A child transform which will be placed at the start of the tracer path upon creation.")]
 		public Transform startTransform;
 
-		// Token: 0x04001A10 RID: 6672
+		// Token: 0x04001377 RID: 4983
 		[Tooltip("Child object to scale to the length of this tracer and burst particles on based on that length. Optional.")]
 		public GameObject beamObject;
 
-		// Token: 0x04001A11 RID: 6673
+		// Token: 0x04001378 RID: 4984
 		[Tooltip("The number of particles to emit per meter of length if using a beam object.")]
 		public float beamDensity = 10f;
 
-		// Token: 0x04001A12 RID: 6674
+		// Token: 0x04001379 RID: 4985
 		[Tooltip("The travel speed of this tracer.")]
 		public float speed = 1f;
 
-		// Token: 0x04001A13 RID: 6675
+		// Token: 0x0400137A RID: 4986
 		[Tooltip("Child transform which will be moved to the head of the tracer.")]
 		public Transform headTransform;
 
-		// Token: 0x04001A14 RID: 6676
+		// Token: 0x0400137B RID: 4987
 		[Tooltip("Child transform which will be moved to the tail of the tracer.")]
 		public Transform tailTransform;
 
-		// Token: 0x04001A15 RID: 6677
+		// Token: 0x0400137C RID: 4988
 		[Tooltip("The maximum distance between head and tail transforms.")]
 		public float length = 1f;
 
-		// Token: 0x04001A16 RID: 6678
+		// Token: 0x0400137D RID: 4989
+		[Tooltip("Reverses the travel direction of the tracer.")]
+		public bool reverse;
+
+		// Token: 0x0400137E RID: 4990
 		[Tooltip("The event that runs when the tail reaches the destination.")]
 		public UnityEvent onTailReachedDestination;
 
-		// Token: 0x04001A17 RID: 6679
+		// Token: 0x0400137F RID: 4991
 		private Vector3 startPos;
 
-		// Token: 0x04001A18 RID: 6680
+		// Token: 0x04001380 RID: 4992
 		private Vector3 endPos;
 
-		// Token: 0x04001A19 RID: 6681
+		// Token: 0x04001381 RID: 4993
 		private float distanceTraveled;
 
-		// Token: 0x04001A1A RID: 6682
+		// Token: 0x04001382 RID: 4994
 		private float totalDistance;
 
-		// Token: 0x04001A1B RID: 6683
+		// Token: 0x04001383 RID: 4995
 		private Vector3 normal;
 	}
 }

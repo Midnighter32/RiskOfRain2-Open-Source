@@ -4,10 +4,10 @@ using System.Reflection;
 
 namespace EntityStates
 {
-	// Token: 0x020000AE RID: 174
+	// Token: 0x02000705 RID: 1797
 	internal static class StateIndexTable
 	{
-		// Token: 0x06000370 RID: 880 RVA: 0x0000DB48 File Offset: 0x0000BD48
+		// Token: 0x060029EA RID: 10730 RVA: 0x000B0070 File Offset: 0x000AE270
 		static StateIndexTable()
 		{
 			List<Type> list = new List<Type>();
@@ -31,7 +31,7 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x06000371 RID: 881 RVA: 0x0000DC1D File Offset: 0x0000BE1D
+		// Token: 0x060029EB RID: 10731 RVA: 0x000B0145 File Offset: 0x000AE345
 		public static Type IndexToType(short stateTypeIndex)
 		{
 			if (stateTypeIndex >= 0 && (int)stateTypeIndex < StateIndexTable.stateIndexToType.Length)
@@ -41,7 +41,7 @@ namespace EntityStates
 			return null;
 		}
 
-		// Token: 0x06000372 RID: 882 RVA: 0x0000DC38 File Offset: 0x0000BE38
+		// Token: 0x060029EC RID: 10732 RVA: 0x000B0160 File Offset: 0x000AE360
 		public static short TypeToIndex(Type stateType)
 		{
 			short result;
@@ -52,8 +52,8 @@ namespace EntityStates
 			return -1;
 		}
 
-		// Token: 0x17000095 RID: 149
-		// (get) Token: 0x06000373 RID: 883 RVA: 0x0000DC57 File Offset: 0x0000BE57
+		// Token: 0x1700041B RID: 1051
+		// (get) Token: 0x060029ED RID: 10733 RVA: 0x000B017F File Offset: 0x000AE37F
 		public static int typeCount
 		{
 			get
@@ -62,8 +62,8 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x17000096 RID: 150
-		// (get) Token: 0x06000374 RID: 884 RVA: 0x0000DC60 File Offset: 0x0000BE60
+		// Token: 0x1700041C RID: 1052
+		// (get) Token: 0x060029EE RID: 10734 RVA: 0x000B0188 File Offset: 0x000AE388
 		public static IList<string> typeNames
 		{
 			get
@@ -72,13 +72,13 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x04000329 RID: 809
+		// Token: 0x040025BC RID: 9660
 		private static Type[] stateIndexToType;
 
-		// Token: 0x0400032A RID: 810
+		// Token: 0x040025BD RID: 9661
 		private static string[] stateIndexToTypeName;
 
-		// Token: 0x0400032B RID: 811
+		// Token: 0x040025BE RID: 9662
 		private static Dictionary<Type, short> stateTypeToIndex = new Dictionary<Type, short>();
 	}
 }

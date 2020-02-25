@@ -2,10 +2,10 @@
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
-// Token: 0x02000028 RID: 40
+// Token: 0x02000021 RID: 33
 public sealed class SobelOutlineRenderer : PostProcessEffectRenderer<SobelOutline>
 {
-	// Token: 0x060000B9 RID: 185 RVA: 0x00005204 File Offset: 0x00003404
+	// Token: 0x06000092 RID: 146 RVA: 0x00004E28 File Offset: 0x00003028
 	public override void Render(PostProcessRenderContext context)
 	{
 		PropertySheet propertySheet = context.propertySheets.Get(Shader.Find("Hidden/PostProcess/SobelOutline"));

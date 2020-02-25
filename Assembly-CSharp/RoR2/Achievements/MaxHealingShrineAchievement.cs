@@ -2,41 +2,41 @@
 
 namespace RoR2.Achievements
 {
-	// Token: 0x020006B1 RID: 1713
+	// Token: 0x020006BE RID: 1726
 	[RegisterAchievement("MaxHealingShrine", "Items.PassiveHealing", null, typeof(MaxHealingShrineAchievement.MaxHealingShrineServerAchievement))]
 	public class MaxHealingShrineAchievement : BaseAchievement
 	{
-		// Token: 0x0600260A RID: 9738 RVA: 0x000AF2C0 File Offset: 0x000AD4C0
+		// Token: 0x0600282E RID: 10286 RVA: 0x000AA636 File Offset: 0x000A8836
 		public override void OnInstall()
 		{
 			base.OnInstall();
 			base.SetServerTracked(true);
 		}
 
-		// Token: 0x0600260B RID: 9739 RVA: 0x000AF2CF File Offset: 0x000AD4CF
+		// Token: 0x0600282F RID: 10287 RVA: 0x000AA645 File Offset: 0x000A8845
 		public override void OnUninstall()
 		{
 			base.OnUninstall();
 		}
 
-		// Token: 0x020006B2 RID: 1714
+		// Token: 0x020006BF RID: 1727
 		private class MaxHealingShrineServerAchievement : BaseServerAchievement
 		{
-			// Token: 0x0600260D RID: 9741 RVA: 0x000B01DB File Offset: 0x000AE3DB
+			// Token: 0x06002831 RID: 10289 RVA: 0x000ABCC7 File Offset: 0x000A9EC7
 			public override void OnInstall()
 			{
 				base.OnInstall();
 				ShrineHealingBehavior.onActivated += this.OnHealingShrineActivated;
 			}
 
-			// Token: 0x0600260E RID: 9742 RVA: 0x000B01F4 File Offset: 0x000AE3F4
+			// Token: 0x06002832 RID: 10290 RVA: 0x000ABCE0 File Offset: 0x000A9EE0
 			public override void OnUninstall()
 			{
 				ShrineHealingBehavior.onActivated -= this.OnHealingShrineActivated;
 				base.OnUninstall();
 			}
 
-			// Token: 0x0600260F RID: 9743 RVA: 0x000B0210 File Offset: 0x000AE410
+			// Token: 0x06002833 RID: 10291 RVA: 0x000ABCFC File Offset: 0x000A9EFC
 			private void OnHealingShrineActivated(ShrineHealingBehavior shrine, Interactor activator)
 			{
 				if (shrine.purchaseCount >= shrine.maxPurchaseCount)
@@ -49,7 +49,7 @@ namespace RoR2.Achievements
 				}
 			}
 
-			// Token: 0x04002877 RID: 10359
+			// Token: 0x0400250A RID: 9482
 			private const int requirement = 2;
 		}
 	}

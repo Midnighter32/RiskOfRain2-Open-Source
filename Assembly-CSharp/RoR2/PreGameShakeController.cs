@@ -3,16 +3,16 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000397 RID: 919
+	// Token: 0x020002D4 RID: 724
 	public class PreGameShakeController : MonoBehaviour
 	{
-		// Token: 0x06001363 RID: 4963 RVA: 0x0005EB07 File Offset: 0x0005CD07
+		// Token: 0x06001081 RID: 4225 RVA: 0x000485CF File Offset: 0x000467CF
 		private void ResetTimer()
 		{
 			this.timer = UnityEngine.Random.Range(this.minInterval, this.maxInterval);
 		}
 
-		// Token: 0x06001364 RID: 4964 RVA: 0x0005EB20 File Offset: 0x0005CD20
+		// Token: 0x06001082 RID: 4226 RVA: 0x000485E8 File Offset: 0x000467E8
 		private void DoShake()
 		{
 			this.shakeEmitter.StartShake();
@@ -30,13 +30,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001365 RID: 4965 RVA: 0x0005EBB5 File Offset: 0x0005CDB5
+		// Token: 0x06001083 RID: 4227 RVA: 0x0004867D File Offset: 0x0004687D
 		private void Awake()
 		{
 			this.ResetTimer();
 		}
 
-		// Token: 0x06001366 RID: 4966 RVA: 0x0005EBBD File Offset: 0x0005CDBD
+		// Token: 0x06001084 RID: 4228 RVA: 0x00048685 File Offset: 0x00046885
 		private void Update()
 		{
 			this.timer -= Time.deltaTime;
@@ -47,22 +47,22 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001700 RID: 5888
+		// Token: 0x04000FD0 RID: 4048
 		public ShakeEmitter shakeEmitter;
 
-		// Token: 0x04001701 RID: 5889
+		// Token: 0x04000FD1 RID: 4049
 		public float minInterval = 0.5f;
 
-		// Token: 0x04001702 RID: 5890
+		// Token: 0x04000FD2 RID: 4050
 		public float maxInterval = 7f;
 
-		// Token: 0x04001703 RID: 5891
+		// Token: 0x04000FD3 RID: 4051
 		public Rigidbody[] physicsBodies;
 
-		// Token: 0x04001704 RID: 5892
+		// Token: 0x04000FD4 RID: 4052
 		public float physicsForce;
 
-		// Token: 0x04001705 RID: 5893
+		// Token: 0x04000FD5 RID: 4053
 		private float timer;
 	}
 }

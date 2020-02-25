@@ -1,16 +1,15 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005F2 RID: 1522
+	// Token: 0x020005D7 RID: 1495
 	public class LanguageTextMeshController : MonoBehaviour
 	{
-		// Token: 0x170002FC RID: 764
-		// (get) Token: 0x06002225 RID: 8741 RVA: 0x000A189B File Offset: 0x0009FA9B
-		// (set) Token: 0x06002226 RID: 8742 RVA: 0x000A18A3 File Offset: 0x0009FAA3
+		// Token: 0x170003B1 RID: 945
+		// (get) Token: 0x06002368 RID: 9064 RVA: 0x0009ACF3 File Offset: 0x00098EF3
+		// (set) Token: 0x06002369 RID: 9065 RVA: 0x0009ACFB File Offset: 0x00098EFB
 		public string token
 		{
 			get
@@ -28,82 +27,75 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002227 RID: 8743 RVA: 0x000A18C6 File Offset: 0x0009FAC6
+		// Token: 0x0600236A RID: 9066 RVA: 0x0009AD1E File Offset: 0x00098F1E
 		public void ResolveString()
 		{
 			this.previousToken = this._token;
 			this.resolvedString = Language.GetString(this._token);
 		}
 
-		// Token: 0x06002228 RID: 8744 RVA: 0x000A18E5 File Offset: 0x0009FAE5
+		// Token: 0x0600236B RID: 9067 RVA: 0x0009AD3D File Offset: 0x00098F3D
 		private void CacheComponents()
 		{
-			this.text = base.GetComponent<Text>();
-			this.textMesh = base.GetComponent<TextMesh>();
-			this.textMeshPro = base.GetComponent<TextMeshPro>();
-			this.textMeshProUGui = base.GetComponent<TextMeshProUGUI>();
+			this.textMeshPro = base.GetComponent<TMP_Text>();
 		}
 
-		// Token: 0x06002229 RID: 8745 RVA: 0x000A1917 File Offset: 0x0009FB17
+		// Token: 0x0600236C RID: 9068 RVA: 0x0009AD4B File Offset: 0x00098F4B
 		private void Awake()
 		{
 			this.CacheComponents();
 		}
 
-		// Token: 0x0600222A RID: 8746 RVA: 0x000A1917 File Offset: 0x0009FB17
+		// Token: 0x0600236D RID: 9069 RVA: 0x0009AD4B File Offset: 0x00098F4B
 		private void OnValidate()
 		{
 			this.CacheComponents();
 		}
 
-		// Token: 0x0600222B RID: 8747 RVA: 0x000A191F File Offset: 0x0009FB1F
+		// Token: 0x0600236E RID: 9070 RVA: 0x0009AD53 File Offset: 0x00098F53
 		private void Start()
 		{
 			this.ResolveString();
 			this.UpdateLabel();
 		}
 
-		// Token: 0x0600222C RID: 8748 RVA: 0x000A1930 File Offset: 0x0009FB30
+		// Token: 0x0600236F RID: 9071 RVA: 0x0009AD61 File Offset: 0x00098F61
 		private void UpdateLabel()
 		{
-			if (this.text)
-			{
-				this.text.text = this.resolvedString;
-			}
-			if (this.textMesh)
-			{
-				this.textMesh.text = this.resolvedString;
-			}
 			if (this.textMeshPro)
 			{
 				this.textMeshPro.text = this.resolvedString;
 			}
-			if (this.textMeshProUGui)
+		}
+
+		// Token: 0x06002370 RID: 9072 RVA: 0x0009AD81 File Offset: 0x00098F81
+		[RuntimeInitializeOnLoadMethod]
+		private static void Init()
+		{
+			Language.onCurrentLanguageChanged += LanguageTextMeshController.OnCurrentLanguageChanged;
+		}
+
+		// Token: 0x06002371 RID: 9073 RVA: 0x0009AD94 File Offset: 0x00098F94
+		private static void OnCurrentLanguageChanged()
+		{
+			LanguageTextMeshController[] array = UnityEngine.Object.FindObjectsOfType<LanguageTextMeshController>();
+			for (int i = 0; i < array.Length; i++)
 			{
-				this.textMeshProUGui.text = this.resolvedString;
+				array[i].ResolveString();
 			}
 		}
 
-		// Token: 0x0400252D RID: 9517
+		// Token: 0x0400214F RID: 8527
 		[SerializeField]
 		private string _token;
 
-		// Token: 0x0400252E RID: 9518
+		// Token: 0x04002150 RID: 8528
 		private string previousToken;
 
-		// Token: 0x0400252F RID: 9519
+		// Token: 0x04002151 RID: 8529
 		private string resolvedString;
 
-		// Token: 0x04002530 RID: 9520
-		private Text text;
-
-		// Token: 0x04002531 RID: 9521
-		private TextMesh textMesh;
-
-		// Token: 0x04002532 RID: 9522
-		private TextMeshPro textMeshPro;
-
-		// Token: 0x04002533 RID: 9523
-		private TextMeshProUGUI textMeshProUGui;
+		// Token: 0x04002152 RID: 8530
+		private TMP_Text textMeshPro;
 	}
 }

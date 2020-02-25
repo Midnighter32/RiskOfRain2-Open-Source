@@ -2,19 +2,19 @@
 
 namespace RoR2
 {
-	// Token: 0x0200021F RID: 543
+	// Token: 0x020000EB RID: 235
 	public static class CommonLanguageTokens
 	{
-		// Token: 0x04000E00 RID: 3584
+		// Token: 0x0400045E RID: 1118
 		public static string ok = "OK";
 
-		// Token: 0x04000E01 RID: 3585
+		// Token: 0x0400045F RID: 1119
 		public static string cancel = "CANCEL";
 
-		// Token: 0x04000E02 RID: 3586
+		// Token: 0x04000460 RID: 1120
 		public static string optionRebindDialogTitle = "OPTION_REBIND_DIALOG_TITLE";
 
-		// Token: 0x04000E03 RID: 3587
+		// Token: 0x04000461 RID: 1121
 		public static string optionRebindDialogDescription = "OPTION_REBIND_DIALOG_DESCRIPTION";
 	}
 }

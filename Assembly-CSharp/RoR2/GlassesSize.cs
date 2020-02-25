@@ -3,22 +3,22 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000301 RID: 769
+	// Token: 0x02000217 RID: 535
 	[ExecuteAlways]
 	public class GlassesSize : MonoBehaviour
 	{
-		// Token: 0x06000FBF RID: 4031 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000BBB RID: 3003 RVA: 0x0000409B File Offset: 0x0000229B
 		private void Start()
 		{
 		}
 
-		// Token: 0x06000FC0 RID: 4032 RVA: 0x0004D6D3 File Offset: 0x0004B8D3
+		// Token: 0x06000BBC RID: 3004 RVA: 0x000331AD File Offset: 0x000313AD
 		private void Update()
 		{
 			this.UpdateGlasses();
 		}
 
-		// Token: 0x06000FC1 RID: 4033 RVA: 0x0004D6DC File Offset: 0x0004B8DC
+		// Token: 0x06000BBD RID: 3005 RVA: 0x000331B8 File Offset: 0x000313B8
 		private void UpdateGlasses()
 		{
 			Vector3 localScale = base.transform.localScale;
@@ -36,19 +36,19 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x040013C9 RID: 5065
+		// Token: 0x04000BD8 RID: 3032
 		public Transform glassesModelBase;
 
-		// Token: 0x040013CA RID: 5066
+		// Token: 0x04000BD9 RID: 3033
 		public Transform glassesBridgeLeft;
 
-		// Token: 0x040013CB RID: 5067
+		// Token: 0x04000BDA RID: 3034
 		public Transform glassesBridgeRight;
 
-		// Token: 0x040013CC RID: 5068
+		// Token: 0x04000BDB RID: 3035
 		public float bridgeOffsetScale;
 
-		// Token: 0x040013CD RID: 5069
+		// Token: 0x04000BDC RID: 3036
 		public Vector3 offsetVector = Vector3.right;
 	}
 }

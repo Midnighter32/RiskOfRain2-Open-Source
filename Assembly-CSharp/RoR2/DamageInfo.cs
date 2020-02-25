@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000234 RID: 564
+	// Token: 0x02000118 RID: 280
 	public class DamageInfo
 	{
-		// Token: 0x06000ABA RID: 2746 RVA: 0x0003507A File Offset: 0x0003327A
+		// Token: 0x0600051E RID: 1310 RVA: 0x00014786 File Offset: 0x00012986
 		public void ModifyDamageInfo(HurtBox.DamageModifier damageModifier)
 		{
 			switch (damageModifier)
@@ -25,37 +25,40 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04000E6D RID: 3693
+		// Token: 0x04000534 RID: 1332
 		public float damage;
 
-		// Token: 0x04000E6E RID: 3694
+		// Token: 0x04000535 RID: 1333
 		public bool crit;
 
-		// Token: 0x04000E6F RID: 3695
+		// Token: 0x04000536 RID: 1334
 		public GameObject inflictor;
 
-		// Token: 0x04000E70 RID: 3696
+		// Token: 0x04000537 RID: 1335
 		public GameObject attacker;
 
-		// Token: 0x04000E71 RID: 3697
+		// Token: 0x04000538 RID: 1336
 		public Vector3 position;
 
-		// Token: 0x04000E72 RID: 3698
+		// Token: 0x04000539 RID: 1337
 		public Vector3 force;
 
-		// Token: 0x04000E73 RID: 3699
+		// Token: 0x0400053A RID: 1338
 		public bool rejected;
 
-		// Token: 0x04000E74 RID: 3700
+		// Token: 0x0400053B RID: 1339
 		public ProcChainMask procChainMask;
 
-		// Token: 0x04000E75 RID: 3701
+		// Token: 0x0400053C RID: 1340
 		public float procCoefficient = 1f;
 
-		// Token: 0x04000E76 RID: 3702
+		// Token: 0x0400053D RID: 1341
 		public DamageType damageType;
 
-		// Token: 0x04000E77 RID: 3703
+		// Token: 0x0400053E RID: 1342
 		public DamageColorIndex damageColorIndex;
+
+		// Token: 0x0400053F RID: 1343
+		public DotController.DotIndex dotIndex = DotController.DotIndex.None;
 	}
 }

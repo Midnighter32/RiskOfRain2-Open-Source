@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.VagrantMonster
 {
-	// Token: 0x02000129 RID: 297
-	internal class ChargeMegaNova : BaseState
+	// Token: 0x020007FF RID: 2047
+	public class ChargeMegaNova : BaseState
 	{
-		// Token: 0x060005B7 RID: 1463 RVA: 0x0001A18C File Offset: 0x0001838C
+		// Token: 0x06002E8E RID: 11918 RVA: 0x000C5ED0 File Offset: 0x000C40D0
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -40,7 +40,7 @@ namespace EntityStates.VagrantMonster
 			}
 		}
 
-		// Token: 0x060005B8 RID: 1464 RVA: 0x0001A328 File Offset: 0x00018528
+		// Token: 0x06002E8F RID: 11919 RVA: 0x000C606C File Offset: 0x000C426C
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -55,7 +55,7 @@ namespace EntityStates.VagrantMonster
 			}
 		}
 
-		// Token: 0x060005B9 RID: 1465 RVA: 0x0001A378 File Offset: 0x00018578
+		// Token: 0x06002E90 RID: 11920 RVA: 0x000C60BC File Offset: 0x000C42BC
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -69,40 +69,40 @@ namespace EntityStates.VagrantMonster
 			}
 		}
 
-		// Token: 0x060005BA RID: 1466 RVA: 0x0000BB2B File Offset: 0x00009D2B
+		// Token: 0x06002E91 RID: 11921 RVA: 0x0000C5D3 File Offset: 0x0000A7D3
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Pain;
 		}
 
-		// Token: 0x04000684 RID: 1668
+		// Token: 0x04002BA8 RID: 11176
 		public static float baseDuration = 3f;
 
-		// Token: 0x04000685 RID: 1669
+		// Token: 0x04002BA9 RID: 11177
 		public static GameObject chargingEffectPrefab;
 
-		// Token: 0x04000686 RID: 1670
+		// Token: 0x04002BAA RID: 11178
 		public static GameObject areaIndicatorPrefab;
 
-		// Token: 0x04000687 RID: 1671
+		// Token: 0x04002BAB RID: 11179
 		public static string chargingSoundString;
 
-		// Token: 0x04000688 RID: 1672
+		// Token: 0x04002BAC RID: 11180
 		public static float novaRadius;
 
-		// Token: 0x04000689 RID: 1673
+		// Token: 0x04002BAD RID: 11181
 		private float duration;
 
-		// Token: 0x0400068A RID: 1674
+		// Token: 0x04002BAE RID: 11182
 		private float stopwatch;
 
-		// Token: 0x0400068B RID: 1675
+		// Token: 0x04002BAF RID: 11183
 		private GameObject chargeEffectInstance;
 
-		// Token: 0x0400068C RID: 1676
+		// Token: 0x04002BB0 RID: 11184
 		private GameObject areaIndicatorInstance;
 
-		// Token: 0x0400068D RID: 1677
+		// Token: 0x04002BB1 RID: 11185
 		private uint soundID;
 	}
 }

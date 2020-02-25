@@ -7,10 +7,10 @@ using UnityEngine;
 
 namespace EntityStates.Bell.BellWeapon
 {
-	// Token: 0x020001C8 RID: 456
-	internal class ChargeTrioBomb : BaseState
+	// Token: 0x020008E3 RID: 2275
+	public class ChargeTrioBomb : BaseState
 	{
-		// Token: 0x060008EB RID: 2283 RVA: 0x0002CED0 File Offset: 0x0002B0D0
+		// Token: 0x060032EB RID: 13035 RVA: 0x000DCB48 File Offset: 0x000DAD48
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -25,20 +25,20 @@ namespace EntityStates.Bell.BellWeapon
 			}
 		}
 
-		// Token: 0x060008EC RID: 2284 RVA: 0x0002CF46 File Offset: 0x0002B146
+		// Token: 0x060032EC RID: 13036 RVA: 0x000DCBBE File Offset: 0x000DADBE
 		private string FindTargetChildStringFromBombIndex()
 		{
 			return string.Format(CultureInfo.InvariantCulture, "ProjectilePosition{0}", this.currentBombIndex);
 		}
 
-		// Token: 0x060008ED RID: 2285 RVA: 0x0002CF64 File Offset: 0x0002B164
+		// Token: 0x060032ED RID: 13037 RVA: 0x000DCBDC File Offset: 0x000DADDC
 		private Transform FindTargetChildTransformFromBombIndex()
 		{
 			string childName = this.FindTargetChildStringFromBombIndex();
 			return this.childLocator.FindChild(childName);
 		}
 
-		// Token: 0x060008EE RID: 2286 RVA: 0x0002CF84 File Offset: 0x0002B184
+		// Token: 0x060032EE RID: 13038 RVA: 0x000DCBFC File Offset: 0x000DADFC
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -76,7 +76,7 @@ namespace EntityStates.Bell.BellWeapon
 								component.AddForceAtPosition(-ChargeTrioBomb.selfForce * transform2.forward, transform2.position);
 							}
 						}
-						EffectManager.instance.SimpleMuzzleFlash(ChargeTrioBomb.muzzleflashPrefab, base.gameObject, this.FindTargetChildStringFromBombIndex(), false);
+						EffectManager.SimpleMuzzleFlash(ChargeTrioBomb.muzzleflashPrefab, base.gameObject, this.FindTargetChildStringFromBombIndex(), false);
 					}
 					this.currentBombIndex--;
 					EntityState.Destroy(this.preppedBombInstances[this.currentBombIndex]);
@@ -90,7 +90,7 @@ namespace EntityStates.Bell.BellWeapon
 			}
 		}
 
-		// Token: 0x060008EF RID: 2287 RVA: 0x0002D158 File Offset: 0x0002B358
+		// Token: 0x060032EF RID: 13039 RVA: 0x000DCDC8 File Offset: 0x000DAFC8
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -100,58 +100,58 @@ namespace EntityStates.Bell.BellWeapon
 			}
 		}
 
-		// Token: 0x04000C15 RID: 3093
+		// Token: 0x0400323D RID: 12861
 		public static float basePrepDuration;
 
-		// Token: 0x04000C16 RID: 3094
+		// Token: 0x0400323E RID: 12862
 		public static float baseTimeBetweenPreps;
 
-		// Token: 0x04000C17 RID: 3095
+		// Token: 0x0400323F RID: 12863
 		public static GameObject preppedBombPrefab;
 
-		// Token: 0x04000C18 RID: 3096
+		// Token: 0x04003240 RID: 12864
 		public static float baseBarrageDuration;
 
-		// Token: 0x04000C19 RID: 3097
+		// Token: 0x04003241 RID: 12865
 		public static float baseTimeBetweenBarrages;
 
-		// Token: 0x04000C1A RID: 3098
+		// Token: 0x04003242 RID: 12866
 		public static GameObject bombProjectilePrefab;
 
-		// Token: 0x04000C1B RID: 3099
+		// Token: 0x04003243 RID: 12867
 		public static GameObject muzzleflashPrefab;
 
-		// Token: 0x04000C1C RID: 3100
+		// Token: 0x04003244 RID: 12868
 		public static float damageCoefficient;
 
-		// Token: 0x04000C1D RID: 3101
+		// Token: 0x04003245 RID: 12869
 		public static float force;
 
-		// Token: 0x04000C1E RID: 3102
+		// Token: 0x04003246 RID: 12870
 		public static float selfForce;
 
-		// Token: 0x04000C1F RID: 3103
+		// Token: 0x04003247 RID: 12871
 		private float prepDuration;
 
-		// Token: 0x04000C20 RID: 3104
+		// Token: 0x04003248 RID: 12872
 		private float timeBetweenPreps;
 
-		// Token: 0x04000C21 RID: 3105
+		// Token: 0x04003249 RID: 12873
 		private float barrageDuration;
 
-		// Token: 0x04000C22 RID: 3106
+		// Token: 0x0400324A RID: 12874
 		private float timeBetweenBarrages;
 
-		// Token: 0x04000C23 RID: 3107
+		// Token: 0x0400324B RID: 12875
 		private ChildLocator childLocator;
 
-		// Token: 0x04000C24 RID: 3108
+		// Token: 0x0400324C RID: 12876
 		private List<GameObject> preppedBombInstances = new List<GameObject>();
 
-		// Token: 0x04000C25 RID: 3109
+		// Token: 0x0400324D RID: 12877
 		private int currentBombIndex;
 
-		// Token: 0x04000C26 RID: 3110
+		// Token: 0x0400324E RID: 12878
 		private float perProjectileStopwatch;
 	}
 }

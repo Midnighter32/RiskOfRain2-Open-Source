@@ -5,11 +5,11 @@ using UnityEngine.Rendering;
 
 namespace ThreeEyedGames
 {
-	// Token: 0x020006E8 RID: 1768
+	// Token: 0x02000933 RID: 2355
 	[ExecuteInEditMode]
 	public class DecaliciousRenderer : MonoBehaviour
 	{
-		// Token: 0x0600277A RID: 10106 RVA: 0x000B7388 File Offset: 0x000B5588
+		// Token: 0x060034C4 RID: 13508 RVA: 0x000E67D0 File Offset: 0x000E49D0
 		private void OnEnable()
 		{
 			this._deferredDecals = new Dictionary<Material, HashSet<Decal>>();
@@ -33,7 +33,7 @@ namespace ThreeEyedGames
 			};
 		}
 
-		// Token: 0x0600277B RID: 10107 RVA: 0x000B746C File Offset: 0x000B566C
+		// Token: 0x060034C5 RID: 13509 RVA: 0x000E68B4 File Offset: 0x000E4AB4
 		private void OnDisable()
 		{
 			if (this._bufferDeferred != null)
@@ -53,7 +53,7 @@ namespace ThreeEyedGames
 			}
 		}
 
-		// Token: 0x0600277C RID: 10108 RVA: 0x000B74E0 File Offset: 0x000B56E0
+		// Token: 0x060034C6 RID: 13510 RVA: 0x000E6928 File Offset: 0x000E4B28
 		private void OnPreRender()
 		{
 			if (!SystemInfo.supportsInstancing)
@@ -90,7 +90,7 @@ namespace ThreeEyedGames
 			this._limitToGameObjects.Clear();
 		}
 
-		// Token: 0x0600277D RID: 10109 RVA: 0x000B7654 File Offset: 0x000B5854
+		// Token: 0x060034C7 RID: 13511 RVA: 0x000E6A9C File Offset: 0x000E4C9C
 		private void DrawLimitToGameObjects(Camera cam)
 		{
 			if (this._limitToGameObjects.Count == 0)
@@ -134,7 +134,7 @@ namespace ThreeEyedGames
 			}
 		}
 
-		// Token: 0x0600277E RID: 10110 RVA: 0x000B7898 File Offset: 0x000B5A98
+		// Token: 0x060034C8 RID: 13512 RVA: 0x000E6CE0 File Offset: 0x000E4EE0
 		private static void SetLightProbeOnBlock(SphericalHarmonicsL2 probe, MaterialPropertyBlock block)
 		{
 			for (int i = 0; i < 3; i++)
@@ -164,7 +164,7 @@ namespace ThreeEyedGames
 			block.SetVector("unity_SHC", DecaliciousRenderer._avCoeff[6]);
 		}
 
-		// Token: 0x0600277F RID: 10111 RVA: 0x000B7A98 File Offset: 0x000B5C98
+		// Token: 0x060034C9 RID: 13513 RVA: 0x000E6EE0 File Offset: 0x000E50E0
 		private void DrawDeferredDecals_Albedo(Camera cam)
 		{
 			if (this._deferredDecals.Count == 0)
@@ -226,7 +226,7 @@ namespace ThreeEyedGames
 			}
 		}
 
-		// Token: 0x06002780 RID: 10112 RVA: 0x000B7D4C File Offset: 0x000B5F4C
+		// Token: 0x060034CA RID: 13514 RVA: 0x000E7194 File Offset: 0x000E5394
 		private void DrawDeferredDecals_NormSpecSmooth(Camera cam)
 		{
 			if (this._deferredDecals.Count == 0)
@@ -305,7 +305,7 @@ namespace ThreeEyedGames
 			}
 		}
 
-		// Token: 0x06002781 RID: 10113 RVA: 0x000B8180 File Offset: 0x000B6380
+		// Token: 0x060034CB RID: 13515 RVA: 0x000E75C8 File Offset: 0x000E57C8
 		private void DrawUnlitDecals(Camera cam)
 		{
 			if (this._unlitDecals.Count == 0)
@@ -358,7 +358,7 @@ namespace ThreeEyedGames
 			}
 		}
 
-		// Token: 0x06002782 RID: 10114 RVA: 0x000B83BC File Offset: 0x000B65BC
+		// Token: 0x060034CC RID: 13516 RVA: 0x000E7804 File Offset: 0x000E5A04
 		private static void CreateBuffer(ref CommandBuffer buffer, Camera cam, string name, CameraEvent evt)
 		{
 			if (buffer == null)
@@ -380,7 +380,7 @@ namespace ThreeEyedGames
 			}
 		}
 
-		// Token: 0x06002783 RID: 10115 RVA: 0x000B8418 File Offset: 0x000B6618
+		// Token: 0x060034CD RID: 13517 RVA: 0x000E7860 File Offset: 0x000E5A60
 		public void Add(Decal decal, GameObject limitTo)
 		{
 			if (limitTo)
@@ -400,7 +400,7 @@ namespace ThreeEyedGames
 			this.AddUnlit(decal);
 		}
 
-		// Token: 0x06002784 RID: 10116 RVA: 0x000B8458 File Offset: 0x000B6658
+		// Token: 0x060034CE RID: 13518 RVA: 0x000E78A0 File Offset: 0x000E5AA0
 		protected void AddDeferred(Decal decal)
 		{
 			if (!this._deferredDecals.ContainsKey(decal.Material))
@@ -414,7 +414,7 @@ namespace ThreeEyedGames
 			this._deferredDecals[decal.Material].Add(decal);
 		}
 
-		// Token: 0x06002785 RID: 10117 RVA: 0x000B84B0 File Offset: 0x000B66B0
+		// Token: 0x060034CF RID: 13519 RVA: 0x000E78F8 File Offset: 0x000E5AF8
 		protected void AddUnlit(Decal decal)
 		{
 			if (!this._unlitDecals.ContainsKey(decal.Material))
@@ -428,95 +428,95 @@ namespace ThreeEyedGames
 			this._unlitDecals[decal.Material].Add(decal);
 		}
 
-		// Token: 0x040029B4 RID: 10676
+		// Token: 0x0400344D RID: 13389
 		[HideInInspector]
 		public bool UseInstancing = true;
 
-		// Token: 0x040029B5 RID: 10677
+		// Token: 0x0400344E RID: 13390
 		protected CommandBuffer _bufferDeferred;
 
-		// Token: 0x040029B6 RID: 10678
+		// Token: 0x0400344F RID: 13391
 		protected CommandBuffer _bufferUnlit;
 
-		// Token: 0x040029B7 RID: 10679
+		// Token: 0x04003450 RID: 13392
 		protected CommandBuffer _bufferLimitTo;
 
-		// Token: 0x040029B8 RID: 10680
+		// Token: 0x04003451 RID: 13393
 		protected Dictionary<Material, HashSet<Decal>> _deferredDecals;
 
-		// Token: 0x040029B9 RID: 10681
+		// Token: 0x04003452 RID: 13394
 		protected Dictionary<Material, HashSet<Decal>> _unlitDecals;
 
-		// Token: 0x040029BA RID: 10682
+		// Token: 0x04003453 RID: 13395
 		protected List<MeshRenderer> _limitToMeshRenderers;
 
-		// Token: 0x040029BB RID: 10683
+		// Token: 0x04003454 RID: 13396
 		protected List<SkinnedMeshRenderer> _limitToSkinnedMeshRenderers;
 
-		// Token: 0x040029BC RID: 10684
+		// Token: 0x04003455 RID: 13397
 		protected HashSet<GameObject> _limitToGameObjects;
 
-		// Token: 0x040029BD RID: 10685
+		// Token: 0x04003456 RID: 13398
 		protected List<Decal> _decalComponent;
 
-		// Token: 0x040029BE RID: 10686
+		// Token: 0x04003457 RID: 13399
 		protected List<MeshFilter> _meshFilterComponent;
 
-		// Token: 0x040029BF RID: 10687
+		// Token: 0x04003458 RID: 13400
 		protected const string _bufferBaseName = "Decalicious - ";
 
-		// Token: 0x040029C0 RID: 10688
+		// Token: 0x04003459 RID: 13401
 		protected const string _bufferDeferredName = "Decalicious - Deferred";
 
-		// Token: 0x040029C1 RID: 10689
+		// Token: 0x0400345A RID: 13402
 		protected const string _bufferUnlitName = "Decalicious - Unlit";
 
-		// Token: 0x040029C2 RID: 10690
+		// Token: 0x0400345B RID: 13403
 		protected const string _bufferLimitToName = "Decalicious - Limit To Game Objects";
 
-		// Token: 0x040029C3 RID: 10691
+		// Token: 0x0400345C RID: 13404
 		protected const CameraEvent _camEventDeferred = CameraEvent.BeforeReflections;
 
-		// Token: 0x040029C4 RID: 10692
+		// Token: 0x0400345D RID: 13405
 		protected const CameraEvent _camEventUnlit = CameraEvent.BeforeImageEffectsOpaque;
 
-		// Token: 0x040029C5 RID: 10693
+		// Token: 0x0400345E RID: 13406
 		protected const CameraEvent _camEventLimitTo = CameraEvent.AfterGBuffer;
 
-		// Token: 0x040029C6 RID: 10694
+		// Token: 0x0400345F RID: 13407
 		protected Camera _camera;
 
-		// Token: 0x040029C7 RID: 10695
+		// Token: 0x04003460 RID: 13408
 		protected bool _camLastKnownHDR;
 
-		// Token: 0x040029C8 RID: 10696
+		// Token: 0x04003461 RID: 13409
 		protected static Mesh _cubeMesh = null;
 
-		// Token: 0x040029C9 RID: 10697
+		// Token: 0x04003462 RID: 13410
 		protected Matrix4x4[] _matrices;
 
-		// Token: 0x040029CA RID: 10698
+		// Token: 0x04003463 RID: 13411
 		protected float[] _fadeValues;
 
-		// Token: 0x040029CB RID: 10699
+		// Token: 0x04003464 RID: 13412
 		protected float[] _limitToValues;
 
-		// Token: 0x040029CC RID: 10700
+		// Token: 0x04003465 RID: 13413
 		protected MaterialPropertyBlock _instancedBlock;
 
-		// Token: 0x040029CD RID: 10701
+		// Token: 0x04003466 RID: 13414
 		protected MaterialPropertyBlock _directBlock;
 
-		// Token: 0x040029CE RID: 10702
+		// Token: 0x04003467 RID: 13415
 		protected RenderTargetIdentifier[] _albedoRenderTarget;
 
-		// Token: 0x040029CF RID: 10703
+		// Token: 0x04003468 RID: 13416
 		protected RenderTargetIdentifier[] _normalRenderTarget;
 
-		// Token: 0x040029D0 RID: 10704
+		// Token: 0x04003469 RID: 13417
 		protected Material _materialLimitToGameObjects;
 
-		// Token: 0x040029D1 RID: 10705
+		// Token: 0x0400346A RID: 13418
 		protected static Vector4[] _avCoeff = new Vector4[7];
 	}
 }

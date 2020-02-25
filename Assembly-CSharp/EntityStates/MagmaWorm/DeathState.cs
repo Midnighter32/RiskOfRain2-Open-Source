@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.MagmaWorm
 {
-	// Token: 0x0200010E RID: 270
+	// Token: 0x02000815 RID: 2069
 	public class DeathState : GenericCharacterDeath
 	{
-		// Token: 0x0600052F RID: 1327 RVA: 0x00016D0C File Offset: 0x00014F0C
+		// Token: 0x06002EEE RID: 12014 RVA: 0x000C7B2C File Offset: 0x000C5D2C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -57,12 +57,12 @@ namespace EntityStates.MagmaWorm
 				}
 				if (NetworkServer.active)
 				{
-					EffectManager.instance.SimpleMuzzleFlash(DeathState.initialDeathExplosionEffect, base.gameObject, "HeadCenter", true);
+					EffectManager.SimpleMuzzleFlash(DeathState.initialDeathExplosionEffect, base.gameObject, "HeadCenter", true);
 				}
 			}
 		}
 
-		// Token: 0x06000530 RID: 1328 RVA: 0x00016E9A File Offset: 0x0001509A
+		// Token: 0x06002EEF RID: 12015 RVA: 0x000C7CB5 File Offset: 0x000C5EB5
 		public override void FixedUpdate()
 		{
 			this.stopwatch += Time.fixedDeltaTime;
@@ -72,16 +72,16 @@ namespace EntityStates.MagmaWorm
 			}
 		}
 
-		// Token: 0x04000561 RID: 1377
+		// Token: 0x04002C2F RID: 11311
 		public static GameObject initialDeathExplosionEffect;
 
-		// Token: 0x04000562 RID: 1378
+		// Token: 0x04002C30 RID: 11312
 		public static string deathSoundString;
 
-		// Token: 0x04000563 RID: 1379
+		// Token: 0x04002C31 RID: 11313
 		public static float duration;
 
-		// Token: 0x04000564 RID: 1380
+		// Token: 0x04002C32 RID: 11314
 		private float stopwatch;
 	}
 }

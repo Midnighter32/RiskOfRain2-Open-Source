@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Commando.CommandoWeapon
 {
-	// Token: 0x020001A3 RID: 419
+	// Token: 0x020008B4 RID: 2228
 	public class CastSmokescreenNoDelay : BaseState
 	{
-		// Token: 0x06000822 RID: 2082 RVA: 0x00028A24 File Offset: 0x00026C24
+		// Token: 0x060031F4 RID: 12788 RVA: 0x000D7988 File Offset: 0x000D5B88
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -21,7 +21,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x06000823 RID: 2083 RVA: 0x00028A78 File Offset: 0x00026C78
+		// Token: 0x060031F5 RID: 12789 RVA: 0x000D79DC File Offset: 0x000D5BDC
 		public override void OnExit()
 		{
 			if (base.characterBody && NetworkServer.active)
@@ -52,7 +52,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			base.OnExit();
 		}
 
-		// Token: 0x06000824 RID: 2084 RVA: 0x00028B5A File Offset: 0x00026D5A
+		// Token: 0x060031F6 RID: 12790 RVA: 0x000D7ABE File Offset: 0x000D5CBE
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -64,7 +64,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x06000825 RID: 2085 RVA: 0x00028B98 File Offset: 0x00026D98
+		// Token: 0x060031F7 RID: 12791 RVA: 0x000D7AFC File Offset: 0x000D5CFC
 		private void CastSmoke()
 		{
 			if (!this.hasCastSmoke)
@@ -76,7 +76,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			{
 				Util.PlaySound(CastSmokescreenNoDelay.stopCloakSoundString, base.gameObject);
 			}
-			EffectManager.instance.SpawnEffect(CastSmokescreenNoDelay.smokescreenEffectPrefab, new EffectData
+			EffectManager.SpawnEffect(CastSmokescreenNoDelay.smokescreenEffectPrefab, new EffectData
 			{
 				origin = base.transform.position
 			}, false);
@@ -103,7 +103,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x06000826 RID: 2086 RVA: 0x00028CBC File Offset: 0x00026EBC
+		// Token: 0x060031F8 RID: 12792 RVA: 0x000D7C1C File Offset: 0x000D5E1C
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			if (this.stopwatch <= CastSmokescreenNoDelay.minimumStateDuration)
@@ -113,40 +113,40 @@ namespace EntityStates.Commando.CommandoWeapon
 			return InterruptPriority.Any;
 		}
 
-		// Token: 0x04000AAC RID: 2732
+		// Token: 0x04003094 RID: 12436
 		public static float duration;
 
-		// Token: 0x04000AAD RID: 2733
+		// Token: 0x04003095 RID: 12437
 		public static float minimumStateDuration = 3f;
 
-		// Token: 0x04000AAE RID: 2734
+		// Token: 0x04003096 RID: 12438
 		public static string startCloakSoundString;
 
-		// Token: 0x04000AAF RID: 2735
+		// Token: 0x04003097 RID: 12439
 		public static string stopCloakSoundString;
 
-		// Token: 0x04000AB0 RID: 2736
+		// Token: 0x04003098 RID: 12440
 		public static GameObject smokescreenEffectPrefab;
 
-		// Token: 0x04000AB1 RID: 2737
+		// Token: 0x04003099 RID: 12441
 		public static Material destealthMaterial;
 
-		// Token: 0x04000AB2 RID: 2738
+		// Token: 0x0400309A RID: 12442
 		public static float damageCoefficient = 1.3f;
 
-		// Token: 0x04000AB3 RID: 2739
+		// Token: 0x0400309B RID: 12443
 		public static float radius = 4f;
 
-		// Token: 0x04000AB4 RID: 2740
+		// Token: 0x0400309C RID: 12444
 		public static float forceMagnitude = 100f;
 
-		// Token: 0x04000AB5 RID: 2741
+		// Token: 0x0400309D RID: 12445
 		private float stopwatch;
 
-		// Token: 0x04000AB6 RID: 2742
+		// Token: 0x0400309E RID: 12446
 		private bool hasCastSmoke;
 
-		// Token: 0x04000AB7 RID: 2743
+		// Token: 0x0400309F RID: 12447
 		private Animator animator;
 	}
 }

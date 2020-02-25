@@ -4,10 +4,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x0200033E RID: 830
+	// Token: 0x02000262 RID: 610
 	public struct EquipmentState : IEquatable<EquipmentState>
 	{
-		// Token: 0x06001130 RID: 4400 RVA: 0x00055990 File Offset: 0x00053B90
+		// Token: 0x06000D88 RID: 3464 RVA: 0x0003CD18 File Offset: 0x0003AF18
 		public EquipmentState(EquipmentIndex equipmentIndex, Run.FixedTimeStamp chargeFinishTime, byte charges)
 		{
 			this.equipmentIndex = equipmentIndex;
@@ -17,25 +17,25 @@ namespace RoR2
 			this.equipmentDef = EquipmentCatalog.GetEquipmentDef(equipmentIndex);
 		}
 
-		// Token: 0x06001131 RID: 4401 RVA: 0x000559BC File Offset: 0x00053BBC
+		// Token: 0x06000D89 RID: 3465 RVA: 0x0003CD44 File Offset: 0x0003AF44
 		public bool Equals(EquipmentState other)
 		{
 			return this.equipmentIndex == other.equipmentIndex && this.chargeFinishTime.Equals(other.chargeFinishTime) && this.charges == other.charges;
 		}
 
-		// Token: 0x06001132 RID: 4402 RVA: 0x000559FD File Offset: 0x00053BFD
+		// Token: 0x06000D8A RID: 3466 RVA: 0x0003CD85 File Offset: 0x0003AF85
 		public override bool Equals(object obj)
 		{
 			return obj != null && obj is EquipmentState && this.Equals((EquipmentState)obj);
 		}
 
-		// Token: 0x06001133 RID: 4403 RVA: 0x00055A1C File Offset: 0x00053C1C
+		// Token: 0x06000D8B RID: 3467 RVA: 0x0003CDA4 File Offset: 0x0003AFA4
 		public override int GetHashCode()
 		{
 			return (int)(this.equipmentIndex * (EquipmentIndex)397 ^ (EquipmentIndex)this.chargeFinishTime.GetHashCode());
 		}
 
-		// Token: 0x06001134 RID: 4404 RVA: 0x00055A4C File Offset: 0x00053C4C
+		// Token: 0x06000D8C RID: 3468 RVA: 0x0003CDD4 File Offset: 0x0003AFD4
 		public static EquipmentState Deserialize(NetworkReader reader)
 		{
 			EquipmentIndex equipmentIndex = reader.ReadEquipmentIndex();
@@ -44,7 +44,7 @@ namespace RoR2
 			return new EquipmentState(equipmentIndex, fixedTimeStamp, b);
 		}
 
-		// Token: 0x06001135 RID: 4405 RVA: 0x00055A74 File Offset: 0x00053C74
+		// Token: 0x06000D8D RID: 3469 RVA: 0x0003CDFC File Offset: 0x0003AFFC
 		public static void Serialize(NetworkWriter writer, EquipmentState equipmentState)
 		{
 			writer.Write(equipmentState.equipmentIndex);
@@ -52,23 +52,23 @@ namespace RoR2
 			writer.Write(equipmentState.charges);
 		}
 
-		// Token: 0x04001543 RID: 5443
+		// Token: 0x04000D92 RID: 3474
 		public readonly EquipmentIndex equipmentIndex;
 
-		// Token: 0x04001544 RID: 5444
+		// Token: 0x04000D93 RID: 3475
 		public readonly Run.FixedTimeStamp chargeFinishTime;
 
-		// Token: 0x04001545 RID: 5445
+		// Token: 0x04000D94 RID: 3476
 		public readonly byte charges;
 
-		// Token: 0x04001546 RID: 5446
+		// Token: 0x04000D95 RID: 3477
 		public bool dirty;
 
-		// Token: 0x04001547 RID: 5447
+		// Token: 0x04000D96 RID: 3478
 		[CanBeNull]
 		public readonly EquipmentDef equipmentDef;
 
-		// Token: 0x04001548 RID: 5448
+		// Token: 0x04000D97 RID: 3479
 		public static readonly EquipmentState empty = new EquipmentState(EquipmentIndex.None, Run.FixedTimeStamp.negativeInfinity, 0);
 	}
 }

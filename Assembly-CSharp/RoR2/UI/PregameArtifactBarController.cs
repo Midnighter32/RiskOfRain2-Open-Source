@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000622 RID: 1570
+	// Token: 0x02000611 RID: 1553
 	[RequireComponent(typeof(RectTransform))]
 	public class PregameArtifactBarController : MonoBehaviour
 	{
-		// Token: 0x06002348 RID: 9032 RVA: 0x000A6480 File Offset: 0x000A4680
+		// Token: 0x060024C7 RID: 9415 RVA: 0x000A0860 File Offset: 0x0009EA60
 		private void Start()
 		{
 			RectTransform component = base.GetComponent<RectTransform>();
@@ -17,7 +17,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x04002645 RID: 9797
+		// Token: 0x0400228E RID: 8846
 		public GameObject artifactTogglePrefab;
 	}
 }

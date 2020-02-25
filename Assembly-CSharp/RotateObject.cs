@@ -1,15 +1,15 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x02000051 RID: 81
+// Token: 0x0200004D RID: 77
 public class RotateObject : MonoBehaviour
 {
-	// Token: 0x06000159 RID: 345 RVA: 0x00004507 File Offset: 0x00002707
+	// Token: 0x0600013E RID: 318 RVA: 0x0000409B File Offset: 0x0000229B
 	private void Start()
 	{
 	}
 
-	// Token: 0x0600015A RID: 346 RVA: 0x00007FD0 File Offset: 0x000061D0
+	// Token: 0x0600013F RID: 319 RVA: 0x00007EE4 File Offset: 0x000060E4
 	private void Update()
 	{
 		base.transform.Rotate(this.rotationSpeed * Time.deltaTime);

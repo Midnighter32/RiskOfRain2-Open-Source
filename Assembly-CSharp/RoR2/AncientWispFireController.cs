@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000255 RID: 597
+	// Token: 0x02000146 RID: 326
 	[RequireComponent(typeof(CharacterModel))]
 	public class AncientWispFireController : MonoBehaviour
 	{
-		// Token: 0x06000B20 RID: 2848 RVA: 0x00037417 File Offset: 0x00035617
+		// Token: 0x060005C8 RID: 1480 RVA: 0x00017F3E File Offset: 0x0001613E
 		private void Awake()
 		{
 			this.characterModel = base.GetComponent<CharacterModel>();
 		}
 
-		// Token: 0x06000B21 RID: 2849 RVA: 0x00037428 File Offset: 0x00035628
+		// Token: 0x060005C9 RID: 1481 RVA: 0x00017F4C File Offset: 0x0001614C
 		private void Update()
 		{
 			bool flag = false;
@@ -56,19 +56,19 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04000F28 RID: 3880
+		// Token: 0x04000645 RID: 1605
 		public ParticleSystem normalParticles;
 
-		// Token: 0x04000F29 RID: 3881
+		// Token: 0x04000646 RID: 1606
 		public Light normalLight;
 
-		// Token: 0x04000F2A RID: 3882
+		// Token: 0x04000647 RID: 1607
 		public ParticleSystem rageParticles;
 
-		// Token: 0x04000F2B RID: 3883
+		// Token: 0x04000648 RID: 1608
 		public Light rageLight;
 
-		// Token: 0x04000F2C RID: 3884
+		// Token: 0x04000649 RID: 1609
 		private CharacterModel characterModel;
 	}
 }

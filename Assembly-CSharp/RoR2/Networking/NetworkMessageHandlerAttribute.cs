@@ -7,62 +7,55 @@ using UnityEngine.Networking;
 
 namespace RoR2.Networking
 {
-	// Token: 0x02000595 RID: 1429
+	// Token: 0x02000566 RID: 1382
 	[MeansImplicitUse]
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-	public class NetworkMessageHandlerAttribute : Attribute
+	public class NetworkMessageHandlerAttribute : SearchableAttribute
 	{
-		// Token: 0x06002030 RID: 8240 RVA: 0x00097190 File Offset: 0x00095390
+		// Token: 0x060020FA RID: 8442 RVA: 0x0008E76C File Offset: 0x0008C96C
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void CollectHandlers()
 		{
 			NetworkMessageHandlerAttribute.clientMessageHandlers.Clear();
 			NetworkMessageHandlerAttribute.serverMessageHandlers.Clear();
 			HashSet<short> hashSet = new HashSet<short>();
-			Type[] types = typeof(NetworkMessageHandlerAttribute).Assembly.GetTypes();
-			for (int i = 0; i < types.Length; i++)
+			foreach (SearchableAttribute searchableAttribute in SearchableAttribute.GetInstances<NetworkMessageHandlerAttribute>())
 			{
-				foreach (MethodInfo methodInfo in types[i].GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+				NetworkMessageHandlerAttribute networkMessageHandlerAttribute = (NetworkMessageHandlerAttribute)searchableAttribute;
+				MethodInfo methodInfo = networkMessageHandlerAttribute.target as MethodInfo;
+				if (!(methodInfo == null) && methodInfo.IsStatic)
 				{
-					object[] customAttributes = methodInfo.GetCustomAttributes(false);
-					for (int k = 0; k < customAttributes.Length; k++)
+					networkMessageHandlerAttribute.messageHandler = (NetworkMessageDelegate)Delegate.CreateDelegate(typeof(NetworkMessageDelegate), methodInfo);
+					if (networkMessageHandlerAttribute.messageHandler != null)
 					{
-						NetworkMessageHandlerAttribute networkMessageHandlerAttribute = ((Attribute)customAttributes[k]) as NetworkMessageHandlerAttribute;
-						if (networkMessageHandlerAttribute != null)
+						if (networkMessageHandlerAttribute.client)
 						{
-							networkMessageHandlerAttribute.messageHandler = (NetworkMessageDelegate)Delegate.CreateDelegate(typeof(NetworkMessageDelegate), methodInfo);
-							if (networkMessageHandlerAttribute.messageHandler != null)
-							{
-								if (networkMessageHandlerAttribute.client)
-								{
-									NetworkMessageHandlerAttribute.clientMessageHandlers.Add(networkMessageHandlerAttribute);
-									hashSet.Add(networkMessageHandlerAttribute.msgType);
-								}
-								if (networkMessageHandlerAttribute.server)
-								{
-									NetworkMessageHandlerAttribute.serverMessageHandlers.Add(networkMessageHandlerAttribute);
-									hashSet.Add(networkMessageHandlerAttribute.msgType);
-								}
-							}
-							if (networkMessageHandlerAttribute.messageHandler == null)
-							{
-								Debug.LogWarningFormat("Could not register message handler for {0}. The function signature is likely incorrect.", new object[]
-								{
-									methodInfo.Name
-								});
-							}
-							if (!networkMessageHandlerAttribute.client && !networkMessageHandlerAttribute.server)
-							{
-								Debug.LogWarningFormat("Could not register message handler for {0}. It is marked as neither server nor client.", new object[]
-								{
-									methodInfo.Name
-								});
-							}
+							NetworkMessageHandlerAttribute.clientMessageHandlers.Add(networkMessageHandlerAttribute);
+							hashSet.Add(networkMessageHandlerAttribute.msgType);
 						}
+						if (networkMessageHandlerAttribute.server)
+						{
+							NetworkMessageHandlerAttribute.serverMessageHandlers.Add(networkMessageHandlerAttribute);
+							hashSet.Add(networkMessageHandlerAttribute.msgType);
+						}
+					}
+					if (networkMessageHandlerAttribute.messageHandler == null)
+					{
+						Debug.LogWarningFormat("Could not register message handler for {0}. The function signature is likely incorrect.", new object[]
+						{
+							methodInfo.Name
+						});
+					}
+					if (!networkMessageHandlerAttribute.client && !networkMessageHandlerAttribute.server)
+					{
+						Debug.LogWarningFormat("Could not register message handler for {0}. It is marked as neither server nor client.", new object[]
+						{
+							methodInfo.Name
+						});
 					}
 				}
 			}
-			for (short num = 48; num < 71; num += 1)
+			for (short num = 48; num < 75; num += 1)
 			{
 				if (!hashSet.Contains(num))
 				{
@@ -74,7 +67,7 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06002031 RID: 8241 RVA: 0x0009733C File Offset: 0x0009553C
+		// Token: 0x060020FB RID: 8443 RVA: 0x0008E8E8 File Offset: 0x0008CAE8
 		public static void RegisterServerMessages()
 		{
 			foreach (NetworkMessageHandlerAttribute networkMessageHandlerAttribute in NetworkMessageHandlerAttribute.serverMessageHandlers)
@@ -83,7 +76,7 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06002032 RID: 8242 RVA: 0x00097398 File Offset: 0x00095598
+		// Token: 0x060020FC RID: 8444 RVA: 0x0008E944 File Offset: 0x0008CB44
 		public static void RegisterClientMessages(NetworkClient client)
 		{
 			foreach (NetworkMessageHandlerAttribute networkMessageHandlerAttribute in NetworkMessageHandlerAttribute.clientMessageHandlers)
@@ -92,22 +85,22 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x0400224C RID: 8780
+		// Token: 0x04001E03 RID: 7683
 		public short msgType;
 
-		// Token: 0x0400224D RID: 8781
+		// Token: 0x04001E04 RID: 7684
 		public bool server;
 
-		// Token: 0x0400224E RID: 8782
+		// Token: 0x04001E05 RID: 7685
 		public bool client;
 
-		// Token: 0x0400224F RID: 8783
+		// Token: 0x04001E06 RID: 7686
 		private NetworkMessageDelegate messageHandler;
 
-		// Token: 0x04002250 RID: 8784
+		// Token: 0x04001E07 RID: 7687
 		private static List<NetworkMessageHandlerAttribute> clientMessageHandlers = new List<NetworkMessageHandlerAttribute>();
 
-		// Token: 0x04002251 RID: 8785
+		// Token: 0x04001E08 RID: 7688
 		private static List<NetworkMessageHandlerAttribute> serverMessageHandlers = new List<NetworkMessageHandlerAttribute>();
 	}
 }

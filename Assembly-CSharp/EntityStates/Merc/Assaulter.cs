@@ -5,10 +5,20 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Merc
 {
-	// Token: 0x02000104 RID: 260
+	// Token: 0x020007C1 RID: 1985
 	public class Assaulter : BaseState
 	{
-		// Token: 0x06000506 RID: 1286 RVA: 0x000153EC File Offset: 0x000135EC
+		// Token: 0x1700042E RID: 1070
+		// (get) Token: 0x06002D52 RID: 11602 RVA: 0x000BF40A File Offset: 0x000BD60A
+		// (set) Token: 0x06002D53 RID: 11603 RVA: 0x000BF412 File Offset: 0x000BD612
+		public bool hasHit { get; private set; }
+
+		// Token: 0x1700042F RID: 1071
+		// (get) Token: 0x06002D54 RID: 11604 RVA: 0x000BF41B File Offset: 0x000BD61B
+		// (set) Token: 0x06002D55 RID: 11605 RVA: 0x000BF423 File Offset: 0x000BD623
+		public int dashIndex { private get; set; }
+
+		// Token: 0x06002D56 RID: 11606 RVA: 0x000BF42C File Offset: 0x000BD62C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -34,14 +44,13 @@ namespace EntityStates.Merc
 			this.dashVector = base.inputBank.aimDirection;
 			this.overlapAttack = base.InitMeleeOverlap(Assaulter.damageCoefficient, Assaulter.hitEffectPrefab, this.modelTransform, "Assaulter");
 			this.overlapAttack.damageType = DamageType.Stun1s;
-			this.dashSkill = base.GetComponent<MercDashSkill>();
-			if (this.dashSkill && base.isAuthority)
+			if (NetworkServer.active)
 			{
-				this.dashIndex = this.dashSkill.currentDashIndex;
+				base.characterBody.AddBuff(BuffIndex.HiddenInvincibility);
 			}
 		}
 
-		// Token: 0x06000507 RID: 1287 RVA: 0x0001554C File Offset: 0x0001374C
+		// Token: 0x06002D57 RID: 11607 RVA: 0x000BF56C File Offset: 0x000BD76C
 		private void CreateDashEffect()
 		{
 			Transform transform = this.childLocator.FindChild("DashCenter");
@@ -55,7 +64,7 @@ namespace EntityStates.Merc
 			}
 		}
 
-		// Token: 0x06000508 RID: 1288 RVA: 0x000155C4 File Offset: 0x000137C4
+		// Token: 0x06002D58 RID: 11608 RVA: 0x000BF5E4 File Offset: 0x000BD7E4
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -68,12 +77,6 @@ namespace EntityStates.Merc
 				base.PlayCrossfade("FullBody, Override", "AssaulterLoop", 0.1f);
 				base.gameObject.layer = LayerIndex.fakeActor.intVal;
 				base.characterMotor.Motor.RebuildCollidableLayers();
-				if (this.hurtboxGroup)
-				{
-					HurtBoxGroup hurtBoxGroup = this.hurtboxGroup;
-					int hurtBoxesDeactivatorCounter = hurtBoxGroup.hurtBoxesDeactivatorCounter + 1;
-					hurtBoxGroup.hurtBoxesDeactivatorCounter = hurtBoxesDeactivatorCounter;
-				}
 				if (this.modelTransform)
 				{
 					TemporaryOverlay temporaryOverlay = this.modelTransform.gameObject.AddComponent<TemporaryOverlay>();
@@ -98,14 +101,9 @@ namespace EntityStates.Merc
 					this.stopwatch += Time.fixedDeltaTime;
 					if (flag)
 					{
-						Util.PlaySound(Assaulter.impactSoundString, base.gameObject);
 						if (!this.hasHit)
 						{
 							this.hasHit = true;
-							if (this.dashSkill)
-							{
-								this.dashSkill.AddHit();
-							}
 						}
 						this.inHitPause = true;
 						this.hitPauseTimer = Assaulter.hitPauseDuration / this.attackSpeedStat;
@@ -137,7 +135,7 @@ namespace EntityStates.Merc
 			}
 		}
 
-		// Token: 0x06000509 RID: 1289 RVA: 0x000158C0 File Offset: 0x00013AC0
+		// Token: 0x06002D59 RID: 11609 RVA: 0x000BF894 File Offset: 0x000BDA94
 		public override void OnExit()
 		{
 			base.gameObject.layer = LayerIndex.defaultLayer.intVal;
@@ -152,110 +150,96 @@ namespace EntityStates.Merc
 			{
 				base.cameraTargetParams.aimMode = CameraTargetParams.AimType.Standard;
 			}
-			if (this.hurtboxGroup)
-			{
-				HurtBoxGroup hurtBoxGroup = this.hurtboxGroup;
-				int hurtBoxesDeactivatorCounter = hurtBoxGroup.hurtBoxesDeactivatorCounter - 1;
-				hurtBoxGroup.hurtBoxesDeactivatorCounter = hurtBoxesDeactivatorCounter;
-			}
 			if (this.childLocator)
 			{
 				this.childLocator.FindChild("PreDashEffect").gameObject.SetActive(false);
 			}
 			base.PlayAnimation("FullBody, Override", "EvisLoopExit");
+			if (NetworkServer.active)
+			{
+				base.characterBody.RemoveBuff(BuffIndex.HiddenInvincibility);
+			}
 			base.OnExit();
 		}
 
-		// Token: 0x0600050A RID: 1290 RVA: 0x000159B0 File Offset: 0x00013BB0
+		// Token: 0x06002D5A RID: 11610 RVA: 0x000BF975 File Offset: 0x000BDB75
 		public override void OnSerialize(NetworkWriter writer)
 		{
 			base.OnSerialize(writer);
 			writer.Write((byte)this.dashIndex);
 		}
 
-		// Token: 0x0600050B RID: 1291 RVA: 0x000159C6 File Offset: 0x00013BC6
+		// Token: 0x06002D5B RID: 11611 RVA: 0x000BF98B File Offset: 0x000BDB8B
 		public override void OnDeserialize(NetworkReader reader)
 		{
 			base.OnDeserialize(reader);
 			this.dashIndex = (int)reader.ReadByte();
 		}
 
-		// Token: 0x040004E5 RID: 1253
+		// Token: 0x0400298B RID: 10635
 		private Transform modelTransform;
 
-		// Token: 0x040004E6 RID: 1254
+		// Token: 0x0400298C RID: 10636
 		public static GameObject dashPrefab;
 
-		// Token: 0x040004E7 RID: 1255
+		// Token: 0x0400298D RID: 10637
 		public static float smallHopVelocity;
 
-		// Token: 0x040004E8 RID: 1256
+		// Token: 0x0400298E RID: 10638
 		public static float dashPrepDuration;
 
-		// Token: 0x040004E9 RID: 1257
+		// Token: 0x0400298F RID: 10639
 		public static float dashDuration = 0.3f;
 
-		// Token: 0x040004EA RID: 1258
+		// Token: 0x04002990 RID: 10640
 		public static float speedCoefficient = 25f;
 
-		// Token: 0x040004EB RID: 1259
+		// Token: 0x04002991 RID: 10641
 		public static string beginSoundString;
 
-		// Token: 0x040004EC RID: 1260
+		// Token: 0x04002992 RID: 10642
 		public static string endSoundString;
 
-		// Token: 0x040004ED RID: 1261
+		// Token: 0x04002993 RID: 10643
 		public static float damageCoefficient;
 
-		// Token: 0x040004EE RID: 1262
+		// Token: 0x04002994 RID: 10644
 		public static float procCoefficient;
 
-		// Token: 0x040004EF RID: 1263
+		// Token: 0x04002995 RID: 10645
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x040004F0 RID: 1264
+		// Token: 0x04002996 RID: 10646
 		public static float hitPauseDuration;
 
-		// Token: 0x040004F1 RID: 1265
-		public static string impactSoundString;
-
-		// Token: 0x040004F2 RID: 1266
+		// Token: 0x04002997 RID: 10647
 		private float stopwatch;
 
-		// Token: 0x040004F3 RID: 1267
+		// Token: 0x04002998 RID: 10648
 		private Vector3 dashVector = Vector3.zero;
 
-		// Token: 0x040004F4 RID: 1268
+		// Token: 0x04002999 RID: 10649
 		private Animator animator;
 
-		// Token: 0x040004F5 RID: 1269
+		// Token: 0x0400299A RID: 10650
 		private CharacterModel characterModel;
 
-		// Token: 0x040004F6 RID: 1270
+		// Token: 0x0400299B RID: 10651
 		private HurtBoxGroup hurtboxGroup;
 
-		// Token: 0x040004F7 RID: 1271
+		// Token: 0x0400299C RID: 10652
 		private OverlapAttack overlapAttack;
 
-		// Token: 0x040004F8 RID: 1272
+		// Token: 0x0400299D RID: 10653
 		private ChildLocator childLocator;
 
-		// Token: 0x040004F9 RID: 1273
+		// Token: 0x0400299E RID: 10654
 		private bool isDashing;
 
-		// Token: 0x040004FA RID: 1274
+		// Token: 0x0400299F RID: 10655
 		private bool inHitPause;
 
-		// Token: 0x040004FB RID: 1275
+		// Token: 0x040029A0 RID: 10656
 		private float hitPauseTimer;
-
-		// Token: 0x040004FC RID: 1276
-		private bool hasHit;
-
-		// Token: 0x040004FD RID: 1277
-		private MercDashSkill dashSkill;
-
-		// Token: 0x040004FE RID: 1278
-		private int dashIndex;
 	}
 }

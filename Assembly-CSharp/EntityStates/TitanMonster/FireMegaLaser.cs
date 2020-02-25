@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.TitanMonster
 {
-	// Token: 0x02000173 RID: 371
-	internal class FireMegaLaser : BaseState
+	// Token: 0x02000859 RID: 2137
+	public class FireMegaLaser : BaseState
 	{
-		// Token: 0x06000722 RID: 1826 RVA: 0x00022754 File Offset: 0x00020954
+		// Token: 0x0600303D RID: 12349 RVA: 0x000CF550 File Offset: 0x000CD750
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -49,7 +49,7 @@ namespace EntityStates.TitanMonster
 			this.UpdateLockOn();
 		}
 
-		// Token: 0x06000723 RID: 1827 RVA: 0x0002292C File Offset: 0x00020B2C
+		// Token: 0x0600303E RID: 12350 RVA: 0x000CF728 File Offset: 0x000CD928
 		public override void OnExit()
 		{
 			if (this.laserEffect)
@@ -62,7 +62,7 @@ namespace EntityStates.TitanMonster
 			base.OnExit();
 		}
 
-		// Token: 0x06000724 RID: 1828 RVA: 0x00022990 File Offset: 0x00020B90
+		// Token: 0x0600303F RID: 12351 RVA: 0x000CF78C File Offset: 0x000CD98C
 		private void UpdateLockOn()
 		{
 			if (base.isAuthority)
@@ -76,7 +76,7 @@ namespace EntityStates.TitanMonster
 			}
 		}
 
-		// Token: 0x06000725 RID: 1829 RVA: 0x00022A00 File Offset: 0x00020C00
+		// Token: 0x06003040 RID: 12352 RVA: 0x000CF7FC File Offset: 0x000CD9FC
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -145,18 +145,18 @@ namespace EntityStates.TitanMonster
 			}
 		}
 
-		// Token: 0x06000726 RID: 1830 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06003041 RID: 12353 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x06000727 RID: 1831 RVA: 0x00022D14 File Offset: 0x00020F14
+		// Token: 0x06003042 RID: 12354 RVA: 0x000CFB10 File Offset: 0x000CDD10
 		private void FireBullet(Transform modelTransform, Ray aimRay, string targetMuzzle, float maxDistance)
 		{
 			if (this.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(this.effectPrefab, base.gameObject, targetMuzzle, false);
+				EffectManager.SimpleMuzzleFlash(this.effectPrefab, base.gameObject, targetMuzzle, false);
 			}
 			if (base.isAuthority)
 			{
@@ -168,12 +168,13 @@ namespace EntityStates.TitanMonster
 					aimVector = aimRay.direction,
 					minSpread = FireMegaLaser.minSpread,
 					maxSpread = FireMegaLaser.maxSpread,
-					bulletCount = 1u,
+					bulletCount = 1U,
 					damage = FireMegaLaser.damageCoefficient * this.damageStat / FireMegaLaser.fireFrequency,
 					force = FireMegaLaser.force,
 					muzzleName = targetMuzzle,
 					hitEffectPrefab = this.hitEffectPrefab,
 					isCrit = Util.CheckRoll(this.critStat, base.characterBody.master),
+					procCoefficient = FireMegaLaser.procCoefficientPerTick,
 					HitEffectNormal = false,
 					radius = 0f,
 					maxDistance = maxDistance
@@ -181,7 +182,7 @@ namespace EntityStates.TitanMonster
 			}
 		}
 
-		// Token: 0x06000728 RID: 1832 RVA: 0x00022E16 File Offset: 0x00021016
+		// Token: 0x06003043 RID: 12355 RVA: 0x000CFC18 File Offset: 0x000CDE18
 		public override void OnSerialize(NetworkWriter writer)
 		{
 			base.OnSerialize(writer);
@@ -189,7 +190,7 @@ namespace EntityStates.TitanMonster
 			writer.Write(this.stopwatch);
 		}
 
-		// Token: 0x06000729 RID: 1833 RVA: 0x00022E40 File Offset: 0x00021040
+		// Token: 0x06003044 RID: 12356 RVA: 0x000CFC40 File Offset: 0x000CDE40
 		public override void OnDeserialize(NetworkReader reader)
 		{
 			base.OnDeserialize(reader);
@@ -199,97 +200,100 @@ namespace EntityStates.TitanMonster
 			this.lockedOnHurtBox = ((gameObject != null) ? gameObject.GetComponent<HurtBox>() : null);
 		}
 
-		// Token: 0x040008E1 RID: 2273
+		// Token: 0x04002E4D RID: 11853
 		[SerializeField]
 		public GameObject effectPrefab;
 
-		// Token: 0x040008E2 RID: 2274
+		// Token: 0x04002E4E RID: 11854
 		[SerializeField]
 		public GameObject hitEffectPrefab;
 
-		// Token: 0x040008E3 RID: 2275
+		// Token: 0x04002E4F RID: 11855
 		[SerializeField]
 		public GameObject laserPrefab;
 
-		// Token: 0x040008E4 RID: 2276
+		// Token: 0x04002E50 RID: 11856
 		public static string playAttackSoundString;
 
-		// Token: 0x040008E5 RID: 2277
+		// Token: 0x04002E51 RID: 11857
 		public static string playLoopSoundString;
 
-		// Token: 0x040008E6 RID: 2278
+		// Token: 0x04002E52 RID: 11858
 		public static string stopLoopSoundString;
 
-		// Token: 0x040008E7 RID: 2279
+		// Token: 0x04002E53 RID: 11859
 		public static float damageCoefficient;
 
-		// Token: 0x040008E8 RID: 2280
+		// Token: 0x04002E54 RID: 11860
 		public static float force;
 
-		// Token: 0x040008E9 RID: 2281
+		// Token: 0x04002E55 RID: 11861
 		public static float minSpread;
 
-		// Token: 0x040008EA RID: 2282
+		// Token: 0x04002E56 RID: 11862
 		public static float maxSpread;
 
-		// Token: 0x040008EB RID: 2283
+		// Token: 0x04002E57 RID: 11863
 		public static int bulletCount;
 
-		// Token: 0x040008EC RID: 2284
+		// Token: 0x04002E58 RID: 11864
 		public static float fireFrequency;
 
-		// Token: 0x040008ED RID: 2285
+		// Token: 0x04002E59 RID: 11865
 		public static float maxDistance;
 
-		// Token: 0x040008EE RID: 2286
+		// Token: 0x04002E5A RID: 11866
 		public static float minimumDuration;
 
-		// Token: 0x040008EF RID: 2287
+		// Token: 0x04002E5B RID: 11867
 		public static float maximumDuration;
 
-		// Token: 0x040008F0 RID: 2288
+		// Token: 0x04002E5C RID: 11868
 		public static float lockOnAngle;
 
-		// Token: 0x040008F1 RID: 2289
+		// Token: 0x04002E5D RID: 11869
+		public static float procCoefficientPerTick;
+
+		// Token: 0x04002E5E RID: 11870
 		private HurtBox lockedOnHurtBox;
 
-		// Token: 0x040008F2 RID: 2290
+		// Token: 0x04002E5F RID: 11871
 		private float fireStopwatch;
 
-		// Token: 0x040008F3 RID: 2291
+		// Token: 0x04002E60 RID: 11872
 		private float stopwatch;
 
-		// Token: 0x040008F4 RID: 2292
+		// Token: 0x04002E61 RID: 11873
 		private Ray aimRay;
 
-		// Token: 0x040008F5 RID: 2293
+		// Token: 0x04002E62 RID: 11874
 		private Transform modelTransform;
 
-		// Token: 0x040008F6 RID: 2294
+		// Token: 0x04002E63 RID: 11875
 		private GameObject laserEffect;
 
-		// Token: 0x040008F7 RID: 2295
+		// Token: 0x04002E64 RID: 11876
 		private ChildLocator laserChildLocator;
 
-		// Token: 0x040008F8 RID: 2296
+		// Token: 0x04002E65 RID: 11877
 		private Transform laserEffectEnd;
 
-		// Token: 0x040008F9 RID: 2297
+		// Token: 0x04002E66 RID: 11878
 		public int bulletCountCurrent = 1;
 
-		// Token: 0x040008FA RID: 2298
+		// Token: 0x04002E67 RID: 11879
 		protected Transform muzzleTransform;
 
-		// Token: 0x040008FB RID: 2299
+		// Token: 0x04002E68 RID: 11880
 		private float lockOnTestFrequency = 4f;
 
-		// Token: 0x040008FC RID: 2300
+		// Token: 0x04002E69 RID: 11881
 		private float lockOnStopwatch;
 
-		// Token: 0x040008FD RID: 2301
+		// Token: 0x04002E6A RID: 11882
 		private BullseyeSearch enemyFinder;
 
-		// Token: 0x040008FE RID: 2302
+		// Token: 0x04002E6B RID: 11883
 		private bool foundAnyTarget;
 	}
 }

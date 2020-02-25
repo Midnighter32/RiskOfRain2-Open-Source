@@ -6,24 +6,24 @@ using UnityEngine;
 
 namespace EntityStates.HermitCrab
 {
-	// Token: 0x0200015B RID: 347
-	internal class FireMortar : BaseState
+	// Token: 0x0200083D RID: 2109
+	public class FireMortar : BaseState
 	{
-		// Token: 0x060006BC RID: 1724 RVA: 0x000201CC File Offset: 0x0001E3CC
+		// Token: 0x06002FBD RID: 12221 RVA: 0x000CC858 File Offset: 0x000CAA58
 		public override void OnEnter()
 		{
 			base.OnEnter();
 			this.duration = FireMortar.baseDuration / this.attackSpeedStat;
 			base.PlayCrossfade("Gesture, Additive", "FireMortar", 0f);
 			Util.PlaySound(FireMortar.mortarSoundString, base.gameObject);
-			EffectManager.instance.SimpleMuzzleFlash(FireMortar.mortarMuzzleflashEffect, base.gameObject, FireMortar.mortarMuzzleName, false);
+			EffectManager.SimpleMuzzleFlash(FireMortar.mortarMuzzleflashEffect, base.gameObject, FireMortar.mortarMuzzleName, false);
 			if (base.isAuthority)
 			{
 				this.Fire();
 			}
 		}
 
-		// Token: 0x060006BD RID: 1725 RVA: 0x00020240 File Offset: 0x0001E440
+		// Token: 0x06002FBE RID: 12222 RVA: 0x000CC8C8 File Offset: 0x000CAAC8
 		private void Fire()
 		{
 			Ray aimRay = base.GetAimRay();
@@ -77,7 +77,7 @@ namespace EntityStates.HermitCrab
 			}
 		}
 
-		// Token: 0x060006BE RID: 1726 RVA: 0x0002046C File Offset: 0x0001E66C
+		// Token: 0x06002FBF RID: 12223 RVA: 0x000CCAF4 File Offset: 0x000CACF4
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -90,49 +90,46 @@ namespace EntityStates.HermitCrab
 			}
 		}
 
-		// Token: 0x060006BF RID: 1727 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002FC0 RID: 12224 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000844 RID: 2116
+		// Token: 0x04002D8A RID: 11658
 		public static GameObject mortarProjectilePrefab;
 
-		// Token: 0x04000845 RID: 2117
+		// Token: 0x04002D8B RID: 11659
 		public static GameObject mortarMuzzleflashEffect;
 
-		// Token: 0x04000846 RID: 2118
+		// Token: 0x04002D8C RID: 11660
 		public static int mortarCount;
 
-		// Token: 0x04000847 RID: 2119
+		// Token: 0x04002D8D RID: 11661
 		public static string mortarMuzzleName;
 
-		// Token: 0x04000848 RID: 2120
+		// Token: 0x04002D8E RID: 11662
 		public static string mortarSoundString;
 
-		// Token: 0x04000849 RID: 2121
+		// Token: 0x04002D8F RID: 11663
 		public static float mortarDamageCoefficient;
 
-		// Token: 0x0400084A RID: 2122
-		public static float mortarProcCoefficient;
-
-		// Token: 0x0400084B RID: 2123
+		// Token: 0x04002D90 RID: 11664
 		public static float baseDuration;
 
-		// Token: 0x0400084C RID: 2124
+		// Token: 0x04002D91 RID: 11665
 		public static float timeToTarget = 3f;
 
-		// Token: 0x0400084D RID: 2125
+		// Token: 0x04002D92 RID: 11666
 		public static float projectileVelocity = 55f;
 
-		// Token: 0x0400084E RID: 2126
+		// Token: 0x04002D93 RID: 11667
 		public static float minimumDistance;
 
-		// Token: 0x0400084F RID: 2127
+		// Token: 0x04002D94 RID: 11668
 		private float stopwatch;
 
-		// Token: 0x04000850 RID: 2128
+		// Token: 0x04002D95 RID: 11669
 		private float duration;
 	}
 }

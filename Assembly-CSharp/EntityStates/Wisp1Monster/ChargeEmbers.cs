@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Wisp1Monster
 {
-	// Token: 0x020000C6 RID: 198
+	// Token: 0x02000722 RID: 1826
 	public class ChargeEmbers : BaseState
 	{
-		// Token: 0x060003DA RID: 986 RVA: 0x0000FDC8 File Offset: 0x0000DFC8
+		// Token: 0x06002A80 RID: 10880 RVA: 0x000B2DC0 File Offset: 0x000B0FC0
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -49,7 +49,7 @@ namespace EntityStates.Wisp1Monster
 			}
 		}
 
-		// Token: 0x060003DB RID: 987 RVA: 0x0000FF26 File Offset: 0x0000E126
+		// Token: 0x06002A81 RID: 10881 RVA: 0x000B2F1E File Offset: 0x000B111E
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -63,7 +63,7 @@ namespace EntityStates.Wisp1Monster
 			}
 		}
 
-		// Token: 0x060003DC RID: 988 RVA: 0x0000FF60 File Offset: 0x0000E160
+		// Token: 0x06002A82 RID: 10882 RVA: 0x000B2F58 File Offset: 0x000B1158
 		public override void Update()
 		{
 			base.Update();
@@ -79,7 +79,7 @@ namespace EntityStates.Wisp1Monster
 			this.laserEffectInstanceLineRenderer.endColor = clear;
 		}
 
-		// Token: 0x060003DD RID: 989 RVA: 0x0000FFF0 File Offset: 0x0000E1F0
+		// Token: 0x06002A83 RID: 10883 RVA: 0x000B2FE8 File Offset: 0x000B11E8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -91,37 +91,37 @@ namespace EntityStates.Wisp1Monster
 			}
 		}
 
-		// Token: 0x060003DE RID: 990 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002A84 RID: 10884 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000398 RID: 920
+		// Token: 0x0400265D RID: 9821
 		public static float baseDuration = 3f;
 
-		// Token: 0x04000399 RID: 921
+		// Token: 0x0400265E RID: 9822
 		public static GameObject chargeEffectPrefab;
 
-		// Token: 0x0400039A RID: 922
+		// Token: 0x0400265F RID: 9823
 		public static GameObject laserEffectPrefab;
 
-		// Token: 0x0400039B RID: 923
+		// Token: 0x04002660 RID: 9824
 		public static string attackString;
 
-		// Token: 0x0400039C RID: 924
+		// Token: 0x04002661 RID: 9825
 		private float duration;
 
-		// Token: 0x0400039D RID: 925
+		// Token: 0x04002662 RID: 9826
 		private float stopwatch;
 
-		// Token: 0x0400039E RID: 926
+		// Token: 0x04002663 RID: 9827
 		private GameObject chargeEffectInstance;
 
-		// Token: 0x0400039F RID: 927
+		// Token: 0x04002664 RID: 9828
 		private GameObject laserEffectInstance;
 
-		// Token: 0x040003A0 RID: 928
+		// Token: 0x04002665 RID: 9829
 		private LineRenderer laserEffectInstanceLineRenderer;
 	}
 }

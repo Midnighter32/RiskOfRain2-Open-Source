@@ -5,21 +5,16 @@ using UnityEngine.Networking;
 
 namespace EntityStates.BeetleGuardMonster
 {
-	// Token: 0x020001D9 RID: 473
+	// Token: 0x020008F4 RID: 2292
 	public class GroundSlam : BaseState
 	{
-		// Token: 0x0600093C RID: 2364 RVA: 0x0002E804 File Offset: 0x0002CA04
-		private void EnableIndicator(string childLocatorName, ChildLocator childLocator = null)
+		// Token: 0x0600333C RID: 13116 RVA: 0x000DE470 File Offset: 0x000DC670
+		private void EnableIndicator(Transform indicator)
 		{
-			if (!childLocator)
+			if (indicator)
 			{
-				childLocator = base.GetModelTransform().GetComponent<ChildLocator>();
-			}
-			Transform transform = childLocator.FindChild(childLocatorName);
-			if (transform)
-			{
-				transform.gameObject.SetActive(true);
-				ObjectScaleCurve component = transform.gameObject.GetComponent<ObjectScaleCurve>();
+				indicator.gameObject.SetActive(true);
+				ObjectScaleCurve component = indicator.gameObject.GetComponent<ObjectScaleCurve>();
 				if (component)
 				{
 					component.time = 0f;
@@ -27,21 +22,16 @@ namespace EntityStates.BeetleGuardMonster
 			}
 		}
 
-		// Token: 0x0600093D RID: 2365 RVA: 0x0002E864 File Offset: 0x0002CA64
-		private void DisableIndicator(string childLocatorName, ChildLocator childLocator = null)
+		// Token: 0x0600333D RID: 13117 RVA: 0x000DE4B0 File Offset: 0x000DC6B0
+		private void DisableIndicator(Transform indicator)
 		{
-			if (!childLocator)
+			if (indicator)
 			{
-				childLocator = base.GetModelTransform().GetComponent<ChildLocator>();
-			}
-			Transform transform = childLocator.FindChild(childLocatorName);
-			if (transform)
-			{
-				transform.gameObject.SetActive(false);
+				indicator.gameObject.SetActive(false);
 			}
 		}
 
-		// Token: 0x0600093E RID: 2366 RVA: 0x0002E8A4 File Offset: 0x0002CAA4
+		// Token: 0x0600333E RID: 13118 RVA: 0x000DE4C8 File Offset: 0x000DC6C8
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -78,22 +68,23 @@ namespace EntityStates.BeetleGuardMonster
 					{
 						this.rightHandChargeEffect = UnityEngine.Object.Instantiate<GameObject>(original, transform2);
 					}
-					this.EnableIndicator("GroundSlamIndicator", this.modelChildLocator);
+					this.groundSlamIndicatorInstance = this.modelChildLocator.FindChild("GroundSlamIndicator");
+					this.EnableIndicator(this.groundSlamIndicatorInstance);
 				}
 			}
 		}
 
-		// Token: 0x0600093F RID: 2367 RVA: 0x0002EA7F File Offset: 0x0002CC7F
+		// Token: 0x0600333F RID: 13119 RVA: 0x000DE6B4 File Offset: 0x000DC8B4
 		public override void OnExit()
 		{
 			EntityState.Destroy(this.leftHandChargeEffect);
 			EntityState.Destroy(this.rightHandChargeEffect);
-			this.DisableIndicator("GroundSlamIndicator", this.modelChildLocator);
+			this.DisableIndicator(this.groundSlamIndicatorInstance);
 			base.characterDirection;
 			base.OnExit();
 		}
 
-		// Token: 0x06000940 RID: 2368 RVA: 0x0002EABC File Offset: 0x0002CCBC
+		// Token: 0x06003340 RID: 13120 RVA: 0x000DE6EC File Offset: 0x000DC8EC
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -105,8 +96,8 @@ namespace EntityStates.BeetleGuardMonster
 				}
 				if (base.isAuthority && this.modelTransform)
 				{
-					this.DisableIndicator("GroundSlamIndicator", this.modelChildLocator);
-					EffectManager.instance.SimpleMuzzleFlash(GroundSlam.slamEffectPrefab, base.gameObject, "SlamZone", true);
+					this.DisableIndicator(this.groundSlamIndicatorInstance);
+					EffectManager.SimpleMuzzleFlash(GroundSlam.slamEffectPrefab, base.gameObject, "SlamZone", true);
 				}
 				this.hasAttacked = true;
 				EntityState.Destroy(this.leftHandChargeEffect);
@@ -119,55 +110,58 @@ namespace EntityStates.BeetleGuardMonster
 			}
 		}
 
-		// Token: 0x06000941 RID: 2369 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06003341 RID: 13121 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000C91 RID: 3217
+		// Token: 0x040032B9 RID: 12985
 		public static float baseDuration = 3.5f;
 
-		// Token: 0x04000C92 RID: 3218
+		// Token: 0x040032BA RID: 12986
 		public static float damageCoefficient = 4f;
 
-		// Token: 0x04000C93 RID: 3219
+		// Token: 0x040032BB RID: 12987
 		public static float forceMagnitude = 16f;
 
-		// Token: 0x04000C94 RID: 3220
+		// Token: 0x040032BC RID: 12988
 		private OverlapAttack attack;
 
-		// Token: 0x04000C95 RID: 3221
+		// Token: 0x040032BD RID: 12989
 		public static string initialAttackSoundString;
 
-		// Token: 0x04000C96 RID: 3222
+		// Token: 0x040032BE RID: 12990
 		public static GameObject chargeEffectPrefab;
 
-		// Token: 0x04000C97 RID: 3223
+		// Token: 0x040032BF RID: 12991
 		public static GameObject slamEffectPrefab;
 
-		// Token: 0x04000C98 RID: 3224
+		// Token: 0x040032C0 RID: 12992
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000C99 RID: 3225
+		// Token: 0x040032C1 RID: 12993
 		private Animator modelAnimator;
 
-		// Token: 0x04000C9A RID: 3226
+		// Token: 0x040032C2 RID: 12994
 		private Transform modelTransform;
 
-		// Token: 0x04000C9B RID: 3227
+		// Token: 0x040032C3 RID: 12995
 		private bool hasAttacked;
 
-		// Token: 0x04000C9C RID: 3228
+		// Token: 0x040032C4 RID: 12996
 		private float duration;
 
-		// Token: 0x04000C9D RID: 3229
+		// Token: 0x040032C5 RID: 12997
 		private GameObject leftHandChargeEffect;
 
-		// Token: 0x04000C9E RID: 3230
+		// Token: 0x040032C6 RID: 12998
 		private GameObject rightHandChargeEffect;
 
-		// Token: 0x04000C9F RID: 3231
+		// Token: 0x040032C7 RID: 12999
 		private ChildLocator modelChildLocator;
+
+		// Token: 0x040032C8 RID: 13000
+		private Transform groundSlamIndicatorInstance;
 	}
 }

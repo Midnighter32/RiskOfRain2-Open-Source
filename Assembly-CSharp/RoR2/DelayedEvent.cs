@@ -4,10 +4,10 @@ using UnityEngine.Events;
 
 namespace RoR2
 {
-	// Token: 0x020002C7 RID: 711
+	// Token: 0x020001D6 RID: 470
 	public class DelayedEvent : MonoBehaviour
 	{
-		// Token: 0x06000E6A RID: 3690 RVA: 0x0004730C File Offset: 0x0004550C
+		// Token: 0x06000A0D RID: 2573 RVA: 0x0002C0E8 File Offset: 0x0002A2E8
 		public void CallDelayed(float timer)
 		{
 			TimerQueue timerQueue = null;
@@ -29,7 +29,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000E6B RID: 3691 RVA: 0x00047363 File Offset: 0x00045563
+		// Token: 0x06000A0E RID: 2574 RVA: 0x0002C13F File Offset: 0x0002A33F
 		private void Call()
 		{
 			if (this)
@@ -38,20 +38,20 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001269 RID: 4713
+		// Token: 0x04000A54 RID: 2644
 		public UnityEvent action;
 
-		// Token: 0x0400126A RID: 4714
+		// Token: 0x04000A55 RID: 2645
 		public DelayedEvent.TimeStepType timeStepType;
 
-		// Token: 0x020002C8 RID: 712
+		// Token: 0x020001D7 RID: 471
 		public enum TimeStepType
 		{
-			// Token: 0x0400126C RID: 4716
+			// Token: 0x04000A57 RID: 2647
 			Time,
-			// Token: 0x0400126D RID: 4717
+			// Token: 0x04000A58 RID: 2648
 			UnscaledTime,
-			// Token: 0x0400126E RID: 4718
+			// Token: 0x04000A59 RID: 2649
 			FixedTime
 		}
 	}

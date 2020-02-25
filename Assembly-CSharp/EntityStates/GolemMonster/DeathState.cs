@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace EntityStates.GolemMonster
 {
-	// Token: 0x02000178 RID: 376
+	// Token: 0x0200085E RID: 2142
 	public class DeathState : GenericCharacterDeath
 	{
-		// Token: 0x06000743 RID: 1859 RVA: 0x000236AC File Offset: 0x000218AC
+		// Token: 0x0600305E RID: 12382 RVA: 0x000D04AC File Offset: 0x000CE6AC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -25,7 +25,7 @@ namespace EntityStates.GolemMonster
 			}
 		}
 
-		// Token: 0x04000925 RID: 2341
+		// Token: 0x04002E92 RID: 11922
 		public static GameObject initialDeathExplosionPrefab;
 	}
 }

@@ -2,26 +2,26 @@
 
 namespace RoR2.ConVar
 {
-	// Token: 0x02000683 RID: 1667
+	// Token: 0x02000678 RID: 1656
 	public class BoolConVar : BaseConVar
 	{
-		// Token: 0x1700032A RID: 810
-		// (get) Token: 0x06002534 RID: 9524 RVA: 0x000AEC75 File Offset: 0x000ACE75
-		// (set) Token: 0x06002535 RID: 9525 RVA: 0x000AEC7D File Offset: 0x000ACE7D
+		// Token: 0x170003EA RID: 1002
+		// (get) Token: 0x060026DB RID: 9947 RVA: 0x000A98E4 File Offset: 0x000A7AE4
+		// (set) Token: 0x060026DC RID: 9948 RVA: 0x000A98EC File Offset: 0x000A7AEC
 		public bool value { get; protected set; }
 
-		// Token: 0x06002536 RID: 9526 RVA: 0x00037E38 File Offset: 0x00036038
+		// Token: 0x060026DD RID: 9949 RVA: 0x0000972B File Offset: 0x0000792B
 		public BoolConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 		{
 		}
 
-		// Token: 0x06002537 RID: 9527 RVA: 0x000AEC86 File Offset: 0x000ACE86
+		// Token: 0x060026DE RID: 9950 RVA: 0x000A98F5 File Offset: 0x000A7AF5
 		public void SetBool(bool newValue)
 		{
 			this.value = newValue;
 		}
 
-		// Token: 0x06002538 RID: 9528 RVA: 0x000AEC90 File Offset: 0x000ACE90
+		// Token: 0x060026DF RID: 9951 RVA: 0x000A9900 File Offset: 0x000A7B00
 		public override void SetString(string newValue)
 		{
 			int num;
@@ -31,7 +31,7 @@ namespace RoR2.ConVar
 			}
 		}
 
-		// Token: 0x06002539 RID: 9529 RVA: 0x000AECB1 File Offset: 0x000ACEB1
+		// Token: 0x060026E0 RID: 9952 RVA: 0x000A9921 File Offset: 0x000A7B21
 		public override string GetString()
 		{
 			if (!this.value)

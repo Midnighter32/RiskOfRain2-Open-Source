@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000347 RID: 839
+	// Token: 0x0200026D RID: 621
 	[RequireComponent(typeof(LineRenderer))]
 	public class LaserPointer : MonoBehaviour
 	{
-		// Token: 0x0600116A RID: 4458 RVA: 0x000568EA File Offset: 0x00054AEA
+		// Token: 0x06000DCA RID: 3530 RVA: 0x0003DF2E File Offset: 0x0003C12E
 		private void Start()
 		{
 			this.line = base.GetComponent<LineRenderer>();
 		}
 
-		// Token: 0x0600116B RID: 4459 RVA: 0x000568F8 File Offset: 0x00054AF8
+		// Token: 0x06000DCB RID: 3531 RVA: 0x0003DF3C File Offset: 0x0003C13C
 		private void Update()
 		{
 			RaycastHit raycastHit;
@@ -24,10 +24,10 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001573 RID: 5491
+		// Token: 0x04000DCF RID: 3535
 		public float laserDistance;
 
-		// Token: 0x04001574 RID: 5492
+		// Token: 0x04000DD0 RID: 3536
 		private LineRenderer line;
 	}
 }

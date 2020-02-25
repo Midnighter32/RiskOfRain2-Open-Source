@@ -1,13 +1,14 @@
 ﻿using System;
 using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace EntityStates.Merc
 {
-	// Token: 0x02000106 RID: 262
+	// Token: 0x020007C3 RID: 1987
 	public class EvisDash : BaseState
 	{
-		// Token: 0x06000515 RID: 1301 RVA: 0x00015FE0 File Offset: 0x000141E0
+		// Token: 0x06002D65 RID: 11621 RVA: 0x000BFF84 File Offset: 0x000BE184
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -26,21 +27,25 @@ namespace EntityStates.Merc
 			{
 				base.SmallHop(base.characterMotor, EvisDash.smallHopVelocity);
 			}
+			if (NetworkServer.active)
+			{
+				base.characterBody.AddBuff(BuffIndex.HiddenInvincibility);
+			}
 			base.PlayAnimation("FullBody, Override", "EvisPrep", "EvisPrep.playbackRate", EvisDash.dashPrepDuration);
 			this.dashVector = base.inputBank.aimDirection;
 			base.characterDirection.forward = this.dashVector;
 		}
 
-		// Token: 0x06000516 RID: 1302 RVA: 0x000160B0 File Offset: 0x000142B0
+		// Token: 0x06002D66 RID: 11622 RVA: 0x000C0064 File Offset: 0x000BE264
 		private void CreateBlinkEffect(Vector3 origin)
 		{
 			EffectData effectData = new EffectData();
 			effectData.rotation = Util.QuaternionSafeLookRotation(this.dashVector);
 			effectData.origin = origin;
-			EffectManager.instance.SpawnEffect(EvisDash.blinkPrefab, effectData, false);
+			EffectManager.SpawnEffect(EvisDash.blinkPrefab, effectData, false);
 		}
 
-		// Token: 0x06000517 RID: 1303 RVA: 0x000160EC File Offset: 0x000142EC
+		// Token: 0x06002D67 RID: 11623 RVA: 0x000C009C File Offset: 0x000BE29C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -74,7 +79,7 @@ namespace EntityStates.Merc
 			{
 				if (base.characterMotor && base.characterDirection)
 				{
-					base.characterMotor.velocity = this.dashVector * this.moveSpeedStat * EvisDash.speedCoefficient;
+					base.characterMotor.rootMotion += this.dashVector * (this.moveSpeedStat * EvisDash.speedCoefficient * Time.fixedDeltaTime);
 				}
 				if (base.isAuthority)
 				{
@@ -97,7 +102,7 @@ namespace EntityStates.Merc
 			}
 		}
 
-		// Token: 0x06000518 RID: 1304 RVA: 0x0001635C File Offset: 0x0001455C
+		// Token: 0x06002D68 RID: 11624 RVA: 0x000C0318 File Offset: 0x000BE518
 		public override void OnExit()
 		{
 			Util.PlaySound(EvisDash.endSoundString, base.gameObject);
@@ -108,55 +113,59 @@ namespace EntityStates.Merc
 				base.cameraTargetParams.aimMode = CameraTargetParams.AimType.Standard;
 			}
 			base.PlayAnimation("FullBody, Override", "EvisLoopExit");
+			if (NetworkServer.active)
+			{
+				base.characterBody.RemoveBuff(BuffIndex.HiddenInvincibility);
+			}
 			base.OnExit();
 		}
 
-		// Token: 0x04000515 RID: 1301
+		// Token: 0x040029B9 RID: 10681
 		private Transform modelTransform;
 
-		// Token: 0x04000516 RID: 1302
+		// Token: 0x040029BA RID: 10682
 		public static GameObject blinkPrefab;
 
-		// Token: 0x04000517 RID: 1303
+		// Token: 0x040029BB RID: 10683
 		private float stopwatch;
 
-		// Token: 0x04000518 RID: 1304
+		// Token: 0x040029BC RID: 10684
 		private Vector3 dashVector = Vector3.zero;
 
-		// Token: 0x04000519 RID: 1305
+		// Token: 0x040029BD RID: 10685
 		public static float smallHopVelocity;
 
-		// Token: 0x0400051A RID: 1306
+		// Token: 0x040029BE RID: 10686
 		public static float dashPrepDuration;
 
-		// Token: 0x0400051B RID: 1307
+		// Token: 0x040029BF RID: 10687
 		public static float dashDuration = 0.3f;
 
-		// Token: 0x0400051C RID: 1308
+		// Token: 0x040029C0 RID: 10688
 		public static float speedCoefficient = 25f;
 
-		// Token: 0x0400051D RID: 1309
+		// Token: 0x040029C1 RID: 10689
 		public static string beginSoundString;
 
-		// Token: 0x0400051E RID: 1310
+		// Token: 0x040029C2 RID: 10690
 		public static string endSoundString;
 
-		// Token: 0x0400051F RID: 1311
+		// Token: 0x040029C3 RID: 10691
 		public static float overlapSphereRadius;
 
-		// Token: 0x04000520 RID: 1312
+		// Token: 0x040029C4 RID: 10692
 		public static float lollypopFactor;
 
-		// Token: 0x04000521 RID: 1313
+		// Token: 0x040029C5 RID: 10693
 		private Animator animator;
 
-		// Token: 0x04000522 RID: 1314
+		// Token: 0x040029C6 RID: 10694
 		private CharacterModel characterModel;
 
-		// Token: 0x04000523 RID: 1315
+		// Token: 0x040029C7 RID: 10695
 		private HurtBoxGroup hurtboxGroup;
 
-		// Token: 0x04000524 RID: 1316
+		// Token: 0x040029C8 RID: 10696
 		private bool isDashing;
 	}
 }

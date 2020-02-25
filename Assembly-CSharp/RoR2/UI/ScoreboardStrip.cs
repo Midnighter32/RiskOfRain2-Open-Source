@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000632 RID: 1586
+	// Token: 0x02000620 RID: 1568
 	public class ScoreboardStrip : MonoBehaviour
 	{
-		// Token: 0x06002397 RID: 9111 RVA: 0x000A76F0 File Offset: 0x000A58F0
+		// Token: 0x06002514 RID: 9492 RVA: 0x000A1A84 File Offset: 0x0009FC84
 		public void SetMaster(CharacterMaster newMaster)
 		{
 			if (this.master == newMaster)
@@ -33,7 +33,7 @@ namespace RoR2.UI
 			this.classIcon.texture = this.FindMasterPortrait();
 		}
 
-		// Token: 0x06002398 RID: 9112 RVA: 0x000A77C8 File Offset: 0x000A59C8
+		// Token: 0x06002515 RID: 9493 RVA: 0x000A1B5C File Offset: 0x0009FD5C
 		private void UpdateMoneyText()
 		{
 			if (this.master)
@@ -42,13 +42,13 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002399 RID: 9113 RVA: 0x000A77FC File Offset: 0x000A59FC
+		// Token: 0x06002516 RID: 9494 RVA: 0x000A1B90 File Offset: 0x0009FD90
 		private void Update()
 		{
 			this.UpdateMoneyText();
 		}
 
-		// Token: 0x0600239A RID: 9114 RVA: 0x000A7804 File Offset: 0x000A5A04
+		// Token: 0x06002517 RID: 9495 RVA: 0x000A1B98 File Offset: 0x0009FD98
 		private Texture FindMasterPortrait()
 		{
 			if (this.userBody)
@@ -70,31 +70,31 @@ namespace RoR2.UI
 			return null;
 		}
 
-		// Token: 0x0400268A RID: 9866
+		// Token: 0x040022D1 RID: 8913
 		public ItemInventoryDisplay itemInventoryDisplay;
 
-		// Token: 0x0400268B RID: 9867
+		// Token: 0x040022D2 RID: 8914
 		public EquipmentIcon equipmentIcon;
 
-		// Token: 0x0400268C RID: 9868
+		// Token: 0x040022D3 RID: 8915
 		public SocialUserIcon userAvatar;
 
-		// Token: 0x0400268D RID: 9869
+		// Token: 0x040022D4 RID: 8916
 		public TextMeshProUGUI nameLabel;
 
-		// Token: 0x0400268E RID: 9870
+		// Token: 0x040022D5 RID: 8917
 		public RawImage classIcon;
 
-		// Token: 0x0400268F RID: 9871
+		// Token: 0x040022D6 RID: 8918
 		public TextMeshProUGUI moneyText;
 
-		// Token: 0x04002690 RID: 9872
+		// Token: 0x040022D7 RID: 8919
 		private CharacterMaster master;
 
-		// Token: 0x04002691 RID: 9873
+		// Token: 0x040022D8 RID: 8920
 		private CharacterBody userBody;
 
-		// Token: 0x04002692 RID: 9874
+		// Token: 0x040022D9 RID: 8921
 		private PlayerCharacterMasterController userPlayerCharacterMasterController;
 	}
 }

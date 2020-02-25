@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005E1 RID: 1505
+	// Token: 0x020005C0 RID: 1472
 	public class HeaderNavigationController : MonoBehaviour
 	{
-		// Token: 0x060021B6 RID: 8630 RVA: 0x0009EF15 File Offset: 0x0009D115
+		// Token: 0x060022E6 RID: 8934 RVA: 0x00097F59 File Offset: 0x00096159
 		private void Start()
 		{
 			this.RebuildHeaders();
 		}
 
-		// Token: 0x060021B7 RID: 8631 RVA: 0x0009EF20 File Offset: 0x0009D120
+		// Token: 0x060022E7 RID: 8935 RVA: 0x00097F64 File Offset: 0x00096164
 		private void LateUpdate()
 		{
 			for (int i = 0; i < this.headers.Length; i++)
@@ -30,7 +30,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060021B8 RID: 8632 RVA: 0x0009EF78 File Offset: 0x0009D178
+		// Token: 0x060022E8 RID: 8936 RVA: 0x00097FBC File Offset: 0x000961BC
 		public void ChooseHeader(string headerName)
 		{
 			for (int i = 0; i < this.headers.Length; i++)
@@ -44,7 +44,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060021B9 RID: 8633 RVA: 0x0009EFC0 File Offset: 0x0009D1C0
+		// Token: 0x060022E9 RID: 8937 RVA: 0x00098004 File Offset: 0x00096204
 		public void ChooseHeaderByButton(MPButton mpButton)
 		{
 			for (int i = 0; i < this.headers.Length; i++)
@@ -58,7 +58,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060021BA RID: 8634 RVA: 0x0009F008 File Offset: 0x0009D208
+		// Token: 0x060022EA RID: 8938 RVA: 0x0009804C File Offset: 0x0009624C
 		private void RebuildHeaders()
 		{
 			for (int i = 0; i < this.headers.Length; i++)
@@ -72,7 +72,7 @@ namespace RoR2.UI
 					}
 					if (header.headerButton && this.buttonSelectionRoot)
 					{
-						this.buttonSelectionRoot.transform.parent = header.headerButton.transform;
+						this.buttonSelectionRoot.transform.SetParent(header.headerButton.transform, false);
 						this.buttonSelectionRoot.SetActive(false);
 						this.buttonSelectionRoot.SetActive(true);
 						RectTransform component = this.buttonSelectionRoot.GetComponent<RectTransform>();
@@ -88,35 +88,35 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060021BB RID: 8635 RVA: 0x0009F0F6 File Offset: 0x0009D2F6
+		// Token: 0x060022EB RID: 8939 RVA: 0x0009813B File Offset: 0x0009633B
 		private HeaderNavigationController.Header GetCurrentHeader()
 		{
 			return this.headers[this.currentHeaderIndex];
 		}
 
-		// Token: 0x04002483 RID: 9347
+		// Token: 0x04002094 RID: 8340
 		public HeaderNavigationController.Header[] headers;
 
-		// Token: 0x04002484 RID: 9348
+		// Token: 0x04002095 RID: 8341
 		public GameObject buttonSelectionRoot;
 
-		// Token: 0x04002485 RID: 9349
+		// Token: 0x04002096 RID: 8342
 		public int currentHeaderIndex;
 
-		// Token: 0x020005E2 RID: 1506
+		// Token: 0x020005C1 RID: 1473
 		[Serializable]
 		public struct Header
 		{
-			// Token: 0x04002486 RID: 9350
+			// Token: 0x04002097 RID: 8343
 			public MPButton headerButton;
 
-			// Token: 0x04002487 RID: 9351
+			// Token: 0x04002098 RID: 8344
 			public string headerName;
 
-			// Token: 0x04002488 RID: 9352
+			// Token: 0x04002099 RID: 8345
 			public TextMeshProUGUI tmpHeaderText;
 
-			// Token: 0x04002489 RID: 9353
+			// Token: 0x0400209A RID: 8346
 			public GameObject headerRoot;
 		}
 	}

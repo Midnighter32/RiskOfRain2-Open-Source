@@ -4,11 +4,11 @@ using UnityEngine.EventSystems;
 
 namespace RoR2.UI
 {
-	// Token: 0x0200064D RID: 1613
+	// Token: 0x02000642 RID: 1602
 	public class TooltipProvider : MonoBehaviour, IPointerEnterHandler, IEventSystemHandler, IPointerExitHandler
 	{
-		// Token: 0x17000320 RID: 800
-		// (get) Token: 0x0600240F RID: 9231 RVA: 0x000A9590 File Offset: 0x000A7790
+		// Token: 0x170003DF RID: 991
+		// (get) Token: 0x060025AE RID: 9646 RVA: 0x000A4058 File Offset: 0x000A2258
 		private bool tooltipIsAvailable
 		{
 			get
@@ -17,8 +17,8 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x17000321 RID: 801
-		// (get) Token: 0x06002410 RID: 9232 RVA: 0x000A95A2 File Offset: 0x000A77A2
+		// Token: 0x170003E0 RID: 992
+		// (get) Token: 0x060025AF RID: 9647 RVA: 0x000A406A File Offset: 0x000A226A
 		public string titleText
 		{
 			get
@@ -35,8 +35,8 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x17000322 RID: 802
-		// (get) Token: 0x06002411 RID: 9233 RVA: 0x000A95CD File Offset: 0x000A77CD
+		// Token: 0x170003E1 RID: 993
+		// (get) Token: 0x060025B0 RID: 9648 RVA: 0x000A4095 File Offset: 0x000A2295
 		public string bodyText
 		{
 			get
@@ -53,7 +53,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002412 RID: 9234 RVA: 0x000A95F8 File Offset: 0x000A77F8
+		// Token: 0x060025B1 RID: 9649 RVA: 0x000A40C0 File Offset: 0x000A22C0
 		public void SetContent(TooltipContent tooltipContent)
 		{
 			this.titleToken = tooltipContent.titleToken;
@@ -66,13 +66,13 @@ namespace RoR2.UI
 			this.disableBodyRichText = tooltipContent.disableBodyRichText;
 		}
 
-		// Token: 0x06002413 RID: 9235 RVA: 0x000A9665 File Offset: 0x000A7865
+		// Token: 0x060025B2 RID: 9650 RVA: 0x000A412D File Offset: 0x000A232D
 		private void OnDisable()
 		{
 			TooltipController.RemoveTooltip(this);
 		}
 
-		// Token: 0x06002414 RID: 9236 RVA: 0x000A9670 File Offset: 0x000A7870
+		// Token: 0x060025B3 RID: 9651 RVA: 0x000A4138 File Offset: 0x000A2338
 		void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
 		{
 			MPEventSystem mpeventSystem = EventSystem.current as MPEventSystem;
@@ -82,7 +82,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002415 RID: 9237 RVA: 0x000A96A8 File Offset: 0x000A78A8
+		// Token: 0x060025B4 RID: 9652 RVA: 0x000A4170 File Offset: 0x000A2370
 		void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
 		{
 			MPEventSystem mpeventSystem = EventSystem.current as MPEventSystem;
@@ -92,7 +92,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002416 RID: 9238 RVA: 0x000A96D8 File Offset: 0x000A78D8
+		// Token: 0x060025B5 RID: 9653 RVA: 0x000A41A0 File Offset: 0x000A23A0
 		public static TooltipContent GetPlayerNameTooltipContent(string userName)
 		{
 			string stringFormatted = Language.GetStringFormatted("PLAYER_NAME_TOOLTIP_FORMAT", new object[]
@@ -107,35 +107,35 @@ namespace RoR2.UI
 			};
 		}
 
-		// Token: 0x040026FE RID: 9982
+		// Token: 0x04002363 RID: 9059
 		public string titleToken = "";
 
-		// Token: 0x040026FF RID: 9983
+		// Token: 0x04002364 RID: 9060
 		public Color titleColor = Color.clear;
 
-		// Token: 0x04002700 RID: 9984
+		// Token: 0x04002365 RID: 9061
 		public string bodyToken = "";
 
-		// Token: 0x04002701 RID: 9985
+		// Token: 0x04002366 RID: 9062
 		public Color bodyColor;
 
-		// Token: 0x04002702 RID: 9986
+		// Token: 0x04002367 RID: 9063
 		public string overrideTitleText = "";
 
-		// Token: 0x04002703 RID: 9987
+		// Token: 0x04002368 RID: 9064
 		public string overrideBodyText = "";
 
-		// Token: 0x04002704 RID: 9988
+		// Token: 0x04002369 RID: 9065
 		public bool disableTitleRichText;
 
-		// Token: 0x04002705 RID: 9989
+		// Token: 0x0400236A RID: 9066
 		public bool disableBodyRichText;
 
-		// Token: 0x04002706 RID: 9990
+		// Token: 0x0400236B RID: 9067
 		[NonSerialized]
 		public int userCount;
 
-		// Token: 0x04002707 RID: 9991
+		// Token: 0x0400236C RID: 9068
 		private static readonly Color playerColor = new Color32(242, 65, 65, byte.MaxValue);
 	}
 }

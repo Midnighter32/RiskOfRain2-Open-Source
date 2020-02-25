@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using Rewired;
 using RoR2.ConVar;
 using RoR2.Networking;
@@ -9,10 +10,16 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000278 RID: 632
+	// Token: 0x02000170 RID: 368
 	public class CameraRigController : MonoBehaviour
 	{
-		// Token: 0x06000BE0 RID: 3040 RVA: 0x00039FD0 File Offset: 0x000381D0
+		// Token: 0x060006D6 RID: 1750 RVA: 0x0001BE68 File Offset: 0x0001A068
+		public CameraState GetDesiredCameraState()
+		{
+			return this.desiredCameraState;
+		}
+
+		// Token: 0x060006D7 RID: 1751 RVA: 0x0001BE70 File Offset: 0x0001A070
 		private void StartStateLerp(float lerpDuration)
 		{
 			this.lerpCameraState = this.currentCameraState;
@@ -26,8 +33,8 @@ namespace RoR2
 			this.lerpCameraTimeScale = 0f;
 		}
 
-		// Token: 0x170000D2 RID: 210
-		// (get) Token: 0x06000BE1 RID: 3041 RVA: 0x0003A020 File Offset: 0x00038220
+		// Token: 0x170000C9 RID: 201
+		// (get) Token: 0x060006D8 RID: 1752 RVA: 0x0001BEC0 File Offset: 0x0001A0C0
 		public Vector3 desiredPosition
 		{
 			get
@@ -36,7 +43,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000BE2 RID: 3042 RVA: 0x0003A02D File Offset: 0x0003822D
+		// Token: 0x060006D9 RID: 1753 RVA: 0x0001BECD File Offset: 0x0001A0CD
 		public void SetOverrideCam(ICameraStateProvider newOverrideCam, float lerpDuration = 1f)
 		{
 			if (newOverrideCam == this.overrideCam)
@@ -51,30 +58,30 @@ namespace RoR2
 			this.StartStateLerp(lerpDuration);
 		}
 
-		// Token: 0x06000BE3 RID: 3043 RVA: 0x0003A06D File Offset: 0x0003826D
+		// Token: 0x060006DA RID: 1754 RVA: 0x0001BF0D File Offset: 0x0001A10D
 		public bool IsOverrideCam(ICameraStateProvider testOverrideCam)
 		{
 			return this.overrideCam == testOverrideCam;
 		}
 
-		// Token: 0x06000BE4 RID: 3044 RVA: 0x0003A078 File Offset: 0x00038278
-		private void SetPitchYawFromLookVector(Vector3 lookVector)
+		// Token: 0x060006DB RID: 1755 RVA: 0x0001BF18 File Offset: 0x0001A118
+		public void SetPitchYawFromLookVector(Vector3 lookVector)
 		{
 			float x = Mathf.Sqrt(lookVector.x * lookVector.x + lookVector.z * lookVector.z);
 			this.pitch = Mathf.Atan2(-lookVector.y, x) * 57.29578f;
 			this.yaw = Mathf.Repeat(Mathf.Atan2(lookVector.x, lookVector.z) * 57.29578f, 360f);
 		}
 
-		// Token: 0x06000BE5 RID: 3045 RVA: 0x0003A0E8 File Offset: 0x000382E8
+		// Token: 0x060006DC RID: 1756 RVA: 0x0001BF88 File Offset: 0x0001A188
 		private void SetPitchYaw(PitchYawPair pitchYawPair)
 		{
 			this.pitch = pitchYawPair.pitch;
 			this.yaw = pitchYawPair.yaw;
 		}
 
-		// Token: 0x170000D3 RID: 211
-		// (get) Token: 0x06000BE6 RID: 3046 RVA: 0x0003A102 File Offset: 0x00038302
-		// (set) Token: 0x06000BE7 RID: 3047 RVA: 0x0003A10A File Offset: 0x0003830A
+		// Token: 0x170000CA RID: 202
+		// (get) Token: 0x060006DD RID: 1757 RVA: 0x0001BFA2 File Offset: 0x0001A1A2
+		// (set) Token: 0x060006DE RID: 1758 RVA: 0x0001BFAA File Offset: 0x0001A1AA
 		public NetworkUser viewer
 		{
 			get
@@ -88,16 +95,16 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x170000D4 RID: 212
-		// (get) Token: 0x06000BE8 RID: 3048 RVA: 0x0003A134 File Offset: 0x00038334
-		// (set) Token: 0x06000BE9 RID: 3049 RVA: 0x0003A13C File Offset: 0x0003833C
-		private LocalUser localUserViewer
+		// Token: 0x170000CB RID: 203
+		// (get) Token: 0x060006DF RID: 1759 RVA: 0x0001BFD4 File Offset: 0x0001A1D4
+		// (set) Token: 0x060006E0 RID: 1760 RVA: 0x0001BFDC File Offset: 0x0001A1DC
+		public LocalUser localUserViewer
 		{
 			get
 			{
 				return this._localUserViewer;
 			}
-			set
+			private set
 			{
 				if (this._localUserViewer == value)
 				{
@@ -119,28 +126,28 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x170000D5 RID: 213
-		// (get) Token: 0x06000BEA RID: 3050 RVA: 0x0003A1A0 File Offset: 0x000383A0
-		// (set) Token: 0x06000BEB RID: 3051 RVA: 0x0003A1A8 File Offset: 0x000383A8
+		// Token: 0x170000CC RID: 204
+		// (get) Token: 0x060006E1 RID: 1761 RVA: 0x0001C040 File Offset: 0x0001A240
+		// (set) Token: 0x060006E2 RID: 1762 RVA: 0x0001C048 File Offset: 0x0001A248
 		public GameObject firstPersonTarget { get; private set; }
 
-		// Token: 0x170000D6 RID: 214
-		// (get) Token: 0x06000BEC RID: 3052 RVA: 0x0003A1B1 File Offset: 0x000383B1
-		// (set) Token: 0x06000BED RID: 3053 RVA: 0x0003A1B9 File Offset: 0x000383B9
+		// Token: 0x170000CD RID: 205
+		// (get) Token: 0x060006E3 RID: 1763 RVA: 0x0001C051 File Offset: 0x0001A251
+		// (set) Token: 0x060006E4 RID: 1764 RVA: 0x0001C059 File Offset: 0x0001A259
 		public TeamIndex targetTeamIndex { get; private set; }
 
-		// Token: 0x170000D7 RID: 215
-		// (get) Token: 0x06000BEE RID: 3054 RVA: 0x0003A1C2 File Offset: 0x000383C2
-		// (set) Token: 0x06000BEF RID: 3055 RVA: 0x0003A1CA File Offset: 0x000383CA
+		// Token: 0x170000CE RID: 206
+		// (get) Token: 0x060006E5 RID: 1765 RVA: 0x0001C062 File Offset: 0x0001A262
+		// (set) Token: 0x060006E6 RID: 1766 RVA: 0x0001C06A File Offset: 0x0001A26A
 		public Vector3 crosshairWorldPosition { get; private set; }
 
-		// Token: 0x06000BF0 RID: 3056 RVA: 0x0003A1D3 File Offset: 0x000383D3
+		// Token: 0x060006E7 RID: 1767 RVA: 0x0001C073 File Offset: 0x0001A273
 		private static bool CanUserSpectateBody(NetworkUser viewer, CharacterBody body)
 		{
 			return Util.LookUpBodyNetworkUser(body.gameObject);
 		}
 
-		// Token: 0x06000BF1 RID: 3057 RVA: 0x0003A1E8 File Offset: 0x000383E8
+		// Token: 0x060006E8 RID: 1768 RVA: 0x0001C088 File Offset: 0x0001A288
 		public static GameObject GetNextSpectateGameObject(NetworkUser viewer, GameObject currentGameObject)
 		{
 			ReadOnlyCollection<CharacterBody> readOnlyCollection = CharacterBody.readOnlyInstancesList;
@@ -167,7 +174,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06000BF2 RID: 3058 RVA: 0x0003A288 File Offset: 0x00038488
+		// Token: 0x060006E9 RID: 1769 RVA: 0x0001C128 File Offset: 0x0001A328
 		public static GameObject GetPreviousSpectateGameObject(NetworkUser viewer, GameObject currentGameObject)
 		{
 			ReadOnlyCollection<CharacterBody> readOnlyCollection = CharacterBody.readOnlyInstancesList;
@@ -194,7 +201,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06000BF3 RID: 3059 RVA: 0x0003A32C File Offset: 0x0003852C
+		// Token: 0x060006EA RID: 1770 RVA: 0x0001C1CC File Offset: 0x0001A3CC
 		private void Start()
 		{
 			if (this.createHud)
@@ -225,7 +232,7 @@ namespace RoR2
 			this.currentCameraState = this.desiredCameraState;
 		}
 
-		// Token: 0x06000BF4 RID: 3060 RVA: 0x0003A450 File Offset: 0x00038650
+		// Token: 0x060006EB RID: 1771 RVA: 0x0001C2F0 File Offset: 0x0001A4F0
 		private void Update()
 		{
 			if (Time.deltaTime == 0f)
@@ -269,16 +276,16 @@ namespace RoR2
 			MPEventSystem mpeventSystem = (localUserViewer != null) ? localUserViewer.eventSystem : null;
 			float num14;
 			float num15;
-			if ((!mpeventSystem || !mpeventSystem.isCursorVisible) && player != null && userProfile != null && !flag && this.overrideCam == null)
+			if ((!mpeventSystem || !mpeventSystem.isCursorVisible) && player != null && userProfile != null && !flag && (!(UnityEngine.Object)this.overrideCam || this.overrideCam.AllowUserLook(this)))
 			{
 				float mouseLookSensitivity = userProfile.mouseLookSensitivity;
 				float num2 = userProfile.stickLookSensitivity * CameraRigController.aimStickGlobalScale.value * 45f;
 				Vector2 vector = new Vector2(player.GetAxisRaw(2), player.GetAxisRaw(3));
 				Vector2 vector2 = new Vector2(player.GetAxisRaw(16), player.GetAxisRaw(17));
-				CameraRigController.<Update>g__ConditionalNegate|69_0(ref vector.x, userProfile.mouseLookInvertX);
-				CameraRigController.<Update>g__ConditionalNegate|69_0(ref vector.y, userProfile.mouseLookInvertY);
-				CameraRigController.<Update>g__ConditionalNegate|69_0(ref vector2.x, userProfile.stickLookInvertX);
-				CameraRigController.<Update>g__ConditionalNegate|69_0(ref vector2.y, userProfile.stickLookInvertY);
+				CameraRigController.<Update>g__ConditionalNegate|70_0(ref vector.x, userProfile.mouseLookInvertX);
+				CameraRigController.<Update>g__ConditionalNegate|70_0(ref vector.y, userProfile.mouseLookInvertY);
+				CameraRigController.<Update>g__ConditionalNegate|70_0(ref vector2.x, userProfile.stickLookInvertX);
+				CameraRigController.<Update>g__ConditionalNegate|70_0(ref vector2.y, userProfile.stickLookInvertY);
 				float magnitude = vector2.magnitude;
 				float num3 = magnitude;
 				this.aimStickPostSmoothing = Vector2.zero;
@@ -384,16 +391,27 @@ namespace RoR2
 			}
 			this.targetTeamIndex = TeamIndex.None;
 			bool flag2 = false;
+			this.targetParams = null;
 			if (this.target)
 			{
 				this.targetBody = this.target.GetComponent<CharacterBody>();
-				flag2 = this.targetBody.isSprinting;
+				if (this.targetBody)
+				{
+					flag2 = this.targetBody.isSprinting;
+					if (this.targetBody.currentVehicle)
+					{
+						this.targetParams = this.targetBody.currentVehicle.GetComponent<CameraTargetParams>();
+					}
+				}
+				if (!this.targetParams)
+				{
+					this.targetParams = this.target.GetComponent<CameraTargetParams>();
+				}
 				TeamComponent component = this.target.GetComponent<TeamComponent>();
 				if (component)
 				{
 					this.targetTeamIndex = component.teamIndex;
 				}
-				this.targetParams = this.target.GetComponent<CameraTargetParams>();
 			}
 			Vector3 vector8 = this.desiredCameraState.position;
 			if (this.targetParams)
@@ -436,7 +454,7 @@ namespace RoR2
 						num14 *= num / this.baseFov;
 						num15 *= num / this.baseFov;
 					}
-					if (this.targetBody && flag2)
+					if (this.targetBody && flag2 && CameraRigController.enableSprintSensitivitySlowdown.value)
 					{
 						num14 *= 0.5f;
 						num15 *= 0.5f;
@@ -517,7 +535,7 @@ namespace RoR2
 			{
 				if ((UnityEngine.Object)this.overrideCam)
 				{
-					cameraState = this.overrideCam.GetCameraState(this);
+					this.overrideCam.GetCameraState(this, ref cameraState);
 				}
 				this.overrideCam = null;
 			}
@@ -532,7 +550,7 @@ namespace RoR2
 			this.SetCameraState(this.currentCameraState);
 		}
 
-		// Token: 0x06000BF5 RID: 3061 RVA: 0x0003AFF0 File Offset: 0x000391F0
+		// Token: 0x060006EC RID: 1772 RVA: 0x0001CF00 File Offset: 0x0001B100
 		private float Raycast(Ray ray, float maxDistance, float wallCushion)
 		{
 			RaycastHit[] array = Physics.SphereCastAll(ray, wallCushion, maxDistance, LayerIndex.world.mask, QueryTriggerInteraction.Ignore);
@@ -552,7 +570,7 @@ namespace RoR2
 			return num;
 		}
 
-		// Token: 0x06000BF6 RID: 3062 RVA: 0x0003B068 File Offset: 0x00039268
+		// Token: 0x060006ED RID: 1773 RVA: 0x0001CF78 File Offset: 0x0001B178
 		private static float RemapLerpTime(float t)
 		{
 			float num = 1f;
@@ -565,8 +583,8 @@ namespace RoR2
 			return -num3 / 2f * ((t -= 1f) * (t - 2f) - 1f) + num2;
 		}
 
-		// Token: 0x170000D8 RID: 216
-		// (get) Token: 0x06000BF7 RID: 3063 RVA: 0x0003B0CB File Offset: 0x000392CB
+		// Token: 0x170000CF RID: 207
+		// (get) Token: 0x060006EE RID: 1774 RVA: 0x0001CFDB File Offset: 0x0001B1DB
 		public bool hasOverride
 		{
 			get
@@ -575,28 +593,20 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000BF8 RID: 3064 RVA: 0x0003B0D8 File Offset: 0x000392D8
+		// Token: 0x170000D0 RID: 208
+		// (get) Token: 0x060006EF RID: 1775 RVA: 0x0001CFE6 File Offset: 0x0001B1E6
+		// (set) Token: 0x060006F0 RID: 1776 RVA: 0x0001CFEE File Offset: 0x0001B1EE
+		public Vector3 rawScreenShakeDisplacement { get; private set; }
+
+		// Token: 0x060006F1 RID: 1777 RVA: 0x0001CFF8 File Offset: 0x0001B1F8
 		private void SetCameraState(CameraState cameraState)
 		{
 			this.currentCameraState = cameraState;
 			float d = (this.localUserViewer == null) ? 1f : this.localUserViewer.userProfile.screenShakeScale;
 			Vector3 position = cameraState.position;
-			Vector3 vector = ShakeEmitter.ComputeTotalShakeAtPoint(cameraState.position) * d;
-			Vector3 vector2 = position + vector;
-			if (this.localUserViewer != null)
-			{
-				Player inputPlayer = this.localUserViewer.inputPlayer;
-				if (this.localUserViewer.eventSystem.currentInputSource == MPEventSystem.InputSource.Gamepad)
-				{
-					ShakeEmitter.ApplyDeepQuickRumble(this.localUserViewer, vector);
-				}
-				else
-				{
-					inputPlayer.SetVibration(0, 0f);
-					inputPlayer.SetVibration(1, 0f);
-				}
-			}
-			Vector3 position2 = vector2;
+			this.rawScreenShakeDisplacement = ShakeEmitter.ComputeTotalShakeAtPoint(cameraState.position);
+			Vector3 vector = this.rawScreenShakeDisplacement * d;
+			Vector3 position2 = position + vector;
 			if (vector != Vector3.zero)
 			{
 				Vector3 origin = position;
@@ -615,7 +625,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000BF9 RID: 3065 RVA: 0x0003B218 File Offset: 0x00039418
+		// Token: 0x060006F2 RID: 1778 RVA: 0x0001D0F4 File Offset: 0x0001B2F4
 		private void UpdateCrosshair(Vector3 raycastStartPlanePoint)
 		{
 			this.lastAimAssist = this.aimAssist;
@@ -630,14 +640,35 @@ namespace RoR2
 			for (int i = 0; i < array.Length; i++)
 			{
 				RaycastHit raycastHit2 = array[i];
-				HurtBox component = raycastHit2.collider.GetComponent<HurtBox>();
+				HurtBox hurtBox = raycastHit2.collider.GetComponent<HurtBox>();
+				EntityLocator component = raycastHit2.collider.GetComponent<EntityLocator>();
 				float distance = raycastHit2.distance;
-				if (distance < num && distance > 3f && (!component || !component.healthComponent || !component.healthComponent.body || component.healthComponent.body.teamComponent.teamIndex != this.targetTeamIndex))
+				if (distance > 3f && num > distance)
 				{
+					if (hurtBox)
+					{
+						if (hurtBox.teamIndex == this.targetTeamIndex)
+						{
+							goto IL_145;
+						}
+						if (hurtBox.healthComponent && hurtBox.healthComponent.dontShowHealthbar)
+						{
+							hurtBox = null;
+						}
+					}
+					if (component)
+					{
+						VehicleSeat vehicleSeat = component.entity ? component.entity.GetComponent<VehicleSeat>() : null;
+						if (vehicleSeat && vehicleSeat.currentPassengerBody == this.targetBody)
+						{
+							goto IL_145;
+						}
+					}
 					num = distance;
 					num2 = i;
-					this.lastCrosshairHurtBox = component;
+					this.lastCrosshairHurtBox = hurtBox;
 				}
+				IL_145:;
 			}
 			if (num2 != -1)
 			{
@@ -661,12 +692,12 @@ namespace RoR2
 							if (component3 && component3.teamIndex != this.targetTeamIndex && component3.teamIndex != TeamIndex.None)
 							{
 								CharacterBody body = healthComponent.body;
-								HurtBox hurtBox = (body != null) ? body.mainHurtBox : null;
-								if (hurtBox)
+								HurtBox hurtBox2 = (body != null) ? body.mainHurtBox : null;
+								if (hurtBox2)
 								{
-									this.aimAssist.aimAssistHurtbox = hurtBox;
+									this.aimAssist.aimAssistHurtbox = hurtBox2;
 									this.aimAssist.worldPosition = raycastHit.point;
-									this.aimAssist.localPositionOnHurtbox = hurtBox.transform.InverseTransformPoint(raycastHit.point);
+									this.aimAssist.localPositionOnHurtbox = hurtBox2.transform.InverseTransformPoint(raycastHit.point);
 									return;
 								}
 							}
@@ -680,7 +711,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000BFA RID: 3066 RVA: 0x0003B444 File Offset: 0x00039644
+		// Token: 0x060006F3 RID: 1779 RVA: 0x0001D368 File Offset: 0x0001B568
 		public static Ray ModifyAimRayIfApplicable(Ray originalAimRay, GameObject target, out float extraRaycastDistance)
 		{
 			CameraRigController cameraRigController = null;
@@ -702,7 +733,7 @@ namespace RoR2
 			return originalAimRay;
 		}
 
-		// Token: 0x06000BFB RID: 3067 RVA: 0x0003B504 File Offset: 0x00039704
+		// Token: 0x060006F4 RID: 1780 RVA: 0x0001D428 File Offset: 0x0001B628
 		private Ray GetCrosshairRaycastRay(Vector2 crosshairOffset, Vector3 raycastStartPlanePoint)
 		{
 			if (!this.sceneCam)
@@ -716,19 +747,19 @@ namespace RoR2
 			return new Ray(Vector3.ProjectOnPlane(this.desiredCameraState.position - raycastStartPlanePoint, this.desiredCameraState.rotation * Vector3.forward) + raycastStartPlanePoint, quaternion * Vector3.forward);
 		}
 
-		// Token: 0x06000BFC RID: 3068 RVA: 0x0003B5B0 File Offset: 0x000397B0
+		// Token: 0x060006F5 RID: 1781 RVA: 0x0001D4D4 File Offset: 0x0001B6D4
 		private void OnEnable()
 		{
 			CameraRigController.instancesList.Add(this);
 		}
 
-		// Token: 0x06000BFD RID: 3069 RVA: 0x0003B5BD File Offset: 0x000397BD
+		// Token: 0x060006F6 RID: 1782 RVA: 0x0001D4E1 File Offset: 0x0001B6E1
 		private void OnDisable()
 		{
 			CameraRigController.instancesList.Remove(this);
 		}
 
-		// Token: 0x06000BFE RID: 3070 RVA: 0x0003B5CB File Offset: 0x000397CB
+		// Token: 0x060006F7 RID: 1783 RVA: 0x0001D4F0 File Offset: 0x0001B6F0
 		private void OnDestroy()
 		{
 			if (this.uiCam)
@@ -739,9 +770,16 @@ namespace RoR2
 			{
 				UnityEngine.Object.Destroy(this.hud.gameObject);
 			}
+			LocalUser localUserViewer = this.localUserViewer;
+			Player player = (localUserViewer != null) ? localUserViewer.inputPlayer : null;
+			if (player != null)
+			{
+				player.SetVibration(0, 0f);
+				player.SetVibration(1, 0f);
+			}
 		}
 
-		// Token: 0x06000BFF RID: 3071 RVA: 0x0003B608 File Offset: 0x00039808
+		// Token: 0x060006F8 RID: 1784 RVA: 0x0001D568 File Offset: 0x0001B768
 		[RuntimeInitializeOnLoadMethod]
 		private static void Init()
 		{
@@ -755,7 +793,7 @@ namespace RoR2
 			};
 		}
 
-		// Token: 0x06000C00 RID: 3072 RVA: 0x0003B660 File Offset: 0x00039860
+		// Token: 0x060006F9 RID: 1785 RVA: 0x0001D5C0 File Offset: 0x0001B7C0
 		public static bool IsObjectSpectatedByAnyCamera(GameObject gameObject)
 		{
 			for (int i = 0; i < CameraRigController.instancesList.Count; i++)
@@ -768,215 +806,225 @@ namespace RoR2
 			return false;
 		}
 
-		// Token: 0x14000008 RID: 8
-		// (add) Token: 0x06000C01 RID: 3073 RVA: 0x0003B6A0 File Offset: 0x000398A0
-		// (remove) Token: 0x06000C02 RID: 3074 RVA: 0x0003B6D4 File Offset: 0x000398D4
+		// Token: 0x1400000A RID: 10
+		// (add) Token: 0x060006FA RID: 1786 RVA: 0x0001D600 File Offset: 0x0001B800
+		// (remove) Token: 0x060006FB RID: 1787 RVA: 0x0001D634 File Offset: 0x0001B834
 		public static event Action<CameraRigController, GameObject> onCameraTargetChanged;
 
-		// Token: 0x04000FCF RID: 4047
+		// Token: 0x060006FE RID: 1790 RVA: 0x0001D864 File Offset: 0x0001BA64
+		[CompilerGenerated]
+		internal static void <Update>g__ConditionalNegate|70_0(ref float value, bool condition)
+		{
+			value = (condition ? (-value) : value);
+		}
+
+		// Token: 0x04000721 RID: 1825
 		[Tooltip("The main camera for rendering the scene.")]
 		public Camera sceneCam;
 
-		// Token: 0x04000FD0 RID: 4048
+		// Token: 0x04000722 RID: 1826
 		[Tooltip("The UI camera.")]
 		public Camera uiCam;
 
-		// Token: 0x04000FD1 RID: 4049
+		// Token: 0x04000723 RID: 1827
 		[Tooltip("The skybox camera.")]
 		public Camera skyboxCam;
 
-		// Token: 0x04000FD2 RID: 4050
+		// Token: 0x04000724 RID: 1828
 		public ParticleSystem sprintingParticleSystem;
 
-		// Token: 0x04000FD3 RID: 4051
+		// Token: 0x04000725 RID: 1829
 		public float baseFov = 60f;
 
-		// Token: 0x04000FD4 RID: 4052
+		// Token: 0x04000726 RID: 1830
 		private float currentFov;
 
-		// Token: 0x04000FD5 RID: 4053
+		// Token: 0x04000727 RID: 1831
 		private float fovVelocity;
 
-		// Token: 0x04000FD6 RID: 4054
+		// Token: 0x04000728 RID: 1832
 		public float fadeStartDistance = 1f;
 
-		// Token: 0x04000FD7 RID: 4055
+		// Token: 0x04000729 RID: 1833
 		public float fadeEndDistance = 4f;
 
-		// Token: 0x04000FD8 RID: 4056
+		// Token: 0x0400072A RID: 1834
 		public bool disableSpectating;
 
-		// Token: 0x04000FD9 RID: 4057
+		// Token: 0x0400072B RID: 1835
 		[Tooltip("The maximum distance of the raycast used to determine the aim vector.")]
 		public float maxAimRaycastDistance = 1000f;
 
-		// Token: 0x04000FDA RID: 4058
+		// Token: 0x0400072C RID: 1836
 		private CameraState desiredCameraState;
 
-		// Token: 0x04000FDB RID: 4059
+		// Token: 0x0400072D RID: 1837
 		private CameraState currentCameraState;
 
-		// Token: 0x04000FDC RID: 4060
+		// Token: 0x0400072E RID: 1838
 		private CameraState lerpCameraState;
 
-		// Token: 0x04000FDD RID: 4061
+		// Token: 0x0400072F RID: 1839
 		private float lerpCameraTime = 1f;
 
-		// Token: 0x04000FDE RID: 4062
+		// Token: 0x04000730 RID: 1840
 		private float lerpCameraTimeScale = 1f;
 
-		// Token: 0x04000FDF RID: 4063
+		// Token: 0x04000731 RID: 1841
 		private Vector3 cameraStateVelocityPosition;
 
-		// Token: 0x04000FE0 RID: 4064
+		// Token: 0x04000732 RID: 1842
 		private float cameraStateVelocityAngle;
 
-		// Token: 0x04000FE1 RID: 4065
+		// Token: 0x04000733 RID: 1843
 		private float cameraStateVelocityFov;
 
-		// Token: 0x04000FE2 RID: 4066
+		// Token: 0x04000734 RID: 1844
 		private ICameraStateProvider overrideCam;
 
-		// Token: 0x04000FE3 RID: 4067
+		// Token: 0x04000735 RID: 1845
 		public CameraRigController.CameraMode cameraMode = CameraRigController.CameraMode.PlayerBasic;
 
-		// Token: 0x04000FE4 RID: 4068
+		// Token: 0x04000736 RID: 1846
 		private NetworkUser _viewer;
 
-		// Token: 0x04000FE5 RID: 4069
+		// Token: 0x04000737 RID: 1847
 		private LocalUser _localUserViewer;
 
-		// Token: 0x04000FE6 RID: 4070
+		// Token: 0x04000738 RID: 1848
 		public Rect viewport = new Rect(0f, 0f, 1f, 1f);
 
-		// Token: 0x04000FE7 RID: 4071
+		// Token: 0x04000739 RID: 1849
 		public HUD hud;
 
-		// Token: 0x04000FE8 RID: 4072
+		// Token: 0x0400073A RID: 1850
 		private GameObject previousTarget;
 
-		// Token: 0x04000FE9 RID: 4073
+		// Token: 0x0400073B RID: 1851
 		public GameObject target;
 
-		// Token: 0x04000FEA RID: 4074
+		// Token: 0x0400073C RID: 1852
 		private CharacterBody targetBody;
 
-		// Token: 0x04000FEC RID: 4076
+		// Token: 0x0400073E RID: 1854
 		[Tooltip("Whether or not to create a HUD.")]
 		public bool createHud = true;
 
-		// Token: 0x04000FEE RID: 4078
+		// Token: 0x04000740 RID: 1856
 		private CameraTargetParams targetParams;
 
-		// Token: 0x04000FEF RID: 4079
+		// Token: 0x04000741 RID: 1857
 		private float pitch;
 
-		// Token: 0x04000FF0 RID: 4080
+		// Token: 0x04000742 RID: 1858
 		private float yaw;
 
-		// Token: 0x04000FF2 RID: 4082
+		// Token: 0x04000744 RID: 1860
 		private float currentCameraDistance;
 
-		// Token: 0x04000FF3 RID: 4083
+		// Token: 0x04000745 RID: 1861
 		private float cameraDistanceVelocity;
 
-		// Token: 0x04000FF4 RID: 4084
+		// Token: 0x04000746 RID: 1862
 		private Vector2 aimStickVelocity;
 
-		// Token: 0x04000FF5 RID: 4085
+		// Token: 0x04000747 RID: 1863
 		private float stickAimPreviousAcceleratedMagnitude;
 
-		// Token: 0x04000FF6 RID: 4086
+		// Token: 0x04000748 RID: 1864
 		public Vector2 aimStickPostSmoothing;
 
-		// Token: 0x04000FF7 RID: 4087
+		// Token: 0x04000749 RID: 1865
 		public Vector2 aimStickPostDualZone;
 
-		// Token: 0x04000FF8 RID: 4088
+		// Token: 0x0400074A RID: 1866
 		public Vector2 aimStickPostExponent;
 
-		// Token: 0x04000FF9 RID: 4089
+		// Token: 0x0400074C RID: 1868
 		public CameraRigController.AimAssistInfo lastAimAssist;
 
-		// Token: 0x04000FFA RID: 4090
+		// Token: 0x0400074D RID: 1869
 		public CameraRigController.AimAssistInfo aimAssist;
 
-		// Token: 0x04000FFB RID: 4091
+		// Token: 0x0400074E RID: 1870
 		public HurtBox lastCrosshairHurtBox;
 
-		// Token: 0x04000FFC RID: 4092
+		// Token: 0x0400074F RID: 1871
 		private static List<CameraRigController> instancesList = new List<CameraRigController>();
 
-		// Token: 0x04000FFD RID: 4093
+		// Token: 0x04000750 RID: 1872
 		public static readonly ReadOnlyCollection<CameraRigController> readOnlyInstancesList = CameraRigController.instancesList.AsReadOnly();
 
-		// Token: 0x04000FFF RID: 4095
+		// Token: 0x04000752 RID: 1874
 		private static FloatConVar aimStickExponent = new FloatConVar("aim_stick_exponent", ConVarFlags.None, "1", "The exponent for stick input used for aiming.");
 
-		// Token: 0x04001000 RID: 4096
+		// Token: 0x04000753 RID: 1875
 		private static FloatConVar aimStickDualZoneThreshold = new FloatConVar("aim_stick_dual_zone_threshold", ConVarFlags.None, "0.90", "The threshold for stick dual zone behavior.");
 
-		// Token: 0x04001001 RID: 4097
+		// Token: 0x04000754 RID: 1876
 		private static FloatConVar aimStickDualZoneSlope = new FloatConVar("aim_stick_dual_zone_slope", ConVarFlags.None, "0.40", "The slope value for stick dual zone behavior.");
 
-		// Token: 0x04001002 RID: 4098
+		// Token: 0x04000755 RID: 1877
 		private static FloatConVar aimStickDualZoneSmoothing = new FloatConVar("aim_stick_smoothing", ConVarFlags.None, "0.05", "The smoothing value for stick aiming.");
 
-		// Token: 0x04001003 RID: 4099
+		// Token: 0x04000756 RID: 1878
 		private static FloatConVar aimStickGlobalScale = new FloatConVar("aim_stick_global_scale", ConVarFlags.Archive, "1.00", "The global sensitivity scale for stick aiming.");
 
-		// Token: 0x04001004 RID: 4100
+		// Token: 0x04000757 RID: 1879
 		private static FloatConVar aimStickAssistMinSlowdownScale = new FloatConVar("aim_stick_assist_min_slowdown_scale", ConVarFlags.None, "1", "The MAX amount the sensitivity scales down when passing over an enemy.");
 
-		// Token: 0x04001005 RID: 4101
+		// Token: 0x04000758 RID: 1880
 		private static FloatConVar aimStickAssistMaxSlowdownScale = new FloatConVar("aim_stick_assist_max_slowdown_scale", ConVarFlags.None, "0.4", "The MAX amount the sensitivity scales down when passing over an enemy.");
 
-		// Token: 0x04001006 RID: 4102
+		// Token: 0x04000759 RID: 1881
 		private static FloatConVar aimStickAssistMinDelta = new FloatConVar("aim_stick_assist_min_delta", ConVarFlags.None, "0", "The MIN amount in radians the aim assist will turn towards");
 
-		// Token: 0x04001007 RID: 4103
+		// Token: 0x0400075A RID: 1882
 		private static FloatConVar aimStickAssistMaxDelta = new FloatConVar("aim_stick_assist_max_delta", ConVarFlags.None, "1.57", "The MAX amount in radians the aim assist will turn towards");
 
-		// Token: 0x04001008 RID: 4104
+		// Token: 0x0400075B RID: 1883
 		private static FloatConVar aimStickAssistMaxInputHelp = new FloatConVar("aim_stick_assist_max_input_help", ConVarFlags.None, "0.2", "The amount, from 0-1, that the aim assist will actually ADD magnitude towards. Helps you keep target while strafing. CURRENTLY UNUSED.");
 
-		// Token: 0x04001009 RID: 4105
+		// Token: 0x0400075C RID: 1884
 		public static FloatConVar aimStickAssistMaxSize = new FloatConVar("aim_stick_assist_max_size", ConVarFlags.None, "3", "The size, as a coefficient, of the aim assist 'white' zone.");
 
-		// Token: 0x0400100A RID: 4106
+		// Token: 0x0400075D RID: 1885
 		public static FloatConVar aimStickAssistMinSize = new FloatConVar("aim_stick_assist_min_size", ConVarFlags.None, "1", "The minimum size, as a percentage of the GUI, of the aim assist 'red' zone.");
 
-		// Token: 0x0400100B RID: 4107
+		// Token: 0x0400075E RID: 1886
+		public static BoolConVar enableSprintSensitivitySlowdown = new BoolConVar("enable_sprint_sensitivity_slowdown", ConVarFlags.Archive, "1", "Enables sensitivity reduction while sprinting.");
+
+		// Token: 0x0400075F RID: 1887
 		private float hitmarkerAlpha;
 
-		// Token: 0x0400100C RID: 4108
+		// Token: 0x04000760 RID: 1888
 		private float hitmarkerTimer;
 
-		// Token: 0x02000279 RID: 633
+		// Token: 0x02000171 RID: 369
 		public enum CameraMode
 		{
-			// Token: 0x0400100E RID: 4110
+			// Token: 0x04000762 RID: 1890
 			None,
-			// Token: 0x0400100F RID: 4111
+			// Token: 0x04000763 RID: 1891
 			PlayerBasic,
-			// Token: 0x04001010 RID: 4112
+			// Token: 0x04000764 RID: 1892
 			Fly,
-			// Token: 0x04001011 RID: 4113
+			// Token: 0x04000765 RID: 1893
 			SpectateOrbit,
-			// Token: 0x04001012 RID: 4114
+			// Token: 0x04000766 RID: 1894
 			SpectateUser
 		}
 
-		// Token: 0x0200027A RID: 634
+		// Token: 0x02000172 RID: 370
 		public struct AimAssistInfo
 		{
-			// Token: 0x04001013 RID: 4115
+			// Token: 0x04000767 RID: 1895
 			public HurtBox aimAssistHurtbox;
 
-			// Token: 0x04001014 RID: 4116
+			// Token: 0x04000768 RID: 1896
 			public Vector3 localPositionOnHurtbox;
 
-			// Token: 0x04001015 RID: 4117
+			// Token: 0x04000769 RID: 1897
 			public Vector3 worldPosition;
 		}
 	}

@@ -2,26 +2,26 @@
 
 namespace RoR2.ConVar
 {
-	// Token: 0x02000686 RID: 1670
+	// Token: 0x0200067B RID: 1659
 	public class StringConVar : BaseConVar
 	{
-		// Token: 0x1700032D RID: 813
-		// (get) Token: 0x06002544 RID: 9540 RVA: 0x000AED4F File Offset: 0x000ACF4F
-		// (set) Token: 0x06002545 RID: 9541 RVA: 0x000AED57 File Offset: 0x000ACF57
+		// Token: 0x170003ED RID: 1005
+		// (get) Token: 0x060026EB RID: 9963 RVA: 0x000A99BF File Offset: 0x000A7BBF
+		// (set) Token: 0x060026EC RID: 9964 RVA: 0x000A99C7 File Offset: 0x000A7BC7
 		public string value { get; protected set; }
 
-		// Token: 0x06002546 RID: 9542 RVA: 0x00037E38 File Offset: 0x00036038
+		// Token: 0x060026ED RID: 9965 RVA: 0x0000972B File Offset: 0x0000792B
 		public StringConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 		{
 		}
 
-		// Token: 0x06002547 RID: 9543 RVA: 0x000AED60 File Offset: 0x000ACF60
+		// Token: 0x060026EE RID: 9966 RVA: 0x000A99D0 File Offset: 0x000A7BD0
 		public override void SetString(string newValue)
 		{
 			this.value = newValue;
 		}
 
-		// Token: 0x06002548 RID: 9544 RVA: 0x000AED69 File Offset: 0x000ACF69
+		// Token: 0x060026EF RID: 9967 RVA: 0x000A99D9 File Offset: 0x000A7BD9
 		public override string GetString()
 		{
 			return this.value;

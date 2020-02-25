@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Bison
 {
-	// Token: 0x020001C4 RID: 452
+	// Token: 0x020008DF RID: 2271
 	public class PrepCharge : BaseState
 	{
-		// Token: 0x060008D5 RID: 2261 RVA: 0x0002C8D8 File Offset: 0x0002AAD8
+		// Token: 0x060032D4 RID: 13012 RVA: 0x000DC534 File Offset: 0x000DA734
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -45,7 +45,7 @@ namespace EntityStates.Bison
 			}
 		}
 
-		// Token: 0x060008D6 RID: 2262 RVA: 0x0002CA11 File Offset: 0x0002AC11
+		// Token: 0x060032D5 RID: 13013 RVA: 0x000DC66D File Offset: 0x000DA86D
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -55,7 +55,7 @@ namespace EntityStates.Bison
 			}
 		}
 
-		// Token: 0x060008D7 RID: 2263 RVA: 0x0002CA34 File Offset: 0x0002AC34
+		// Token: 0x060032D6 RID: 13014 RVA: 0x000DC690 File Offset: 0x000DA890
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -67,28 +67,28 @@ namespace EntityStates.Bison
 			}
 		}
 
-		// Token: 0x060008D8 RID: 2264 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x060032D7 RID: 13015 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000BFA RID: 3066
+		// Token: 0x04003223 RID: 12835
 		public static float basePrepDuration;
 
-		// Token: 0x04000BFB RID: 3067
+		// Token: 0x04003224 RID: 12836
 		public static string enterSoundString;
 
-		// Token: 0x04000BFC RID: 3068
+		// Token: 0x04003225 RID: 12837
 		public static GameObject chargeEffectPrefab;
 
-		// Token: 0x04000BFD RID: 3069
+		// Token: 0x04003226 RID: 12838
 		private float stopwatch;
 
-		// Token: 0x04000BFE RID: 3070
+		// Token: 0x04003227 RID: 12839
 		private float prepDuration;
 
-		// Token: 0x04000BFF RID: 3071
+		// Token: 0x04003228 RID: 12840
 		private GameObject chargeEffectInstance;
 	}
 }

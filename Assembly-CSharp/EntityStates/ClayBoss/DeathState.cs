@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.ClayBoss
 {
-	// Token: 0x020001B7 RID: 439
+	// Token: 0x020008D2 RID: 2258
 	public class DeathState : GenericCharacterDeath
 	{
-		// Token: 0x06000896 RID: 2198 RVA: 0x0002B0A0 File Offset: 0x000292A0
+		// Token: 0x06003295 RID: 12949 RVA: 0x000DACC0 File Offset: 0x000D8EC0
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -29,7 +29,7 @@ namespace EntityStates.ClayBoss
 			}
 		}
 
-		// Token: 0x06000897 RID: 2199 RVA: 0x0002B14C File Offset: 0x0002934C
+		// Token: 0x06003296 RID: 12950 RVA: 0x000DAD6C File Offset: 0x000D8F6C
 		private void AttemptDeathBehavior()
 		{
 			if (this.attemptedDeathBehavior)
@@ -39,7 +39,7 @@ namespace EntityStates.ClayBoss
 			this.attemptedDeathBehavior = true;
 			if (DeathState.deathEffect && NetworkServer.active)
 			{
-				EffectManager.instance.SpawnEffect(DeathState.deathEffect, new EffectData
+				EffectManager.SpawnEffect(DeathState.deathEffect, new EffectData
 				{
 					origin = this.centerTransform.position
 				}, true);
@@ -55,7 +55,7 @@ namespace EntityStates.ClayBoss
 			}
 		}
 
-		// Token: 0x06000898 RID: 2200 RVA: 0x0002B1D8 File Offset: 0x000293D8
+		// Token: 0x06003297 RID: 12951 RVA: 0x000DADF3 File Offset: 0x000D8FF3
 		public override void FixedUpdate()
 		{
 			this.stopwatch += Time.fixedDeltaTime;
@@ -65,7 +65,7 @@ namespace EntityStates.ClayBoss
 			}
 		}
 
-		// Token: 0x06000899 RID: 2201 RVA: 0x0002B1FF File Offset: 0x000293FF
+		// Token: 0x06003298 RID: 12952 RVA: 0x000DAE1A File Offset: 0x000D901A
 		public override void OnExit()
 		{
 			if (!this.outer.destroying)
@@ -75,25 +75,25 @@ namespace EntityStates.ClayBoss
 			base.OnExit();
 		}
 
-		// Token: 0x04000B7A RID: 2938
+		// Token: 0x040031A2 RID: 12706
 		public static GameObject initialEffect;
 
-		// Token: 0x04000B7B RID: 2939
+		// Token: 0x040031A3 RID: 12707
 		public static GameObject deathEffect;
 
-		// Token: 0x04000B7C RID: 2940
+		// Token: 0x040031A4 RID: 12708
 		public static float duration = 2f;
 
-		// Token: 0x04000B7D RID: 2941
+		// Token: 0x040031A5 RID: 12709
 		private float stopwatch;
 
-		// Token: 0x04000B7E RID: 2942
+		// Token: 0x040031A6 RID: 12710
 		private Transform modelBaseTransform;
 
-		// Token: 0x04000B7F RID: 2943
+		// Token: 0x040031A7 RID: 12711
 		private Transform centerTransform;
 
-		// Token: 0x04000B80 RID: 2944
+		// Token: 0x040031A8 RID: 12712
 		private bool attemptedDeathBehavior;
 	}
 }

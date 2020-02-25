@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005C3 RID: 1475
+	// Token: 0x020005A1 RID: 1441
 	[RequireComponent(typeof(RectTransform))]
 	[RequireComponent(typeof(Canvas))]
 	public class CombatHealthBarViewer : MonoBehaviour, ILayoutGroup, ILayoutController
 	{
-		// Token: 0x0600210C RID: 8460 RVA: 0x0009B4FB File Offset: 0x000996FB
+		// Token: 0x0600223B RID: 8763 RVA: 0x000942A5 File Offset: 0x000924A5
 		static CombatHealthBarViewer()
 		{
 			GlobalEventManager.onClientDamageNotified += delegate(DamageDealtMessage msg)
@@ -35,27 +35,27 @@ namespace RoR2.UI
 			};
 		}
 
-		// Token: 0x170002E6 RID: 742
-		// (get) Token: 0x0600210D RID: 8461 RVA: 0x0009B51C File Offset: 0x0009971C
-		// (set) Token: 0x0600210E RID: 8462 RVA: 0x0009B524 File Offset: 0x00099724
+		// Token: 0x1700039A RID: 922
+		// (get) Token: 0x0600223C RID: 8764 RVA: 0x000942C6 File Offset: 0x000924C6
+		// (set) Token: 0x0600223D RID: 8765 RVA: 0x000942CE File Offset: 0x000924CE
 		public HealthComponent crosshairTarget { get; set; }
 
-		// Token: 0x170002E7 RID: 743
-		// (get) Token: 0x0600210F RID: 8463 RVA: 0x0009B52D File Offset: 0x0009972D
-		// (set) Token: 0x06002110 RID: 8464 RVA: 0x0009B535 File Offset: 0x00099735
+		// Token: 0x1700039B RID: 923
+		// (get) Token: 0x0600223E RID: 8766 RVA: 0x000942D7 File Offset: 0x000924D7
+		// (set) Token: 0x0600223F RID: 8767 RVA: 0x000942DF File Offset: 0x000924DF
 		public GameObject viewerBodyObject { get; set; }
 
-		// Token: 0x170002E8 RID: 744
-		// (get) Token: 0x06002111 RID: 8465 RVA: 0x0009B53E File Offset: 0x0009973E
-		// (set) Token: 0x06002112 RID: 8466 RVA: 0x0009B546 File Offset: 0x00099746
+		// Token: 0x1700039C RID: 924
+		// (get) Token: 0x06002240 RID: 8768 RVA: 0x000942E8 File Offset: 0x000924E8
+		// (set) Token: 0x06002241 RID: 8769 RVA: 0x000942F0 File Offset: 0x000924F0
 		public CharacterBody viewerBody { get; set; }
 
-		// Token: 0x170002E9 RID: 745
-		// (get) Token: 0x06002113 RID: 8467 RVA: 0x0009B54F File Offset: 0x0009974F
-		// (set) Token: 0x06002114 RID: 8468 RVA: 0x0009B557 File Offset: 0x00099757
+		// Token: 0x1700039D RID: 925
+		// (get) Token: 0x06002242 RID: 8770 RVA: 0x000942F9 File Offset: 0x000924F9
+		// (set) Token: 0x06002243 RID: 8771 RVA: 0x00094301 File Offset: 0x00092501
 		public TeamIndex viewerTeamIndex { get; set; }
 
-		// Token: 0x06002115 RID: 8469 RVA: 0x0009B560 File Offset: 0x00099760
+		// Token: 0x06002244 RID: 8772 RVA: 0x0009430A File Offset: 0x0009250A
 		private void Update()
 		{
 			if (this.crosshairTarget)
@@ -66,32 +66,32 @@ namespace RoR2.UI
 			this.SetDirty();
 		}
 
-		// Token: 0x06002116 RID: 8470 RVA: 0x0009B59C File Offset: 0x0009979C
+		// Token: 0x06002245 RID: 8773 RVA: 0x00094346 File Offset: 0x00092546
 		private void Awake()
 		{
 			this.rectTransform = (RectTransform)base.transform;
 			this.canvas = base.GetComponent<Canvas>();
 		}
 
-		// Token: 0x06002117 RID: 8471 RVA: 0x0009B5BB File Offset: 0x000997BB
+		// Token: 0x06002246 RID: 8774 RVA: 0x00094365 File Offset: 0x00092565
 		private void Start()
 		{
 			this.FindCamera();
 		}
 
-		// Token: 0x06002118 RID: 8472 RVA: 0x0009B5C3 File Offset: 0x000997C3
+		// Token: 0x06002247 RID: 8775 RVA: 0x0009436D File Offset: 0x0009256D
 		private void FindCamera()
 		{
 			this.uiCamera = this.canvas.rootCanvas.worldCamera.GetComponent<UICamera>();
 		}
 
-		// Token: 0x06002119 RID: 8473 RVA: 0x0009B5E0 File Offset: 0x000997E0
+		// Token: 0x06002248 RID: 8776 RVA: 0x0009438A File Offset: 0x0009258A
 		private void OnEnable()
 		{
 			CombatHealthBarViewer.instancesList.Add(this);
 		}
 
-		// Token: 0x0600211A RID: 8474 RVA: 0x0009B5F0 File Offset: 0x000997F0
+		// Token: 0x06002249 RID: 8777 RVA: 0x00094398 File Offset: 0x00092598
 		private void OnDisable()
 		{
 			CombatHealthBarViewer.instancesList.Remove(this);
@@ -101,13 +101,13 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600211B RID: 8475 RVA: 0x0009B628 File Offset: 0x00099828
+		// Token: 0x0600224A RID: 8778 RVA: 0x000943D0 File Offset: 0x000925D0
 		private void Remove(int trackedVictimIndex)
 		{
 			this.Remove(trackedVictimIndex, this.victimToHealthBarInfo[this.trackedVictims[trackedVictimIndex]]);
 		}
 
-		// Token: 0x0600211C RID: 8476 RVA: 0x0009B648 File Offset: 0x00099848
+		// Token: 0x0600224B RID: 8779 RVA: 0x000943F0 File Offset: 0x000925F0
 		private void Remove(int trackedVictimIndex, CombatHealthBarViewer.HealthBarInfo healthBarInfo)
 		{
 			this.trackedVictims.RemoveAt(trackedVictimIndex);
@@ -115,19 +115,19 @@ namespace RoR2.UI
 			this.victimToHealthBarInfo.Remove(healthBarInfo.sourceHealthComponent);
 		}
 
-		// Token: 0x0600211D RID: 8477 RVA: 0x0009B673 File Offset: 0x00099873
+		// Token: 0x0600224C RID: 8780 RVA: 0x0009441B File Offset: 0x0009261B
 		private bool VictimIsValid(HealthComponent victim)
 		{
 			return victim && victim.alive && (this.victimToHealthBarInfo[victim].endTime > Time.time || victim == this.crosshairTarget);
 		}
 
-		// Token: 0x0600211E RID: 8478 RVA: 0x0009B6AD File Offset: 0x000998AD
+		// Token: 0x0600224D RID: 8781 RVA: 0x00094455 File Offset: 0x00092655
 		private void LateUpdate()
 		{
 			this.CleanUp();
 		}
 
-		// Token: 0x0600211F RID: 8479 RVA: 0x0009B6B8 File Offset: 0x000998B8
+		// Token: 0x0600224E RID: 8782 RVA: 0x00094460 File Offset: 0x00092660
 		private void CleanUp()
 		{
 			for (int i = this.trackedVictims.Count - 1; i >= 0; i--)
@@ -140,7 +140,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002120 RID: 8480 RVA: 0x0009B708 File Offset: 0x00099908
+		// Token: 0x0600224F RID: 8783 RVA: 0x000944B0 File Offset: 0x000926B0
 		private void UpdateAllHealthbarPositions(Camera sceneCam, Camera uiCam)
 		{
 			foreach (CombatHealthBarViewer.HealthBarInfo healthBarInfo in this.victimToHealthBarInfo.Values)
@@ -154,7 +154,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002121 RID: 8481 RVA: 0x0009B7B8 File Offset: 0x000999B8
+		// Token: 0x06002250 RID: 8784 RVA: 0x00094560 File Offset: 0x00092760
 		private void HandleDamage(HealthComponent victimHealthComponent, TeamIndex victimTeam)
 		{
 			if (this.viewerTeamIndex == victimTeam || victimTeam == TeamIndex.None)
@@ -169,7 +169,7 @@ namespace RoR2.UI
 			this.GetHealthBarInfo(victimHealthComponent).endTime = Time.time + this.healthBarDuration;
 		}
 
-		// Token: 0x06002122 RID: 8482 RVA: 0x0009B80C File Offset: 0x00099A0C
+		// Token: 0x06002251 RID: 8785 RVA: 0x000945B4 File Offset: 0x000927B4
 		private CombatHealthBarViewer.HealthBarInfo GetHealthBarInfo(HealthComponent victimHealthComponent)
 		{
 			CombatHealthBarViewer.HealthBarInfo healthBarInfo;
@@ -180,6 +180,7 @@ namespace RoR2.UI
 				healthBarInfo.healthBarRootObjectTransform = healthBarInfo.healthBarRootObject.transform;
 				healthBarInfo.healthBar = healthBarInfo.healthBarRootObject.GetComponent<HealthBar>();
 				healthBarInfo.healthBar.source = victimHealthComponent;
+				healthBarInfo.healthBar.viewerBody = this.viewerBody;
 				healthBarInfo.healthBarRootObject.GetComponentInChildren<BuffDisplay>().source = victimHealthComponent.body;
 				healthBarInfo.sourceHealthComponent = victimHealthComponent;
 				healthBarInfo.verticalOffset = 0f;
@@ -213,7 +214,7 @@ namespace RoR2.UI
 			return healthBarInfo;
 		}
 
-		// Token: 0x06002123 RID: 8483 RVA: 0x0009B958 File Offset: 0x00099B58
+		// Token: 0x06002252 RID: 8786 RVA: 0x00094711 File Offset: 0x00092911
 		private void SetDirty()
 		{
 			if (!base.isActiveAndEnabled)
@@ -226,7 +227,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002124 RID: 8484 RVA: 0x0009B978 File Offset: 0x00099B78
+		// Token: 0x06002253 RID: 8787 RVA: 0x00094730 File Offset: 0x00092930
 		private static void LayoutForCamera(UICamera uiCamera)
 		{
 			Camera camera = uiCamera.camera;
@@ -237,7 +238,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002125 RID: 8485 RVA: 0x0009B9BF File Offset: 0x00099BBF
+		// Token: 0x06002254 RID: 8788 RVA: 0x00094777 File Offset: 0x00092977
 		public void SetLayoutHorizontal()
 		{
 			if (this.uiCamera)
@@ -246,69 +247,69 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002126 RID: 8486 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06002255 RID: 8789 RVA: 0x0000409B File Offset: 0x0000229B
 		public void SetLayoutVertical()
 		{
 		}
 
-		// Token: 0x0400239F RID: 9119
+		// Token: 0x04001FA6 RID: 8102
 		private static readonly List<CombatHealthBarViewer> instancesList = new List<CombatHealthBarViewer>();
 
-		// Token: 0x040023A0 RID: 9120
+		// Token: 0x04001FA7 RID: 8103
 		public RectTransform container;
 
-		// Token: 0x040023A1 RID: 9121
+		// Token: 0x04001FA8 RID: 8104
 		public GameObject healthBarPrefab;
 
-		// Token: 0x040023A2 RID: 9122
+		// Token: 0x04001FA9 RID: 8105
 		public float healthBarDuration;
 
-		// Token: 0x040023A7 RID: 9127
+		// Token: 0x04001FAE RID: 8110
 		private const float hoverHealthBarDuration = 1f;
 
-		// Token: 0x040023A8 RID: 9128
+		// Token: 0x04001FAF RID: 8111
 		private RectTransform rectTransform;
 
-		// Token: 0x040023A9 RID: 9129
+		// Token: 0x04001FB0 RID: 8112
 		private Canvas canvas;
 
-		// Token: 0x040023AA RID: 9130
+		// Token: 0x04001FB1 RID: 8113
 		private UICamera uiCamera;
 
-		// Token: 0x040023AB RID: 9131
+		// Token: 0x04001FB2 RID: 8114
 		private List<HealthComponent> trackedVictims = new List<HealthComponent>();
 
-		// Token: 0x040023AC RID: 9132
+		// Token: 0x04001FB3 RID: 8115
 		private Dictionary<HealthComponent, CombatHealthBarViewer.HealthBarInfo> victimToHealthBarInfo = new Dictionary<HealthComponent, CombatHealthBarViewer.HealthBarInfo>();
 
-		// Token: 0x040023AD RID: 9133
+		// Token: 0x04001FB4 RID: 8116
 		public float zPosition;
 
-		// Token: 0x040023AE RID: 9134
+		// Token: 0x04001FB5 RID: 8117
 		private const float overheadOffset = 1f;
 
-		// Token: 0x020005C4 RID: 1476
+		// Token: 0x020005A2 RID: 1442
 		private class HealthBarInfo
 		{
-			// Token: 0x040023AF RID: 9135
+			// Token: 0x04001FB6 RID: 8118
 			public HealthComponent sourceHealthComponent;
 
-			// Token: 0x040023B0 RID: 9136
+			// Token: 0x04001FB7 RID: 8119
 			public Transform sourceTransform;
 
-			// Token: 0x040023B1 RID: 9137
+			// Token: 0x04001FB8 RID: 8120
 			public GameObject healthBarRootObject;
 
-			// Token: 0x040023B2 RID: 9138
+			// Token: 0x04001FB9 RID: 8121
 			public Transform healthBarRootObjectTransform;
 
-			// Token: 0x040023B3 RID: 9139
+			// Token: 0x04001FBA RID: 8122
 			public HealthBar healthBar;
 
-			// Token: 0x040023B4 RID: 9140
+			// Token: 0x04001FBB RID: 8123
 			public float verticalOffset;
 
-			// Token: 0x040023B5 RID: 9141
+			// Token: 0x04001FBC RID: 8124
 			public float endTime = float.NegativeInfinity;
 		}
 	}

@@ -1,11 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x0200004D RID: 77
+// Token: 0x02000049 RID: 73
 [ExecuteInEditMode]
 public class RenderDepth : MonoBehaviour
 {
-	// Token: 0x0600014C RID: 332 RVA: 0x00007E0E File Offset: 0x0000600E
+	// Token: 0x06000131 RID: 305 RVA: 0x00007D22 File Offset: 0x00005F22
 	private void OnEnable()
 	{
 		base.GetComponent<Camera>().depthTextureMode = DepthTextureMode.DepthNormals;

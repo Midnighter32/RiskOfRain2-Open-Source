@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace JBooth.VertexPainterPro
 {
-	// Token: 0x02000079 RID: 121
+	// Token: 0x0200007E RID: 126
 	[ExecuteInEditMode]
 	public class VertexInstanceStream : MonoBehaviour
 	{
-		// Token: 0x17000026 RID: 38
-		// (get) Token: 0x060001F4 RID: 500 RVA: 0x00009DF3 File Offset: 0x00007FF3
-		// (set) Token: 0x060001F5 RID: 501 RVA: 0x00009DFB File Offset: 0x00007FFB
+		// Token: 0x1700002C RID: 44
+		// (get) Token: 0x06000230 RID: 560 RVA: 0x0000A88F File Offset: 0x00008A8F
+		// (set) Token: 0x06000231 RID: 561 RVA: 0x0000A897 File Offset: 0x00008A97
 		public Color[] colors
 		{
 			get
@@ -25,9 +25,9 @@ namespace JBooth.VertexPainterPro
 			}
 		}
 
-		// Token: 0x17000027 RID: 39
-		// (get) Token: 0x060001F6 RID: 502 RVA: 0x00009E30 File Offset: 0x00008030
-		// (set) Token: 0x060001F7 RID: 503 RVA: 0x00009E38 File Offset: 0x00008038
+		// Token: 0x1700002D RID: 45
+		// (get) Token: 0x06000232 RID: 562 RVA: 0x0000A8CC File Offset: 0x00008ACC
+		// (set) Token: 0x06000233 RID: 563 RVA: 0x0000A8D4 File Offset: 0x00008AD4
 		public List<Vector4> uv0
 		{
 			get
@@ -41,9 +41,9 @@ namespace JBooth.VertexPainterPro
 			}
 		}
 
-		// Token: 0x17000028 RID: 40
-		// (get) Token: 0x060001F8 RID: 504 RVA: 0x00009E49 File Offset: 0x00008049
-		// (set) Token: 0x060001F9 RID: 505 RVA: 0x00009E51 File Offset: 0x00008051
+		// Token: 0x1700002E RID: 46
+		// (get) Token: 0x06000234 RID: 564 RVA: 0x0000A8E5 File Offset: 0x00008AE5
+		// (set) Token: 0x06000235 RID: 565 RVA: 0x0000A8ED File Offset: 0x00008AED
 		public List<Vector4> uv1
 		{
 			get
@@ -57,9 +57,9 @@ namespace JBooth.VertexPainterPro
 			}
 		}
 
-		// Token: 0x17000029 RID: 41
-		// (get) Token: 0x060001FA RID: 506 RVA: 0x00009E62 File Offset: 0x00008062
-		// (set) Token: 0x060001FB RID: 507 RVA: 0x00009E6A File Offset: 0x0000806A
+		// Token: 0x1700002F RID: 47
+		// (get) Token: 0x06000236 RID: 566 RVA: 0x0000A8FE File Offset: 0x00008AFE
+		// (set) Token: 0x06000237 RID: 567 RVA: 0x0000A906 File Offset: 0x00008B06
 		public List<Vector4> uv2
 		{
 			get
@@ -73,9 +73,9 @@ namespace JBooth.VertexPainterPro
 			}
 		}
 
-		// Token: 0x1700002A RID: 42
-		// (get) Token: 0x060001FC RID: 508 RVA: 0x00009E7B File Offset: 0x0000807B
-		// (set) Token: 0x060001FD RID: 509 RVA: 0x00009E83 File Offset: 0x00008083
+		// Token: 0x17000030 RID: 48
+		// (get) Token: 0x06000238 RID: 568 RVA: 0x0000A917 File Offset: 0x00008B17
+		// (set) Token: 0x06000239 RID: 569 RVA: 0x0000A91F File Offset: 0x00008B1F
 		public List<Vector4> uv3
 		{
 			get
@@ -89,9 +89,9 @@ namespace JBooth.VertexPainterPro
 			}
 		}
 
-		// Token: 0x1700002B RID: 43
-		// (get) Token: 0x060001FE RID: 510 RVA: 0x00009E94 File Offset: 0x00008094
-		// (set) Token: 0x060001FF RID: 511 RVA: 0x00009E9C File Offset: 0x0000809C
+		// Token: 0x17000031 RID: 49
+		// (get) Token: 0x0600023A RID: 570 RVA: 0x0000A930 File Offset: 0x00008B30
+		// (set) Token: 0x0600023B RID: 571 RVA: 0x0000A938 File Offset: 0x00008B38
 		public Vector3[] positions
 		{
 			get
@@ -105,9 +105,9 @@ namespace JBooth.VertexPainterPro
 			}
 		}
 
-		// Token: 0x1700002C RID: 44
-		// (get) Token: 0x06000200 RID: 512 RVA: 0x00009EAD File Offset: 0x000080AD
-		// (set) Token: 0x06000201 RID: 513 RVA: 0x00009EB5 File Offset: 0x000080B5
+		// Token: 0x17000032 RID: 50
+		// (get) Token: 0x0600023C RID: 572 RVA: 0x0000A949 File Offset: 0x00008B49
+		// (set) Token: 0x0600023D RID: 573 RVA: 0x0000A951 File Offset: 0x00008B51
 		public Vector3[] normals
 		{
 			get
@@ -121,9 +121,9 @@ namespace JBooth.VertexPainterPro
 			}
 		}
 
-		// Token: 0x1700002D RID: 45
-		// (get) Token: 0x06000202 RID: 514 RVA: 0x00009EC6 File Offset: 0x000080C6
-		// (set) Token: 0x06000203 RID: 515 RVA: 0x00009ECE File Offset: 0x000080CE
+		// Token: 0x17000033 RID: 51
+		// (get) Token: 0x0600023E RID: 574 RVA: 0x0000A962 File Offset: 0x00008B62
+		// (set) Token: 0x0600023F RID: 575 RVA: 0x0000A96A File Offset: 0x00008B6A
 		public Vector4[] tangents
 		{
 			get
@@ -137,7 +137,7 @@ namespace JBooth.VertexPainterPro
 			}
 		}
 
-		// Token: 0x06000204 RID: 516 RVA: 0x00009EE0 File Offset: 0x000080E0
+		// Token: 0x06000240 RID: 576 RVA: 0x0000A97C File Offset: 0x00008B7C
 		private void Start()
 		{
 			this.Apply(!this.keepRuntimeData);
@@ -148,7 +148,7 @@ namespace JBooth.VertexPainterPro
 			}
 		}
 
-		// Token: 0x06000205 RID: 517 RVA: 0x00009F20 File Offset: 0x00008120
+		// Token: 0x06000241 RID: 577 RVA: 0x0000A9BC File Offset: 0x00008BBC
 		private void OnDestroy()
 		{
 			if (!Application.isPlaying)
@@ -161,7 +161,7 @@ namespace JBooth.VertexPainterPro
 			}
 		}
 
-		// Token: 0x06000206 RID: 518 RVA: 0x00009F4C File Offset: 0x0000814C
+		// Token: 0x06000242 RID: 578 RVA: 0x0000A9E8 File Offset: 0x00008BE8
 		private void EnforceOriginalMeshHasColors(Mesh stream)
 		{
 			if (this.enforcedColorChannels)
@@ -177,7 +177,7 @@ namespace JBooth.VertexPainterPro
 			}
 		}
 
-		// Token: 0x06000207 RID: 519 RVA: 0x00009FA8 File Offset: 0x000081A8
+		// Token: 0x06000243 RID: 579 RVA: 0x0000AA44 File Offset: 0x00008C44
 		public Mesh Apply(bool markNoLongerReadable = true)
 		{
 			MeshRenderer component = base.GetComponent<MeshRenderer>();
@@ -272,53 +272,53 @@ namespace JBooth.VertexPainterPro
 			return null;
 		}
 
-		// Token: 0x04000206 RID: 518
+		// Token: 0x04000211 RID: 529
 		public bool keepRuntimeData;
 
-		// Token: 0x04000207 RID: 519
+		// Token: 0x04000212 RID: 530
 		[SerializeField]
 		[HideInInspector]
 		private Color[] _colors;
 
-		// Token: 0x04000208 RID: 520
-		[HideInInspector]
+		// Token: 0x04000213 RID: 531
 		[SerializeField]
+		[HideInInspector]
 		private List<Vector4> _uv0;
 
-		// Token: 0x04000209 RID: 521
-		[HideInInspector]
+		// Token: 0x04000214 RID: 532
 		[SerializeField]
+		[HideInInspector]
 		private List<Vector4> _uv1;
 
-		// Token: 0x0400020A RID: 522
+		// Token: 0x04000215 RID: 533
 		[HideInInspector]
 		[SerializeField]
 		private List<Vector4> _uv2;
 
-		// Token: 0x0400020B RID: 523
-		[SerializeField]
+		// Token: 0x04000216 RID: 534
 		[HideInInspector]
+		[SerializeField]
 		private List<Vector4> _uv3;
 
-		// Token: 0x0400020C RID: 524
+		// Token: 0x04000217 RID: 535
 		[SerializeField]
 		[HideInInspector]
 		private Vector3[] _positions;
 
-		// Token: 0x0400020D RID: 525
+		// Token: 0x04000218 RID: 536
 		[HideInInspector]
 		[SerializeField]
 		private Vector3[] _normals;
 
-		// Token: 0x0400020E RID: 526
+		// Token: 0x04000219 RID: 537
 		[SerializeField]
 		[HideInInspector]
 		private Vector4[] _tangents;
 
-		// Token: 0x0400020F RID: 527
+		// Token: 0x0400021A RID: 538
 		private bool enforcedColorChannels;
 
-		// Token: 0x04000210 RID: 528
+		// Token: 0x0400021B RID: 539
 		private Mesh meshStream;
 	}
 }

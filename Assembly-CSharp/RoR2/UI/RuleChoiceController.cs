@@ -8,22 +8,22 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x0200062F RID: 1583
+	// Token: 0x0200061D RID: 1565
 	public class RuleChoiceController : MonoBehaviour
 	{
-		// Token: 0x06002384 RID: 9092 RVA: 0x000A7334 File Offset: 0x000A5534
+		// Token: 0x06002501 RID: 9473 RVA: 0x000A16C4 File Offset: 0x0009F8C4
 		private void OnEnable()
 		{
 			RuleChoiceController.instancesList.Add(this);
 		}
 
-		// Token: 0x06002385 RID: 9093 RVA: 0x000A7341 File Offset: 0x000A5541
+		// Token: 0x06002502 RID: 9474 RVA: 0x000A16D1 File Offset: 0x0009F8D1
 		private void OnDisable()
 		{
 			RuleChoiceController.instancesList.Remove(this);
 		}
 
-		// Token: 0x06002386 RID: 9094 RVA: 0x000A734F File Offset: 0x000A554F
+		// Token: 0x06002503 RID: 9475 RVA: 0x000A16DF File Offset: 0x0009F8DF
 		static RuleChoiceController()
 		{
 			PreGameRuleVoteController.onVotesUpdated += delegate()
@@ -35,13 +35,13 @@ namespace RoR2.UI
 			};
 		}
 
-		// Token: 0x06002387 RID: 9095 RVA: 0x000A7370 File Offset: 0x000A5570
+		// Token: 0x06002504 RID: 9476 RVA: 0x000A1700 File Offset: 0x0009F900
 		private void Start()
 		{
 			this.UpdateFromVotes();
 		}
 
-		// Token: 0x06002388 RID: 9096 RVA: 0x000A7378 File Offset: 0x000A5578
+		// Token: 0x06002505 RID: 9477 RVA: 0x000A1708 File Offset: 0x0009F908
 		public void UpdateFromVotes()
 		{
 			int num = PreGameRuleVoteController.votesForEachChoice[this.currentChoiceDef.globalIndex];
@@ -68,7 +68,7 @@ namespace RoR2.UI
 			this.selectionDisplayPanel.enabled = enabled;
 		}
 
-		// Token: 0x06002389 RID: 9097 RVA: 0x000A740C File Offset: 0x000A560C
+		// Token: 0x06002506 RID: 9478 RVA: 0x000A179C File Offset: 0x0009F99C
 		public void SetChoice([NotNull] RuleChoiceDef newChoiceDef)
 		{
 			if (newChoiceDef == this.currentChoiceDef)
@@ -86,13 +86,18 @@ namespace RoR2.UI
 			this.UpdateFromVotes();
 		}
 
-		// Token: 0x0600238A RID: 9098 RVA: 0x000A74F3 File Offset: 0x000A56F3
+		// Token: 0x06002507 RID: 9479 RVA: 0x000A1883 File Offset: 0x0009FA83
 		private NetworkUser FindNetworkUser()
 		{
-			return ((MPEventSystem)EventSystem.current).localUser.currentNetworkUser;
+			LocalUser localUser = ((MPEventSystem)EventSystem.current).localUser;
+			if (localUser == null)
+			{
+				return null;
+			}
+			return localUser.currentNetworkUser;
 		}
 
-		// Token: 0x0600238B RID: 9099 RVA: 0x000A750C File Offset: 0x000A570C
+		// Token: 0x06002508 RID: 9480 RVA: 0x000A18A0 File Offset: 0x0009FAA0
 		public void OnClick()
 		{
 			if (!this.canVote)
@@ -123,29 +128,29 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0400267E RID: 9854
+		// Token: 0x040022C5 RID: 8901
 		private static readonly List<RuleChoiceController> instancesList = new List<RuleChoiceController>();
 
-		// Token: 0x0400267F RID: 9855
+		// Token: 0x040022C6 RID: 8902
 		[HideInInspector]
 		public RuleBookViewerStrip strip;
 
-		// Token: 0x04002680 RID: 9856
+		// Token: 0x040022C7 RID: 8903
 		public Image image;
 
-		// Token: 0x04002681 RID: 9857
+		// Token: 0x040022C8 RID: 8904
 		public TooltipProvider tooltipProvider;
 
-		// Token: 0x04002682 RID: 9858
+		// Token: 0x040022C9 RID: 8905
 		public TextMeshProUGUI voteCounter;
 
-		// Token: 0x04002683 RID: 9859
+		// Token: 0x040022CA RID: 8906
 		public Image selectionDisplayPanel;
 
-		// Token: 0x04002684 RID: 9860
+		// Token: 0x040022CB RID: 8907
 		public bool canVote;
 
-		// Token: 0x04002685 RID: 9861
+		// Token: 0x040022CC RID: 8908
 		private RuleChoiceDef currentChoiceDef;
 	}
 }

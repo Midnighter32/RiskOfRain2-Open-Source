@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000380 RID: 896
+	// Token: 0x020002B8 RID: 696
 	public class PaintTerrain : MonoBehaviour
 	{
-		// Token: 0x060012AD RID: 4781 RVA: 0x0005B88C File Offset: 0x00059A8C
+		// Token: 0x06000FB9 RID: 4025 RVA: 0x00044EF0 File Offset: 0x000430F0
 		private void Start()
 		{
 			this.snowfallDirection = this.snowfallDirection.normalized;
@@ -18,7 +18,7 @@ namespace RoR2
 			this.UpdateDetailMaps();
 		}
 
-		// Token: 0x060012AE RID: 4782 RVA: 0x0005B928 File Offset: 0x00059B28
+		// Token: 0x06000FBA RID: 4026 RVA: 0x00044F8C File Offset: 0x0004318C
 		private void UpdateAlphaMaps()
 		{
 			for (int i = 0; i < this.data.alphamapHeight; i++)
@@ -50,7 +50,7 @@ namespace RoR2
 			this.data.SetAlphamaps(0, 0, this.alphamaps);
 		}
 
-		// Token: 0x060012AF RID: 4783 RVA: 0x0005BAFC File Offset: 0x00059CFC
+		// Token: 0x06000FBB RID: 4027 RVA: 0x00045160 File Offset: 0x00043360
 		private void UpdateDetailMaps()
 		{
 			for (int i = 0; i < this.data.detailHeight; i++)
@@ -64,34 +64,34 @@ namespace RoR2
 			this.data.SetDetailLayer(0, 0, 0, this.detailmapGrass);
 		}
 
-		// Token: 0x04001674 RID: 5748
+		// Token: 0x04000F31 RID: 3889
 		public float splatHeightReference = 60f;
 
-		// Token: 0x04001675 RID: 5749
+		// Token: 0x04000F32 RID: 3890
 		public float splatRaycastLength = 200f;
 
-		// Token: 0x04001676 RID: 5750
+		// Token: 0x04000F33 RID: 3891
 		public float splatSlopePower = 1f;
 
-		// Token: 0x04001677 RID: 5751
+		// Token: 0x04000F34 RID: 3892
 		public float heightPower = 1f;
 
-		// Token: 0x04001678 RID: 5752
+		// Token: 0x04000F35 RID: 3893
 		public Vector3 snowfallDirection = Vector3.up;
 
-		// Token: 0x04001679 RID: 5753
+		// Token: 0x04000F36 RID: 3894
 		public Texture2D grassNoiseMap;
 
-		// Token: 0x0400167A RID: 5754
+		// Token: 0x04000F37 RID: 3895
 		private Terrain terrain;
 
-		// Token: 0x0400167B RID: 5755
+		// Token: 0x04000F38 RID: 3896
 		private TerrainData data;
 
-		// Token: 0x0400167C RID: 5756
+		// Token: 0x04000F39 RID: 3897
 		private float[,,] alphamaps;
 
-		// Token: 0x0400167D RID: 5757
+		// Token: 0x04000F3A RID: 3898
 		private int[,] detailmapGrass;
 	}
 }

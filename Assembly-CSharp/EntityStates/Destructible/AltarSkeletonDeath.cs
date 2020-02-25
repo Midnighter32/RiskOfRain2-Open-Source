@@ -5,15 +5,15 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Destructible
 {
-	// Token: 0x0200019B RID: 411
+	// Token: 0x020008A2 RID: 2210
 	public class AltarSkeletonDeath : BaseState
 	{
-		// Token: 0x14000004 RID: 4
-		// (add) Token: 0x060007F3 RID: 2035 RVA: 0x00027708 File Offset: 0x00025908
-		// (remove) Token: 0x060007F4 RID: 2036 RVA: 0x0002773C File Offset: 0x0002593C
+		// Token: 0x14000090 RID: 144
+		// (add) Token: 0x0600318F RID: 12687 RVA: 0x000D577C File Offset: 0x000D397C
+		// (remove) Token: 0x06003190 RID: 12688 RVA: 0x000D57B0 File Offset: 0x000D39B0
 		public static event Action onDeath;
 
-		// Token: 0x060007F5 RID: 2037 RVA: 0x0002776F File Offset: 0x0002596F
+		// Token: 0x06003191 RID: 12689 RVA: 0x000D57E3 File Offset: 0x000D39E3
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -21,13 +21,13 @@ namespace EntityStates.Destructible
 			this.Explode();
 		}
 
-		// Token: 0x060007F6 RID: 2038 RVA: 0x0000F633 File Offset: 0x0000D833
+		// Token: 0x06003192 RID: 12690 RVA: 0x000B23CF File Offset: 0x000B05CF
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
 		}
 
-		// Token: 0x060007F7 RID: 2039 RVA: 0x00027790 File Offset: 0x00025990
+		// Token: 0x06003193 RID: 12691 RVA: 0x000D5804 File Offset: 0x000D3A04
 		private void Explode()
 		{
 			if (base.modelLocator)
@@ -43,7 +43,7 @@ namespace EntityStates.Destructible
 			}
 			if (AltarSkeletonDeath.explosionEffectPrefab && NetworkServer.active)
 			{
-				EffectManager.instance.SpawnEffect(AltarSkeletonDeath.explosionEffectPrefab, new EffectData
+				EffectManager.SpawnEffect(AltarSkeletonDeath.explosionEffectPrefab, new EffectData
 				{
 					origin = base.transform.position,
 					scale = AltarSkeletonDeath.explosionRadius,
@@ -58,22 +58,22 @@ namespace EntityStates.Destructible
 			EntityState.Destroy(base.gameObject);
 		}
 
-		// Token: 0x060007F8 RID: 2040 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x06003194 RID: 12692 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Death;
 		}
 
-		// Token: 0x04000A68 RID: 2664
+		// Token: 0x04003006 RID: 12294
 		public static GameObject explosionEffectPrefab;
 
-		// Token: 0x04000A69 RID: 2665
+		// Token: 0x04003007 RID: 12295
 		public static float explosionRadius;
 
-		// Token: 0x04000A6A RID: 2666
+		// Token: 0x04003008 RID: 12296
 		public static string deathSoundString;
 
-		// Token: 0x04000A6C RID: 2668
+		// Token: 0x0400300A RID: 12298
 		private float stopwatch;
 	}
 }

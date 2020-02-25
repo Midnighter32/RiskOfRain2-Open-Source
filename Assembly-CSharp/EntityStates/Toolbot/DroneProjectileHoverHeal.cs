@@ -7,10 +7,10 @@ using UnityEngine;
 
 namespace EntityStates.Toolbot
 {
-	// Token: 0x020000E4 RID: 228
+	// Token: 0x0200076B RID: 1899
 	public class DroneProjectileHoverHeal : DroneProjectileHover
 	{
-		// Token: 0x06000471 RID: 1137 RVA: 0x00012AD4 File Offset: 0x00010CD4
+		// Token: 0x06002BCB RID: 11211 RVA: 0x000B93C8 File Offset: 0x000B75C8
 		protected override void Pulse()
 		{
 			float num = 1f;
@@ -19,14 +19,14 @@ namespace EntityStates.Toolbot
 			{
 				num = component.damage;
 			}
-			this.HealOccupants(DroneProjectileHover.pulseRadius, DroneProjectileHoverHeal.healPointsCoefficient * num, DroneProjectileHoverHeal.healFraction);
+			this.HealOccupants(this.pulseRadius, DroneProjectileHoverHeal.healPointsCoefficient * num, DroneProjectileHoverHeal.healFraction);
 			EffectData effectData = new EffectData();
 			effectData.origin = base.transform.position;
-			effectData.scale = DroneProjectileHover.pulseRadius;
-			EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/ExplosionVFX"), effectData, true);
+			effectData.scale = this.pulseRadius;
+			EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/ExplosionVFX"), effectData, true);
 		}
 
-		// Token: 0x06000472 RID: 1138 RVA: 0x00012B4C File Offset: 0x00010D4C
+		// Token: 0x06002BCC RID: 11212 RVA: 0x000B9440 File Offset: 0x000B7640
 		private static HealthComponent SelectHealthComponent(Collider collider)
 		{
 			HurtBox component = collider.GetComponent<HurtBox>();
@@ -37,7 +37,7 @@ namespace EntityStates.Toolbot
 			return null;
 		}
 
-		// Token: 0x06000473 RID: 1139 RVA: 0x00012B80 File Offset: 0x00010D80
+		// Token: 0x06002BCD RID: 11213 RVA: 0x000B9474 File Offset: 0x000B7674
 		private void HealOccupants(float radius, float healPoints, float healFraction)
 		{
 			IEnumerable<Collider> source = Physics.OverlapSphere(base.transform.position, radius, LayerIndex.entityPrecise.mask);
@@ -59,10 +59,10 @@ namespace EntityStates.Toolbot
 			}
 		}
 
-		// Token: 0x0400043D RID: 1085
+		// Token: 0x040027F7 RID: 10231
 		public static float healPointsCoefficient;
 
-		// Token: 0x0400043E RID: 1086
+		// Token: 0x040027F8 RID: 10232
 		public static float healFraction;
 	}
 }

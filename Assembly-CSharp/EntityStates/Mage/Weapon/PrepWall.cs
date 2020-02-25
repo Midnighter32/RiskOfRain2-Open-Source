@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.Mage.Weapon
 {
-	// Token: 0x0200011C RID: 284
+	// Token: 0x020007DD RID: 2013
 	public class PrepWall : BaseState
 	{
-		// Token: 0x06000575 RID: 1397 RVA: 0x00018CB8 File Offset: 0x00016EB8
+		// Token: 0x06002DD6 RID: 11734 RVA: 0x000C3008 File Offset: 0x000C1208
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -18,15 +18,10 @@ namespace EntityStates.Mage.Weapon
 			base.PlayAnimation("Gesture, Additive", "PrepWall", "PrepWall.playbackRate", this.duration);
 			Util.PlaySound(PrepWall.prepWallSoundString, base.gameObject);
 			this.areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(PrepWall.areaIndicatorPrefab);
-			MageLastElementTracker component = base.GetComponent<MageLastElementTracker>();
-			if (component)
-			{
-				component.ApplyElement(MageElement.Ice);
-			}
 			this.UpdateAreaIndicator();
 		}
 
-		// Token: 0x06000576 RID: 1398 RVA: 0x00018D60 File Offset: 0x00016F60
+		// Token: 0x06002DD7 RID: 11735 RVA: 0x000C3098 File Offset: 0x000C1298
 		private void UpdateAreaIndicator()
 		{
 			this.goodPlacement = false;
@@ -49,14 +44,14 @@ namespace EntityStates.Mage.Weapon
 			this.areaIndicatorInstance.SetActive(this.goodPlacement);
 		}
 
-		// Token: 0x06000577 RID: 1399 RVA: 0x00018E68 File Offset: 0x00017068
+		// Token: 0x06002DD8 RID: 11736 RVA: 0x000C31A0 File Offset: 0x000C13A0
 		public override void Update()
 		{
 			base.Update();
 			this.UpdateAreaIndicator();
 		}
 
-		// Token: 0x06000578 RID: 1400 RVA: 0x00018E78 File Offset: 0x00017078
+		// Token: 0x06002DD9 RID: 11737 RVA: 0x000C31B0 File Offset: 0x000C13B0
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -67,88 +62,91 @@ namespace EntityStates.Mage.Weapon
 			}
 		}
 
-		// Token: 0x06000579 RID: 1401 RVA: 0x00018ED0 File Offset: 0x000170D0
+		// Token: 0x06002DDA RID: 11738 RVA: 0x000C3208 File Offset: 0x000C1408
 		public override void OnExit()
 		{
-			if (this.goodPlacement)
+			if (!this.outer.destroying)
 			{
-				base.PlayAnimation("Gesture, Additive", "FireWall");
-				Util.PlaySound(PrepWall.fireSoundString, base.gameObject);
-				if (this.areaIndicatorInstance && base.isAuthority)
+				if (this.goodPlacement)
 				{
-					EffectManager.instance.SimpleMuzzleFlash(PrepWall.muzzleflashEffect, base.gameObject, "MuzzleLeft", true);
-					EffectManager.instance.SimpleMuzzleFlash(PrepWall.muzzleflashEffect, base.gameObject, "MuzzleRight", true);
-					Vector3 forward = this.areaIndicatorInstance.transform.forward;
-					forward.y = 0f;
-					forward.Normalize();
-					Vector3 vector = Vector3.Cross(Vector3.up, forward);
-					bool crit = Util.CheckRoll(this.critStat, base.characterBody.master);
-					ProjectileManager.instance.FireProjectile(PrepWall.projectilePrefab, this.areaIndicatorInstance.transform.position + Vector3.up, Util.QuaternionSafeLookRotation(vector), base.gameObject, this.damageStat * PrepWall.damageCoefficient, 0f, crit, DamageColorIndex.Default, null, -1f);
-					ProjectileManager.instance.FireProjectile(PrepWall.projectilePrefab, this.areaIndicatorInstance.transform.position + Vector3.up, Util.QuaternionSafeLookRotation(-vector), base.gameObject, this.damageStat * PrepWall.damageCoefficient, 0f, crit, DamageColorIndex.Default, null, -1f);
+					base.PlayAnimation("Gesture, Additive", "FireWall");
+					Util.PlaySound(PrepWall.fireSoundString, base.gameObject);
+					if (this.areaIndicatorInstance && base.isAuthority)
+					{
+						EffectManager.SimpleMuzzleFlash(PrepWall.muzzleflashEffect, base.gameObject, "MuzzleLeft", true);
+						EffectManager.SimpleMuzzleFlash(PrepWall.muzzleflashEffect, base.gameObject, "MuzzleRight", true);
+						Vector3 forward = this.areaIndicatorInstance.transform.forward;
+						forward.y = 0f;
+						forward.Normalize();
+						Vector3 vector = Vector3.Cross(Vector3.up, forward);
+						bool crit = Util.CheckRoll(this.critStat, base.characterBody.master);
+						ProjectileManager.instance.FireProjectile(PrepWall.projectilePrefab, this.areaIndicatorInstance.transform.position + Vector3.up, Util.QuaternionSafeLookRotation(vector), base.gameObject, this.damageStat * PrepWall.damageCoefficient, 0f, crit, DamageColorIndex.Default, null, -1f);
+						ProjectileManager.instance.FireProjectile(PrepWall.projectilePrefab, this.areaIndicatorInstance.transform.position + Vector3.up, Util.QuaternionSafeLookRotation(-vector), base.gameObject, this.damageStat * PrepWall.damageCoefficient, 0f, crit, DamageColorIndex.Default, null, -1f);
+					}
 				}
-			}
-			else
-			{
-				base.skillLocator.utility.AddOneStock();
-				base.PlayCrossfade("Gesture, Additive", "BufferEmpty", 0.2f);
+				else
+				{
+					base.skillLocator.utility.AddOneStock();
+					base.PlayCrossfade("Gesture, Additive", "BufferEmpty", 0.2f);
+				}
 			}
 			EntityState.Destroy(this.areaIndicatorInstance.gameObject);
 			base.characterBody.crosshairPrefab = this.cachedCrosshairPrefab;
 			base.OnExit();
 		}
 
-		// Token: 0x0600057A RID: 1402 RVA: 0x0000BB2B File Offset: 0x00009D2B
+		// Token: 0x06002DDB RID: 11739 RVA: 0x0000C5D3 File Offset: 0x0000A7D3
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Pain;
 		}
 
-		// Token: 0x04000618 RID: 1560
+		// Token: 0x04002AD5 RID: 10965
 		public static float baseDuration;
 
-		// Token: 0x04000619 RID: 1561
+		// Token: 0x04002AD6 RID: 10966
 		public static GameObject areaIndicatorPrefab;
 
-		// Token: 0x0400061A RID: 1562
+		// Token: 0x04002AD7 RID: 10967
 		public static GameObject projectilePrefab;
 
-		// Token: 0x0400061B RID: 1563
+		// Token: 0x04002AD8 RID: 10968
 		public static float damageCoefficient;
 
-		// Token: 0x0400061C RID: 1564
+		// Token: 0x04002AD9 RID: 10969
 		public static GameObject muzzleflashEffect;
 
-		// Token: 0x0400061D RID: 1565
+		// Token: 0x04002ADA RID: 10970
 		public static GameObject goodCrosshairPrefab;
 
-		// Token: 0x0400061E RID: 1566
+		// Token: 0x04002ADB RID: 10971
 		public static GameObject badCrosshairPrefab;
 
-		// Token: 0x0400061F RID: 1567
+		// Token: 0x04002ADC RID: 10972
 		public static string prepWallSoundString;
 
-		// Token: 0x04000620 RID: 1568
+		// Token: 0x04002ADD RID: 10973
 		public static float maxDistance;
 
-		// Token: 0x04000621 RID: 1569
+		// Token: 0x04002ADE RID: 10974
 		public static string fireSoundString;
 
-		// Token: 0x04000622 RID: 1570
+		// Token: 0x04002ADF RID: 10975
 		public static float maxSlopeAngle;
 
-		// Token: 0x04000623 RID: 1571
+		// Token: 0x04002AE0 RID: 10976
 		private float duration;
 
-		// Token: 0x04000624 RID: 1572
+		// Token: 0x04002AE1 RID: 10977
 		private float stopwatch;
 
-		// Token: 0x04000625 RID: 1573
+		// Token: 0x04002AE2 RID: 10978
 		private bool goodPlacement;
 
-		// Token: 0x04000626 RID: 1574
+		// Token: 0x04002AE3 RID: 10979
 		private GameObject areaIndicatorInstance;
 
-		// Token: 0x04000627 RID: 1575
+		// Token: 0x04002AE4 RID: 10980
 		private GameObject cachedCrosshairPrefab;
 	}
 }

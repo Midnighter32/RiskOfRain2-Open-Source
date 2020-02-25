@@ -4,10 +4,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000412 RID: 1042
+	// Token: 0x0200036E RID: 878
 	public class VelocityRandomOnStart : MonoBehaviour
 	{
-		// Token: 0x0600173C RID: 5948 RVA: 0x0006E5A8 File Offset: 0x0006C7A8
+		// Token: 0x06001573 RID: 5491 RVA: 0x0005B878 File Offset: 0x00059A78
 		private void Start()
 		{
 			if (NetworkServer.active)
@@ -47,40 +47,40 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001A5F RID: 6751
+		// Token: 0x040013F5 RID: 5109
 		public float minSpeed;
 
-		// Token: 0x04001A60 RID: 6752
+		// Token: 0x040013F6 RID: 5110
 		public float maxSpeed;
 
-		// Token: 0x04001A61 RID: 6753
+		// Token: 0x040013F7 RID: 5111
 		public Vector3 baseDirection = Vector3.up;
 
-		// Token: 0x04001A62 RID: 6754
+		// Token: 0x040013F8 RID: 5112
 		public bool localDirection;
 
-		// Token: 0x04001A63 RID: 6755
+		// Token: 0x040013F9 RID: 5113
 		public VelocityRandomOnStart.DirectionMode directionMode;
 
-		// Token: 0x04001A64 RID: 6756
+		// Token: 0x040013FA RID: 5114
 		public float coneAngle = 30f;
 
-		// Token: 0x04001A65 RID: 6757
+		// Token: 0x040013FB RID: 5115
 		[Tooltip("Minimum angular speed in degrees/second.")]
 		public float minAngularSpeed;
 
-		// Token: 0x04001A66 RID: 6758
+		// Token: 0x040013FC RID: 5116
 		[Tooltip("Maximum angular speed in degrees/second.")]
 		public float maxAngularSpeed;
 
-		// Token: 0x02000413 RID: 1043
+		// Token: 0x0200036F RID: 879
 		public enum DirectionMode
 		{
-			// Token: 0x04001A68 RID: 6760
+			// Token: 0x040013FE RID: 5118
 			Sphere,
-			// Token: 0x04001A69 RID: 6761
+			// Token: 0x040013FF RID: 5119
 			Hemisphere,
-			// Token: 0x04001A6A RID: 6762
+			// Token: 0x04001400 RID: 5120
 			Cone
 		}
 	}

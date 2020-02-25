@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.ImpBossMonster
 {
-	// Token: 0x02000141 RID: 321
+	// Token: 0x0200081D RID: 2077
 	public class GroundPound : BaseState
 	{
-		// Token: 0x06000627 RID: 1575 RVA: 0x0001CABC File Offset: 0x0001ACBC
+		// Token: 0x06002F14 RID: 12052 RVA: 0x000C8E58 File Offset: 0x000C7058
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -36,13 +36,13 @@ namespace EntityStates.ImpBossMonster
 			}
 		}
 
-		// Token: 0x06000628 RID: 1576 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002F15 RID: 12053 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000629 RID: 1577 RVA: 0x0001CC04 File Offset: 0x0001AE04
+		// Token: 0x06002F16 RID: 12054 RVA: 0x000C8FA0 File Offset: 0x000C71A0
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -60,9 +60,9 @@ namespace EntityStates.ImpBossMonster
 						}
 						if (base.isAuthority)
 						{
-							EffectManager.instance.SimpleMuzzleFlash(GroundPound.slamEffectPrefab, base.gameObject, "GroundPoundCenter", true);
+							EffectManager.SimpleMuzzleFlash(GroundPound.slamEffectPrefab, base.gameObject, "GroundPoundCenter", true);
 						}
-						EffectManager.instance.SimpleMuzzleFlash(GroundPound.swipeEffectPrefab, base.gameObject, (this.attackCount % 2 == 0) ? "FireVoidspikesL" : "FireVoidspikesR", true);
+						EffectManager.SimpleMuzzleFlash(GroundPound.swipeEffectPrefab, base.gameObject, (this.attackCount % 2 == 0) ? "FireVoidspikesL" : "FireVoidspikesR", true);
 						this.attackCount++;
 						this.hasAttacked = true;
 					}
@@ -79,67 +79,67 @@ namespace EntityStates.ImpBossMonster
 			}
 		}
 
-		// Token: 0x0600062A RID: 1578 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06002F17 RID: 12055 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x0400073C RID: 1852
+		// Token: 0x04002C7C RID: 11388
 		private float stopwatch;
 
-		// Token: 0x0400073D RID: 1853
+		// Token: 0x04002C7D RID: 11389
 		public static float baseDuration = 3.5f;
 
-		// Token: 0x0400073E RID: 1854
+		// Token: 0x04002C7E RID: 11390
 		public static float damageCoefficient = 4f;
 
-		// Token: 0x0400073F RID: 1855
+		// Token: 0x04002C7F RID: 11391
 		public static float forceMagnitude = 16f;
 
-		// Token: 0x04000740 RID: 1856
+		// Token: 0x04002C80 RID: 11392
 		public static float blastAttackRadius;
 
-		// Token: 0x04000741 RID: 1857
+		// Token: 0x04002C81 RID: 11393
 		private BlastAttack attack;
 
-		// Token: 0x04000742 RID: 1858
+		// Token: 0x04002C82 RID: 11394
 		public static string initialAttackSoundString;
 
-		// Token: 0x04000743 RID: 1859
+		// Token: 0x04002C83 RID: 11395
 		public static GameObject chargeEffectPrefab;
 
-		// Token: 0x04000744 RID: 1860
+		// Token: 0x04002C84 RID: 11396
 		public static GameObject slamEffectPrefab;
 
-		// Token: 0x04000745 RID: 1861
+		// Token: 0x04002C85 RID: 11397
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000746 RID: 1862
+		// Token: 0x04002C86 RID: 11398
 		public static GameObject swipeEffectPrefab;
 
-		// Token: 0x04000747 RID: 1863
+		// Token: 0x04002C87 RID: 11399
 		private Animator modelAnimator;
 
-		// Token: 0x04000748 RID: 1864
+		// Token: 0x04002C88 RID: 11400
 		private Transform modelTransform;
 
-		// Token: 0x04000749 RID: 1865
+		// Token: 0x04002C89 RID: 11401
 		private bool hasAttacked;
 
-		// Token: 0x0400074A RID: 1866
+		// Token: 0x04002C8A RID: 11402
 		private float duration;
 
-		// Token: 0x0400074B RID: 1867
+		// Token: 0x04002C8B RID: 11403
 		private GameObject leftHandChargeEffect;
 
-		// Token: 0x0400074C RID: 1868
+		// Token: 0x04002C8C RID: 11404
 		private GameObject rightHandChargeEffect;
 
-		// Token: 0x0400074D RID: 1869
+		// Token: 0x04002C8D RID: 11405
 		private ChildLocator childLocator;
 
-		// Token: 0x0400074E RID: 1870
+		// Token: 0x04002C8E RID: 11406
 		private int attackCount;
 	}
 }

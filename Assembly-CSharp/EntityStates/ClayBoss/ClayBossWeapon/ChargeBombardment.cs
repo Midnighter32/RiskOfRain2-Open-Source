@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.ClayBoss.ClayBossWeapon
 {
-	// Token: 0x020001BE RID: 446
-	internal class ChargeBombardment : BaseState
+	// Token: 0x020008D9 RID: 2265
+	public class ChargeBombardment : BaseState
 	{
-		// Token: 0x060008B8 RID: 2232 RVA: 0x0002BBF0 File Offset: 0x00029DF0
+		// Token: 0x060032B7 RID: 12983 RVA: 0x000DB824 File Offset: 0x000D9A24
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -40,7 +40,7 @@ namespace EntityStates.ClayBoss.ClayBossWeapon
 			}
 		}
 
-		// Token: 0x060008B9 RID: 2233 RVA: 0x0002BCF1 File Offset: 0x00029EF1
+		// Token: 0x060032B8 RID: 12984 RVA: 0x000DB925 File Offset: 0x000D9B25
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -49,7 +49,7 @@ namespace EntityStates.ClayBoss.ClayBossWeapon
 			EntityState.Destroy(this.chargeInstance);
 		}
 
-		// Token: 0x060008BA RID: 2234 RVA: 0x0002BD28 File Offset: 0x00029F28
+		// Token: 0x060032B9 RID: 12985 RVA: 0x000DB95C File Offset: 0x000D9B5C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -68,55 +68,55 @@ namespace EntityStates.ClayBoss.ClayBossWeapon
 			}
 		}
 
-		// Token: 0x060008BB RID: 2235 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x060032BA RID: 12986 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000BB0 RID: 2992
+		// Token: 0x040031D8 RID: 12760
 		public static float baseTotalDuration;
 
-		// Token: 0x04000BB1 RID: 2993
+		// Token: 0x040031D9 RID: 12761
 		public static float baseMaxChargeTime;
 
-		// Token: 0x04000BB2 RID: 2994
+		// Token: 0x040031DA RID: 12762
 		public static int maxCharges;
 
-		// Token: 0x04000BB3 RID: 2995
+		// Token: 0x040031DB RID: 12763
 		public static GameObject chargeEffectPrefab;
 
-		// Token: 0x04000BB4 RID: 2996
+		// Token: 0x040031DC RID: 12764
 		public static string chargeLoopStartSoundString;
 
-		// Token: 0x04000BB5 RID: 2997
+		// Token: 0x040031DD RID: 12765
 		public static string chargeLoopStopSoundString;
 
-		// Token: 0x04000BB6 RID: 2998
+		// Token: 0x040031DE RID: 12766
 		public static int minGrenadeCount;
 
-		// Token: 0x04000BB7 RID: 2999
+		// Token: 0x040031DF RID: 12767
 		public static int maxGrenadeCount;
 
-		// Token: 0x04000BB8 RID: 3000
+		// Token: 0x040031E0 RID: 12768
 		public static float minBonusBloom;
 
-		// Token: 0x04000BB9 RID: 3001
+		// Token: 0x040031E1 RID: 12769
 		public static float maxBonusBloom;
 
-		// Token: 0x04000BBA RID: 3002
+		// Token: 0x040031E2 RID: 12770
 		private float stopwatch;
 
-		// Token: 0x04000BBB RID: 3003
+		// Token: 0x040031E3 RID: 12771
 		private GameObject chargeInstance;
 
-		// Token: 0x04000BBC RID: 3004
+		// Token: 0x040031E4 RID: 12772
 		private int charge;
 
-		// Token: 0x04000BBD RID: 3005
+		// Token: 0x040031E5 RID: 12773
 		private float totalDuration;
 
-		// Token: 0x04000BBE RID: 3006
+		// Token: 0x040031E6 RID: 12774
 		private float maxChargeTime;
 	}
 }

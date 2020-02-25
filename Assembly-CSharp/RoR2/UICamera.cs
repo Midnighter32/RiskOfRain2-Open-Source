@@ -6,55 +6,55 @@ using UnityEngine.EventSystems;
 
 namespace RoR2
 {
-	// Token: 0x0200040C RID: 1036
+	// Token: 0x02000365 RID: 869
 	[RequireComponent(typeof(Camera))]
 	public class UICamera : MonoBehaviour
 	{
-		// Token: 0x14000031 RID: 49
-		// (add) Token: 0x06001715 RID: 5909 RVA: 0x0006DF68 File Offset: 0x0006C168
-		// (remove) Token: 0x06001716 RID: 5910 RVA: 0x0006DF9C File Offset: 0x0006C19C
+		// Token: 0x14000047 RID: 71
+		// (add) Token: 0x0600151C RID: 5404 RVA: 0x0005A33C File Offset: 0x0005853C
+		// (remove) Token: 0x0600151D RID: 5405 RVA: 0x0005A370 File Offset: 0x00058570
 		public static event UICamera.UICameraDelegate onUICameraPreCull;
 
-		// Token: 0x14000032 RID: 50
-		// (add) Token: 0x06001717 RID: 5911 RVA: 0x0006DFD0 File Offset: 0x0006C1D0
-		// (remove) Token: 0x06001718 RID: 5912 RVA: 0x0006E004 File Offset: 0x0006C204
+		// Token: 0x14000048 RID: 72
+		// (add) Token: 0x0600151E RID: 5406 RVA: 0x0005A3A4 File Offset: 0x000585A4
+		// (remove) Token: 0x0600151F RID: 5407 RVA: 0x0005A3D8 File Offset: 0x000585D8
 		public static event UICamera.UICameraDelegate onUICameraPreRender;
 
-		// Token: 0x14000033 RID: 51
-		// (add) Token: 0x06001719 RID: 5913 RVA: 0x0006E038 File Offset: 0x0006C238
-		// (remove) Token: 0x0600171A RID: 5914 RVA: 0x0006E06C File Offset: 0x0006C26C
+		// Token: 0x14000049 RID: 73
+		// (add) Token: 0x06001520 RID: 5408 RVA: 0x0005A40C File Offset: 0x0005860C
+		// (remove) Token: 0x06001521 RID: 5409 RVA: 0x0005A440 File Offset: 0x00058640
 		public static event UICamera.UICameraDelegate onUICameraPostRender;
 
-		// Token: 0x17000220 RID: 544
-		// (get) Token: 0x0600171B RID: 5915 RVA: 0x0006E09F File Offset: 0x0006C29F
-		// (set) Token: 0x0600171C RID: 5916 RVA: 0x0006E0A7 File Offset: 0x0006C2A7
+		// Token: 0x17000285 RID: 645
+		// (get) Token: 0x06001522 RID: 5410 RVA: 0x0005A473 File Offset: 0x00058673
+		// (set) Token: 0x06001523 RID: 5411 RVA: 0x0005A47B File Offset: 0x0005867B
 		public Camera camera { get; private set; }
 
-		// Token: 0x17000221 RID: 545
-		// (get) Token: 0x0600171D RID: 5917 RVA: 0x0006E0B0 File Offset: 0x0006C2B0
-		// (set) Token: 0x0600171E RID: 5918 RVA: 0x0006E0B8 File Offset: 0x0006C2B8
+		// Token: 0x17000286 RID: 646
+		// (get) Token: 0x06001524 RID: 5412 RVA: 0x0005A484 File Offset: 0x00058684
+		// (set) Token: 0x06001525 RID: 5413 RVA: 0x0005A48C File Offset: 0x0005868C
 		public CameraRigController cameraRigController { get; private set; }
 
-		// Token: 0x0600171F RID: 5919 RVA: 0x0006E0C1 File Offset: 0x0006C2C1
+		// Token: 0x06001526 RID: 5414 RVA: 0x0005A495 File Offset: 0x00058695
 		private void Awake()
 		{
 			this.camera = base.GetComponent<Camera>();
 			this.cameraRigController = base.GetComponentInParent<CameraRigController>();
 		}
 
-		// Token: 0x06001720 RID: 5920 RVA: 0x0006E0DB File Offset: 0x0006C2DB
+		// Token: 0x06001527 RID: 5415 RVA: 0x0005A4AF File Offset: 0x000586AF
 		private void OnEnable()
 		{
 			UICamera.instancesList.Add(this);
 		}
 
-		// Token: 0x06001721 RID: 5921 RVA: 0x0006E0E8 File Offset: 0x0006C2E8
+		// Token: 0x06001528 RID: 5416 RVA: 0x0005A4BC File Offset: 0x000586BC
 		private void OnDisable()
 		{
 			UICamera.instancesList.Remove(this);
 		}
 
-		// Token: 0x06001722 RID: 5922 RVA: 0x0006E0F6 File Offset: 0x0006C2F6
+		// Token: 0x06001529 RID: 5417 RVA: 0x0005A4CA File Offset: 0x000586CA
 		private void OnPreCull()
 		{
 			if (UICamera.onUICameraPreCull != null)
@@ -63,7 +63,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001723 RID: 5923 RVA: 0x0006E10A File Offset: 0x0006C30A
+		// Token: 0x0600152A RID: 5418 RVA: 0x0005A4DE File Offset: 0x000586DE
 		private void OnPreRender()
 		{
 			if (UICamera.onUICameraPreRender != null)
@@ -72,7 +72,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001724 RID: 5924 RVA: 0x0006E11E File Offset: 0x0006C31E
+		// Token: 0x0600152B RID: 5419 RVA: 0x0005A4F2 File Offset: 0x000586F2
 		private void OnPostRender()
 		{
 			if (UICamera.onUICameraPostRender != null)
@@ -81,7 +81,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001725 RID: 5925 RVA: 0x0006E132 File Offset: 0x0006C332
+		// Token: 0x0600152C RID: 5420 RVA: 0x0005A506 File Offset: 0x00058706
 		public EventSystem GetAssociatedEventSystem()
 		{
 			if (this.cameraRigController.viewer && this.cameraRigController.viewer.localUser != null)
@@ -91,7 +91,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x06001726 RID: 5926 RVA: 0x0006E170 File Offset: 0x0006C370
+		// Token: 0x0600152D RID: 5421 RVA: 0x0005A544 File Offset: 0x00058744
 		public static UICamera FindViewerUICamera(LocalUser localUserViewer)
 		{
 			if (localUserViewer != null)
@@ -107,14 +107,14 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x04001A51 RID: 6737
+		// Token: 0x040013C2 RID: 5058
 		private static readonly List<UICamera> instancesList = new List<UICamera>();
 
-		// Token: 0x04001A52 RID: 6738
+		// Token: 0x040013C3 RID: 5059
 		public static readonly ReadOnlyCollection<UICamera> readOnlyInstancesList = new ReadOnlyCollection<UICamera>(UICamera.instancesList);
 
-		// Token: 0x0200040D RID: 1037
-		// (Invoke) Token: 0x0600172A RID: 5930
+		// Token: 0x02000366 RID: 870
+		// (Invoke) Token: 0x06001531 RID: 5425
 		public delegate void UICameraDelegate(UICamera sceneCamera);
 	}
 }

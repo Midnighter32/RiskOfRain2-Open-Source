@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.BeetleQueenMonster
 {
-	// Token: 0x020001D1 RID: 465
-	internal class ChargeSpit : BaseState
+	// Token: 0x020008EC RID: 2284
+	public class ChargeSpit : BaseState
 	{
-		// Token: 0x0600090D RID: 2317 RVA: 0x0002D7FC File Offset: 0x0002B9FC
+		// Token: 0x0600330D RID: 13069 RVA: 0x000DD464 File Offset: 0x000DB664
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -35,20 +35,20 @@ namespace EntityStates.BeetleQueenMonster
 			}
 		}
 
-		// Token: 0x0600090E RID: 2318 RVA: 0x0002D8DD File Offset: 0x0002BADD
+		// Token: 0x0600330E RID: 13070 RVA: 0x000DD545 File Offset: 0x000DB745
 		public override void OnExit()
 		{
 			base.OnExit();
 			EntityState.Destroy(this.chargeEffect);
 		}
 
-		// Token: 0x0600090F RID: 2319 RVA: 0x0000DDD0 File Offset: 0x0000BFD0
+		// Token: 0x0600330F RID: 13071 RVA: 0x000B02F8 File Offset: 0x000AE4F8
 		public override void Update()
 		{
 			base.Update();
 		}
 
-		// Token: 0x06000910 RID: 2320 RVA: 0x0002D8F0 File Offset: 0x0002BAF0
+		// Token: 0x06003310 RID: 13072 RVA: 0x000DD558 File Offset: 0x000DB758
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -64,25 +64,25 @@ namespace EntityStates.BeetleQueenMonster
 			}
 		}
 
-		// Token: 0x06000911 RID: 2321 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06003311 RID: 13073 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000C42 RID: 3138
+		// Token: 0x0400326A RID: 12906
 		public static float baseDuration = 3f;
 
-		// Token: 0x04000C43 RID: 3139
+		// Token: 0x0400326B RID: 12907
 		public static GameObject effectPrefab;
 
-		// Token: 0x04000C44 RID: 3140
+		// Token: 0x0400326C RID: 12908
 		public static string attackSoundString;
 
-		// Token: 0x04000C45 RID: 3141
+		// Token: 0x0400326D RID: 12909
 		private float duration;
 
-		// Token: 0x04000C46 RID: 3142
+		// Token: 0x0400326E RID: 12910
 		private GameObject chargeEffect;
 	}
 }

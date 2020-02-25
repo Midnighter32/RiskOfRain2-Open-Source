@@ -2,34 +2,34 @@
 
 namespace RewiredConsts
 {
-	// Token: 0x0200009C RID: 156
+	// Token: 0x020000A1 RID: 161
 	public static class Layout
 	{
-		// Token: 0x0200009D RID: 157
+		// Token: 0x020000A2 RID: 162
 		public static class Joystick
 		{
-			// Token: 0x040002D7 RID: 727
+			// Token: 0x040002E2 RID: 738
 			public const int Default = 0;
 		}
 
-		// Token: 0x0200009E RID: 158
+		// Token: 0x020000A3 RID: 163
 		public static class Keyboard
 		{
-			// Token: 0x040002D8 RID: 728
+			// Token: 0x040002E3 RID: 739
 			public const int Default = 0;
 		}
 
-		// Token: 0x0200009F RID: 159
+		// Token: 0x020000A4 RID: 164
 		public static class Mouse
 		{
-			// Token: 0x040002D9 RID: 729
+			// Token: 0x040002E4 RID: 740
 			public const int Default = 0;
 		}
 
-		// Token: 0x020000A0 RID: 160
+		// Token: 0x020000A5 RID: 165
 		public static class CustomController
 		{
-			// Token: 0x040002DA RID: 730
+			// Token: 0x040002E5 RID: 741
 			public const int Default = 0;
 		}
 	}

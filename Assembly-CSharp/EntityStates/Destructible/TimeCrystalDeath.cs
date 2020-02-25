@@ -5,24 +5,24 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Destructible
 {
-	// Token: 0x0200019E RID: 414
+	// Token: 0x020008A5 RID: 2213
 	public class TimeCrystalDeath : BaseState
 	{
-		// Token: 0x06000804 RID: 2052 RVA: 0x00027B5F File Offset: 0x00025D5F
+		// Token: 0x060031A0 RID: 12704 RVA: 0x000D5BC3 File Offset: 0x000D3DC3
 		public override void OnEnter()
 		{
 			base.OnEnter();
 			this.Explode();
 		}
 
-		// Token: 0x06000805 RID: 2053 RVA: 0x00027B6D File Offset: 0x00025D6D
+		// Token: 0x060031A1 RID: 12705 RVA: 0x000D5BD1 File Offset: 0x000D3DD1
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
 			this.stopwatch += Time.fixedDeltaTime;
 		}
 
-		// Token: 0x06000806 RID: 2054 RVA: 0x00027B88 File Offset: 0x00025D88
+		// Token: 0x060031A2 RID: 12706 RVA: 0x000D5BEC File Offset: 0x000D3DEC
 		private void Explode()
 		{
 			if (base.modelLocator)
@@ -38,7 +38,7 @@ namespace EntityStates.Destructible
 			}
 			if (TimeCrystalDeath.explosionEffectPrefab && NetworkServer.active)
 			{
-				EffectManager.instance.SpawnEffect(TimeCrystalDeath.explosionEffectPrefab, new EffectData
+				EffectManager.SpawnEffect(TimeCrystalDeath.explosionEffectPrefab, new EffectData
 				{
 					origin = base.transform.position,
 					scale = TimeCrystalDeath.explosionRadius,
@@ -61,28 +61,28 @@ namespace EntityStates.Destructible
 			EntityState.Destroy(base.gameObject);
 		}
 
-		// Token: 0x06000807 RID: 2055 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x060031A3 RID: 12707 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Death;
 		}
 
-		// Token: 0x04000A7C RID: 2684
+		// Token: 0x0400301A RID: 12314
 		public static GameObject explosionEffectPrefab;
 
-		// Token: 0x04000A7D RID: 2685
+		// Token: 0x0400301B RID: 12315
 		public static float explosionRadius;
 
-		// Token: 0x04000A7E RID: 2686
+		// Token: 0x0400301C RID: 12316
 		public static float explosionDamageCoefficient;
 
-		// Token: 0x04000A7F RID: 2687
+		// Token: 0x0400301D RID: 12317
 		public static float explosionProcCoefficient;
 
-		// Token: 0x04000A80 RID: 2688
+		// Token: 0x0400301E RID: 12318
 		public static float explosionForce;
 
-		// Token: 0x04000A81 RID: 2689
+		// Token: 0x0400301F RID: 12319
 		private float stopwatch;
 	}
 }

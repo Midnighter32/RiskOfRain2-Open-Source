@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.RoR2.Scripts.GameBehaviors.UI;
+using System.Collections.ObjectModel;
 using RoR2.ConVar;
 using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005E6 RID: 1510
+	// Token: 0x020005CB RID: 1483
 	[RequireComponent(typeof(MPEventSystemProvider))]
 	[RequireComponent(typeof(Canvas))]
 	public class HUD : MonoBehaviour
 	{
-		// Token: 0x060021D0 RID: 8656 RVA: 0x0009FEA8 File Offset: 0x0009E0A8
+		// Token: 0x0600230F RID: 8975 RVA: 0x000992A8 File Offset: 0x000974A8
 		private static void OnUICameraPreRender(UICamera uiCamera)
 		{
 			CameraRigController cameraRigController = uiCamera.cameraRigController;
@@ -40,7 +40,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060021D1 RID: 8657 RVA: 0x0009FF4C File Offset: 0x0009E14C
+		// Token: 0x06002310 RID: 8976 RVA: 0x0009934C File Offset: 0x0009754C
 		private static void OnUICameraPostRender(UICamera uiCamera)
 		{
 			HUD.lockInstancesList = true;
@@ -52,7 +52,7 @@ namespace RoR2.UI
 			HUD.lockInstancesList = false;
 		}
 
-		// Token: 0x060021D2 RID: 8658 RVA: 0x0009FF95 File Offset: 0x0009E195
+		// Token: 0x06002311 RID: 8977 RVA: 0x00099395 File Offset: 0x00097595
 		public void OnEnable()
 		{
 			if (!HUD.lockInstancesList)
@@ -61,7 +61,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060021D3 RID: 8659 RVA: 0x0009FFA9 File Offset: 0x0009E1A9
+		// Token: 0x06002312 RID: 8978 RVA: 0x000993A9 File Offset: 0x000975A9
 		public void OnDisable()
 		{
 			if (!HUD.lockInstancesList)
@@ -70,8 +70,8 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x170002F3 RID: 755
-		// (get) Token: 0x060021D4 RID: 8660 RVA: 0x0009FFBE File Offset: 0x0009E1BE
+		// Token: 0x170003A8 RID: 936
+		// (get) Token: 0x06002313 RID: 8979 RVA: 0x000993BE File Offset: 0x000975BE
 		public GameObject targetBodyObject
 		{
 			get
@@ -84,14 +84,14 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x170002F4 RID: 756
-		// (get) Token: 0x060021D5 RID: 8661 RVA: 0x0009FFDA File Offset: 0x0009E1DA
-		// (set) Token: 0x060021D6 RID: 8662 RVA: 0x0009FFE2 File Offset: 0x0009E1E2
+		// Token: 0x170003A9 RID: 937
+		// (get) Token: 0x06002314 RID: 8980 RVA: 0x000993DA File Offset: 0x000975DA
+		// (set) Token: 0x06002315 RID: 8981 RVA: 0x000993E2 File Offset: 0x000975E2
 		public CharacterMaster targetMaster { get; set; }
 
-		// Token: 0x170002F5 RID: 757
-		// (get) Token: 0x060021D7 RID: 8663 RVA: 0x0009FFEB File Offset: 0x0009E1EB
-		// (set) Token: 0x060021D8 RID: 8664 RVA: 0x0009FFF3 File Offset: 0x0009E1F3
+		// Token: 0x170003AA RID: 938
+		// (get) Token: 0x06002316 RID: 8982 RVA: 0x000993EB File Offset: 0x000975EB
+		// (set) Token: 0x06002317 RID: 8983 RVA: 0x000993F3 File Offset: 0x000975F3
 		public LocalUser localUserViewer
 		{
 			get
@@ -108,7 +108,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060021D9 RID: 8665 RVA: 0x000A001B File Offset: 0x0009E21B
+		// Token: 0x06002318 RID: 8984 RVA: 0x0009941B File Offset: 0x0009761B
 		private void Awake()
 		{
 			this.eventSystemProvider = base.GetComponent<MPEventSystemProvider>();
@@ -119,13 +119,13 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060021DA RID: 8666 RVA: 0x000A004E File Offset: 0x0009E24E
+		// Token: 0x06002319 RID: 8985 RVA: 0x0009944E File Offset: 0x0009764E
 		private void Start()
 		{
 			this.mainContainer.SetActive(HUD.HUDEnableConVar.instance.boolValue);
 		}
 
-		// Token: 0x060021DB RID: 8667 RVA: 0x000A0068 File Offset: 0x0009E268
+		// Token: 0x0600231A RID: 8986 RVA: 0x00099468 File Offset: 0x00097668
 		public void Update()
 		{
 			NetworkUser networkUser;
@@ -156,12 +156,12 @@ namespace RoR2.UI
 			}
 			if (this.moneyText)
 			{
-				this.moneyText.targetValue = (int)(this.targetMaster ? this.targetMaster.money : 0u);
+				this.moneyText.targetValue = (int)(this.targetMaster ? this.targetMaster.money : 0U);
 			}
 			if (this.lunarCoinContainer)
 			{
-				bool flag = this.localUserViewer != null && this.localUserViewer.userProfile.totalCollectedCoins > 0u;
-				uint targetValue = networkUser2 ? networkUser2.lunarCoins : 0u;
+				bool flag = this.localUserViewer != null && this.localUserViewer.userProfile.totalCollectedCoins > 0U;
+				uint targetValue = networkUser2 ? networkUser2.lunarCoins : 0U;
 				this.lunarCoinContainer.SetActive(flag);
 				if (flag && this.lunarCoinText)
 				{
@@ -237,97 +237,118 @@ namespace RoR2.UI
 				this.combatHealthBarViewer.viewerBodyObject = this.targetBodyObject;
 				this.combatHealthBarViewer.viewerTeamIndex = TeamComponent.GetObjectTeam(this.targetBodyObject);
 			}
+			if (this.targetBodyObject != this.previousTargetBodyObject)
+			{
+				this.previousTargetBodyObject = this.targetBodyObject;
+				Action<HUD> action = HUD.onHudTargetChangedGlobal;
+				if (action == null)
+				{
+					return;
+				}
+				action(this);
+			}
 		}
 
-		// Token: 0x040024C5 RID: 9413
+		// Token: 0x14000085 RID: 133
+		// (add) Token: 0x0600231B RID: 8987 RVA: 0x00099938 File Offset: 0x00097B38
+		// (remove) Token: 0x0600231C RID: 8988 RVA: 0x0009996C File Offset: 0x00097B6C
+		public static event Action<HUD> onHudTargetChangedGlobal;
+
+		// Token: 0x040020E8 RID: 8424
 		private static List<HUD> instancesList = new List<HUD>();
 
-		// Token: 0x040024C6 RID: 9414
+		// Token: 0x040020E9 RID: 8425
 		private static bool lockInstancesList = false;
 
-		// Token: 0x040024C7 RID: 9415
+		// Token: 0x040020EA RID: 8426
 		private static List<GameObject> instancesToReenableList = new List<GameObject>();
 
-		// Token: 0x040024C9 RID: 9417
+		// Token: 0x040020EB RID: 8427
+		public static readonly ReadOnlyCollection<HUD> readOnlyInstanceList = HUD.instancesList.AsReadOnly();
+
+		// Token: 0x040020ED RID: 8429
 		private LocalUser _localUserViewer;
 
-		// Token: 0x040024CA RID: 9418
+		// Token: 0x040020EE RID: 8430
 		[Tooltip("Immediate child of this object which contains all other UI.")]
 		public GameObject mainContainer;
 
-		// Token: 0x040024CB RID: 9419
+		// Token: 0x040020EF RID: 8431
 		[NonSerialized]
 		public CameraRigController cameraRigController;
 
-		// Token: 0x040024CC RID: 9420
+		// Token: 0x040020F0 RID: 8432
 		public HealthBar healthBar;
 
-		// Token: 0x040024CD RID: 9421
+		// Token: 0x040020F1 RID: 8433
 		public ExpBar expBar;
 
-		// Token: 0x040024CE RID: 9422
+		// Token: 0x040020F2 RID: 8434
 		public LevelText levelText;
 
-		// Token: 0x040024CF RID: 9423
+		// Token: 0x040020F3 RID: 8435
 		public MoneyText moneyText;
 
-		// Token: 0x040024D0 RID: 9424
+		// Token: 0x040020F4 RID: 8436
 		public GameObject lunarCoinContainer;
 
-		// Token: 0x040024D1 RID: 9425
+		// Token: 0x040020F5 RID: 8437
 		public MoneyText lunarCoinText;
 
-		// Token: 0x040024D2 RID: 9426
+		// Token: 0x040020F6 RID: 8438
 		public SkillIcon[] skillIcons;
 
-		// Token: 0x040024D3 RID: 9427
+		// Token: 0x040020F7 RID: 8439
 		public EquipmentIcon[] equipmentIcons;
 
-		// Token: 0x040024D4 RID: 9428
+		// Token: 0x040020F8 RID: 8440
 		public ItemInventoryDisplay itemInventoryDisplay;
 
-		// Token: 0x040024D5 RID: 9429
+		// Token: 0x040020F9 RID: 8441
 		public BuffDisplay buffDisplay;
 
-		// Token: 0x040024D6 RID: 9430
+		// Token: 0x040020FA RID: 8442
 		public AllyCardManager allyCardManager;
 
-		// Token: 0x040024D7 RID: 9431
+		// Token: 0x040020FB RID: 8443
 		public ContextManager contextManager;
 
-		// Token: 0x040024D8 RID: 9432
+		// Token: 0x040020FC RID: 8444
 		public GameObject scoreboardPanel;
 
-		// Token: 0x040024D9 RID: 9433
+		// Token: 0x040020FD RID: 8445
 		public GameObject mainUIPanel;
 
-		// Token: 0x040024DA RID: 9434
+		// Token: 0x040020FE RID: 8446
 		public GameObject cinematicPanel;
 
-		// Token: 0x040024DB RID: 9435
+		// Token: 0x040020FF RID: 8447
 		public HUDSpeedometer speedometer;
 
-		// Token: 0x040024DC RID: 9436
+		// Token: 0x04002100 RID: 8448
 		public ObjectivePanelController objectivePanelController;
 
-		// Token: 0x040024DD RID: 9437
+		// Token: 0x04002101 RID: 8449
 		public CombatHealthBarViewer combatHealthBarViewer;
 
-		// Token: 0x040024DE RID: 9438
+		// Token: 0x04002102 RID: 8450
 		private MPEventSystemProvider eventSystemProvider;
 
-		// Token: 0x040024DF RID: 9439
+		// Token: 0x04002103 RID: 8451
 		private Canvas canvas;
 
-		// Token: 0x020005E7 RID: 1511
+		// Token: 0x04002104 RID: 8452
+		private GameObject previousTargetBodyObject;
+
+		// Token: 0x020005CC RID: 1484
 		private class HUDEnableConVar : BaseConVar
 		{
-			// Token: 0x060021DD RID: 8669 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x0600231E RID: 8990 RVA: 0x0000972B File Offset: 0x0000792B
 			private HUDEnableConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x060021DE RID: 8670 RVA: 0x000A050C File Offset: 0x0009E70C
+			// Token: 0x0600231F RID: 8991 RVA: 0x000999A0 File Offset: 0x00097BA0
 			public override void SetString(string newValue)
 			{
 				int num;
@@ -345,7 +366,7 @@ namespace RoR2.UI
 				}
 			}
 
-			// Token: 0x060021DF RID: 8671 RVA: 0x000A0588 File Offset: 0x0009E788
+			// Token: 0x06002320 RID: 8992 RVA: 0x00099A1C File Offset: 0x00097C1C
 			public override string GetString()
 			{
 				if (!this.boolValue)
@@ -355,10 +376,10 @@ namespace RoR2.UI
 				return "1";
 			}
 
-			// Token: 0x040024E0 RID: 9440
+			// Token: 0x04002106 RID: 8454
 			public static HUD.HUDEnableConVar instance = new HUD.HUDEnableConVar("hud_enable", ConVarFlags.None, "1", "Enable/disable the HUD.");
 
-			// Token: 0x040024E1 RID: 9441
+			// Token: 0x04002107 RID: 8455
 			public bool boolValue;
 		}
 	}

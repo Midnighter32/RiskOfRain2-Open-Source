@@ -2,17 +2,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000245 RID: 581
+	// Token: 0x02000133 RID: 307
 	public static class EquipmentCatalog
 	{
-		// Token: 0x06000AEA RID: 2794 RVA: 0x00035C0C File Offset: 0x00033E0C
-		static EquipmentCatalog()
+		// Token: 0x170000AB RID: 171
+		// (get) Token: 0x06000582 RID: 1410 RVA: 0x0001632B File Offset: 0x0001452B
+		// (set) Token: 0x06000583 RID: 1411 RVA: 0x00016332 File Offset: 0x00014532
+		public static int equipmentCount { get; private set; }
+
+		// Token: 0x06000584 RID: 1412 RVA: 0x0001633C File Offset: 0x0001453C
+		[SystemInitializer(new Type[]
 		{
-			EquipmentCatalog.equipmentDefs = new EquipmentDef[27];
+
+		})]
+		private static void Init()
+		{
+			EquipmentCatalog.equipmentNameToIndex.Clear();
+			Array.Resize<EquipmentDef>(ref EquipmentCatalog.equipmentDefs, 34);
+			EquipmentCatalog.equipmentCount = EquipmentCatalog.equipmentDefs.Length;
 			EquipmentCatalog.RegisterEquipment(EquipmentIndex.Blackhole, new EquipmentDef
 			{
 				cooldown = 60f,
@@ -130,18 +142,18 @@ namespace RoR2
 				enigmaCompatible = false,
 				passiveBuff = BuffIndex.AffixRed
 			});
-			EquipmentCatalog.RegisterEquipment(EquipmentIndex.AffixGreen, new EquipmentDef
+			EquipmentCatalog.RegisterEquipment(EquipmentIndex.AffixPoison, new EquipmentDef
 			{
 				cooldown = 10f,
-				pickupModelPath = "Prefabs/PickupModels/PickupAffixGreen",
-				pickupIconPath = "Textures/ItemIcons/texAffixGreenIcon",
-				nameToken = "EQUIPMENT_AFFIXGREEN_NAME",
-				pickupToken = "EQUIPMENT_AFFIXGREEN_PICKUP",
-				descriptionToken = "EQUIPMENT_AFFIXGREEN_DESC",
+				pickupModelPath = "Prefabs/PickupModels/PickupAffixPoison",
+				pickupIconPath = "Textures/ItemIcons/texAffixPoisonIcon",
+				nameToken = "EQUIPMENT_AFFIXPOISON_NAME",
+				pickupToken = "EQUIPMENT_AFFIXPOISON_PICKUP",
+				descriptionToken = "EQUIPMENT_AFFIXPOISON_DESC",
 				addressToken = "",
 				canDrop = false,
 				enigmaCompatible = false,
-				passiveBuff = BuffIndex.None
+				passiveBuff = BuffIndex.AffixPoison
 			});
 			EquipmentCatalog.RegisterEquipment(EquipmentIndex.AffixBlue, new EquipmentDef
 			{
@@ -189,6 +201,19 @@ namespace RoR2
 				canDrop = false,
 				enigmaCompatible = false,
 				passiveBuff = BuffIndex.AffixWhite
+			});
+			EquipmentCatalog.RegisterEquipment(EquipmentIndex.AffixHaunted, new EquipmentDef
+			{
+				cooldown = 10f,
+				pickupModelPath = "Prefabs/PickupModels/PickupAffixHaunted",
+				pickupIconPath = "Textures/ItemIcons/texAffixHauntedIcon",
+				nameToken = "EQUIPMENT_AFFIXHAUNTED_NAME",
+				pickupToken = "EQUIPMENT_AFFIXHAUNTED_PICKUP",
+				descriptionToken = "EQUIPMENT_AFFIXHAUNTED_DESC",
+				addressToken = "",
+				canDrop = false,
+				enigmaCompatible = false,
+				passiveBuff = BuffIndex.AffixHaunted
 			});
 			EquipmentCatalog.RegisterEquipment(EquipmentIndex.DroneBackup, new EquipmentDef
 			{
@@ -334,6 +359,64 @@ namespace RoR2
 				isLunar = true,
 				colorIndex = ColorCatalog.ColorIndex.LunarItem
 			});
+			EquipmentCatalog.RegisterEquipment(EquipmentIndex.Gateway, new EquipmentDef
+			{
+				cooldown = 45f,
+				pickupModelPath = "Prefabs/PickupModels/PickupVase",
+				pickupIconPath = "Textures/ItemIcons/texVaseIcon",
+				canDrop = true,
+				enigmaCompatible = true,
+				isLunar = false,
+				unlockableName = "Items.Gateway"
+			});
+			EquipmentCatalog.RegisterEquipment(EquipmentIndex.Tonic, new EquipmentDef
+			{
+				cooldown = 60f,
+				pickupModelPath = "Prefabs/PickupModels/PickupTonic",
+				pickupIconPath = "Textures/ItemIcons/texTonicIcon",
+				canDrop = true,
+				enigmaCompatible = false,
+				isLunar = true,
+				colorIndex = ColorCatalog.ColorIndex.LunarItem,
+				unlockableName = "Items.Tonic"
+			});
+			EquipmentCatalog.RegisterEquipment(EquipmentIndex.QuestVolatileBattery, new EquipmentDef
+			{
+				cooldown = 60f,
+				pickupModelPath = "Prefabs/PickupModels/PickupBatteryArray",
+				pickupIconPath = "Textures/ItemIcons/texBatteryArrayIcon",
+				canDrop = false,
+				enigmaCompatible = false,
+				isLunar = false
+			});
+			EquipmentCatalog.RegisterEquipment(EquipmentIndex.Cleanse, new EquipmentDef
+			{
+				cooldown = 20f,
+				pickupModelPath = "Prefabs/PickupModels/PickupWaterPack",
+				pickupIconPath = "Textures/ItemIcons/texWaterPackIcon",
+				canDrop = true,
+				enigmaCompatible = true,
+				isLunar = false,
+				unlockableName = "Items.Cleanse"
+			});
+			EquipmentCatalog.RegisterEquipment(EquipmentIndex.FireBallDash, new EquipmentDef
+			{
+				cooldown = 30f,
+				pickupModelPath = "Prefabs/PickupModels/PickupEgg",
+				pickupIconPath = "Textures/ItemIcons/texEggIcon",
+				canDrop = true,
+				enigmaCompatible = true,
+				isLunar = false
+			});
+			EquipmentCatalog.RegisterEquipment(EquipmentIndex.GainArmor, new EquipmentDef
+			{
+				cooldown = 45f,
+				pickupModelPath = "Prefabs/PickupModels/PickupElephantFigure",
+				pickupIconPath = "Textures/ItemIcons/texElephantFigureIcon",
+				canDrop = true,
+				enigmaCompatible = true,
+				isLunar = false
+			});
 			for (EquipmentIndex equipmentIndex = EquipmentIndex.CommandMissile; equipmentIndex < EquipmentIndex.Count; equipmentIndex++)
 			{
 				if (EquipmentCatalog.GetEquipmentDef(equipmentIndex) == null)
@@ -344,9 +427,12 @@ namespace RoR2
 					});
 				}
 			}
+			EquipmentCatalog.modHelper.CollectAndRegisterAdditionalEntries(ref EquipmentCatalog.equipmentDefs);
+			EquipmentCatalog.equipmentCount = EquipmentCatalog.equipmentDefs.Length;
+			EquipmentCatalog.availability.MakeAvailable();
 		}
 
-		// Token: 0x06000AEB RID: 2795 RVA: 0x000366D8 File Offset: 0x000348D8
+		// Token: 0x06000585 RID: 1413 RVA: 0x00017050 File Offset: 0x00015250
 		private static void RegisterEquipment(EquipmentIndex equipmentIndex, EquipmentDef equipmentDef)
 		{
 			equipmentDef.equipmentIndex = equipmentIndex;
@@ -359,7 +445,12 @@ namespace RoR2
 			{
 				EquipmentCatalog.enigmaEquipmentList.Add(equipmentIndex);
 			}
-			string arg = equipmentIndex.ToString().ToUpper();
+			if (equipmentDef.name == null)
+			{
+				equipmentDef.name = equipmentIndex.ToString();
+			}
+			string name = equipmentDef.name;
+			string arg = name.ToUpper(CultureInfo.InvariantCulture);
 			if (equipmentDef.nameToken == null)
 			{
 				equipmentDef.nameToken = string.Format(CultureInfo.InvariantCulture, "EQUIPMENT_{0}_NAME", arg);
@@ -384,48 +475,81 @@ namespace RoR2
 			{
 				equipmentDef.pickupIconPath = "Textures/ItemIcons/texNullIcon";
 			}
+			EquipmentCatalog.equipmentNameToIndex[name] = equipmentIndex;
 		}
 
-		// Token: 0x06000AEC RID: 2796 RVA: 0x000367CB File Offset: 0x000349CB
+		// Token: 0x06000586 RID: 1414 RVA: 0x0001716A File Offset: 0x0001536A
 		public static EquipmentDef GetEquipmentDef(EquipmentIndex equipmentIndex)
 		{
-			if (equipmentIndex < EquipmentIndex.CommandMissile || equipmentIndex >= EquipmentIndex.Count)
-			{
-				return null;
-			}
-			return EquipmentCatalog.equipmentDefs[(int)equipmentIndex];
+			return HGArrayUtilities.GetSafe<EquipmentDef>(EquipmentCatalog.equipmentDefs, (int)equipmentIndex);
 		}
 
-		// Token: 0x04000EDF RID: 3807
-		private static EquipmentDef[] equipmentDefs;
+		// Token: 0x06000587 RID: 1415 RVA: 0x00017178 File Offset: 0x00015378
+		public static EquipmentIndex FindEquipmentIndex(string equipmentName)
+		{
+			EquipmentIndex result;
+			if (EquipmentCatalog.equipmentNameToIndex.TryGetValue(equipmentName, out result))
+			{
+				return result;
+			}
+			return EquipmentIndex.None;
+		}
 
-		// Token: 0x04000EE0 RID: 3808
+		// Token: 0x06000588 RID: 1416 RVA: 0x00017197 File Offset: 0x00015397
+		public static T[] GetPerEquipmentBuffer<T>()
+		{
+			return new T[EquipmentCatalog.equipmentCount];
+		}
+
+		// Token: 0x06000589 RID: 1417 RVA: 0x000171A3 File Offset: 0x000153A3
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool IsIndexValid(in EquipmentIndex equipmentIndex)
+		{
+			return equipmentIndex < (EquipmentIndex)EquipmentCatalog.equipmentCount;
+		}
+
+		// Token: 0x040005F3 RID: 1523
+		private static EquipmentDef[] equipmentDefs = Array.Empty<EquipmentDef>();
+
+		// Token: 0x040005F4 RID: 1524
 		public static List<EquipmentIndex> equipmentList = new List<EquipmentIndex>();
 
-		// Token: 0x04000EE1 RID: 3809
+		// Token: 0x040005F5 RID: 1525
 		public static List<EquipmentIndex> enigmaEquipmentList = new List<EquipmentIndex>();
 
-		// Token: 0x04000EE2 RID: 3810
+		// Token: 0x040005F7 RID: 1527
+		public static ResourceAvailability availability = default(ResourceAvailability);
+
+		// Token: 0x040005F8 RID: 1528
+		private static readonly Dictionary<string, EquipmentIndex> equipmentNameToIndex = new Dictionary<string, EquipmentIndex>();
+
+		// Token: 0x040005F9 RID: 1529
+		public static readonly CatalogModHelper<EquipmentDef> modHelper = new CatalogModHelper<EquipmentDef>(delegate(int i, EquipmentDef def)
+		{
+			EquipmentCatalog.RegisterEquipment((EquipmentIndex)i, def);
+		}, (EquipmentDef v) => v.name);
+
+		// Token: 0x040005FA RID: 1530
 		public static readonly GenericStaticEnumerable<EquipmentIndex, EquipmentCatalog.AllEquipmentEnumerator> allEquipment;
 
-		// Token: 0x02000246 RID: 582
+		// Token: 0x02000134 RID: 308
 		public struct AllEquipmentEnumerator : IEnumerator<EquipmentIndex>, IEnumerator, IDisposable
 		{
-			// Token: 0x06000AED RID: 2797 RVA: 0x000367DF File Offset: 0x000349DF
+			// Token: 0x0600058B RID: 1419 RVA: 0x0001721A File Offset: 0x0001541A
 			public bool MoveNext()
 			{
 				this.position++;
-				return this.position < EquipmentIndex.Count;
+				return this.position < (EquipmentIndex)EquipmentCatalog.equipmentCount;
 			}
 
-			// Token: 0x06000AEE RID: 2798 RVA: 0x000367F9 File Offset: 0x000349F9
+			// Token: 0x0600058C RID: 1420 RVA: 0x00017237 File Offset: 0x00015437
 			public void Reset()
 			{
 				this.position = EquipmentIndex.None;
 			}
 
-			// Token: 0x170000C2 RID: 194
-			// (get) Token: 0x06000AEF RID: 2799 RVA: 0x00036802 File Offset: 0x00034A02
+			// Token: 0x170000AC RID: 172
+			// (get) Token: 0x0600058D RID: 1421 RVA: 0x00017240 File Offset: 0x00015440
 			public EquipmentIndex Current
 			{
 				get
@@ -434,8 +558,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x170000C3 RID: 195
-			// (get) Token: 0x06000AF0 RID: 2800 RVA: 0x0003680A File Offset: 0x00034A0A
+			// Token: 0x170000AD RID: 173
+			// (get) Token: 0x0600058E RID: 1422 RVA: 0x00017248 File Offset: 0x00015448
 			object IEnumerator.Current
 			{
 				get
@@ -444,12 +568,12 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06000AF1 RID: 2801 RVA: 0x00004507 File Offset: 0x00002707
+			// Token: 0x0600058F RID: 1423 RVA: 0x0000409B File Offset: 0x0000229B
 			void IDisposable.Dispose()
 			{
 			}
 
-			// Token: 0x04000EE3 RID: 3811
+			// Token: 0x040005FB RID: 1531
 			private EquipmentIndex position;
 		}
 	}

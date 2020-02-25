@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace RoR2.Orbs
 {
-	// Token: 0x02000511 RID: 1297
+	// Token: 0x020004C9 RID: 1225
 	public class DevilOrb : Orb
 	{
-		// Token: 0x06001D3E RID: 7486 RVA: 0x0008849C File Offset: 0x0008669C
+		// Token: 0x06001D6C RID: 7532 RVA: 0x0007D67C File Offset: 0x0007B87C
 		public override void Begin()
 		{
 			base.duration = base.distanceToTarget / 30f;
@@ -19,10 +19,23 @@ namespace RoR2.Orbs
 				genericFloat = base.duration
 			};
 			effectData.SetHurtBoxReference(this.target);
-			EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/OrbEffects/DevilOrbEffect"), effectData, true);
+			GameObject effectPrefab = null;
+			DevilOrb.EffectType effectType = this.effectType;
+			if (effectType != DevilOrb.EffectType.Skull)
+			{
+				if (effectType == DevilOrb.EffectType.Wisp)
+				{
+					effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/OrbEffects/WispOrbEffect");
+				}
+			}
+			else
+			{
+				effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/OrbEffects/DevilOrbEffect");
+			}
+			EffectManager.SpawnEffect(effectPrefab, effectData, true);
 		}
 
-		// Token: 0x06001D3F RID: 7487 RVA: 0x00088508 File Offset: 0x00086708
+		// Token: 0x06001D6D RID: 7533 RVA: 0x0007D704 File Offset: 0x0007B904
 		public override void OnArrival()
 		{
 			if (this.target)
@@ -47,7 +60,7 @@ namespace RoR2.Orbs
 			}
 		}
 
-		// Token: 0x06001D40 RID: 7488 RVA: 0x000885DC File Offset: 0x000867DC
+		// Token: 0x06001D6E RID: 7534 RVA: 0x0007D7D8 File Offset: 0x0007B9D8
 		public HurtBox PickNextTarget(Vector3 position, float range)
 		{
 			BullseyeSearch bullseyeSearch = new BullseyeSearch();
@@ -67,31 +80,43 @@ namespace RoR2.Orbs
 			return list[UnityEngine.Random.Range(0, list.Count)];
 		}
 
-		// Token: 0x04001F6F RID: 8047
+		// Token: 0x04001A7C RID: 6780
 		private const float speed = 30f;
 
-		// Token: 0x04001F70 RID: 8048
+		// Token: 0x04001A7D RID: 6781
 		public float damageValue;
 
-		// Token: 0x04001F71 RID: 8049
+		// Token: 0x04001A7E RID: 6782
 		public GameObject attacker;
 
-		// Token: 0x04001F72 RID: 8050
+		// Token: 0x04001A7F RID: 6783
 		public TeamIndex teamIndex;
 
-		// Token: 0x04001F73 RID: 8051
+		// Token: 0x04001A80 RID: 6784
 		public bool isCrit;
 
-		// Token: 0x04001F74 RID: 8052
+		// Token: 0x04001A81 RID: 6785
 		public float scale;
 
-		// Token: 0x04001F75 RID: 8053
+		// Token: 0x04001A82 RID: 6786
 		public ProcChainMask procChainMask;
 
-		// Token: 0x04001F76 RID: 8054
+		// Token: 0x04001A83 RID: 6787
 		public float procCoefficient = 0.2f;
 
-		// Token: 0x04001F77 RID: 8055
+		// Token: 0x04001A84 RID: 6788
 		public DamageColorIndex damageColorIndex;
+
+		// Token: 0x04001A85 RID: 6789
+		public DevilOrb.EffectType effectType;
+
+		// Token: 0x020004CA RID: 1226
+		public enum EffectType
+		{
+			// Token: 0x04001A87 RID: 6791
+			Skull,
+			// Token: 0x04001A88 RID: 6792
+			Wisp
+		}
 	}
 }

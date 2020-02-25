@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.TitanMonster
 {
-	// Token: 0x0200016B RID: 363
+	// Token: 0x02000851 RID: 2129
 	public class DeathState : GenericCharacterDeath
 	{
-		// Token: 0x06000709 RID: 1801 RVA: 0x00021BC4 File Offset: 0x0001FDC4
+		// Token: 0x06003024 RID: 12324 RVA: 0x000CE9BC File Offset: 0x000CCBBC
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -29,7 +29,7 @@ namespace EntityStates.TitanMonster
 			}
 		}
 
-		// Token: 0x0600070A RID: 1802 RVA: 0x00021C74 File Offset: 0x0001FE74
+		// Token: 0x06003025 RID: 12325 RVA: 0x000CEA6C File Offset: 0x000CCC6C
 		private void AttemptDeathBehavior()
 		{
 			if (this.attemptedDeathBehavior)
@@ -39,7 +39,7 @@ namespace EntityStates.TitanMonster
 			this.attemptedDeathBehavior = true;
 			if (this.deathEffect && NetworkServer.active)
 			{
-				EffectManager.instance.SpawnEffect(this.deathEffect, new EffectData
+				EffectManager.SpawnEffect(this.deathEffect, new EffectData
 				{
 					origin = this.centerTransform.position
 				}, true);
@@ -55,7 +55,7 @@ namespace EntityStates.TitanMonster
 			}
 		}
 
-		// Token: 0x0600070B RID: 1803 RVA: 0x00021D02 File Offset: 0x0001FF02
+		// Token: 0x06003026 RID: 12326 RVA: 0x000CEAF5 File Offset: 0x000CCCF5
 		public override void FixedUpdate()
 		{
 			this.stopwatch += Time.fixedDeltaTime;
@@ -65,7 +65,7 @@ namespace EntityStates.TitanMonster
 			}
 		}
 
-		// Token: 0x0600070C RID: 1804 RVA: 0x00021D29 File Offset: 0x0001FF29
+		// Token: 0x06003027 RID: 12327 RVA: 0x000CEB1C File Offset: 0x000CCD1C
 		public override void OnExit()
 		{
 			if (!this.outer.destroying)
@@ -75,26 +75,26 @@ namespace EntityStates.TitanMonster
 			base.OnExit();
 		}
 
-		// Token: 0x040008AB RID: 2219
+		// Token: 0x04002E17 RID: 11799
 		public static GameObject initialEffect;
 
-		// Token: 0x040008AC RID: 2220
+		// Token: 0x04002E18 RID: 11800
 		[SerializeField]
 		public GameObject deathEffect;
 
-		// Token: 0x040008AD RID: 2221
+		// Token: 0x04002E19 RID: 11801
 		public static float duration = 2f;
 
-		// Token: 0x040008AE RID: 2222
+		// Token: 0x04002E1A RID: 11802
 		private float stopwatch;
 
-		// Token: 0x040008AF RID: 2223
+		// Token: 0x04002E1B RID: 11803
 		private Transform centerTransform;
 
-		// Token: 0x040008B0 RID: 2224
+		// Token: 0x04002E1C RID: 11804
 		private Transform modelBaseTransform;
 
-		// Token: 0x040008B1 RID: 2225
+		// Token: 0x04002E1D RID: 11805
 		private bool attemptedDeathBehavior;
 	}
 }

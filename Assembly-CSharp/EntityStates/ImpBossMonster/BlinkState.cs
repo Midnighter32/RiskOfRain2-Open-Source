@@ -6,14 +6,14 @@ using UnityEngine;
 
 namespace EntityStates.ImpBossMonster
 {
-	// Token: 0x0200013D RID: 317
+	// Token: 0x02000819 RID: 2073
 	public class BlinkState : BaseState
 	{
-		// Token: 0x0600060D RID: 1549 RVA: 0x0001BD8C File Offset: 0x00019F8C
+		// Token: 0x06002EFB RID: 12027 RVA: 0x000C80A8 File Offset: 0x000C62A8
 		public override void OnEnter()
 		{
 			base.OnEnter();
-			Util.PlaySound(BlinkState.beginSoundString, base.gameObject);
+			Util.PlaySound(this.beginSoundString, base.gameObject);
 			this.modelTransform = base.GetModelTransform();
 			if (this.modelTransform)
 			{
@@ -22,37 +22,42 @@ namespace EntityStates.ImpBossMonster
 				this.hurtboxGroup = this.modelTransform.GetComponent<HurtBoxGroup>();
 				this.childLocator = this.modelTransform.GetComponent<ChildLocator>();
 			}
-			if (this.characterModel)
+			if (this.disappearWhileBlinking)
 			{
-				this.characterModel.invisibilityCount++;
-			}
-			if (this.hurtboxGroup)
-			{
-				HurtBoxGroup hurtBoxGroup = this.hurtboxGroup;
-				int hurtBoxesDeactivatorCounter = hurtBoxGroup.hurtBoxesDeactivatorCounter + 1;
-				hurtBoxGroup.hurtBoxesDeactivatorCounter = hurtBoxesDeactivatorCounter;
-			}
-			if (this.childLocator)
-			{
-				this.childLocator.FindChild("DustCenter").gameObject.SetActive(false);
+				if (this.characterModel)
+				{
+					this.characterModel.invisibilityCount++;
+				}
+				if (this.hurtboxGroup)
+				{
+					HurtBoxGroup hurtBoxGroup = this.hurtboxGroup;
+					int hurtBoxesDeactivatorCounter = hurtBoxGroup.hurtBoxesDeactivatorCounter + 1;
+					hurtBoxGroup.hurtBoxesDeactivatorCounter = hurtBoxesDeactivatorCounter;
+				}
+				if (this.childLocator)
+				{
+					this.childLocator.FindChild("DustCenter").gameObject.SetActive(false);
+				}
 			}
 			if (base.characterMotor)
 			{
 				base.characterMotor.enabled = false;
 			}
+			base.gameObject.layer = LayerIndex.fakeActor.intVal;
+			base.characterMotor.Motor.RebuildCollidableLayers();
 			this.CalculateBlinkDestination();
 			this.CreateBlinkEffect(Util.GetCorePosition(base.gameObject));
 		}
 
-		// Token: 0x0600060E RID: 1550 RVA: 0x0001BEA8 File Offset: 0x0001A0A8
+		// Token: 0x06002EFC RID: 12028 RVA: 0x000C81F4 File Offset: 0x000C63F4
 		private void CalculateBlinkDestination()
 		{
-			Vector3 vector = base.inputBank.aimDirection * BlinkState.blinkDistance;
+			Vector3 vector = Vector3.zero;
 			Ray aimRay = base.GetAimRay();
 			BullseyeSearch bullseyeSearch = new BullseyeSearch();
 			bullseyeSearch.searchOrigin = aimRay.origin;
 			bullseyeSearch.searchDirection = aimRay.direction;
-			bullseyeSearch.maxDistanceFilter = BlinkState.blinkDistance;
+			bullseyeSearch.maxDistanceFilter = this.blinkDistance;
 			bullseyeSearch.teamMaskFilter = TeamMask.allButNeutral;
 			bullseyeSearch.filterByLoS = false;
 			bullseyeSearch.teamMaskFilter.RemoveTeam(TeamComponent.GetObjectTeam(base.gameObject));
@@ -72,16 +77,19 @@ namespace EntityStates.ImpBossMonster
 			base.characterDirection.forward = vector;
 		}
 
-		// Token: 0x0600060F RID: 1551 RVA: 0x0001BFF4 File Offset: 0x0001A1F4
+		// Token: 0x06002EFD RID: 12029 RVA: 0x000C8334 File Offset: 0x000C6534
 		private void CreateBlinkEffect(Vector3 origin)
 		{
-			EffectData effectData = new EffectData();
-			effectData.rotation = Util.QuaternionSafeLookRotation(this.blinkDestination - this.blinkStart);
-			effectData.origin = origin;
-			EffectManager.instance.SpawnEffect(BlinkState.blinkPrefab, effectData, false);
+			if (this.blinkPrefab)
+			{
+				EffectData effectData = new EffectData();
+				effectData.rotation = Util.QuaternionSafeLookRotation(this.blinkDestination - this.blinkStart);
+				effectData.origin = origin;
+				EffectManager.SpawnEffect(this.blinkPrefab, effectData, false);
+			}
 		}
 
-		// Token: 0x06000610 RID: 1552 RVA: 0x0001C03B File Offset: 0x0001A23B
+		// Token: 0x06002EFE RID: 12030 RVA: 0x000C8384 File Offset: 0x000C6584
 		private void SetPosition(Vector3 newPosition)
 		{
 			if (base.characterMotor)
@@ -90,7 +98,7 @@ namespace EntityStates.ImpBossMonster
 			}
 		}
 
-		// Token: 0x06000611 RID: 1553 RVA: 0x0001C064 File Offset: 0x0001A264
+		// Token: 0x06002EFF RID: 12031 RVA: 0x000C83AC File Offset: 0x000C65AC
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -100,26 +108,29 @@ namespace EntityStates.ImpBossMonster
 			}
 			if (!this.hasBlinked)
 			{
-				this.SetPosition(Vector3.Lerp(this.blinkStart, this.blinkDestination, base.fixedAge / BlinkState.duration));
+				this.SetPosition(Vector3.Lerp(this.blinkStart, this.blinkDestination, base.fixedAge / this.duration));
 			}
-			if (base.fixedAge >= BlinkState.duration - BlinkState.destinationAlertDuration && !this.hasBlinked)
+			if (base.fixedAge >= this.duration - this.destinationAlertDuration && !this.hasBlinked)
 			{
 				this.hasBlinked = true;
-				this.blinkDestinationInstance = UnityEngine.Object.Instantiate<GameObject>(BlinkState.blinkDestinationPrefab, this.blinkDestination, Quaternion.identity);
-				this.blinkDestinationInstance.GetComponent<ScaleParticleSystemDuration>().newDuration = BlinkState.destinationAlertDuration;
+				if (this.blinkDestinationPrefab)
+				{
+					this.blinkDestinationInstance = UnityEngine.Object.Instantiate<GameObject>(this.blinkDestinationPrefab, this.blinkDestination, Quaternion.identity);
+					this.blinkDestinationInstance.GetComponent<ScaleParticleSystemDuration>().newDuration = this.destinationAlertDuration;
+				}
 				this.SetPosition(this.blinkDestination);
 			}
-			if (base.fixedAge >= BlinkState.duration)
+			if (base.fixedAge >= this.duration)
 			{
 				this.ExitCleanup();
 			}
-			if (base.fixedAge >= BlinkState.duration + BlinkState.exitDuration && base.isAuthority)
+			if (base.fixedAge >= this.duration + this.exitDuration && base.isAuthority)
 			{
 				this.outer.SetNextStateToMain();
 			}
 		}
 
-		// Token: 0x06000612 RID: 1554 RVA: 0x0001C158 File Offset: 0x0001A358
+		// Token: 0x06002F00 RID: 12032 RVA: 0x000C84B4 File Offset: 0x000C66B4
 		private void ExitCleanup()
 		{
 			if (this.isExiting)
@@ -127,43 +138,52 @@ namespace EntityStates.ImpBossMonster
 				return;
 			}
 			this.isExiting = true;
-			Util.PlaySound(BlinkState.endSoundString, base.gameObject);
+			base.gameObject.layer = LayerIndex.defaultLayer.intVal;
+			base.characterMotor.Motor.RebuildCollidableLayers();
+			Util.PlaySound(this.endSoundString, base.gameObject);
 			this.CreateBlinkEffect(Util.GetCorePosition(base.gameObject));
 			this.modelTransform = base.GetModelTransform();
-			new BlastAttack
+			if (this.blastAttackDamageCoefficient > 0f)
 			{
-				attacker = base.gameObject,
-				inflictor = base.gameObject,
-				teamIndex = TeamComponent.GetObjectTeam(base.gameObject),
-				baseDamage = this.damageStat * BlinkState.blastAttackDamageCoefficient,
-				baseForce = BlinkState.blastAttackForce,
-				position = this.blinkDestination,
-				radius = BlinkState.blastAttackRadius,
-				falloffModel = BlastAttack.FalloffModel.Linear
-			}.Fire();
-			if (this.modelTransform && BlinkState.destealthMaterial)
-			{
-				TemporaryOverlay temporaryOverlay = this.animator.gameObject.AddComponent<TemporaryOverlay>();
-				temporaryOverlay.duration = 1f;
-				temporaryOverlay.destroyComponentOnEnd = true;
-				temporaryOverlay.originalMaterial = BlinkState.destealthMaterial;
-				temporaryOverlay.inspectorCharacterModel = this.animator.gameObject.GetComponent<CharacterModel>();
-				temporaryOverlay.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
-				temporaryOverlay.animateShaderAlpha = true;
+				new BlastAttack
+				{
+					attacker = base.gameObject,
+					inflictor = base.gameObject,
+					teamIndex = TeamComponent.GetObjectTeam(base.gameObject),
+					baseDamage = this.damageStat * this.blastAttackDamageCoefficient,
+					baseForce = this.blastAttackForce,
+					position = this.blinkDestination,
+					radius = this.blastAttackRadius,
+					falloffModel = BlastAttack.FalloffModel.Linear
+				}.Fire();
 			}
-			if (this.characterModel)
+			if (this.disappearWhileBlinking)
 			{
-				this.characterModel.invisibilityCount--;
-			}
-			if (this.hurtboxGroup)
-			{
-				HurtBoxGroup hurtBoxGroup = this.hurtboxGroup;
-				int hurtBoxesDeactivatorCounter = hurtBoxGroup.hurtBoxesDeactivatorCounter - 1;
-				hurtBoxGroup.hurtBoxesDeactivatorCounter = hurtBoxesDeactivatorCounter;
-			}
-			if (this.childLocator)
-			{
-				this.childLocator.FindChild("DustCenter").gameObject.SetActive(true);
+				if (this.modelTransform && this.destealthMaterial)
+				{
+					TemporaryOverlay temporaryOverlay = this.animator.gameObject.AddComponent<TemporaryOverlay>();
+					temporaryOverlay.duration = 1f;
+					temporaryOverlay.destroyComponentOnEnd = true;
+					temporaryOverlay.originalMaterial = this.destealthMaterial;
+					temporaryOverlay.inspectorCharacterModel = this.animator.gameObject.GetComponent<CharacterModel>();
+					temporaryOverlay.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
+					temporaryOverlay.animateShaderAlpha = true;
+				}
+				if (this.characterModel)
+				{
+					this.characterModel.invisibilityCount--;
+				}
+				if (this.hurtboxGroup)
+				{
+					HurtBoxGroup hurtBoxGroup = this.hurtboxGroup;
+					int hurtBoxesDeactivatorCounter = hurtBoxGroup.hurtBoxesDeactivatorCounter - 1;
+					hurtBoxGroup.hurtBoxesDeactivatorCounter = hurtBoxesDeactivatorCounter;
+				}
+				if (this.childLocator)
+				{
+					this.childLocator.FindChild("DustCenter").gameObject.SetActive(true);
+				}
+				base.PlayAnimation("Gesture, Additive", "BlinkEnd", "BlinkEnd.playbackRate", this.exitDuration);
 			}
 			if (this.blinkDestinationInstance)
 			{
@@ -173,83 +193,99 @@ namespace EntityStates.ImpBossMonster
 			{
 				base.characterMotor.enabled = true;
 			}
-			base.PlayAnimation("Gesture, Additive", "BlinkEnd", "BlinkEnd.playbackRate", BlinkState.exitDuration);
 		}
 
-		// Token: 0x06000613 RID: 1555 RVA: 0x0001C347 File Offset: 0x0001A547
+		// Token: 0x06002F01 RID: 12033 RVA: 0x000C86E8 File Offset: 0x000C68E8
 		public override void OnExit()
 		{
 			base.OnExit();
 			this.ExitCleanup();
 		}
 
-		// Token: 0x04000708 RID: 1800
+		// Token: 0x04002C47 RID: 11335
 		private Transform modelTransform;
 
-		// Token: 0x04000709 RID: 1801
-		public static GameObject blinkPrefab;
+		// Token: 0x04002C48 RID: 11336
+		[SerializeField]
+		public bool disappearWhileBlinking;
 
-		// Token: 0x0400070A RID: 1802
-		public static GameObject blinkDestinationPrefab;
+		// Token: 0x04002C49 RID: 11337
+		[SerializeField]
+		public GameObject blinkPrefab;
 
-		// Token: 0x0400070B RID: 1803
-		public static Material destealthMaterial;
+		// Token: 0x04002C4A RID: 11338
+		[SerializeField]
+		public GameObject blinkDestinationPrefab;
 
-		// Token: 0x0400070C RID: 1804
+		// Token: 0x04002C4B RID: 11339
+		[SerializeField]
+		public Material destealthMaterial;
+
+		// Token: 0x04002C4C RID: 11340
 		private Vector3 blinkDestination = Vector3.zero;
 
-		// Token: 0x0400070D RID: 1805
+		// Token: 0x04002C4D RID: 11341
 		private Vector3 blinkStart = Vector3.zero;
 
-		// Token: 0x0400070E RID: 1806
-		public static float duration = 0.3f;
+		// Token: 0x04002C4E RID: 11342
+		[SerializeField]
+		public float duration = 0.3f;
 
-		// Token: 0x0400070F RID: 1807
-		public static float exitDuration;
+		// Token: 0x04002C4F RID: 11343
+		[SerializeField]
+		public float exitDuration;
 
-		// Token: 0x04000710 RID: 1808
-		public static float destinationAlertDuration;
+		// Token: 0x04002C50 RID: 11344
+		[SerializeField]
+		public float destinationAlertDuration;
 
-		// Token: 0x04000711 RID: 1809
-		public static float blinkDistance = 25f;
+		// Token: 0x04002C51 RID: 11345
+		[SerializeField]
+		public float blinkDistance = 25f;
 
-		// Token: 0x04000712 RID: 1810
-		public static string beginSoundString;
+		// Token: 0x04002C52 RID: 11346
+		[SerializeField]
+		public string beginSoundString;
 
-		// Token: 0x04000713 RID: 1811
-		public static string endSoundString;
+		// Token: 0x04002C53 RID: 11347
+		[SerializeField]
+		public string endSoundString;
 
-		// Token: 0x04000714 RID: 1812
-		public static float blastAttackRadius;
+		// Token: 0x04002C54 RID: 11348
+		[SerializeField]
+		public float blastAttackRadius;
 
-		// Token: 0x04000715 RID: 1813
-		public static float blastAttackDamageCoefficient;
+		// Token: 0x04002C55 RID: 11349
+		[SerializeField]
+		public float blastAttackDamageCoefficient;
 
-		// Token: 0x04000716 RID: 1814
-		public static float blastAttackForce;
+		// Token: 0x04002C56 RID: 11350
+		[SerializeField]
+		public float blastAttackForce;
 
-		// Token: 0x04000717 RID: 1815
-		public static float blastAttackProcCoefficient;
+		// Token: 0x04002C57 RID: 11351
+		[SerializeField]
+		public float blastAttackProcCoefficient;
 
-		// Token: 0x04000718 RID: 1816
+		// Token: 0x04002C58 RID: 11352
 		private Animator animator;
 
-		// Token: 0x04000719 RID: 1817
+		// Token: 0x04002C59 RID: 11353
 		private CharacterModel characterModel;
 
-		// Token: 0x0400071A RID: 1818
+		// Token: 0x04002C5A RID: 11354
 		private HurtBoxGroup hurtboxGroup;
 
-		// Token: 0x0400071B RID: 1819
+		// Token: 0x04002C5B RID: 11355
 		private ChildLocator childLocator;
 
-		// Token: 0x0400071C RID: 1820
+		// Token: 0x04002C5C RID: 11356
 		private GameObject blinkDestinationInstance;
 
-		// Token: 0x0400071D RID: 1821
+		// Token: 0x04002C5D RID: 11357
 		private bool isExiting;
 
-		// Token: 0x0400071E RID: 1822
+		// Token: 0x04002C5E RID: 11358
 		private bool hasBlinked;
 	}
 }

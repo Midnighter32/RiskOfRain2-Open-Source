@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x0200062D RID: 1581
+	// Token: 0x0200061B RID: 1563
 	public class RuleBookViewerStrip : MonoBehaviour
 	{
-		// Token: 0x06002373 RID: 9075 RVA: 0x000A6CDC File Offset: 0x000A4EDC
+		// Token: 0x060024F0 RID: 9456 RVA: 0x000A106A File Offset: 0x0009F26A
 		private RuleChoiceController CreateChoice()
 		{
 			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.choicePrefab, this.choiceContainer);
@@ -17,13 +17,13 @@ namespace RoR2.UI
 			return component;
 		}
 
-		// Token: 0x06002374 RID: 9076 RVA: 0x000A6D02 File Offset: 0x000A4F02
+		// Token: 0x060024F1 RID: 9457 RVA: 0x000A1090 File Offset: 0x0009F290
 		private void DestroyChoice(RuleChoiceController choiceController)
 		{
 			UnityEngine.Object.Destroy(choiceController.gameObject);
 		}
 
-		// Token: 0x06002375 RID: 9077 RVA: 0x000A6D10 File Offset: 0x000A4F10
+		// Token: 0x060024F2 RID: 9458 RVA: 0x000A10A0 File Offset: 0x0009F2A0
 		public void SetData(List<RuleChoiceDef> newChoices, int choiceIndex)
 		{
 			this.AllocateChoices(newChoices.Count);
@@ -42,7 +42,7 @@ namespace RoR2.UI
 			this.currentDisplayChoiceIndex = num;
 		}
 
-		// Token: 0x06002376 RID: 9078 RVA: 0x000A6D8C File Offset: 0x000A4F8C
+		// Token: 0x060024F3 RID: 9459 RVA: 0x000A111C File Offset: 0x0009F31C
 		private void AllocateChoices(int desiredCount)
 		{
 			while (this.choiceControllers.Count > desiredCount)
@@ -57,7 +57,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002377 RID: 9079 RVA: 0x000A6DF8 File Offset: 0x000A4FF8
+		// Token: 0x060024F4 RID: 9460 RVA: 0x000A1188 File Offset: 0x0009F388
 		public void Update()
 		{
 			if (this.choiceControllers.Count == 0)
@@ -86,13 +86,13 @@ namespace RoR2.UI
 			this.UpdatePosition();
 		}
 
-		// Token: 0x06002378 RID: 9080 RVA: 0x000A6EA1 File Offset: 0x000A50A1
+		// Token: 0x060024F5 RID: 9461 RVA: 0x000A1231 File Offset: 0x0009F431
 		private void OnEnable()
 		{
 			this.UpdatePosition();
 		}
 
-		// Token: 0x06002379 RID: 9081 RVA: 0x000A6EAC File Offset: 0x000A50AC
+		// Token: 0x060024F6 RID: 9462 RVA: 0x000A123C File Offset: 0x0009F43C
 		private void UpdatePosition()
 		{
 			Vector3 localPosition = this.choiceContainer.localPosition;
@@ -111,31 +111,31 @@ namespace RoR2.UI
 			this.choiceContainer.localPosition = localPosition;
 		}
 
-		// Token: 0x04002668 RID: 9832
+		// Token: 0x040022AF RID: 8879
 		public GameObject choicePrefab;
 
-		// Token: 0x04002669 RID: 9833
+		// Token: 0x040022B0 RID: 8880
 		public RectTransform choiceContainer;
 
-		// Token: 0x0400266A RID: 9834
+		// Token: 0x040022B1 RID: 8881
 		public RectTransform.Axis movementAxis = RectTransform.Axis.Vertical;
 
-		// Token: 0x0400266B RID: 9835
+		// Token: 0x040022B2 RID: 8882
 		public float movementDuration = 0.1f;
 
-		// Token: 0x0400266C RID: 9836
+		// Token: 0x040022B3 RID: 8883
 		private RuleDef currentRuleDef;
 
-		// Token: 0x0400266D RID: 9837
+		// Token: 0x040022B4 RID: 8884
 		public readonly List<RuleChoiceController> choiceControllers = new List<RuleChoiceController>();
 
-		// Token: 0x0400266E RID: 9838
+		// Token: 0x040022B5 RID: 8885
 		public int currentDisplayChoiceIndex;
 
-		// Token: 0x0400266F RID: 9839
+		// Token: 0x040022B6 RID: 8886
 		private float velocity;
 
-		// Token: 0x04002670 RID: 9840
+		// Token: 0x040022B7 RID: 8887
 		private float currentPosition;
 	}
 }

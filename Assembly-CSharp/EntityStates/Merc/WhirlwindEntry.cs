@@ -2,10 +2,10 @@
 
 namespace EntityStates.Merc
 {
-	// Token: 0x0200010C RID: 268
+	// Token: 0x020007CA RID: 1994
 	public class WhirlwindEntry : BaseState
 	{
-		// Token: 0x0600052A RID: 1322 RVA: 0x00016C4C File Offset: 0x00014E4C
+		// Token: 0x06002D7F RID: 11647 RVA: 0x000C0F98 File Offset: 0x000BF198
 		public override void OnEnter()
 		{
 			base.OnEnter();

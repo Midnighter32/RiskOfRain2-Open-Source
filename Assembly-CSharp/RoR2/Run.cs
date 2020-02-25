@@ -2,46 +2,46 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using RoR2.ConVar;
 using RoR2.Networking;
 using Unity;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
 
 namespace RoR2
 {
-	// Token: 0x020003BD RID: 957
-	[RequireComponent(typeof(NetworkRuleBook))]
+	// Token: 0x02000305 RID: 773
 	[DisallowMultipleComponent]
+	[RequireComponent(typeof(NetworkRuleBook))]
 	public class Run : NetworkBehaviour
 	{
-		// Token: 0x170001C6 RID: 454
-		// (get) Token: 0x0600144A RID: 5194 RVA: 0x00062B4D File Offset: 0x00060D4D
-		// (set) Token: 0x0600144B RID: 5195 RVA: 0x00062B54 File Offset: 0x00060D54
+		// Token: 0x1700021E RID: 542
+		// (get) Token: 0x060011A4 RID: 4516 RVA: 0x0004CF91 File Offset: 0x0004B191
+		// (set) Token: 0x060011A5 RID: 4517 RVA: 0x0004CF98 File Offset: 0x0004B198
 		public static Run instance { get; private set; }
 
-		// Token: 0x0600144C RID: 5196 RVA: 0x00062B5C File Offset: 0x00060D5C
+		// Token: 0x060011A6 RID: 4518 RVA: 0x0004CFA0 File Offset: 0x0004B1A0
 		private void OnEnable()
 		{
 			Run.instance = SingletonHelper.Assign<Run>(Run.instance, this);
 		}
 
-		// Token: 0x0600144D RID: 5197 RVA: 0x00062B6E File Offset: 0x00060D6E
+		// Token: 0x060011A7 RID: 4519 RVA: 0x0004CFB2 File Offset: 0x0004B1B2
 		private void OnDisable()
 		{
 			Run.instance = SingletonHelper.Unassign<Run>(Run.instance, this);
 		}
 
-		// Token: 0x0600144E RID: 5198 RVA: 0x00062B80 File Offset: 0x00060D80
+		// Token: 0x060011A8 RID: 4520 RVA: 0x0004CFC4 File Offset: 0x0004B1C4
 		protected void Awake()
 		{
 			this.networkRuleBookComponent = base.GetComponent<NetworkRuleBook>();
 		}
 
-		// Token: 0x170001C7 RID: 455
-		// (get) Token: 0x0600144F RID: 5199 RVA: 0x00062B8E File Offset: 0x00060D8E
+		// Token: 0x1700021F RID: 543
+		// (get) Token: 0x060011A9 RID: 4521 RVA: 0x0004CFD2 File Offset: 0x0004B1D2
 		public RuleBook ruleBook
 		{
 			get
@@ -50,7 +50,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001450 RID: 5200 RVA: 0x00062B9C File Offset: 0x00060D9C
+		// Token: 0x060011AA RID: 4522 RVA: 0x0004CFE0 File Offset: 0x0004B1E0
 		[Server]
 		public void SetRuleBook(RuleBook newRuleBook)
 		{
@@ -66,7 +66,84 @@ namespace RoR2
 			this.NetworkavailableEquipment = newRuleBook.GenerateEquipmentMask();
 		}
 
-		// Token: 0x06001451 RID: 5201 RVA: 0x00062BFC File Offset: 0x00060DFC
+		// Token: 0x060011AB RID: 4523 RVA: 0x0004D040 File Offset: 0x0004B240
+		[Server]
+		private void SetRunStopwatchPaused(bool isPaused)
+		{
+			if (!NetworkServer.active)
+			{
+				Debug.LogWarning("[Server] function 'System.Void RoR2.Run::SetRunStopwatchPaused(System.Boolean)' called on client");
+				return;
+			}
+			if (isPaused != this.runStopwatch.isPaused)
+			{
+				Run.RunStopwatch networkrunStopwatch = this.runStopwatch;
+				networkrunStopwatch.isPaused = isPaused;
+				float num = this.GetRunStopwatch();
+				if (isPaused)
+				{
+					networkrunStopwatch.offsetFromFixedTime = num;
+				}
+				else
+				{
+					networkrunStopwatch.offsetFromFixedTime = num - this.fixedTime;
+				}
+				this.NetworkrunStopwatch = networkrunStopwatch;
+			}
+		}
+
+		// Token: 0x060011AC RID: 4524 RVA: 0x0004D0A9 File Offset: 0x0004B2A9
+		public float GetRunStopwatch()
+		{
+			if (this.runStopwatch.isPaused)
+			{
+				return this.runStopwatch.offsetFromFixedTime;
+			}
+			return this.fixedTime + this.runStopwatch.offsetFromFixedTime;
+		}
+
+		// Token: 0x060011AD RID: 4525 RVA: 0x0004D0D8 File Offset: 0x0004B2D8
+		[Server]
+		public void SetRunStopwatch(float t)
+		{
+			if (!NetworkServer.active)
+			{
+				Debug.LogWarning("[Server] function 'System.Void RoR2.Run::SetRunStopwatch(System.Single)' called on client");
+				return;
+			}
+			Run.RunStopwatch runStopwatch = this.runStopwatch;
+			if (runStopwatch.isPaused)
+			{
+				runStopwatch.offsetFromFixedTime = t;
+			}
+			else
+			{
+				runStopwatch.offsetFromFixedTime = t - this.fixedTime;
+			}
+			this.NetworkrunStopwatch = runStopwatch;
+		}
+
+		// Token: 0x17000220 RID: 544
+		// (get) Token: 0x060011AE RID: 4526 RVA: 0x0004D129 File Offset: 0x0004B329
+		public bool isRunStopwatchPaused
+		{
+			get
+			{
+				return this.runStopwatch.isPaused;
+			}
+		}
+
+		// Token: 0x17000221 RID: 545
+		// (get) Token: 0x060011AF RID: 4527 RVA: 0x0004D136 File Offset: 0x0004B336
+		public virtual int loopClearCount
+		{
+			get
+			{
+				return this.stageClearCount / 4;
+			}
+		}
+
+		// Token: 0x060011B0 RID: 4528 RVA: 0x0004D140 File Offset: 0x0004B340
 		private void GenerateStageRNG()
 		{
 			this.stageRng = new Xoroshiro128Plus(this.stageRngGenerator.nextUlong);
@@ -75,9 +152,9 @@ namespace RoR2
 			this.spawnRng = new Xoroshiro128Plus(this.stageRng.nextUlong);
 		}
 
-		// Token: 0x170001C8 RID: 456
-		// (get) Token: 0x06001452 RID: 5202 RVA: 0x00062C61 File Offset: 0x00060E61
-		// (set) Token: 0x06001453 RID: 5203 RVA: 0x00062C69 File Offset: 0x00060E69
+		// Token: 0x17000222 RID: 546
+		// (get) Token: 0x060011B1 RID: 4529 RVA: 0x0004D1A5 File Offset: 0x0004B3A5
+		// (set) Token: 0x060011B2 RID: 4530 RVA: 0x0004D1AD File Offset: 0x0004B3AD
 		public DifficultyIndex selectedDifficulty
 		{
 			get
@@ -90,23 +167,23 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x170001C9 RID: 457
-		// (get) Token: 0x06001454 RID: 5204 RVA: 0x00062C72 File Offset: 0x00060E72
-		// (set) Token: 0x06001455 RID: 5205 RVA: 0x00062C7A File Offset: 0x00060E7A
+		// Token: 0x17000223 RID: 547
+		// (get) Token: 0x060011B3 RID: 4531 RVA: 0x0004D1B6 File Offset: 0x0004B3B6
+		// (set) Token: 0x060011B4 RID: 4532 RVA: 0x0004D1BE File Offset: 0x0004B3BE
 		public int livingPlayerCount { get; private set; }
 
-		// Token: 0x170001CA RID: 458
-		// (get) Token: 0x06001456 RID: 5206 RVA: 0x00062C83 File Offset: 0x00060E83
-		// (set) Token: 0x06001457 RID: 5207 RVA: 0x00062C8B File Offset: 0x00060E8B
+		// Token: 0x17000224 RID: 548
+		// (get) Token: 0x060011B5 RID: 4533 RVA: 0x0004D1C7 File Offset: 0x0004B3C7
+		// (set) Token: 0x060011B6 RID: 4534 RVA: 0x0004D1CF File Offset: 0x0004B3CF
 		public int participatingPlayerCount { get; private set; }
 
-		// Token: 0x170001CB RID: 459
-		// (get) Token: 0x06001458 RID: 5208 RVA: 0x00062C94 File Offset: 0x00060E94
-		// (set) Token: 0x06001459 RID: 5209 RVA: 0x00062C9C File Offset: 0x00060E9C
+		// Token: 0x17000225 RID: 549
+		// (get) Token: 0x060011B7 RID: 4535 RVA: 0x0004D1D8 File Offset: 0x0004B3D8
+		// (set) Token: 0x060011B8 RID: 4536 RVA: 0x0004D1E0 File Offset: 0x0004B3E0
 		public float targetMonsterLevel { get; private set; }
 
-		// Token: 0x170001CC RID: 460
-		// (get) Token: 0x0600145A RID: 5210 RVA: 0x00062CA5 File Offset: 0x00060EA5
+		// Token: 0x17000226 RID: 550
+		// (get) Token: 0x060011B9 RID: 4537 RVA: 0x0004D1E9 File Offset: 0x0004B3E9
 		public float teamlessDamageCoefficient
 		{
 			get
@@ -115,54 +192,66 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600145B RID: 5211 RVA: 0x00062CB0 File Offset: 0x00060EB0
+		// Token: 0x060011BA RID: 4538 RVA: 0x0004D1F4 File Offset: 0x0004B3F4
 		protected void FixedUpdate()
 		{
 			this.NetworkfixedTime = this.fixedTime + Time.fixedDeltaTime;
 			Run.FixedTimeStamp.Update();
+			if (NetworkServer.active)
+			{
+				this.SetRunStopwatchPaused(!this.ShouldUpdateRunStopwatch());
+			}
 			this.livingPlayerCount = PlayerCharacterMasterController.instances.Count((PlayerCharacterMasterController v) => v.master.alive);
 			this.participatingPlayerCount = PlayerCharacterMasterController.instances.Count;
 			this.OnFixedUpdate();
 		}
 
-		// Token: 0x0600145C RID: 5212 RVA: 0x00062D1C File Offset: 0x00060F1C
+		// Token: 0x060011BB RID: 4539 RVA: 0x0004D274 File Offset: 0x0004B474
 		protected virtual void OnFixedUpdate()
 		{
+			float num = this.GetRunStopwatch();
 			DifficultyDef difficultyDef = DifficultyCatalog.GetDifficultyDef(this.selectedDifficulty);
-			float num = Mathf.Floor(this.fixedTime * 0.016666668f);
-			float num2 = (float)this.participatingPlayerCount * 0.3f;
-			float num3 = 0.7f + num2;
-			float num4 = 0.7f + num2;
-			float num5 = Mathf.Pow((float)this.participatingPlayerCount, 0.2f);
-			float num6 = 0.046f * difficultyDef.scalingValue * num5;
-			float num7 = 0.046f * difficultyDef.scalingValue * num5;
-			float num8 = Mathf.Pow(1.15f, (float)this.stageClearCount);
-			this.compensatedDifficultyCoefficient = (num4 + num7 * num) * num8;
-			this.difficultyCoefficient = (num3 + num6 * num) * num8;
-			float num9 = (num3 + num6 * (this.fixedTime * 0.016666668f)) * Mathf.Pow(1.15f, (float)this.stageClearCount);
+			float num2 = Mathf.Floor(num * 0.016666668f);
+			float num3 = (float)this.participatingPlayerCount * 0.3f;
+			float num4 = 0.7f + num3;
+			float num5 = 0.7f + num3;
+			float num6 = Mathf.Pow((float)this.participatingPlayerCount, 0.2f);
+			float num7 = 0.046f * difficultyDef.scalingValue * num6;
+			float num8 = 0.046f * difficultyDef.scalingValue * num6;
+			float num9 = Mathf.Pow(1.15f, (float)this.stageClearCount);
+			this.compensatedDifficultyCoefficient = (num5 + num8 * num2) * num9;
+			this.difficultyCoefficient = (num4 + num7 * num2) * num9;
+			float num10 = (num4 + num7 * (num * 0.016666668f)) * Mathf.Pow(1.15f, (float)this.stageClearCount);
 			if (TeamManager.instance)
 			{
-				this.targetMonsterLevel = Mathf.Min((num9 - num3) / 0.33f + 1f, TeamManager.naturalLevelCap);
+				this.targetMonsterLevel = Mathf.Min((num10 - num4) / 0.33f + 1f, TeamManager.naturalLevelCap);
 				if (NetworkServer.active)
 				{
-					uint num10 = (uint)Mathf.FloorToInt(this.targetMonsterLevel);
+					uint num11 = (uint)Mathf.FloorToInt(this.targetMonsterLevel);
 					uint teamLevel = TeamManager.instance.GetTeamLevel(TeamIndex.Monster);
-					if (num10 > teamLevel)
+					if (num11 > teamLevel)
 					{
-						TeamManager.instance.SetTeamLevel(TeamIndex.Monster, num10);
+						TeamManager.instance.SetTeamLevel(TeamIndex.Monster, num11);
 					}
 				}
 			}
 		}
 
-		// Token: 0x0600145D RID: 5213 RVA: 0x00062E55 File Offset: 0x00061055
+		// Token: 0x060011BC RID: 4540 RVA: 0x0004D3AE File Offset: 0x0004B5AE
 		protected void Update()
 		{
 			this.time = Mathf.Clamp(this.time + Time.deltaTime, this.fixedTime, this.fixedTime + Time.fixedDeltaTime);
 			Run.TimeStamp.Update();
 		}
 
-		// Token: 0x0600145E RID: 5214 RVA: 0x00062E85 File Offset: 0x00061085
+		// Token: 0x060011BD RID: 4541 RVA: 0x0004D3E0 File Offset: 0x0004B5E0
+		protected virtual bool ShouldUpdateRunStopwatch()
+		{
+			SceneDef mostRecentSceneDef = SceneCatalog.mostRecentSceneDef;
+			return (mostRecentSceneDef.sceneType == SceneType.Stage || !(mostRecentSceneDef.nameToken != "MAP_ARENA_TITLE")) && this.livingPlayerCount > 0;
+		}
+
+		// Token: 0x060011BE RID: 4542 RVA: 0x0004D419 File Offset: 0x0004B619
 		[Server]
 		public virtual bool CanUnlockableBeGrantedThisRun(string unlockableName)
 		{
@@ -174,7 +263,7 @@ namespace RoR2
 			return !this.unlockablesAlreadyFullyObtained.Contains(unlockableName);
 		}
 
-		// Token: 0x0600145F RID: 5215 RVA: 0x00062EAC File Offset: 0x000610AC
+		// Token: 0x060011BF RID: 4543 RVA: 0x0004D440 File Offset: 0x0004B640
 		[Server]
 		public void GrantUnlockToAllParticipatingPlayers(string unlockableName)
 		{
@@ -202,7 +291,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001460 RID: 5216 RVA: 0x00062F3C File Offset: 0x0006113C
+		// Token: 0x060011C0 RID: 4544 RVA: 0x0004D4D0 File Offset: 0x0004B6D0
 		[Server]
 		public void GrantUnlockToSinglePlayer(string unlockableName, CharacterBody body)
 		{
@@ -226,7 +315,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001461 RID: 5217 RVA: 0x00062F87 File Offset: 0x00061187
+		// Token: 0x060011C1 RID: 4545 RVA: 0x0004D51B File Offset: 0x0004B71B
 		[Server]
 		public virtual bool IsUnlockableUnlocked(string unlockableName)
 		{
@@ -238,7 +327,7 @@ namespace RoR2
 			return this.unlockablesUnlockedByAnyUser.Contains(unlockableName);
 		}
 
-		// Token: 0x06001462 RID: 5218 RVA: 0x00062FAB File Offset: 0x000611AB
+		// Token: 0x060011C2 RID: 4546 RVA: 0x0004D53F File Offset: 0x0004B73F
 		[Server]
 		public virtual bool DoesEveryoneHaveThisUnlockableUnlocked(string unlockableName)
 		{
@@ -250,7 +339,7 @@ namespace RoR2
 			return this.unlockablesUnlockedByAllUsers.Contains(unlockableName);
 		}
 
-		// Token: 0x06001463 RID: 5219 RVA: 0x00062FCF File Offset: 0x000611CF
+		// Token: 0x060011C3 RID: 4547 RVA: 0x0004D563 File Offset: 0x0004B763
 		[Server]
 		public void ForceUnlockImmediate(string unlockableName)
 		{
@@ -262,34 +351,34 @@ namespace RoR2
 			this.unlockablesUnlockedByAnyUser.Add(unlockableName);
 		}
 
-		// Token: 0x06001464 RID: 5220 RVA: 0x00062FF4 File Offset: 0x000611F4
+		// Token: 0x060011C4 RID: 4548 RVA: 0x0004D587 File Offset: 0x0004B787
 		private static void PopulateValidStages()
 		{
 			Run.validStages = (from sceneDef in SceneCatalog.allSceneDefs
 			where sceneDef.sceneType == SceneType.Stage
-			select sceneDef.sceneField).ToArray<SceneField>();
+			select sceneDef).ToArray<SceneDef>();
 		}
 
-		// Token: 0x06001465 RID: 5221 RVA: 0x00063058 File Offset: 0x00061258
-		public void PickNextStageScene(SceneField[] choices)
+		// Token: 0x060011C5 RID: 4549 RVA: 0x0004D5BC File Offset: 0x0004B7BC
+		public unsafe void PickNextStageScene(SceneDef[] choices)
 		{
 			if (this.ruleBook.stageOrder == StageOrder.Normal)
 			{
-				this.nextStageScene = choices[this.nextStageRng.RangeInt(0, choices.Length)];
+				this.nextStageScene = *this.nextStageRng.NextElementUniform<SceneDef>(choices);
 				return;
 			}
-			SceneField[] array = (from v in Run.validStages
-			where v.SceneName != SceneManager.GetActiveScene().name
-			select v).ToArray<SceneField>();
-			this.nextStageScene = array[this.nextStageRng.RangeInt(0, array.Length)];
+			SceneDef[] array = (from sceneDef in Run.validStages
+			where sceneDef != this.nextStageScene
+			select sceneDef).ToArray<SceneDef>();
+			this.nextStageScene = *this.nextStageRng.NextElementUniform<SceneDef>(array);
 		}
 
-		// Token: 0x06001466 RID: 5222 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060011C6 RID: 4550 RVA: 0x0000409B File Offset: 0x0000229B
 		protected virtual void OverrideSeed()
 		{
 		}
 
-		// Token: 0x06001467 RID: 5223 RVA: 0x000630D0 File Offset: 0x000612D0
+		// Token: 0x060011C7 RID: 4551 RVA: 0x0004D61C File Offset: 0x0004B81C
 		protected virtual void BuildUnlockAvailability()
 		{
 			this.unlockablesUnlockedByAnyUser.Clear();
@@ -330,7 +419,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001468 RID: 5224 RVA: 0x0006323C File Offset: 0x0006143C
+		// Token: 0x060011C8 RID: 4552 RVA: 0x0004D788 File Offset: 0x0004B988
 		protected void Start()
 		{
 			if (NetworkServer.active)
@@ -352,17 +441,17 @@ namespace RoR2
 			this.allowNewParticipants = false;
 			if (NetworkServer.active)
 			{
-				SceneField[] choices = this.startingScenes;
+				SceneDef[] choices = this.startingScenes;
 				string @string = Run.cvRunSceneOverride.GetString();
 				if (@string != "")
 				{
-					choices = new SceneField[]
+					choices = new SceneDef[]
 					{
-						new SceneField(@string)
+						SceneCatalog.GetSceneDefFromSceneName(@string)
 					};
 				}
 				this.PickNextStageScene(choices);
-				NetworkManager.singleton.ServerChangeScene(this.nextStageScene);
+				NetworkManager.singleton.ServerChangeScene(this.nextStageScene.ChooseSceneName());
 			}
 			this.BuildUnlockAvailability();
 			this.BuildDropTable();
@@ -374,7 +463,7 @@ namespace RoR2
 			action(this);
 		}
 
-		// Token: 0x06001469 RID: 5225 RVA: 0x0006334C File Offset: 0x0006154C
+		// Token: 0x060011C9 RID: 4553 RVA: 0x0004D898 File Offset: 0x0004BA98
 		protected void OnDestroy()
 		{
 			Action<Run> action = Run.onRunDestroyGlobal;
@@ -409,7 +498,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600146A RID: 5226 RVA: 0x00063414 File Offset: 0x00061614
+		// Token: 0x060011CA RID: 4554 RVA: 0x0004D960 File Offset: 0x0004BB60
 		protected virtual void HandlePostRunDestination()
 		{
 			if (NetworkServer.active)
@@ -418,13 +507,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600146B RID: 5227 RVA: 0x0006342C File Offset: 0x0006162C
+		// Token: 0x060011CB RID: 4555 RVA: 0x0004D978 File Offset: 0x0004BB78
 		protected void OnApplicationQuit()
 		{
 			this.shutdown = true;
 		}
 
-		// Token: 0x0600146C RID: 5228 RVA: 0x00063438 File Offset: 0x00061638
+		// Token: 0x060011CC RID: 4556 RVA: 0x0004D984 File Offset: 0x0004BB84
 		[Server]
 		public CharacterMaster GetUserMaster(NetworkUserId networkUserId)
 		{
@@ -433,12 +522,12 @@ namespace RoR2
 				Debug.LogWarning("[Server] function 'RoR2.CharacterMaster RoR2.Run::GetUserMaster(RoR2.NetworkUserId)' called on client");
 				return null;
 			}
-			CharacterMaster result = null;
+			CharacterMaster result;
 			this.userMasters.TryGetValue(networkUserId, out result);
 			return result;
 		}
 
-		// Token: 0x0600146D RID: 5229 RVA: 0x00063478 File Offset: 0x00061678
+		// Token: 0x060011CD RID: 4557 RVA: 0x0004D9C2 File Offset: 0x0004BBC2
 		[Server]
 		public void OnServerSceneChanged(string sceneName)
 		{
@@ -451,7 +540,7 @@ namespace RoR2
 			this.isGameOverServer = false;
 		}
 
-		// Token: 0x0600146E RID: 5230 RVA: 0x0006349C File Offset: 0x0006169C
+		// Token: 0x060011CE RID: 4558 RVA: 0x0004D9E6 File Offset: 0x0004BBE6
 		[Server]
 		private void BeginStage()
 		{
@@ -463,7 +552,7 @@ namespace RoR2
 			NetworkServer.Spawn(UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/Stage")));
 		}
 
-		// Token: 0x0600146F RID: 5231 RVA: 0x000634C7 File Offset: 0x000616C7
+		// Token: 0x060011CF RID: 4559 RVA: 0x0004DA11 File Offset: 0x0004BC11
 		[Server]
 		private void EndStage()
 		{
@@ -478,7 +567,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001470 RID: 5232 RVA: 0x000634F4 File Offset: 0x000616F4
+		// Token: 0x060011D0 RID: 4560 RVA: 0x0004DA3E File Offset: 0x0004BC3E
 		public void OnUserAdded(NetworkUser user)
 		{
 			if (NetworkServer.active)
@@ -487,12 +576,12 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001471 RID: 5233 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060011D1 RID: 4561 RVA: 0x0000409B File Offset: 0x0000229B
 		public void OnUserRemoved(NetworkUser user)
 		{
 		}
 
-		// Token: 0x06001472 RID: 5234 RVA: 0x00063504 File Offset: 0x00061704
+		// Token: 0x060011D2 RID: 4562 RVA: 0x0004DA50 File Offset: 0x0004BC50
 		[Server]
 		private void SetupUserCharacterMaster(NetworkUser user)
 		{
@@ -515,6 +604,10 @@ namespace RoR2
 				if (this.selectedDifficulty == DifficultyIndex.Easy)
 				{
 					characterMaster.inventory.GiveItem(ItemIndex.DrizzlePlayerHelper, 1);
+				}
+				else if (this.selectedDifficulty == DifficultyIndex.Hard)
+				{
+					characterMaster.inventory.GiveItem(ItemIndex.MonsoonPlayerHelper, 1);
 				}
 				NetworkServer.Spawn(characterMaster.gameObject);
 			}
@@ -540,12 +633,12 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x14000022 RID: 34
-		// (add) Token: 0x06001473 RID: 5235 RVA: 0x00063618 File Offset: 0x00061818
-		// (remove) Token: 0x06001474 RID: 5236 RVA: 0x0006364C File Offset: 0x0006184C
+		// Token: 0x14000034 RID: 52
+		// (add) Token: 0x060011D3 RID: 4563 RVA: 0x0004DB7C File Offset: 0x0004BD7C
+		// (remove) Token: 0x060011D4 RID: 4564 RVA: 0x0004DBB0 File Offset: 0x0004BDB0
 		public static event Action<Run, PlayerCharacterMasterController> onPlayerFirstCreatedServer;
 
-		// Token: 0x06001475 RID: 5237 RVA: 0x00063680 File Offset: 0x00061880
+		// Token: 0x060011D5 RID: 4565 RVA: 0x0004DBE4 File Offset: 0x0004BDE4
 		[Server]
 		public virtual void HandlePlayerFirstEntryAnimation(CharacterBody body, Vector3 spawnPosition, Quaternion spawnRotation)
 		{
@@ -554,49 +647,54 @@ namespace RoR2
 				Debug.LogWarning("[Server] function 'System.Void RoR2.Run::HandlePlayerFirstEntryAnimation(RoR2.CharacterBody,UnityEngine.Vector3,UnityEngine.Quaternion)' called on client");
 				return;
 			}
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkedObjects/SurvivorPod"), body.transform.position, spawnRotation);
-			gameObject.GetComponent<SurvivorPodController>().NetworkcharacterBodyObject = body.gameObject;
-			NetworkServer.Spawn(gameObject);
+			if (body.preferredPodPrefab)
+			{
+				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(body.preferredPodPrefab, body.transform.position, spawnRotation);
+				gameObject.GetComponent<VehicleSeat>().AssignPassenger(body.gameObject);
+				NetworkServer.Spawn(gameObject);
+				return;
+			}
+			body.SetBodyStateToPreferredInitialState();
 		}
 
-		// Token: 0x06001476 RID: 5238 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060011D6 RID: 4566 RVA: 0x0000409B File Offset: 0x0000229B
 		public virtual void OnServerBossAdded(BossGroup bossGroup, CharacterMaster characterMaster)
 		{
 		}
 
-		// Token: 0x06001477 RID: 5239 RVA: 0x00004507 File Offset: 0x00002707
-		public virtual void OnServerBossKilled(bool bossGroupDefeated)
+		// Token: 0x060011D7 RID: 4567 RVA: 0x0000409B File Offset: 0x0000229B
+		public virtual void OnServerBossDefeated(BossGroup bossGroup)
 		{
 		}
 
-		// Token: 0x06001478 RID: 5240 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060011D8 RID: 4568 RVA: 0x0000409B File Offset: 0x0000229B
 		public virtual void OnServerCharacterBodySpawned(CharacterBody characterBody)
 		{
 		}
 
-		// Token: 0x06001479 RID: 5241 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060011D9 RID: 4569 RVA: 0x0000409B File Offset: 0x0000229B
 		public virtual void OnServerTeleporterPlaced(SceneDirector sceneDirector, GameObject teleporter)
 		{
 		}
 
-		// Token: 0x0600147A RID: 5242 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060011DA RID: 4570 RVA: 0x0000409B File Offset: 0x0000229B
 		public virtual void OnPlayerSpawnPointsPlaced(SceneDirector sceneDirector)
 		{
 		}
 
-		// Token: 0x0600147B RID: 5243 RVA: 0x000636D3 File Offset: 0x000618D3
+		// Token: 0x060011DB RID: 4571 RVA: 0x0004DC48 File Offset: 0x0004BE48
 		public virtual GameObject GetTeleportEffectPrefab(GameObject objectToTeleport)
 		{
 			return Resources.Load<GameObject>("Prefabs/Effects/TeleportOutBoom");
 		}
 
-		// Token: 0x0600147C RID: 5244 RVA: 0x000636DF File Offset: 0x000618DF
+		// Token: 0x060011DC RID: 4572 RVA: 0x0004DC54 File Offset: 0x0004BE54
 		public int GetDifficultyScaledCost(int baseCost)
 		{
 			return (int)((float)baseCost * Mathf.Pow(Run.instance.difficultyCoefficient, 1.25f));
 		}
 
-		// Token: 0x0600147D RID: 5245 RVA: 0x000636FC File Offset: 0x000618FC
+		// Token: 0x060011DD RID: 4573 RVA: 0x0004DC70 File Offset: 0x0004BE70
 		public void BuildDropTable()
 		{
 			this.availableTier1DropList.Clear();
@@ -604,7 +702,10 @@ namespace RoR2
 			this.availableTier3DropList.Clear();
 			this.availableLunarDropList.Clear();
 			this.availableEquipmentDropList.Clear();
-			for (ItemIndex itemIndex = ItemIndex.Syringe; itemIndex < ItemIndex.Count; itemIndex++)
+			this.availableBossDropList.Clear();
+			ItemIndex itemIndex = ItemIndex.Syringe;
+			ItemIndex itemCount = (ItemIndex)ItemCatalog.itemCount;
+			while (itemIndex < itemCount)
 			{
 				if (this.availableItems.HasItem(itemIndex))
 				{
@@ -624,14 +725,20 @@ namespace RoR2
 					case ItemTier.Lunar:
 						list = this.availableLunarDropList;
 						break;
+					case ItemTier.Boss:
+						list = this.availableBossDropList;
+						break;
 					}
 					if (list != null)
 					{
 						list.Add(new PickupIndex(itemIndex));
 					}
 				}
+				itemIndex++;
 			}
-			for (EquipmentIndex equipmentIndex = EquipmentIndex.CommandMissile; equipmentIndex < EquipmentIndex.Count; equipmentIndex++)
+			EquipmentIndex equipmentIndex = EquipmentIndex.CommandMissile;
+			EquipmentIndex equipmentCount = (EquipmentIndex)EquipmentCatalog.equipmentCount;
+			while (equipmentIndex < equipmentCount)
 			{
 				if (this.availableEquipment.HasEquipment(equipmentIndex))
 				{
@@ -648,6 +755,7 @@ namespace RoR2
 						}
 					}
 				}
+				equipmentIndex++;
 			}
 			this.smallChestDropTierSelector.Clear();
 			this.smallChestDropTierSelector.AddChoice(this.availableTier1DropList, 0.8f);
@@ -659,7 +767,7 @@ namespace RoR2
 			this.largeChestDropTierSelector.Clear();
 		}
 
-		// Token: 0x0600147E RID: 5246 RVA: 0x0006389A File Offset: 0x00061A9A
+		// Token: 0x060011DE RID: 4574 RVA: 0x0004DE3A File Offset: 0x0004C03A
 		[ConCommand(commandName = "run_end", flags = ConVarFlags.SenderMustBeServer, helpText = "Ends the current run.")]
 		private static void CCRunEnd(ConCommandArgs args)
 		{
@@ -669,7 +777,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600147F RID: 5247 RVA: 0x000638B8 File Offset: 0x00061AB8
+		// Token: 0x060011DF RID: 4575 RVA: 0x0004DE58 File Offset: 0x0004C058
 		[ConCommand(commandName = "run_print_unlockables", flags = ConVarFlags.SenderMustBeServer, helpText = "Prints all unlockables available in this run.")]
 		private static void CCRunPrintUnlockables(ConCommandArgs args)
 		{
@@ -685,7 +793,7 @@ namespace RoR2
 			Debug.Log(string.Join("\n", list.ToArray()));
 		}
 
-		// Token: 0x06001480 RID: 5248 RVA: 0x00063944 File Offset: 0x00061B44
+		// Token: 0x060011E0 RID: 4576 RVA: 0x0004DEE4 File Offset: 0x0004C0E4
 		[ConCommand(commandName = "run_print_seed", flags = ConVarFlags.None, helpText = "Prints the seed of the current run.")]
 		private static void CCRunPrintSeed(ConCommandArgs args)
 		{
@@ -699,13 +807,24 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x06001481 RID: 5249 RVA: 0x00063980 File Offset: 0x00061B80
+		// Token: 0x060011E1 RID: 4577 RVA: 0x0004DF1F File Offset: 0x0004C11F
+		[ConCommand(commandName = "run_set_stages_cleared", flags = (ConVarFlags.ExecuteOnServer | ConVarFlags.Cheat), helpText = "Sets the current number of stages cleared in the run.")]
+		private static void CCRunSetStagesCleared(ConCommandArgs args)
+		{
+			if (!Run.instance)
+			{
+				throw new ConCommandException("No run is currently in progress.");
+			}
+			Run.instance.NetworkstageClearCount = args.GetArgInt(0);
+		}
+
+		// Token: 0x060011E2 RID: 4578 RVA: 0x0004DF4C File Offset: 0x0004C14C
 		[RuntimeInitializeOnLoadMethod]
 		private static void Init()
 		{
 			Stage.onServerStageComplete += delegate(Stage stage)
 			{
-				if (Run.instance && SceneInfo.instance && SceneInfo.instance.countsAsStage)
+				if (Run.instance && SceneCatalog.GetSceneDefForCurrentScene().sceneType == SceneType.Stage)
 				{
 					Run instance = Run.instance;
 					instance.NetworkstageClearCount = instance.stageClearCount + 1;
@@ -715,28 +834,28 @@ namespace RoR2
 			HGXml.Register<Run.FixedTimeStamp>(new HGXml.Serializer<Run.FixedTimeStamp>(Run.FixedTimeStamp.ToXml), new HGXml.Deserializer<Run.FixedTimeStamp>(Run.FixedTimeStamp.FromXml));
 		}
 
-		// Token: 0x06001482 RID: 5250 RVA: 0x000639EB File Offset: 0x00061BEB
-		public virtual void AdvanceStage(string nextSceneName)
+		// Token: 0x060011E3 RID: 4579 RVA: 0x0004DFB7 File Offset: 0x0004C1B7
+		public virtual void AdvanceStage(SceneDef nextScene)
 		{
 			if (Stage.instance)
 			{
 				Stage.instance.CompleteServer();
 			}
 			this.GenerateStageRNG();
-			NetworkManager.singleton.ServerChangeScene(nextSceneName);
+			NetworkManager.singleton.ServerChangeScene(nextScene.ChooseSceneName());
 		}
 
-		// Token: 0x170001CD RID: 461
-		// (get) Token: 0x06001483 RID: 5251 RVA: 0x00063A14 File Offset: 0x00061C14
-		// (set) Token: 0x06001484 RID: 5252 RVA: 0x00063A1C File Offset: 0x00061C1C
+		// Token: 0x17000227 RID: 551
+		// (get) Token: 0x060011E4 RID: 4580 RVA: 0x0004DFE5 File Offset: 0x0004C1E5
+		// (set) Token: 0x060011E5 RID: 4581 RVA: 0x0004DFED File Offset: 0x0004C1ED
 		public bool isGameOverServer { get; private set; }
 
-		// Token: 0x14000023 RID: 35
-		// (add) Token: 0x06001485 RID: 5253 RVA: 0x00063A28 File Offset: 0x00061C28
-		// (remove) Token: 0x06001486 RID: 5254 RVA: 0x00063A5C File Offset: 0x00061C5C
+		// Token: 0x14000035 RID: 53
+		// (add) Token: 0x060011E6 RID: 4582 RVA: 0x0004DFF8 File Offset: 0x0004C1F8
+		// (remove) Token: 0x060011E7 RID: 4583 RVA: 0x0004E02C File Offset: 0x0004C22C
 		public static event Action<Run, GameResultType> OnServerGameOver;
 
-		// Token: 0x06001487 RID: 5255 RVA: 0x00063A90 File Offset: 0x00061C90
+		// Token: 0x060011E8 RID: 4584 RVA: 0x0004E060 File Offset: 0x0004C260
 		public void BeginGameOver(GameResultType gameResultType)
 		{
 			if (this.isGameOverServer)
@@ -748,6 +867,17 @@ namespace RoR2
 				Stage.instance.CompleteServer();
 			}
 			this.isGameOverServer = true;
+			if (gameResultType == GameResultType.Unknown)
+			{
+				for (int i = 0; i < NetworkUser.readOnlyInstancesList.Count; i++)
+				{
+					NetworkUser networkUser = NetworkUser.readOnlyInstancesList[i];
+					if (networkUser && networkUser.isParticipating)
+					{
+						networkUser.AwardLunarCoins(5U);
+					}
+				}
+			}
 			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkedObjects/GameOverController"));
 			GameOverController component = gameObject.GetComponent<GameOverController>();
 			component.SetRunReport(RunReport.Generate(this, gameResultType));
@@ -760,7 +890,7 @@ namespace RoR2
 			component.CallRpcClientGameOver();
 		}
 
-		// Token: 0x06001488 RID: 5256 RVA: 0x00063B06 File Offset: 0x00061D06
+		// Token: 0x060011E9 RID: 4585 RVA: 0x0004E112 File Offset: 0x0004C312
 		public virtual void OnClientGameOver(RunReport runReport)
 		{
 			RunReport.Save(runReport, "PreviousRun");
@@ -772,17 +902,17 @@ namespace RoR2
 			action(this, runReport);
 		}
 
-		// Token: 0x14000024 RID: 36
-		// (add) Token: 0x06001489 RID: 5257 RVA: 0x00063B28 File Offset: 0x00061D28
-		// (remove) Token: 0x0600148A RID: 5258 RVA: 0x00063B5C File Offset: 0x00061D5C
+		// Token: 0x14000036 RID: 54
+		// (add) Token: 0x060011EA RID: 4586 RVA: 0x0004E134 File Offset: 0x0004C334
+		// (remove) Token: 0x060011EB RID: 4587 RVA: 0x0004E168 File Offset: 0x0004C368
 		public static event Action<Run, RunReport> onClientGameOverGlobal;
 
-		// Token: 0x0600148B RID: 5259 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060011EC RID: 4588 RVA: 0x0000409B File Offset: 0x0000229B
 		public virtual void OverrideRuleChoices(RuleChoiceMask mustInclude, RuleChoiceMask mustExclude)
 		{
 		}
 
-		// Token: 0x0600148C RID: 5260 RVA: 0x00063B90 File Offset: 0x00061D90
+		// Token: 0x060011ED RID: 4589 RVA: 0x0004E19C File Offset: 0x0004C39C
 		protected void ForceChoice(RuleChoiceMask mustInclude, RuleChoiceMask mustExclude, RuleChoiceDef choiceDef)
 		{
 			foreach (RuleChoiceDef ruleChoiceDef in choiceDef.ruleDef.choices)
@@ -794,118 +924,182 @@ namespace RoR2
 			mustExclude[choiceDef.globalIndex] = false;
 		}
 
-		// Token: 0x0600148D RID: 5261 RVA: 0x00063C18 File Offset: 0x00061E18
+		// Token: 0x060011EE RID: 4590 RVA: 0x0004E224 File Offset: 0x0004C424
 		protected void ForceChoice(RuleChoiceMask mustInclude, RuleChoiceMask mustExclude, string choiceDefGlobalName)
 		{
 			this.ForceChoice(mustInclude, mustExclude, RuleCatalog.FindChoiceDef(choiceDefGlobalName));
 		}
 
-		// Token: 0x14000025 RID: 37
-		// (add) Token: 0x0600148E RID: 5262 RVA: 0x00063C28 File Offset: 0x00061E28
-		// (remove) Token: 0x0600148F RID: 5263 RVA: 0x00063C5C File Offset: 0x00061E5C
+		// Token: 0x14000037 RID: 55
+		// (add) Token: 0x060011EF RID: 4591 RVA: 0x0004E234 File Offset: 0x0004C434
+		// (remove) Token: 0x060011F0 RID: 4592 RVA: 0x0004E268 File Offset: 0x0004C468
 		public static event Action<Run> onRunStartGlobal;
 
-		// Token: 0x14000026 RID: 38
-		// (add) Token: 0x06001490 RID: 5264 RVA: 0x00063C90 File Offset: 0x00061E90
-		// (remove) Token: 0x06001491 RID: 5265 RVA: 0x00063CC4 File Offset: 0x00061EC4
+		// Token: 0x14000038 RID: 56
+		// (add) Token: 0x060011F1 RID: 4593 RVA: 0x0004E29C File Offset: 0x0004C49C
+		// (remove) Token: 0x060011F2 RID: 4594 RVA: 0x0004E2D0 File Offset: 0x0004C4D0
 		public static event Action<Run> onRunDestroyGlobal;
 
-		// Token: 0x06001494 RID: 5268 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060011F3 RID: 4595 RVA: 0x0004E303 File Offset: 0x0004C503
+		[Server]
+		public void SetEventFlag(string name)
+		{
+			if (!NetworkServer.active)
+			{
+				Debug.LogWarning("[Server] function 'System.Void RoR2.Run::SetEventFlag(System.String)' called on client");
+				return;
+			}
+			this.eventFlags.Add(name);
+		}
+
+		// Token: 0x060011F4 RID: 4596 RVA: 0x0004E327 File Offset: 0x0004C527
+		[Server]
+		public bool GetEventFlag(string name)
+		{
+			if (!NetworkServer.active)
+			{
+				Debug.LogWarning("[Server] function 'System.Boolean RoR2.Run::GetEventFlag(System.String)' called on client");
+				return false;
+			}
+			return this.eventFlags.Contains(name);
+		}
+
+		// Token: 0x060011F5 RID: 4597 RVA: 0x0004E34B File Offset: 0x0004C54B
+		[Server]
+		public void ResetEventFlag(string name)
+		{
+			if (!NetworkServer.active)
+			{
+				Debug.LogWarning("[Server] function 'System.Void RoR2.Run::ResetEventFlag(System.String)' called on client");
+				return;
+			}
+			this.eventFlags.Remove(name);
+		}
+
+		// Token: 0x060011F6 RID: 4598 RVA: 0x0004E36F File Offset: 0x0004C56F
+		public virtual bool ShouldAllowNonChampionBossSpawn()
+		{
+			return this.stageClearCount > 0;
+		}
+
+		// Token: 0x060011FA RID: 4602 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x170001CE RID: 462
-		// (get) Token: 0x06001495 RID: 5269 RVA: 0x00063DFC File Offset: 0x00061FFC
-		// (set) Token: 0x06001496 RID: 5270 RVA: 0x00063E0F File Offset: 0x0006200F
+		// Token: 0x17000228 RID: 552
+		// (get) Token: 0x060011FB RID: 4603 RVA: 0x0004E48C File Offset: 0x0004C68C
+		// (set) Token: 0x060011FC RID: 4604 RVA: 0x0004E49F File Offset: 0x0004C69F
 		public ItemMask NetworkavailableItems
 		{
 			get
 			{
 				return this.availableItems;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<ItemMask>(value, ref this.availableItems, 1u);
+				base.SetSyncVar<ItemMask>(value, ref this.availableItems, 1U);
 			}
 		}
 
-		// Token: 0x170001CF RID: 463
-		// (get) Token: 0x06001497 RID: 5271 RVA: 0x00063E24 File Offset: 0x00062024
-		// (set) Token: 0x06001498 RID: 5272 RVA: 0x00063E37 File Offset: 0x00062037
+		// Token: 0x17000229 RID: 553
+		// (get) Token: 0x060011FD RID: 4605 RVA: 0x0004E4B4 File Offset: 0x0004C6B4
+		// (set) Token: 0x060011FE RID: 4606 RVA: 0x0004E4C7 File Offset: 0x0004C6C7
 		public EquipmentMask NetworkavailableEquipment
 		{
 			get
 			{
 				return this.availableEquipment;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<EquipmentMask>(value, ref this.availableEquipment, 2u);
+				base.SetSyncVar<EquipmentMask>(value, ref this.availableEquipment, 2U);
 			}
 		}
 
-		// Token: 0x170001D0 RID: 464
-		// (get) Token: 0x06001499 RID: 5273 RVA: 0x00063E4C File Offset: 0x0006204C
-		// (set) Token: 0x0600149A RID: 5274 RVA: 0x00063E5F File Offset: 0x0006205F
+		// Token: 0x1700022A RID: 554
+		// (get) Token: 0x060011FF RID: 4607 RVA: 0x0004E4DC File Offset: 0x0004C6DC
+		// (set) Token: 0x06001200 RID: 4608 RVA: 0x0004E4EF File Offset: 0x0004C6EF
 		public ArtifactMask NetworkenabledArtifacts
 		{
 			get
 			{
 				return this.enabledArtifacts;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<ArtifactMask>(value, ref this.enabledArtifacts, 4u);
+				base.SetSyncVar<ArtifactMask>(value, ref this.enabledArtifacts, 4U);
 			}
 		}
 
-		// Token: 0x170001D1 RID: 465
-		// (get) Token: 0x0600149B RID: 5275 RVA: 0x00063E74 File Offset: 0x00062074
-		// (set) Token: 0x0600149C RID: 5276 RVA: 0x00063E87 File Offset: 0x00062087
+		// Token: 0x1700022B RID: 555
+		// (get) Token: 0x06001201 RID: 4609 RVA: 0x0004E504 File Offset: 0x0004C704
+		// (set) Token: 0x06001202 RID: 4610 RVA: 0x0004E517 File Offset: 0x0004C717
 		public float NetworkfixedTime
 		{
 			get
 			{
 				return this.fixedTime;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<float>(value, ref this.fixedTime, 8u);
+				base.SetSyncVar<float>(value, ref this.fixedTime, 8U);
 			}
 		}
 
-		// Token: 0x170001D2 RID: 466
-		// (get) Token: 0x0600149D RID: 5277 RVA: 0x00063E9C File Offset: 0x0006209C
-		// (set) Token: 0x0600149E RID: 5278 RVA: 0x00063EAF File Offset: 0x000620AF
+		// Token: 0x1700022C RID: 556
+		// (get) Token: 0x06001203 RID: 4611 RVA: 0x0004E52C File Offset: 0x0004C72C
+		// (set) Token: 0x06001204 RID: 4612 RVA: 0x0004E53F File Offset: 0x0004C73F
+		public Run.RunStopwatch NetworkrunStopwatch
+		{
+			get
+			{
+				return this.runStopwatch;
+			}
+			[param: In]
+			set
+			{
+				base.SetSyncVar<Run.RunStopwatch>(value, ref this.runStopwatch, 16U);
+			}
+		}
+
+		// Token: 0x1700022D RID: 557
+		// (get) Token: 0x06001205 RID: 4613 RVA: 0x0004E554 File Offset: 0x0004C754
+		// (set) Token: 0x06001206 RID: 4614 RVA: 0x0004E567 File Offset: 0x0004C767
 		public int NetworkstageClearCount
 		{
 			get
 			{
 				return this.stageClearCount;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<int>(value, ref this.stageClearCount, 16u);
+				base.SetSyncVar<int>(value, ref this.stageClearCount, 32U);
 			}
 		}
 
-		// Token: 0x170001D3 RID: 467
-		// (get) Token: 0x0600149F RID: 5279 RVA: 0x00063EC4 File Offset: 0x000620C4
-		// (set) Token: 0x060014A0 RID: 5280 RVA: 0x00063ED7 File Offset: 0x000620D7
+		// Token: 0x1700022E RID: 558
+		// (get) Token: 0x06001207 RID: 4615 RVA: 0x0004E57C File Offset: 0x0004C77C
+		// (set) Token: 0x06001208 RID: 4616 RVA: 0x0004E58F File Offset: 0x0004C78F
 		public int NetworkselectedDifficultyInternal
 		{
 			get
 			{
 				return this.selectedDifficultyInternal;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<int>(value, ref this.selectedDifficultyInternal, 32u);
+				base.SetSyncVar<int>(value, ref this.selectedDifficultyInternal, 64U);
 			}
 		}
 
-		// Token: 0x060014A1 RID: 5281 RVA: 0x00063EEC File Offset: 0x000620EC
+		// Token: 0x06001209 RID: 4617 RVA: 0x0004E5A4 File Offset: 0x0004C7A4
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -914,12 +1108,13 @@ namespace RoR2
 				GeneratedNetworkCode._WriteEquipmentMask_None(writer, this.availableEquipment);
 				GeneratedNetworkCode._WriteArtifactMask_None(writer, this.enabledArtifacts);
 				writer.Write(this.fixedTime);
+				GeneratedNetworkCode._WriteRunStopwatch_Run(writer, this.runStopwatch);
 				writer.WritePackedUInt32((uint)this.stageClearCount);
 				writer.WritePackedUInt32((uint)this.selectedDifficultyInternal);
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -928,7 +1123,7 @@ namespace RoR2
 				}
 				GeneratedNetworkCode._WriteItemMask_None(writer, this.availableItems);
 			}
-			if ((base.syncVarDirtyBits & 2u) != 0u)
+			if ((base.syncVarDirtyBits & 2U) != 0U)
 			{
 				if (!flag)
 				{
@@ -937,7 +1132,7 @@ namespace RoR2
 				}
 				GeneratedNetworkCode._WriteEquipmentMask_None(writer, this.availableEquipment);
 			}
-			if ((base.syncVarDirtyBits & 4u) != 0u)
+			if ((base.syncVarDirtyBits & 4U) != 0U)
 			{
 				if (!flag)
 				{
@@ -946,7 +1141,7 @@ namespace RoR2
 				}
 				GeneratedNetworkCode._WriteArtifactMask_None(writer, this.enabledArtifacts);
 			}
-			if ((base.syncVarDirtyBits & 8u) != 0u)
+			if ((base.syncVarDirtyBits & 8U) != 0U)
 			{
 				if (!flag)
 				{
@@ -955,7 +1150,16 @@ namespace RoR2
 				}
 				writer.Write(this.fixedTime);
 			}
-			if ((base.syncVarDirtyBits & 16u) != 0u)
+			if ((base.syncVarDirtyBits & 16U) != 0U)
+			{
+				if (!flag)
+				{
+					writer.WritePackedUInt32(base.syncVarDirtyBits);
+					flag = true;
+				}
+				GeneratedNetworkCode._WriteRunStopwatch_Run(writer, this.runStopwatch);
+			}
+			if ((base.syncVarDirtyBits & 32U) != 0U)
 			{
 				if (!flag)
 				{
@@ -964,7 +1168,7 @@ namespace RoR2
 				}
 				writer.WritePackedUInt32((uint)this.stageClearCount);
 			}
-			if ((base.syncVarDirtyBits & 32u) != 0u)
+			if ((base.syncVarDirtyBits & 64U) != 0U)
 			{
 				if (!flag)
 				{
@@ -980,7 +1184,7 @@ namespace RoR2
 			return flag;
 		}
 
-		// Token: 0x060014A2 RID: 5282 RVA: 0x00064094 File Offset: 0x00062294
+		// Token: 0x0600120A RID: 4618 RVA: 0x0004E78C File Offset: 0x0004C98C
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -989,6 +1193,7 @@ namespace RoR2
 				this.availableEquipment = GeneratedNetworkCode._ReadEquipmentMask_None(reader);
 				this.enabledArtifacts = GeneratedNetworkCode._ReadArtifactMask_None(reader);
 				this.fixedTime = reader.ReadSingle();
+				this.runStopwatch = GeneratedNetworkCode._ReadRunStopwatch_Run(reader);
 				this.stageClearCount = (int)reader.ReadPackedUInt32();
 				this.selectedDifficultyInternal = (int)reader.ReadPackedUInt32();
 				return;
@@ -1012,144 +1217,193 @@ namespace RoR2
 			}
 			if ((num & 16) != 0)
 			{
-				this.stageClearCount = (int)reader.ReadPackedUInt32();
+				this.runStopwatch = GeneratedNetworkCode._ReadRunStopwatch_Run(reader);
 			}
 			if ((num & 32) != 0)
+			{
+				this.stageClearCount = (int)reader.ReadPackedUInt32();
+			}
+			if ((num & 64) != 0)
 			{
 				this.selectedDifficultyInternal = (int)reader.ReadPackedUInt32();
 			}
 		}
 
-		// Token: 0x04001801 RID: 6145
+		// Token: 0x04001104 RID: 4356
 		private NetworkRuleBook networkRuleBookComponent;
 
-		// Token: 0x04001802 RID: 6146
+		// Token: 0x04001105 RID: 4357
 		public string nameToken = "";
 
-		// Token: 0x04001803 RID: 6147
+		// Token: 0x04001106 RID: 4358
 		[Tooltip("The pool of scenes to select the first scene of the run from.")]
-		public SceneField[] startingScenes = Array.Empty<SceneField>();
+		public SceneDef[] startingScenes = Array.Empty<SceneDef>();
 
-		// Token: 0x04001804 RID: 6148
+		// Token: 0x04001107 RID: 4359
 		[SyncVar]
 		public ItemMask availableItems;
 
-		// Token: 0x04001805 RID: 6149
+		// Token: 0x04001108 RID: 4360
 		[SyncVar]
 		public EquipmentMask availableEquipment;
 
-		// Token: 0x04001806 RID: 6150
+		// Token: 0x04001109 RID: 4361
 		[SyncVar]
 		public ArtifactMask enabledArtifacts;
 
-		// Token: 0x04001807 RID: 6151
+		// Token: 0x0400110A RID: 4362
 		[SyncVar]
 		public float fixedTime;
 
-		// Token: 0x04001808 RID: 6152
+		// Token: 0x0400110B RID: 4363
 		public float time;
 
-		// Token: 0x04001809 RID: 6153
+		// Token: 0x0400110C RID: 4364
+		[SyncVar]
+		private Run.RunStopwatch runStopwatch;
+
+		// Token: 0x0400110D RID: 4365
 		[SyncVar]
 		public int stageClearCount;
 
-		// Token: 0x0400180A RID: 6154
-		public SceneField nextStageScene;
+		// Token: 0x0400110E RID: 4366
+		public SceneDef nextStageScene;
 
-		// Token: 0x0400180B RID: 6155
+		// Token: 0x0400110F RID: 4367
 		public ulong seed;
 
-		// Token: 0x0400180C RID: 6156
+		// Token: 0x04001110 RID: 4368
 		public Xoroshiro128Plus runRNG;
 
-		// Token: 0x0400180D RID: 6157
+		// Token: 0x04001111 RID: 4369
 		public Xoroshiro128Plus nextStageRng;
 
-		// Token: 0x0400180E RID: 6158
+		// Token: 0x04001112 RID: 4370
 		public Xoroshiro128Plus stageRngGenerator;
 
-		// Token: 0x0400180F RID: 6159
+		// Token: 0x04001113 RID: 4371
 		public Xoroshiro128Plus stageRng;
 
-		// Token: 0x04001810 RID: 6160
+		// Token: 0x04001114 RID: 4372
 		public Xoroshiro128Plus bossRewardRng;
 
-		// Token: 0x04001811 RID: 6161
+		// Token: 0x04001115 RID: 4373
 		public Xoroshiro128Plus treasureRng;
 
-		// Token: 0x04001812 RID: 6162
+		// Token: 0x04001116 RID: 4374
 		public Xoroshiro128Plus spawnRng;
 
-		// Token: 0x04001813 RID: 6163
+		// Token: 0x04001117 RID: 4375
 		public float difficultyCoefficient = 1f;
 
-		// Token: 0x04001814 RID: 6164
+		// Token: 0x04001118 RID: 4376
 		public float compensatedDifficultyCoefficient = 1f;
 
-		// Token: 0x04001815 RID: 6165
+		// Token: 0x04001119 RID: 4377
 		[SyncVar]
 		private int selectedDifficultyInternal = 1;
 
-		// Token: 0x04001819 RID: 6169
+		// Token: 0x0400111D RID: 4381
 		public int shopPortalCount;
 
-		// Token: 0x0400181A RID: 6170
+		// Token: 0x0400111E RID: 4382
 		private static readonly StringConVar cvRunSceneOverride = new StringConVar("run_scene_override", ConVarFlags.Cheat, "", "Overrides the first scene to enter in a run.");
 
-		// Token: 0x0400181B RID: 6171
+		// Token: 0x0400111F RID: 4383
 		private readonly HashSet<string> unlockablesUnlockedByAnyUser = new HashSet<string>();
 
-		// Token: 0x0400181C RID: 6172
+		// Token: 0x04001120 RID: 4384
 		private readonly HashSet<string> unlockablesUnlockedByAllUsers = new HashSet<string>();
 
-		// Token: 0x0400181D RID: 6173
+		// Token: 0x04001121 RID: 4385
 		private readonly HashSet<string> unlockablesAlreadyFullyObtained = new HashSet<string>();
 
-		// Token: 0x0400181E RID: 6174
-		private static SceneField[] validStages;
+		// Token: 0x04001122 RID: 4386
+		private static SceneDef[] validStages;
 
-		// Token: 0x0400181F RID: 6175
+		// Token: 0x04001123 RID: 4387
 		private bool shutdown;
 
-		// Token: 0x04001820 RID: 6176
+		// Token: 0x04001124 RID: 4388
 		private Dictionary<NetworkUserId, CharacterMaster> userMasters = new Dictionary<NetworkUserId, CharacterMaster>();
 
-		// Token: 0x04001821 RID: 6177
+		// Token: 0x04001125 RID: 4389
 		private bool allowNewParticipants;
 
-		// Token: 0x04001823 RID: 6179
-		private static BoolConVar stage1PodConVar = new BoolConVar("stage1_pod", ConVarFlags.Cheat, "1", "Whether or not to use the pod when spawning on the first stage.");
-
-		// Token: 0x04001824 RID: 6180
+		// Token: 0x04001127 RID: 4391
 		public readonly List<PickupIndex> availableTier1DropList = new List<PickupIndex>();
 
-		// Token: 0x04001825 RID: 6181
+		// Token: 0x04001128 RID: 4392
 		public readonly List<PickupIndex> availableTier2DropList = new List<PickupIndex>();
 
-		// Token: 0x04001826 RID: 6182
+		// Token: 0x04001129 RID: 4393
 		public readonly List<PickupIndex> availableTier3DropList = new List<PickupIndex>();
 
-		// Token: 0x04001827 RID: 6183
+		// Token: 0x0400112A RID: 4394
 		public readonly List<PickupIndex> availableLunarDropList = new List<PickupIndex>();
 
-		// Token: 0x04001828 RID: 6184
+		// Token: 0x0400112B RID: 4395
 		public readonly List<PickupIndex> availableEquipmentDropList = new List<PickupIndex>();
 
-		// Token: 0x04001829 RID: 6185
+		// Token: 0x0400112C RID: 4396
+		public readonly List<PickupIndex> availableBossDropList = new List<PickupIndex>();
+
+		// Token: 0x0400112D RID: 4397
 		public WeightedSelection<List<PickupIndex>> smallChestDropTierSelector = new WeightedSelection<List<PickupIndex>>(8);
 
-		// Token: 0x0400182A RID: 6186
+		// Token: 0x0400112E RID: 4398
 		public WeightedSelection<List<PickupIndex>> mediumChestDropTierSelector = new WeightedSelection<List<PickupIndex>>(8);
 
-		// Token: 0x0400182B RID: 6187
+		// Token: 0x0400112F RID: 4399
 		public WeightedSelection<List<PickupIndex>> largeChestDropTierSelector = new WeightedSelection<List<PickupIndex>>(8);
 
-		// Token: 0x020003BE RID: 958
+		// Token: 0x04001135 RID: 4405
+		private readonly HashSet<string> eventFlags = new HashSet<string>();
+
+		// Token: 0x02000306 RID: 774
+		[Serializable]
+		public struct RunStopwatch : IEquatable<Run.RunStopwatch>
+		{
+			// Token: 0x0600120B RID: 4619 RVA: 0x0004E8AB File Offset: 0x0004CAAB
+			public bool Equals(Run.RunStopwatch other)
+			{
+				return this.offsetFromFixedTime.Equals(other.offsetFromFixedTime) && this.isPaused == other.isPaused;
+			}
+
+			// Token: 0x0600120C RID: 4620 RVA: 0x0004E8D0 File Offset: 0x0004CAD0
+			public override bool Equals(object obj)
+			{
+				if (obj == null)
+				{
+					return false;
+				}
+				if (obj is Run.RunStopwatch)
+				{
+					Run.RunStopwatch other = (Run.RunStopwatch)obj;
+					return this.Equals(other);
+				}
+				return false;
+			}
+
+			// Token: 0x0600120D RID: 4621 RVA: 0x0004E8FC File Offset: 0x0004CAFC
+			public override int GetHashCode()
+			{
+				return this.offsetFromFixedTime.GetHashCode() * 397 ^ this.isPaused.GetHashCode();
+			}
+
+			// Token: 0x04001136 RID: 4406
+			public float offsetFromFixedTime;
+
+			// Token: 0x04001137 RID: 4407
+			public bool isPaused;
+		}
+
+		// Token: 0x02000307 RID: 775
 		[Serializable]
 		public struct TimeStamp : IEquatable<Run.TimeStamp>, IComparable<Run.TimeStamp>
 		{
-			// Token: 0x170001D4 RID: 468
-			// (get) Token: 0x060014A3 RID: 5283 RVA: 0x0006418E File Offset: 0x0006238E
+			// Token: 0x1700022F RID: 559
+			// (get) Token: 0x0600120E RID: 4622 RVA: 0x0004E91B File Offset: 0x0004CB1B
 			public float timeUntil
 			{
 				get
@@ -1158,8 +1412,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x170001D5 RID: 469
-			// (get) Token: 0x060014A4 RID: 5284 RVA: 0x0006419C File Offset: 0x0006239C
+			// Token: 0x17000230 RID: 560
+			// (get) Token: 0x0600120F RID: 4623 RVA: 0x0004E929 File Offset: 0x0004CB29
 			public float timeSince
 			{
 				get
@@ -1168,8 +1422,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x170001D6 RID: 470
-			// (get) Token: 0x060014A5 RID: 5285 RVA: 0x000641AA File Offset: 0x000623AA
+			// Token: 0x17000231 RID: 561
+			// (get) Token: 0x06001210 RID: 4624 RVA: 0x0004E937 File Offset: 0x0004CB37
 			public float timeUntilClamped
 			{
 				get
@@ -1178,8 +1432,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x170001D7 RID: 471
-			// (get) Token: 0x060014A6 RID: 5286 RVA: 0x000641BC File Offset: 0x000623BC
+			// Token: 0x17000232 RID: 562
+			// (get) Token: 0x06001211 RID: 4625 RVA: 0x0004E949 File Offset: 0x0004CB49
 			public float timeSinceClamped
 			{
 				get
@@ -1188,8 +1442,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x170001D8 RID: 472
-			// (get) Token: 0x060014A7 RID: 5287 RVA: 0x000641CE File Offset: 0x000623CE
+			// Token: 0x17000233 RID: 563
+			// (get) Token: 0x06001212 RID: 4626 RVA: 0x0004E95B File Offset: 0x0004CB5B
 			public bool hasPassed
 			{
 				get
@@ -1198,14 +1452,14 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x060014A8 RID: 5288 RVA: 0x000641E0 File Offset: 0x000623E0
+			// Token: 0x06001213 RID: 4627 RVA: 0x0004E970 File Offset: 0x0004CB70
 			public override int GetHashCode()
 			{
 				return this.t.GetHashCode();
 			}
 
-			// Token: 0x170001D9 RID: 473
-			// (get) Token: 0x060014A9 RID: 5289 RVA: 0x000641FB File Offset: 0x000623FB
+			// Token: 0x17000234 RID: 564
+			// (get) Token: 0x06001214 RID: 4628 RVA: 0x0004E98B File Offset: 0x0004CB8B
 			public bool isInfinity
 			{
 				get
@@ -1214,8 +1468,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x170001DA RID: 474
-			// (get) Token: 0x060014AA RID: 5290 RVA: 0x00064208 File Offset: 0x00062408
+			// Token: 0x17000235 RID: 565
+			// (get) Token: 0x06001215 RID: 4629 RVA: 0x0004E998 File Offset: 0x0004CB98
 			public bool isPositiveInfinity
 			{
 				get
@@ -1224,8 +1478,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x170001DB RID: 475
-			// (get) Token: 0x060014AB RID: 5291 RVA: 0x00064215 File Offset: 0x00062415
+			// Token: 0x17000236 RID: 566
+			// (get) Token: 0x06001216 RID: 4630 RVA: 0x0004E9A5 File Offset: 0x0004CBA5
 			public bool isNegativeInfinity
 			{
 				get
@@ -1234,14 +1488,14 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x060014AC RID: 5292 RVA: 0x00064222 File Offset: 0x00062422
+			// Token: 0x06001217 RID: 4631 RVA: 0x0004E9B2 File Offset: 0x0004CBB2
 			public static void Update()
 			{
 				Run.TimeStamp.tNow = Run.instance.time;
 			}
 
-			// Token: 0x170001DC RID: 476
-			// (get) Token: 0x060014AD RID: 5293 RVA: 0x00064233 File Offset: 0x00062433
+			// Token: 0x17000237 RID: 567
+			// (get) Token: 0x06001218 RID: 4632 RVA: 0x0004E9C3 File Offset: 0x0004CBC3
 			public static Run.TimeStamp now
 			{
 				get
@@ -1250,103 +1504,103 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x060014AE RID: 5294 RVA: 0x0006423F File Offset: 0x0006243F
+			// Token: 0x06001219 RID: 4633 RVA: 0x0004E9CF File Offset: 0x0004CBCF
 			private TimeStamp(float t)
 			{
 				this.t = t;
 			}
 
-			// Token: 0x060014AF RID: 5295 RVA: 0x00064248 File Offset: 0x00062448
+			// Token: 0x0600121A RID: 4634 RVA: 0x0004E9D8 File Offset: 0x0004CBD8
 			public bool Equals(Run.TimeStamp other)
 			{
 				return this.t.Equals(other.t);
 			}
 
-			// Token: 0x060014B0 RID: 5296 RVA: 0x00064269 File Offset: 0x00062469
+			// Token: 0x0600121B RID: 4635 RVA: 0x0004E9F9 File Offset: 0x0004CBF9
 			public override bool Equals(object obj)
 			{
 				return obj is Run.TimeStamp && this.Equals((Run.TimeStamp)obj);
 			}
 
-			// Token: 0x060014B1 RID: 5297 RVA: 0x00064284 File Offset: 0x00062484
+			// Token: 0x0600121C RID: 4636 RVA: 0x0004EA14 File Offset: 0x0004CC14
 			public int CompareTo(Run.TimeStamp other)
 			{
 				return this.t.CompareTo(other.t);
 			}
 
-			// Token: 0x060014B2 RID: 5298 RVA: 0x000642A5 File Offset: 0x000624A5
+			// Token: 0x0600121D RID: 4637 RVA: 0x0004EA35 File Offset: 0x0004CC35
 			public static Run.TimeStamp operator +(Run.TimeStamp a, float b)
 			{
 				return new Run.TimeStamp(a.t + b);
 			}
 
-			// Token: 0x060014B3 RID: 5299 RVA: 0x000642B4 File Offset: 0x000624B4
+			// Token: 0x0600121E RID: 4638 RVA: 0x0004EA44 File Offset: 0x0004CC44
 			public static Run.TimeStamp operator -(Run.TimeStamp a, float b)
 			{
 				return new Run.TimeStamp(a.t - b);
 			}
 
-			// Token: 0x060014B4 RID: 5300 RVA: 0x000642C3 File Offset: 0x000624C3
+			// Token: 0x0600121F RID: 4639 RVA: 0x0004EA53 File Offset: 0x0004CC53
 			public static float operator -(Run.TimeStamp a, Run.TimeStamp b)
 			{
 				return a.t - b.t;
 			}
 
-			// Token: 0x060014B5 RID: 5301 RVA: 0x000642D2 File Offset: 0x000624D2
+			// Token: 0x06001220 RID: 4640 RVA: 0x0004EA62 File Offset: 0x0004CC62
 			public static bool operator <(Run.TimeStamp a, Run.TimeStamp b)
 			{
 				return a.t < b.t;
 			}
 
-			// Token: 0x060014B6 RID: 5302 RVA: 0x000642E2 File Offset: 0x000624E2
+			// Token: 0x06001221 RID: 4641 RVA: 0x0004EA72 File Offset: 0x0004CC72
 			public static bool operator >(Run.TimeStamp a, Run.TimeStamp b)
 			{
 				return a.t > b.t;
 			}
 
-			// Token: 0x060014B7 RID: 5303 RVA: 0x000642F2 File Offset: 0x000624F2
+			// Token: 0x06001222 RID: 4642 RVA: 0x0004EA82 File Offset: 0x0004CC82
 			public static bool operator <=(Run.TimeStamp a, Run.TimeStamp b)
 			{
 				return a.t <= b.t;
 			}
 
-			// Token: 0x060014B8 RID: 5304 RVA: 0x00064305 File Offset: 0x00062505
+			// Token: 0x06001223 RID: 4643 RVA: 0x0004EA95 File Offset: 0x0004CC95
 			public static bool operator >=(Run.TimeStamp a, Run.TimeStamp b)
 			{
 				return a.t >= b.t;
 			}
 
-			// Token: 0x060014B9 RID: 5305 RVA: 0x00064318 File Offset: 0x00062518
+			// Token: 0x06001224 RID: 4644 RVA: 0x0004EAA8 File Offset: 0x0004CCA8
 			public static bool operator ==(Run.TimeStamp a, Run.TimeStamp b)
 			{
 				return a.Equals(b);
 			}
 
-			// Token: 0x060014BA RID: 5306 RVA: 0x00064322 File Offset: 0x00062522
+			// Token: 0x06001225 RID: 4645 RVA: 0x0004EAB2 File Offset: 0x0004CCB2
 			public static bool operator !=(Run.TimeStamp a, Run.TimeStamp b)
 			{
 				return !a.Equals(b);
 			}
 
-			// Token: 0x060014BB RID: 5307 RVA: 0x0006432F File Offset: 0x0006252F
+			// Token: 0x06001226 RID: 4646 RVA: 0x0004EABF File Offset: 0x0004CCBF
 			public static Run.TimeStamp Deserialize(NetworkReader reader)
 			{
 				return new Run.TimeStamp(reader.ReadSingle());
 			}
 
-			// Token: 0x060014BC RID: 5308 RVA: 0x0006433C File Offset: 0x0006253C
+			// Token: 0x06001227 RID: 4647 RVA: 0x0004EACC File Offset: 0x0004CCCC
 			public static void Serialize(NetworkWriter writer, Run.TimeStamp timeStamp)
 			{
 				writer.Write(timeStamp.t);
 			}
 
-			// Token: 0x060014BD RID: 5309 RVA: 0x0006434B File Offset: 0x0006254B
+			// Token: 0x06001228 RID: 4648 RVA: 0x0004EADB File Offset: 0x0004CCDB
 			public static void ToXml(XElement element, Run.TimeStamp src)
 			{
 				element.Value = TextSerialization.ToStringInvariant(src.t);
 			}
 
-			// Token: 0x060014BE RID: 5310 RVA: 0x00064360 File Offset: 0x00062560
+			// Token: 0x06001229 RID: 4649 RVA: 0x0004EAF0 File Offset: 0x0004CCF0
 			public static bool FromXml(XElement element, ref Run.TimeStamp dest)
 			{
 				float num;
@@ -1358,35 +1612,35 @@ namespace RoR2
 				return false;
 			}
 
-			// Token: 0x060014BF RID: 5311 RVA: 0x0006438B File Offset: 0x0006258B
+			// Token: 0x0600122A RID: 4650 RVA: 0x0004EB1B File Offset: 0x0004CD1B
 			[RuntimeInitializeOnLoadMethod]
 			private static void Init()
 			{
 				HGXml.Register<Run.TimeStamp>(new HGXml.Serializer<Run.TimeStamp>(Run.TimeStamp.ToXml), new HGXml.Deserializer<Run.TimeStamp>(Run.TimeStamp.FromXml));
 			}
 
-			// Token: 0x04001831 RID: 6193
+			// Token: 0x04001138 RID: 4408
 			public readonly float t;
 
-			// Token: 0x04001832 RID: 6194
+			// Token: 0x04001139 RID: 4409
 			private static float tNow;
 
-			// Token: 0x04001833 RID: 6195
+			// Token: 0x0400113A RID: 4410
 			public static readonly Run.TimeStamp zero = new Run.TimeStamp(0f);
 
-			// Token: 0x04001834 RID: 6196
+			// Token: 0x0400113B RID: 4411
 			public static readonly Run.TimeStamp positiveInfinity = new Run.TimeStamp(float.PositiveInfinity);
 
-			// Token: 0x04001835 RID: 6197
+			// Token: 0x0400113C RID: 4412
 			public static readonly Run.TimeStamp negativeInfinity = new Run.TimeStamp(float.NegativeInfinity);
 		}
 
-		// Token: 0x020003BF RID: 959
+		// Token: 0x02000308 RID: 776
 		[Serializable]
 		public struct FixedTimeStamp : IEquatable<Run.FixedTimeStamp>, IComparable<Run.FixedTimeStamp>
 		{
-			// Token: 0x170001DD RID: 477
-			// (get) Token: 0x060014C1 RID: 5313 RVA: 0x000643D9 File Offset: 0x000625D9
+			// Token: 0x17000238 RID: 568
+			// (get) Token: 0x0600122C RID: 4652 RVA: 0x0004EB69 File Offset: 0x0004CD69
 			public float timeUntil
 			{
 				get
@@ -1395,8 +1649,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x170001DE RID: 478
-			// (get) Token: 0x060014C2 RID: 5314 RVA: 0x000643E7 File Offset: 0x000625E7
+			// Token: 0x17000239 RID: 569
+			// (get) Token: 0x0600122D RID: 4653 RVA: 0x0004EB77 File Offset: 0x0004CD77
 			public float timeSince
 			{
 				get
@@ -1405,8 +1659,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x170001DF RID: 479
-			// (get) Token: 0x060014C3 RID: 5315 RVA: 0x000643F5 File Offset: 0x000625F5
+			// Token: 0x1700023A RID: 570
+			// (get) Token: 0x0600122E RID: 4654 RVA: 0x0004EB85 File Offset: 0x0004CD85
 			public float timeUntilClamped
 			{
 				get
@@ -1415,8 +1669,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x170001E0 RID: 480
-			// (get) Token: 0x060014C4 RID: 5316 RVA: 0x00064407 File Offset: 0x00062607
+			// Token: 0x1700023B RID: 571
+			// (get) Token: 0x0600122F RID: 4655 RVA: 0x0004EB97 File Offset: 0x0004CD97
 			public float timeSinceClamped
 			{
 				get
@@ -1425,8 +1679,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x170001E1 RID: 481
-			// (get) Token: 0x060014C5 RID: 5317 RVA: 0x00064419 File Offset: 0x00062619
+			// Token: 0x1700023C RID: 572
+			// (get) Token: 0x06001230 RID: 4656 RVA: 0x0004EBA9 File Offset: 0x0004CDA9
 			public bool hasPassed
 			{
 				get
@@ -1435,14 +1689,14 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x060014C6 RID: 5318 RVA: 0x0006442C File Offset: 0x0006262C
+			// Token: 0x06001231 RID: 4657 RVA: 0x0004EBBC File Offset: 0x0004CDBC
 			public override int GetHashCode()
 			{
 				return this.t.GetHashCode();
 			}
 
-			// Token: 0x170001E2 RID: 482
-			// (get) Token: 0x060014C7 RID: 5319 RVA: 0x00064447 File Offset: 0x00062647
+			// Token: 0x1700023D RID: 573
+			// (get) Token: 0x06001232 RID: 4658 RVA: 0x0004EBD7 File Offset: 0x0004CDD7
 			public bool isInfinity
 			{
 				get
@@ -1451,8 +1705,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x170001E3 RID: 483
-			// (get) Token: 0x060014C8 RID: 5320 RVA: 0x00064454 File Offset: 0x00062654
+			// Token: 0x1700023E RID: 574
+			// (get) Token: 0x06001233 RID: 4659 RVA: 0x0004EBE4 File Offset: 0x0004CDE4
 			public bool isPositiveInfinity
 			{
 				get
@@ -1461,8 +1715,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x170001E4 RID: 484
-			// (get) Token: 0x060014C9 RID: 5321 RVA: 0x00064461 File Offset: 0x00062661
+			// Token: 0x1700023F RID: 575
+			// (get) Token: 0x06001234 RID: 4660 RVA: 0x0004EBF1 File Offset: 0x0004CDF1
 			public bool isNegativeInfinity
 			{
 				get
@@ -1471,14 +1725,14 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x060014CA RID: 5322 RVA: 0x0006446E File Offset: 0x0006266E
+			// Token: 0x06001235 RID: 4661 RVA: 0x0004EBFE File Offset: 0x0004CDFE
 			public static void Update()
 			{
 				Run.FixedTimeStamp.tNow = Run.instance.fixedTime;
 			}
 
-			// Token: 0x170001E5 RID: 485
-			// (get) Token: 0x060014CB RID: 5323 RVA: 0x0006447F File Offset: 0x0006267F
+			// Token: 0x17000240 RID: 576
+			// (get) Token: 0x06001236 RID: 4662 RVA: 0x0004EC0F File Offset: 0x0004CE0F
 			public static Run.FixedTimeStamp now
 			{
 				get
@@ -1487,103 +1741,103 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x060014CC RID: 5324 RVA: 0x0006448B File Offset: 0x0006268B
+			// Token: 0x06001237 RID: 4663 RVA: 0x0004EC1B File Offset: 0x0004CE1B
 			private FixedTimeStamp(float t)
 			{
 				this.t = t;
 			}
 
-			// Token: 0x060014CD RID: 5325 RVA: 0x00064494 File Offset: 0x00062694
+			// Token: 0x06001238 RID: 4664 RVA: 0x0004EC24 File Offset: 0x0004CE24
 			public bool Equals(Run.FixedTimeStamp other)
 			{
 				return this.t.Equals(other.t);
 			}
 
-			// Token: 0x060014CE RID: 5326 RVA: 0x000644B5 File Offset: 0x000626B5
+			// Token: 0x06001239 RID: 4665 RVA: 0x0004EC45 File Offset: 0x0004CE45
 			public override bool Equals(object obj)
 			{
 				return obj is Run.FixedTimeStamp && this.Equals((Run.FixedTimeStamp)obj);
 			}
 
-			// Token: 0x060014CF RID: 5327 RVA: 0x000644D0 File Offset: 0x000626D0
+			// Token: 0x0600123A RID: 4666 RVA: 0x0004EC60 File Offset: 0x0004CE60
 			public int CompareTo(Run.FixedTimeStamp other)
 			{
 				return this.t.CompareTo(other.t);
 			}
 
-			// Token: 0x060014D0 RID: 5328 RVA: 0x000644F1 File Offset: 0x000626F1
+			// Token: 0x0600123B RID: 4667 RVA: 0x0004EC81 File Offset: 0x0004CE81
 			public static Run.FixedTimeStamp operator +(Run.FixedTimeStamp a, float b)
 			{
 				return new Run.FixedTimeStamp(a.t + b);
 			}
 
-			// Token: 0x060014D1 RID: 5329 RVA: 0x00064500 File Offset: 0x00062700
+			// Token: 0x0600123C RID: 4668 RVA: 0x0004EC90 File Offset: 0x0004CE90
 			public static Run.FixedTimeStamp operator -(Run.FixedTimeStamp a, float b)
 			{
 				return new Run.FixedTimeStamp(a.t - b);
 			}
 
-			// Token: 0x060014D2 RID: 5330 RVA: 0x0006450F File Offset: 0x0006270F
+			// Token: 0x0600123D RID: 4669 RVA: 0x0004EC9F File Offset: 0x0004CE9F
 			public static float operator -(Run.FixedTimeStamp a, Run.FixedTimeStamp b)
 			{
 				return a.t - b.t;
 			}
 
-			// Token: 0x060014D3 RID: 5331 RVA: 0x0006451E File Offset: 0x0006271E
+			// Token: 0x0600123E RID: 4670 RVA: 0x0004ECAE File Offset: 0x0004CEAE
 			public static bool operator <(Run.FixedTimeStamp a, Run.FixedTimeStamp b)
 			{
 				return a.t < b.t;
 			}
 
-			// Token: 0x060014D4 RID: 5332 RVA: 0x0006452E File Offset: 0x0006272E
+			// Token: 0x0600123F RID: 4671 RVA: 0x0004ECBE File Offset: 0x0004CEBE
 			public static bool operator >(Run.FixedTimeStamp a, Run.FixedTimeStamp b)
 			{
 				return a.t > b.t;
 			}
 
-			// Token: 0x060014D5 RID: 5333 RVA: 0x0006453E File Offset: 0x0006273E
+			// Token: 0x06001240 RID: 4672 RVA: 0x0004ECCE File Offset: 0x0004CECE
 			public static bool operator <=(Run.FixedTimeStamp a, Run.FixedTimeStamp b)
 			{
 				return a.t <= b.t;
 			}
 
-			// Token: 0x060014D6 RID: 5334 RVA: 0x00064551 File Offset: 0x00062751
+			// Token: 0x06001241 RID: 4673 RVA: 0x0004ECE1 File Offset: 0x0004CEE1
 			public static bool operator >=(Run.FixedTimeStamp a, Run.FixedTimeStamp b)
 			{
 				return a.t >= b.t;
 			}
 
-			// Token: 0x060014D7 RID: 5335 RVA: 0x00064564 File Offset: 0x00062764
+			// Token: 0x06001242 RID: 4674 RVA: 0x0004ECF4 File Offset: 0x0004CEF4
 			public static bool operator ==(Run.FixedTimeStamp a, Run.FixedTimeStamp b)
 			{
 				return a.Equals(b);
 			}
 
-			// Token: 0x060014D8 RID: 5336 RVA: 0x0006456E File Offset: 0x0006276E
+			// Token: 0x06001243 RID: 4675 RVA: 0x0004ECFE File Offset: 0x0004CEFE
 			public static bool operator !=(Run.FixedTimeStamp a, Run.FixedTimeStamp b)
 			{
 				return !a.Equals(b);
 			}
 
-			// Token: 0x060014D9 RID: 5337 RVA: 0x0006457B File Offset: 0x0006277B
+			// Token: 0x06001244 RID: 4676 RVA: 0x0004ED0B File Offset: 0x0004CF0B
 			public static Run.FixedTimeStamp Deserialize(NetworkReader reader)
 			{
 				return new Run.FixedTimeStamp(reader.ReadSingle());
 			}
 
-			// Token: 0x060014DA RID: 5338 RVA: 0x00064588 File Offset: 0x00062788
+			// Token: 0x06001245 RID: 4677 RVA: 0x0004ED18 File Offset: 0x0004CF18
 			public static void Serialize(NetworkWriter writer, Run.FixedTimeStamp timeStamp)
 			{
 				writer.Write(timeStamp.t);
 			}
 
-			// Token: 0x060014DB RID: 5339 RVA: 0x00064597 File Offset: 0x00062797
+			// Token: 0x06001246 RID: 4678 RVA: 0x0004ED27 File Offset: 0x0004CF27
 			public static void ToXml(XElement element, Run.FixedTimeStamp src)
 			{
 				element.Value = TextSerialization.ToStringInvariant(src.t);
 			}
 
-			// Token: 0x060014DC RID: 5340 RVA: 0x000645AC File Offset: 0x000627AC
+			// Token: 0x06001247 RID: 4679 RVA: 0x0004ED3C File Offset: 0x0004CF3C
 			public static bool FromXml(XElement element, ref Run.FixedTimeStamp dest)
 			{
 				float num;
@@ -1595,19 +1849,19 @@ namespace RoR2
 				return false;
 			}
 
-			// Token: 0x04001836 RID: 6198
+			// Token: 0x0400113D RID: 4413
 			public readonly float t;
 
-			// Token: 0x04001837 RID: 6199
+			// Token: 0x0400113E RID: 4414
 			private static float tNow;
 
-			// Token: 0x04001838 RID: 6200
+			// Token: 0x0400113F RID: 4415
 			public static readonly Run.FixedTimeStamp zero = new Run.FixedTimeStamp(0f);
 
-			// Token: 0x04001839 RID: 6201
+			// Token: 0x04001140 RID: 4416
 			public static readonly Run.FixedTimeStamp positiveInfinity = new Run.FixedTimeStamp(float.PositiveInfinity);
 
-			// Token: 0x0400183A RID: 6202
+			// Token: 0x04001141 RID: 4417
 			public static readonly Run.FixedTimeStamp negativeInfinity = new Run.FixedTimeStamp(float.NegativeInfinity);
 		}
 	}

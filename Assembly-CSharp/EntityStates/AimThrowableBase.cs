@@ -7,10 +7,10 @@ using UnityEngine;
 
 namespace EntityStates
 {
-	// Token: 0x020000A4 RID: 164
-	public abstract class AimThrowableBase : BaseState
+	// Token: 0x020006F5 RID: 1781
+	public abstract class AimThrowableBase : BaseSkillState
 	{
-		// Token: 0x0600030A RID: 778 RVA: 0x0000C330 File Offset: 0x0000A530
+		// Token: 0x0600295A RID: 10586 RVA: 0x000ADDA8 File Offset: 0x000ABFA8
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -29,28 +29,41 @@ namespace EntityStates
 			{
 				base.characterBody.hideCrosshair = true;
 			}
-			this.projectileBaseSpeed = this.projectilePrefab.GetComponent<ProjectileSimple>().velocity;
-			this.minimumDuration = this.baseMinimumDuration / this.attackSpeedStat;
-			ProjectileImpactExplosion component = this.projectilePrefab.GetComponent<ProjectileImpactExplosion>();
+			ProjectileSimple component = this.projectilePrefab.GetComponent<ProjectileSimple>();
 			if (component)
 			{
-				this.detonationRadius = component.blastRadius;
+				this.projectileBaseSpeed = component.velocity;
+			}
+			Rigidbody component2 = this.projectilePrefab.GetComponent<Rigidbody>();
+			if (component2)
+			{
+				this.useGravity = component2.useGravity;
+			}
+			this.minimumDuration = this.baseMinimumDuration / this.attackSpeedStat;
+			ProjectileImpactExplosion component3 = this.projectilePrefab.GetComponent<ProjectileImpactExplosion>();
+			if (component3)
+			{
+				this.detonationRadius = component3.blastRadius;
 				if (this.endpointVisualizerTransform)
 				{
 					this.endpointVisualizerTransform.localScale = new Vector3(this.detonationRadius, this.detonationRadius, this.detonationRadius);
 				}
 			}
-			this.UpdateVisualizers();
+			this.UpdateVisualizers(this.currentTrajectoryInfo);
 			SceneCamera.onSceneCameraPreRender += this.OnPreRenderSceneCam;
 		}
 
-		// Token: 0x0600030B RID: 779 RVA: 0x0000C47C File Offset: 0x0000A67C
+		// Token: 0x0600295B RID: 10587 RVA: 0x000ADF24 File Offset: 0x000AC124
 		public override void OnExit()
 		{
 			SceneCamera.onSceneCameraPreRender -= this.OnPreRenderSceneCam;
-			if (!this.outer.destroying && base.isAuthority)
+			if (!this.outer.destroying)
 			{
-				this.FireProjectile();
+				if (base.isAuthority)
+				{
+					this.FireProjectile();
+				}
+				this.OnProjectileFiredLocal();
 			}
 			if (base.characterBody)
 			{
@@ -77,93 +90,127 @@ namespace EntityStates
 			base.OnExit();
 		}
 
-		// Token: 0x0600030C RID: 780 RVA: 0x0000C557 File Offset: 0x0000A757
+		// Token: 0x0600295C RID: 10588 RVA: 0x000AE005 File Offset: 0x000AC205
 		protected virtual bool KeyIsDown()
 		{
-			return base.inputBank && base.inputBank.skill2.down;
+			return base.IsKeyDownAuthority();
 		}
 
-		// Token: 0x0600030D RID: 781 RVA: 0x0000C578 File Offset: 0x0000A778
+		// Token: 0x0600295D RID: 10589 RVA: 0x0000409B File Offset: 0x0000229B
+		protected virtual void OnProjectileFiredLocal()
+		{
+		}
+
+		// Token: 0x0600295E RID: 10590 RVA: 0x000AE010 File Offset: 0x000AC210
 		protected virtual void FireProjectile()
 		{
 			FireProjectileInfo fireProjectileInfo = new FireProjectileInfo
 			{
 				crit = base.RollCrit(),
 				owner = base.gameObject,
-				position = this.finalRay.origin,
+				position = this.currentTrajectoryInfo.finalRay.origin,
 				projectilePrefab = this.projectilePrefab,
-				rotation = Util.QuaternionSafeLookRotation(this.finalRay.direction, Vector3.up),
-				speedOverride = this.speedOverride,
+				rotation = Util.QuaternionSafeLookRotation(this.currentTrajectoryInfo.finalRay.direction, Vector3.up),
+				speedOverride = this.currentTrajectoryInfo.speedOverride,
 				damage = this.damageCoefficient * this.damageStat
 			};
 			if (this.setFuse)
 			{
-				fireProjectileInfo.fuseOverride = this.travelTime;
+				fireProjectileInfo.fuseOverride = this.currentTrajectoryInfo.travelTime;
 			}
 			this.ModifyProjectile(ref fireProjectileInfo);
 			ProjectileManager.instance.FireProjectile(fireProjectileInfo);
 		}
 
-		// Token: 0x0600030E RID: 782 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x0600295F RID: 10591 RVA: 0x0000409B File Offset: 0x0000229B
 		protected virtual void ModifyProjectile(ref FireProjectileInfo fireProjectileInfo)
 		{
 		}
 
-		// Token: 0x0600030F RID: 783 RVA: 0x0000C62D File Offset: 0x0000A82D
+		// Token: 0x06002960 RID: 10592 RVA: 0x000AE0DC File Offset: 0x000AC2DC
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
 			if (base.isAuthority && !this.KeyIsDown() && base.fixedAge >= this.minimumDuration)
 			{
-				this.UpdateTrajectoryInfo();
+				this.UpdateTrajectoryInfo(out this.currentTrajectoryInfo);
+				EntityState entityState = this.PickNextState();
+				if (entityState != null)
+				{
+					this.outer.SetNextState(entityState);
+					return;
+				}
 				this.outer.SetNextStateToMain();
 			}
 		}
 
-		// Token: 0x06000310 RID: 784 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002961 RID: 10593 RVA: 0x0000AC7F File Offset: 0x00008E7F
+		protected virtual EntityState PickNextState()
+		{
+			return null;
+		}
+
+		// Token: 0x06002962 RID: 10594 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x06000311 RID: 785 RVA: 0x0000C664 File Offset: 0x0000A864
+		// Token: 0x06002963 RID: 10595 RVA: 0x000AE13B File Offset: 0x000AC33B
 		public override void Update()
 		{
 			base.Update();
 			if (CameraRigController.IsObjectSpectatedByAnyCamera(base.gameObject))
 			{
-				this.UpdateTrajectoryInfo();
-				this.UpdateVisualizers();
+				this.UpdateTrajectoryInfo(out this.currentTrajectoryInfo);
+				this.UpdateVisualizers(this.currentTrajectoryInfo);
 			}
 		}
 
-		// Token: 0x06000312 RID: 786 RVA: 0x0000C688 File Offset: 0x0000A888
-		private void UpdateTrajectoryInfo()
+		// Token: 0x06002964 RID: 10596 RVA: 0x000AE168 File Offset: 0x000AC368
+		protected virtual void UpdateTrajectoryInfo(out AimThrowableBase.TrajectoryInfo dest)
 		{
-			this.aimRay = base.GetAimRay();
-			RaycastHit raycastHit;
-			if (Util.CharacterRaycast(base.gameObject, this.aimRay, out raycastHit, this.maxDistance, LayerIndex.world.mask | LayerIndex.entityPrecise.mask, QueryTriggerInteraction.UseGlobal))
+			dest = default(AimThrowableBase.TrajectoryInfo);
+			Ray aimRay = base.GetAimRay();
+			RaycastHit raycastHit = default(RaycastHit);
+			bool flag = false;
+			if (this.rayRadius > 0f && Util.CharacterSpherecast(base.gameObject, aimRay, this.rayRadius, out raycastHit, this.maxDistance, LayerIndex.CommonMasks.bullet, QueryTriggerInteraction.UseGlobal) && raycastHit.collider.GetComponent<HurtBox>())
 			{
-				this.hitPoint = raycastHit.point;
-				this.hitNormal = raycastHit.normal;
+				flag = true;
+			}
+			if (!flag)
+			{
+				flag = Util.CharacterRaycast(base.gameObject, aimRay, out raycastHit, this.maxDistance, LayerIndex.CommonMasks.bullet, QueryTriggerInteraction.UseGlobal);
+			}
+			if (flag)
+			{
+				dest.hitPoint = raycastHit.point;
+				dest.hitNormal = raycastHit.normal;
 			}
 			else
 			{
-				this.hitPoint = this.aimRay.GetPoint(this.maxDistance);
-				this.hitNormal = -this.aimRay.direction;
+				dest.hitPoint = aimRay.GetPoint(this.maxDistance);
+				dest.hitNormal = -aimRay.direction;
 			}
-			float num = this.projectileBaseSpeed;
-			Vector3 vector = this.hitPoint - this.aimRay.origin;
-			Vector2 vector2 = new Vector2(vector.x, vector.z);
-			float magnitude = vector2.magnitude;
-			float y = Trajectory.CalculateInitialYSpeed(magnitude / num, vector.y);
-			Vector3 a = new Vector3(vector2.x / magnitude * num, y, vector2.y / magnitude * num);
-			this.speedOverride = a.magnitude;
-			this.finalRay = new Ray(this.aimRay.origin, a / this.speedOverride);
-			this.travelTime = Trajectory.CalculateGroundTravelTime(num, magnitude);
+			Vector3 vector = dest.hitPoint - aimRay.origin;
+			if (this.useGravity)
+			{
+				float num = this.projectileBaseSpeed;
+				Vector2 vector2 = new Vector2(vector.x, vector.z);
+				float magnitude = vector2.magnitude;
+				float y = Trajectory.CalculateInitialYSpeed(magnitude / num, vector.y);
+				Vector3 a = new Vector3(vector2.x / magnitude * num, y, vector2.y / magnitude * num);
+				dest.speedOverride = a.magnitude;
+				dest.finalRay = new Ray(aimRay.origin, a / dest.speedOverride);
+				dest.travelTime = Trajectory.CalculateGroundTravelTime(num, magnitude);
+				return;
+			}
+			dest.speedOverride = this.projectileBaseSpeed;
+			dest.finalRay = aimRay;
+			dest.travelTime = this.projectileBaseSpeed / vector.magnitude;
 		}
 
-		// Token: 0x06000313 RID: 787 RVA: 0x0000C7D8 File Offset: 0x0000A9D8
+		// Token: 0x06002965 RID: 10597 RVA: 0x000AE310 File Offset: 0x000AC510
 		private void CompleteArcVisualizerJob()
 		{
 			this.calculateArcPointsJobHandle.Complete();
@@ -175,26 +222,30 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x06000314 RID: 788 RVA: 0x0000C840 File Offset: 0x0000AA40
-		private void UpdateVisualizers()
+		// Token: 0x06002966 RID: 10598 RVA: 0x000AE378 File Offset: 0x000AC578
+		private void UpdateVisualizers(AimThrowableBase.TrajectoryInfo trajectoryInfo)
 		{
 			if (this.arcVisualizerLineRenderer && this.calculateArcPointsJobHandle.IsCompleted)
 			{
-				this.calculateArcPointsJob.SetParameters(this.finalRay.origin, this.finalRay.direction * this.speedOverride, this.travelTime, this.arcVisualizerLineRenderer.positionCount);
+				this.calculateArcPointsJob.SetParameters(trajectoryInfo.finalRay.origin, trajectoryInfo.finalRay.direction * trajectoryInfo.speedOverride, trajectoryInfo.travelTime, this.arcVisualizerLineRenderer.positionCount, this.useGravity ? Physics.gravity.y : 0f);
 				this.calculateArcPointsJobHandle = this.calculateArcPointsJob.Schedule(this.calculateArcPointsJob.outputPositions.Length, 32, default(JobHandle));
 			}
 			if (this.endpointVisualizerTransform)
 			{
-				this.endpointVisualizerTransform.SetPositionAndRotation(this.hitPoint, Util.QuaternionSafeLookRotation(this.hitNormal));
+				this.endpointVisualizerTransform.SetPositionAndRotation(trajectoryInfo.hitPoint, Util.QuaternionSafeLookRotation(trajectoryInfo.hitNormal));
+				if (!this.endpointVisualizerRadiusScale.Equals(0f))
+				{
+					this.endpointVisualizerTransform.localScale = new Vector3(this.endpointVisualizerRadiusScale, this.endpointVisualizerRadiusScale, this.endpointVisualizerRadiusScale);
+				}
 			}
 		}
 
-		// Token: 0x06000315 RID: 789 RVA: 0x0000C8FC File Offset: 0x0000AAFC
+		// Token: 0x06002967 RID: 10599 RVA: 0x000AE488 File Offset: 0x000AC688
 		private void OnPreRenderSceneCam(SceneCamera sceneCam)
 		{
 			if (this.arcVisualizerLineRenderer)
 			{
-				this.arcVisualizerLineRenderer.renderingLayerMask = ((sceneCam.cameraRigController.target == base.gameObject) ? 1u : 0u);
+				this.arcVisualizerLineRenderer.renderingLayerMask = ((sceneCam.cameraRigController.target == base.gameObject) ? 1U : 0U);
 			}
 			if (this.endpointVisualizerTransform)
 			{
@@ -202,84 +253,80 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x040002E7 RID: 743
+		// Token: 0x04002553 RID: 9555
 		[SerializeField]
 		public float maxDistance;
 
-		// Token: 0x040002E8 RID: 744
+		// Token: 0x04002554 RID: 9556
+		[SerializeField]
+		public float rayRadius;
+
+		// Token: 0x04002555 RID: 9557
 		[SerializeField]
 		public GameObject arcVisualizerPrefab;
 
-		// Token: 0x040002E9 RID: 745
+		// Token: 0x04002556 RID: 9558
 		[SerializeField]
 		public GameObject projectilePrefab;
 
-		// Token: 0x040002EA RID: 746
+		// Token: 0x04002557 RID: 9559
 		[SerializeField]
 		public GameObject endpointVisualizerPrefab;
 
-		// Token: 0x040002EB RID: 747
+		// Token: 0x04002558 RID: 9560
+		[SerializeField]
+		public float endpointVisualizerRadiusScale;
+
+		// Token: 0x04002559 RID: 9561
 		[SerializeField]
 		public bool setFuse;
 
-		// Token: 0x040002EC RID: 748
+		// Token: 0x0400255A RID: 9562
 		[SerializeField]
 		public float damageCoefficient;
 
-		// Token: 0x040002ED RID: 749
+		// Token: 0x0400255B RID: 9563
 		[SerializeField]
 		public float baseMinimumDuration;
 
-		// Token: 0x040002EE RID: 750
+		// Token: 0x0400255C RID: 9564
 		protected LineRenderer arcVisualizerLineRenderer;
 
-		// Token: 0x040002EF RID: 751
+		// Token: 0x0400255D RID: 9565
 		protected Transform endpointVisualizerTransform;
 
-		// Token: 0x040002F0 RID: 752
+		// Token: 0x0400255E RID: 9566
 		protected float projectileBaseSpeed;
 
-		// Token: 0x040002F1 RID: 753
+		// Token: 0x0400255F RID: 9567
 		protected float detonationRadius;
 
-		// Token: 0x040002F2 RID: 754
+		// Token: 0x04002560 RID: 9568
 		protected float minimumDuration;
 
-		// Token: 0x040002F3 RID: 755
+		// Token: 0x04002561 RID: 9569
+		protected bool useGravity;
+
+		// Token: 0x04002562 RID: 9570
 		private AimThrowableBase.CalculateArcPointsJob calculateArcPointsJob;
 
-		// Token: 0x040002F4 RID: 756
+		// Token: 0x04002563 RID: 9571
 		private JobHandle calculateArcPointsJobHandle;
 
-		// Token: 0x040002F5 RID: 757
+		// Token: 0x04002564 RID: 9572
 		private Vector3[] pointsBuffer = Array.Empty<Vector3>();
 
-		// Token: 0x040002F6 RID: 758
+		// Token: 0x04002565 RID: 9573
 		private Action completeArcPointsVisualizerJobMethod;
 
-		// Token: 0x040002F7 RID: 759
-		private Ray aimRay;
+		// Token: 0x04002566 RID: 9574
+		protected AimThrowableBase.TrajectoryInfo currentTrajectoryInfo;
 
-		// Token: 0x040002F8 RID: 760
-		private Ray finalRay;
-
-		// Token: 0x040002F9 RID: 761
-		private Vector3 hitPoint;
-
-		// Token: 0x040002FA RID: 762
-		private Vector3 hitNormal;
-
-		// Token: 0x040002FB RID: 763
-		private float travelTime;
-
-		// Token: 0x040002FC RID: 764
-		private float speedOverride;
-
-		// Token: 0x020000A5 RID: 165
+		// Token: 0x020006F6 RID: 1782
 		private struct CalculateArcPointsJob : IJobParallelFor, IDisposable
 		{
-			// Token: 0x06000317 RID: 791 RVA: 0x0000C99C File Offset: 0x0000AB9C
-			public void SetParameters(Vector3 origin, Vector3 velocity, float totalTravelTime, int positionCount)
+			// Token: 0x06002969 RID: 10601 RVA: 0x000AE528 File Offset: 0x000AC728
+			public void SetParameters(Vector3 origin, Vector3 velocity, float totalTravelTime, int positionCount, float gravity)
 			{
 				this.origin = origin;
 				this.velocity = velocity;
@@ -292,10 +339,10 @@ namespace EntityStates
 					this.outputPositions = new NativeArray<Vector3>(positionCount, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
 				}
 				this.indexMultiplier = totalTravelTime / (float)(positionCount - 1);
-				this.gravity = Physics.gravity.y;
+				this.gravity = gravity;
 			}
 
-			// Token: 0x06000318 RID: 792 RVA: 0x0000CA0A File Offset: 0x0000AC0A
+			// Token: 0x0600296A RID: 10602 RVA: 0x000AE58E File Offset: 0x000AC78E
 			public void Dispose()
 			{
 				if (this.outputPositions.IsCreated)
@@ -304,32 +351,51 @@ namespace EntityStates
 				}
 			}
 
-			// Token: 0x06000319 RID: 793 RVA: 0x0000CA24 File Offset: 0x0000AC24
+			// Token: 0x0600296B RID: 10603 RVA: 0x000AE5A8 File Offset: 0x000AC7A8
 			public void Execute(int index)
 			{
 				float t = (float)index * this.indexMultiplier;
 				this.outputPositions[index] = Trajectory.CalculatePositionAtTime(this.origin, this.velocity, t, this.gravity);
 			}
 
-			// Token: 0x040002FD RID: 765
+			// Token: 0x04002567 RID: 9575
 			[ReadOnly]
 			private Vector3 origin;
 
-			// Token: 0x040002FE RID: 766
+			// Token: 0x04002568 RID: 9576
 			[ReadOnly]
 			private Vector3 velocity;
 
-			// Token: 0x040002FF RID: 767
+			// Token: 0x04002569 RID: 9577
 			[ReadOnly]
 			private float indexMultiplier;
 
-			// Token: 0x04000300 RID: 768
+			// Token: 0x0400256A RID: 9578
 			[ReadOnly]
 			private float gravity;
 
-			// Token: 0x04000301 RID: 769
+			// Token: 0x0400256B RID: 9579
 			[WriteOnly]
 			public NativeArray<Vector3> outputPositions;
+		}
+
+		// Token: 0x020006F7 RID: 1783
+		protected struct TrajectoryInfo
+		{
+			// Token: 0x0400256C RID: 9580
+			public Ray finalRay;
+
+			// Token: 0x0400256D RID: 9581
+			public Vector3 hitPoint;
+
+			// Token: 0x0400256E RID: 9582
+			public Vector3 hitNormal;
+
+			// Token: 0x0400256F RID: 9583
+			public float travelTime;
+
+			// Token: 0x04002570 RID: 9584
+			public float speedOverride;
 		}
 	}
 }

@@ -4,10 +4,10 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005A9 RID: 1449
+	// Token: 0x0200057C RID: 1404
 	public class AchievementCardController : MonoBehaviour
 	{
-		// Token: 0x0600207B RID: 8315 RVA: 0x00099058 File Offset: 0x00097258
+		// Token: 0x0600216B RID: 8555 RVA: 0x00090C10 File Offset: 0x0008EE10
 		private static string GetAchievementParentIdentifier(string achievementIdentifier)
 		{
 			AchievementDef achievementDef = AchievementManager.GetAchievementDef(achievementIdentifier);
@@ -18,7 +18,7 @@ namespace RoR2.UI
 			return achievementDef.prerequisiteAchievementIdentifier;
 		}
 
-		// Token: 0x0600207C RID: 8316 RVA: 0x0009906C File Offset: 0x0009726C
+		// Token: 0x0600216C RID: 8556 RVA: 0x00090C24 File Offset: 0x0008EE24
 		private static int CalcAchievementTabCount(string achievementIdentifier)
 		{
 			int num = -1;
@@ -30,7 +30,7 @@ namespace RoR2.UI
 			return num;
 		}
 
-		// Token: 0x0600207D RID: 8317 RVA: 0x00099094 File Offset: 0x00097294
+		// Token: 0x0600216D RID: 8557 RVA: 0x00090C4C File Offset: 0x0008EE4C
 		public void SetAchievement(string achievementIdentifier, UserProfile userProfile)
 		{
 			AchievementDef achievementDef = AchievementManager.GetAchievementDef(achievementIdentifier);
@@ -100,28 +100,28 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0400230B RID: 8971
+		// Token: 0x04001EDE RID: 7902
 		public Image iconImage;
 
-		// Token: 0x0400230C RID: 8972
+		// Token: 0x04001EDF RID: 7903
 		public LanguageTextMeshController nameLabel;
 
-		// Token: 0x0400230D RID: 8973
+		// Token: 0x04001EE0 RID: 7904
 		public LanguageTextMeshController descriptionLabel;
 
-		// Token: 0x0400230E RID: 8974
+		// Token: 0x04001EE1 RID: 7905
 		public LayoutElement tabLayoutElement;
 
-		// Token: 0x0400230F RID: 8975
+		// Token: 0x04001EE2 RID: 7906
 		public float tabWidth;
 
-		// Token: 0x04002310 RID: 8976
+		// Token: 0x04001EE3 RID: 7907
 		public GameObject unlockedImage;
 
-		// Token: 0x04002311 RID: 8977
+		// Token: 0x04001EE4 RID: 7908
 		public GameObject cantBeAchievedImage;
 
-		// Token: 0x04002312 RID: 8978
+		// Token: 0x04001EE5 RID: 7909
 		public TooltipProvider tooltipProvider;
 	}
 }

@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200023B RID: 571
+	// Token: 0x02000121 RID: 289
 	public class DifficultyDef
 	{
-		// Token: 0x06000AC9 RID: 2761 RVA: 0x000354E0 File Offset: 0x000336E0
+		// Token: 0x06000534 RID: 1332 RVA: 0x000150BF File Offset: 0x000132BF
 		public DifficultyDef(float scalingValue, string nameToken, string iconPath, string descriptionToken, Color color)
 		{
 			this.scalingValue = scalingValue;
@@ -16,7 +16,7 @@ namespace RoR2
 			this.color = color;
 		}
 
-		// Token: 0x06000ACA RID: 2762 RVA: 0x0003550D File Offset: 0x0003370D
+		// Token: 0x06000535 RID: 1333 RVA: 0x000150EC File Offset: 0x000132EC
 		public Sprite GetIconSprite()
 		{
 			if (!this.foundIconSprite)
@@ -27,25 +27,25 @@ namespace RoR2
 			return this.iconSprite;
 		}
 
-		// Token: 0x04000E8C RID: 3724
+		// Token: 0x04000567 RID: 1383
 		public readonly float scalingValue;
 
-		// Token: 0x04000E8D RID: 3725
+		// Token: 0x04000568 RID: 1384
 		public readonly string descriptionToken;
 
-		// Token: 0x04000E8E RID: 3726
+		// Token: 0x04000569 RID: 1385
 		public readonly string nameToken;
 
-		// Token: 0x04000E8F RID: 3727
+		// Token: 0x0400056A RID: 1386
 		public readonly string iconPath;
 
-		// Token: 0x04000E90 RID: 3728
+		// Token: 0x0400056B RID: 1387
 		public readonly Color color;
 
-		// Token: 0x04000E91 RID: 3729
+		// Token: 0x0400056C RID: 1388
 		private Sprite iconSprite;
 
-		// Token: 0x04000E92 RID: 3730
+		// Token: 0x0400056D RID: 1389
 		private bool foundIconSprite;
 	}
 }

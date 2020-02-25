@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Drone
 {
-	// Token: 0x02000194 RID: 404
+	// Token: 0x02000899 RID: 2201
 	public class MegaDroneDeathState : GenericCharacterDeath
 	{
-		// Token: 0x060007C6 RID: 1990 RVA: 0x0002677F File Offset: 0x0002497F
+		// Token: 0x0600315B RID: 12635 RVA: 0x000D4772 File Offset: 0x000D2972
 		public override void OnEnter()
 		{
 			if (NetworkServer.active)
@@ -17,7 +17,7 @@ namespace EntityStates.Drone
 			}
 		}
 
-		// Token: 0x060007C7 RID: 1991 RVA: 0x00026794 File Offset: 0x00024994
+		// Token: 0x0600315C RID: 12636 RVA: 0x000D4788 File Offset: 0x000D2988
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -32,7 +32,7 @@ namespace EntityStates.Drone
 					component.FindChild("RightJet").gameObject.SetActive(false);
 					if (MegaDroneDeathState.initialEffect)
 					{
-						EffectManager.instance.SpawnEffect(MegaDroneDeathState.initialEffect, new EffectData
+						EffectManager.SpawnEffect(MegaDroneDeathState.initialEffect, new EffectData
 						{
 							origin = base.transform.position,
 							scale = MegaDroneDeathState.initialEffectScale
@@ -54,19 +54,19 @@ namespace EntityStates.Drone
 			}
 		}
 
-		// Token: 0x04000A11 RID: 2577
+		// Token: 0x04002FB0 RID: 12208
 		public static string initialSoundString;
 
-		// Token: 0x04000A12 RID: 2578
+		// Token: 0x04002FB1 RID: 12209
 		public static GameObject initialEffect;
 
-		// Token: 0x04000A13 RID: 2579
+		// Token: 0x04002FB2 RID: 12210
 		public static float initialEffectScale;
 
-		// Token: 0x04000A14 RID: 2580
+		// Token: 0x04002FB3 RID: 12211
 		public static float velocityMagnitude;
 
-		// Token: 0x04000A15 RID: 2581
+		// Token: 0x04002FB4 RID: 12212
 		public static float explosionForce;
 	}
 }

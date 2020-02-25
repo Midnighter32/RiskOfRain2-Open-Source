@@ -3,11 +3,11 @@ using RoR2.Stats;
 
 namespace RoR2.Achievements
 {
-	// Token: 0x020006AD RID: 1709
+	// Token: 0x020006BA RID: 1722
 	[RegisterAchievement("LogCollector", "Items.Scanner", null, null)]
 	public class LogCollectorAchievement : BaseAchievement
 	{
-		// Token: 0x060025F7 RID: 9719 RVA: 0x000AFFCC File Offset: 0x000AE1CC
+		// Token: 0x0600281B RID: 10267 RVA: 0x000ABABB File Offset: 0x000A9CBB
 		public override void OnInstall()
 		{
 			base.OnInstall();
@@ -15,29 +15,29 @@ namespace RoR2.Achievements
 			UserProfile.onUnlockableGranted += this.OnUnlockCheck;
 		}
 
-		// Token: 0x060025F8 RID: 9720 RVA: 0x000AFFEB File Offset: 0x000AE1EB
+		// Token: 0x0600281C RID: 10268 RVA: 0x000ABADA File Offset: 0x000A9CDA
 		public override void OnUninstall()
 		{
 			UserProfile.onUnlockableGranted -= this.OnUnlockCheck;
 			base.OnUninstall();
 		}
 
-		// Token: 0x060025F9 RID: 9721 RVA: 0x000B0004 File Offset: 0x000AE204
+		// Token: 0x0600281D RID: 10269 RVA: 0x000ABAF3 File Offset: 0x000A9CF3
 		public override float ProgressForAchievement()
 		{
 			return (float)this.MonsterLogCount() / 10f;
 		}
 
-		// Token: 0x060025FA RID: 9722 RVA: 0x000B0013 File Offset: 0x000AE213
+		// Token: 0x0600281E RID: 10270 RVA: 0x000ABB02 File Offset: 0x000A9D02
 		private static bool IsUnlockableMonsterLog(UnlockableDef unlockableDef)
 		{
 			return unlockableDef.name.StartsWith("Logs.");
 		}
 
-		// Token: 0x060025FB RID: 9723 RVA: 0x000B0028 File Offset: 0x000AE228
+		// Token: 0x0600281F RID: 10271 RVA: 0x000ABB14 File Offset: 0x000A9D14
 		private int MonsterLogCount()
 		{
-			StatSheet statSheet = this.userProfile.statSheet;
+			StatSheet statSheet = base.userProfile.statSheet;
 			int num = 0;
 			int i = 0;
 			int unlockableCount = statSheet.GetUnlockableCount();
@@ -52,7 +52,7 @@ namespace RoR2.Achievements
 			return num;
 		}
 
-		// Token: 0x060025FC RID: 9724 RVA: 0x000B0069 File Offset: 0x000AE269
+		// Token: 0x06002820 RID: 10272 RVA: 0x000ABB55 File Offset: 0x000A9D55
 		private void Check()
 		{
 			if (this.MonsterLogCount() >= 10)
@@ -61,7 +61,7 @@ namespace RoR2.Achievements
 			}
 		}
 
-		// Token: 0x060025FD RID: 9725 RVA: 0x000B007C File Offset: 0x000AE27C
+		// Token: 0x06002821 RID: 10273 RVA: 0x000ABB68 File Offset: 0x000A9D68
 		private void OnUnlockCheck(UserProfile userProfile, string unlockableToken)
 		{
 			UnlockableDef unlockableDef = UnlockableCatalog.GetUnlockableDef(unlockableToken);
@@ -69,13 +69,13 @@ namespace RoR2.Achievements
 			{
 				return;
 			}
-			if (userProfile == this.userProfile && LogCollectorAchievement.IsUnlockableMonsterLog(unlockableDef))
+			if (userProfile == base.userProfile && LogCollectorAchievement.IsUnlockableMonsterLog(unlockableDef))
 			{
 				this.Check();
 			}
 		}
 
-		// Token: 0x04002875 RID: 10357
+		// Token: 0x04002508 RID: 9480
 		private const int requirement = 10;
 	}
 }

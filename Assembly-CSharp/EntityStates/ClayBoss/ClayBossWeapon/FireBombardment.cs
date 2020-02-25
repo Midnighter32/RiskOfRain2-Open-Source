@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.ClayBoss.ClayBossWeapon
 {
-	// Token: 0x020001BF RID: 447
-	internal class FireBombardment : BaseState
+	// Token: 0x020008DA RID: 2266
+	public class FireBombardment : BaseState
 	{
-		// Token: 0x060008BD RID: 2237 RVA: 0x0002BE08 File Offset: 0x0002A008
+		// Token: 0x060032BC RID: 12988 RVA: 0x000DBA3C File Offset: 0x000D9C3C
 		private void FireGrenade(string targetMuzzle)
 		{
 			base.PlayCrossfade("Gesture, Bombardment", "FireBombardment", 0.1f);
@@ -30,7 +30,7 @@ namespace EntityStates.ClayBoss.ClayBossWeapon
 			base.AddRecoil(-1f * FireBombardment.recoilAmplitude, -2f * FireBombardment.recoilAmplitude, -1f * FireBombardment.recoilAmplitude, 1f * FireBombardment.recoilAmplitude);
 			if (FireBombardment.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireBombardment.effectPrefab, base.gameObject, targetMuzzle, false);
+				EffectManager.SimpleMuzzleFlash(FireBombardment.effectPrefab, base.gameObject, targetMuzzle, false);
 			}
 			if (base.isAuthority)
 			{
@@ -63,7 +63,7 @@ namespace EntityStates.ClayBoss.ClayBossWeapon
 			base.characterBody.AddSpreadBloom(FireBombardment.spreadBloomValue);
 		}
 
-		// Token: 0x060008BE RID: 2238 RVA: 0x0002C108 File Offset: 0x0002A308
+		// Token: 0x060032BD RID: 12989 RVA: 0x000DBD38 File Offset: 0x000D9F38
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -77,14 +77,14 @@ namespace EntityStates.ClayBoss.ClayBossWeapon
 			}
 		}
 
-		// Token: 0x060008BF RID: 2239 RVA: 0x0002C18C File Offset: 0x0002A38C
+		// Token: 0x060032BE RID: 12990 RVA: 0x000DBDBC File Offset: 0x000D9FBC
 		public override void OnExit()
 		{
 			base.PlayCrossfade("Gesture, Additive", "EndBombardment", 0.1f);
 			base.OnExit();
 		}
 
-		// Token: 0x060008C0 RID: 2240 RVA: 0x0002C1AC File Offset: 0x0002A3AC
+		// Token: 0x060032BF RID: 12991 RVA: 0x000DBDDC File Offset: 0x000D9FDC
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -105,58 +105,58 @@ namespace EntityStates.ClayBoss.ClayBossWeapon
 			}
 		}
 
-		// Token: 0x060008C1 RID: 2241 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x060032C0 RID: 12992 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000BBF RID: 3007
+		// Token: 0x040031E7 RID: 12775
 		public static GameObject effectPrefab;
 
-		// Token: 0x04000BC0 RID: 3008
+		// Token: 0x040031E8 RID: 12776
 		public static GameObject projectilePrefab;
 
-		// Token: 0x04000BC1 RID: 3009
+		// Token: 0x040031E9 RID: 12777
 		public int grenadeCountMax = 3;
 
-		// Token: 0x04000BC2 RID: 3010
+		// Token: 0x040031EA RID: 12778
 		public static float damageCoefficient;
 
-		// Token: 0x04000BC3 RID: 3011
+		// Token: 0x040031EB RID: 12779
 		public static float baseTimeBetweenShots = 1f;
 
-		// Token: 0x04000BC4 RID: 3012
+		// Token: 0x040031EC RID: 12780
 		public static float cooldownDuration = 2f;
 
-		// Token: 0x04000BC5 RID: 3013
+		// Token: 0x040031ED RID: 12781
 		public static float arcAngle = 5f;
 
-		// Token: 0x04000BC6 RID: 3014
+		// Token: 0x040031EE RID: 12782
 		public static float recoilAmplitude = 1f;
 
-		// Token: 0x04000BC7 RID: 3015
+		// Token: 0x040031EF RID: 12783
 		public static string shootSoundString;
 
-		// Token: 0x04000BC8 RID: 3016
+		// Token: 0x040031F0 RID: 12784
 		public static float spreadBloomValue = 0.3f;
 
-		// Token: 0x04000BC9 RID: 3017
+		// Token: 0x040031F1 RID: 12785
 		private Ray aimRay;
 
-		// Token: 0x04000BCA RID: 3018
+		// Token: 0x040031F2 RID: 12786
 		private Transform modelTransform;
 
-		// Token: 0x04000BCB RID: 3019
+		// Token: 0x040031F3 RID: 12787
 		private float duration;
 
-		// Token: 0x04000BCC RID: 3020
+		// Token: 0x040031F4 RID: 12788
 		private float fireTimer;
 
-		// Token: 0x04000BCD RID: 3021
+		// Token: 0x040031F5 RID: 12789
 		private int grenadeCount;
 
-		// Token: 0x04000BCE RID: 3022
+		// Token: 0x040031F6 RID: 12790
 		private float timeBetweenShots;
 	}
 }

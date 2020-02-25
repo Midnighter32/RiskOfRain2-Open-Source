@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace KinematicCharacterController
 {
-	// Token: 0x020006C9 RID: 1737
+	// Token: 0x02000914 RID: 2324
 	public struct CharacterTransientGroundingReport
 	{
-		// Token: 0x06002692 RID: 9874 RVA: 0x000B1954 File Offset: 0x000AFB54
+		// Token: 0x060033DC RID: 13276 RVA: 0x000E0D9C File Offset: 0x000DEF9C
 		public void CopyFrom(CharacterGroundingReport groundingReport)
 		{
 			this.FoundAnyGround = groundingReport.FoundAnyGround;
@@ -17,22 +17,22 @@ namespace KinematicCharacterController
 			this.OuterGroundNormal = groundingReport.OuterGroundNormal;
 		}
 
-		// Token: 0x040028CA RID: 10442
+		// Token: 0x04003363 RID: 13155
 		public bool FoundAnyGround;
 
-		// Token: 0x040028CB RID: 10443
+		// Token: 0x04003364 RID: 13156
 		public bool IsStableOnGround;
 
-		// Token: 0x040028CC RID: 10444
+		// Token: 0x04003365 RID: 13157
 		public bool SnappingPrevented;
 
-		// Token: 0x040028CD RID: 10445
+		// Token: 0x04003366 RID: 13158
 		public Vector3 GroundNormal;
 
-		// Token: 0x040028CE RID: 10446
+		// Token: 0x04003367 RID: 13159
 		public Vector3 InnerGroundNormal;
 
-		// Token: 0x040028CF RID: 10447
+		// Token: 0x04003368 RID: 13160
 		public Vector3 OuterGroundNormal;
 	}
 }

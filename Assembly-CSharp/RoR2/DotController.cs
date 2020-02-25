@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
+using RoR2.Stats;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x020002D9 RID: 729
+	// Token: 0x020001EB RID: 491
 	public class DotController : NetworkBehaviour
 	{
-		// Token: 0x06000E94 RID: 3732 RVA: 0x00047B9F File Offset: 0x00045D9F
+		// Token: 0x06000A40 RID: 2624 RVA: 0x0002CAD3 File Offset: 0x0002ACD3
 		private DotController.DotDef GetDotDef(DotController.DotIndex dotIndex)
 		{
 			if (dotIndex < DotController.DotIndex.Bleed || dotIndex >= DotController.DotIndex.Count)
@@ -19,21 +21,30 @@ namespace RoR2
 			return DotController.dotDefs[(int)dotIndex];
 		}
 
-		// Token: 0x06000E95 RID: 3733 RVA: 0x00047BB4 File Offset: 0x00045DB4
+		// Token: 0x06000A41 RID: 2625 RVA: 0x0002CAE8 File Offset: 0x0002ACE8
 		private static void InitDotCatalog()
 		{
-			DotController.dotDefs = new DotController.DotDef[3];
+			DotController.dotDefs = new DotController.DotDef[5];
 			DotController.dotDefs[0] = new DotController.DotDef
 			{
 				interval = 0.25f,
 				damageCoefficient = 0.2f,
-				damageColorIndex = DamageColorIndex.Bleed
+				damageColorIndex = DamageColorIndex.Bleed,
+				associatedBuff = BuffIndex.Bleeding
 			};
 			DotController.dotDefs[1] = new DotController.DotDef
 			{
 				interval = 0.5f,
 				damageCoefficient = 0.25f,
-				damageColorIndex = DamageColorIndex.Item
+				damageColorIndex = DamageColorIndex.Item,
+				associatedBuff = BuffIndex.OnFire
+			};
+			DotController.dotDefs[3] = new DotController.DotDef
+			{
+				interval = 0.2f,
+				damageCoefficient = 0.1f,
+				damageColorIndex = DamageColorIndex.Item,
+				associatedBuff = BuffIndex.OnFire
 			};
 			DotController.dotDefs[2] = new DotController.DotDef
 			{
@@ -41,17 +52,24 @@ namespace RoR2
 				damageCoefficient = 1f,
 				damageColorIndex = DamageColorIndex.Item
 			};
+			DotController.dotDefs[4] = new DotController.DotDef
+			{
+				interval = 0.333f,
+				damageCoefficient = 0.333f,
+				damageColorIndex = DamageColorIndex.Poison,
+				associatedBuff = BuffIndex.Poisoned
+			};
 		}
 
-		// Token: 0x06000E96 RID: 3734 RVA: 0x00047C47 File Offset: 0x00045E47
+		// Token: 0x06000A42 RID: 2626 RVA: 0x0002CBEB File Offset: 0x0002ADEB
 		static DotController()
 		{
 			DotController.InitDotCatalog();
 		}
 
-		// Token: 0x17000138 RID: 312
-		// (get) Token: 0x06000E97 RID: 3735 RVA: 0x00047C74 File Offset: 0x00045E74
-		// (set) Token: 0x06000E98 RID: 3736 RVA: 0x00047CC6 File Offset: 0x00045EC6
+		// Token: 0x1700014A RID: 330
+		// (get) Token: 0x06000A43 RID: 2627 RVA: 0x0002CC18 File Offset: 0x0002AE18
+		// (set) Token: 0x06000A44 RID: 2628 RVA: 0x0002CC6A File Offset: 0x0002AE6A
 		public GameObject victimObject
 		{
 			get
@@ -75,8 +93,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000139 RID: 313
-		// (get) Token: 0x06000E99 RID: 3737 RVA: 0x00047CD9 File Offset: 0x00045ED9
+		// Token: 0x1700014B RID: 331
+		// (get) Token: 0x06000A45 RID: 2629 RVA: 0x0002CC7D File Offset: 0x0002AE7D
 		private CharacterBody victimBody
 		{
 			get
@@ -89,8 +107,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x1700013A RID: 314
-		// (get) Token: 0x06000E9A RID: 3738 RVA: 0x00047D0C File Offset: 0x00045F0C
+		// Token: 0x1700014C RID: 332
+		// (get) Token: 0x06000A46 RID: 2630 RVA: 0x0002CCB0 File Offset: 0x0002AEB0
 		private HealthComponent victimHealthComponent
 		{
 			get
@@ -104,8 +122,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x1700013B RID: 315
-		// (get) Token: 0x06000E9B RID: 3739 RVA: 0x00047D1F File Offset: 0x00045F1F
+		// Token: 0x1700014D RID: 333
+		// (get) Token: 0x06000A47 RID: 2631 RVA: 0x0002CCC3 File Offset: 0x0002AEC3
 		private TeamIndex victimTeam
 		{
 			get
@@ -118,20 +136,33 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000E9C RID: 3740 RVA: 0x00047D40 File Offset: 0x00045F40
+		// Token: 0x06000A48 RID: 2632 RVA: 0x0002CCE4 File Offset: 0x0002AEE4
+		public bool HasDotActive(DotController.DotIndex dotIndex)
+		{
+			return ((int)this.activeDotFlags & 1 << (int)dotIndex) != 0;
+		}
+
+		// Token: 0x06000A49 RID: 2633 RVA: 0x0002CCF6 File Offset: 0x0002AEF6
 		private void Awake()
 		{
 			if (NetworkServer.active)
 			{
 				this.dotStackList = new List<DotController.DotStack>();
-				this.dotTimers = new float[3];
+				this.dotTimers = new float[5];
 			}
 			DotController.instancesList.Add(this);
 		}
 
-		// Token: 0x06000E9D RID: 3741 RVA: 0x00047D6B File Offset: 0x00045F6B
+		// Token: 0x06000A4A RID: 2634 RVA: 0x0002CD24 File Offset: 0x0002AF24
 		private void OnDestroy()
 		{
+			if (NetworkServer.active)
+			{
+				for (int i = this.dotStackList.Count - 1; i >= 0; i--)
+				{
+					this.RemoveDotStackAtServer(i);
+				}
+			}
 			DotController.instancesList.Remove(this);
 			if (this.recordedVictimInstanceId != -1)
 			{
@@ -139,100 +170,116 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000E9E RID: 3742 RVA: 0x00047D94 File Offset: 0x00045F94
+		// Token: 0x06000A4B RID: 2635 RVA: 0x0002CD80 File Offset: 0x0002AF80
 		private void FixedUpdate()
 		{
 			GameObject victimObject = this.victimObject;
-			if (victimObject)
+			if (!victimObject)
 			{
-				if (base.transform.parent != victimObject.transform)
-				{
-					base.transform.SetParent(victimObject.transform, false);
-					base.transform.localPosition = Vector3.zero;
-				}
 				if (NetworkServer.active)
 				{
-					for (DotController.DotIndex dotIndex = DotController.DotIndex.Bleed; dotIndex < DotController.DotIndex.Count; dotIndex++)
-					{
-						DotController.DotDef dotDef = this.GetDotDef(dotIndex);
-						float num = this.dotTimers[(int)dotIndex] - Time.fixedDeltaTime;
-						if (num <= 0f)
-						{
-							num += dotDef.interval;
-							int num2 = 0;
-							this.EvaluateDotStacksForType(dotIndex, dotDef.interval, out num2);
-							byte b = (byte)(1 << (int)dotIndex);
-							this.NetworkactiveDotFlags = (this.activeDotFlags & ~b);
-							if (num2 != 0)
-							{
-								this.NetworkactiveDotFlags = (this.activeDotFlags | b);
-							}
-						}
-						this.dotTimers[(int)dotIndex] = num;
-					}
-					if (this.dotStackList.Count == 0)
-					{
-						UnityEngine.Object.Destroy(base.gameObject);
-					}
-				}
-				if ((this.activeDotFlags & 1) != 0)
-				{
-					if (!this.bleedEffect)
-					{
-						this.bleedEffect = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/BleedEffect"), base.transform);
-					}
-				}
-				else if (this.bleedEffect)
-				{
-					UnityEngine.Object.Destroy(this.bleedEffect);
-					this.bleedEffect = null;
-				}
-				if ((this.activeDotFlags & 2) != 0)
-				{
-					if (!this.burnEffectController)
-					{
-						ModelLocator component = victimObject.GetComponent<ModelLocator>();
-						if (component && component.modelTransform)
-						{
-							this.burnEffectController = base.gameObject.AddComponent<BurnEffectController>();
-							this.burnEffectController.effectType = BurnEffectController.normalEffect;
-							this.burnEffectController.target = component.modelTransform.gameObject;
-						}
-					}
-				}
-				else if (this.burnEffectController)
-				{
-					UnityEngine.Object.Destroy(this.burnEffectController);
-					this.burnEffectController = null;
-				}
-				if ((this.activeDotFlags & 4) != 0)
-				{
-					if (!this.helfireEffectController)
-					{
-						ModelLocator component2 = victimObject.GetComponent<ModelLocator>();
-						if (component2 && component2.modelTransform)
-						{
-							this.helfireEffectController = base.gameObject.AddComponent<BurnEffectController>();
-							this.helfireEffectController.effectType = BurnEffectController.helfireEffect;
-							this.helfireEffectController.target = component2.modelTransform.gameObject;
-							return;
-						}
-					}
-				}
-				else if (this.helfireEffectController)
-				{
-					UnityEngine.Object.Destroy(this.helfireEffectController);
-					this.helfireEffectController = null;
+					UnityEngine.Object.Destroy(base.gameObject);
 				}
 				return;
 			}
 			if (NetworkServer.active)
 			{
-				UnityEngine.Object.Destroy(base.gameObject);
+				for (DotController.DotIndex dotIndex = DotController.DotIndex.Bleed; dotIndex < DotController.DotIndex.Count; dotIndex++)
+				{
+					DotController.DotDef dotDef = this.GetDotDef(dotIndex);
+					float num = this.dotTimers[(int)dotIndex] - Time.fixedDeltaTime;
+					if (num <= 0f)
+					{
+						num += dotDef.interval;
+						int num2 = 0;
+						this.EvaluateDotStacksForType(dotIndex, dotDef.interval, out num2);
+						byte b = (byte)(1 << (int)dotIndex);
+						this.NetworkactiveDotFlags = (this.activeDotFlags & ~b);
+						if (num2 != 0)
+						{
+							this.NetworkactiveDotFlags = (this.activeDotFlags | b);
+						}
+					}
+					this.dotTimers[(int)dotIndex] = num;
+				}
+				if (this.dotStackList.Count == 0)
+				{
+					UnityEngine.Object.Destroy(base.gameObject);
+				}
+			}
+			if ((this.activeDotFlags & 1) != 0)
+			{
+				if (!this.bleedEffect)
+				{
+					this.bleedEffect = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/BleedEffect"), base.transform);
+				}
+			}
+			else if (this.bleedEffect)
+			{
+				UnityEngine.Object.Destroy(this.bleedEffect);
+				this.bleedEffect = null;
+			}
+			if ((this.activeDotFlags & 2) != 0 || (this.activeDotFlags & 8) != 0)
+			{
+				if (!this.burnEffectController)
+				{
+					ModelLocator component = victimObject.GetComponent<ModelLocator>();
+					if (component && component.modelTransform)
+					{
+						this.burnEffectController = base.gameObject.AddComponent<BurnEffectController>();
+						this.burnEffectController.effectType = BurnEffectController.normalEffect;
+						this.burnEffectController.target = component.modelTransform.gameObject;
+					}
+				}
+			}
+			else if (this.burnEffectController)
+			{
+				UnityEngine.Object.Destroy(this.burnEffectController);
+				this.burnEffectController = null;
+			}
+			if ((this.activeDotFlags & 4) != 0)
+			{
+				if (!this.helfireEffectController)
+				{
+					ModelLocator component2 = victimObject.GetComponent<ModelLocator>();
+					if (component2 && component2.modelTransform)
+					{
+						this.helfireEffectController = base.gameObject.AddComponent<BurnEffectController>();
+						this.helfireEffectController.effectType = BurnEffectController.helfireEffect;
+						this.helfireEffectController.target = component2.modelTransform.gameObject;
+					}
+				}
+			}
+			else if (this.helfireEffectController)
+			{
+				UnityEngine.Object.Destroy(this.helfireEffectController);
+				this.helfireEffectController = null;
+			}
+			if ((this.activeDotFlags & 16) != 0)
+			{
+				if (!this.poisonEffect)
+				{
+					this.poisonEffect = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/PoisonEffect"), base.transform);
+					return;
+				}
+			}
+			else if (this.poisonEffect)
+			{
+				UnityEngine.Object.Destroy(this.poisonEffect);
+				this.poisonEffect = null;
 			}
 		}
 
-		// Token: 0x06000E9F RID: 3743 RVA: 0x00048010 File Offset: 0x00046210
+		// Token: 0x06000A4C RID: 2636 RVA: 0x0002D01D File Offset: 0x0002B21D
+		private void LateUpdate()
+		{
+			if (this.victimObject)
+			{
+				base.transform.position = this.victimObject.transform.position;
+			}
+		}
+
+		// Token: 0x06000A4D RID: 2637 RVA: 0x0002D048 File Offset: 0x0002B248
 		private static void AddPendingDamageEntry(List<DotController.PendingDamage> pendingDamages, GameObject attackerObject, float damage, DamageType damageType)
 		{
 			for (int i = 0; i < pendingDamages.Count; i++)
@@ -251,7 +298,35 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x06000EA0 RID: 3744 RVA: 0x00048078 File Offset: 0x00046278
+		// Token: 0x06000A4E RID: 2638 RVA: 0x0002D0B0 File Offset: 0x0002B2B0
+		private void OnDotStackAddedServer(DotController.DotStack dotStack)
+		{
+			DotController.DotDef dotDef = dotStack.dotDef;
+			if (dotDef.associatedBuff != BuffIndex.None && this.victimBody)
+			{
+				this.victimBody.AddBuff(dotDef.associatedBuff);
+			}
+		}
+
+		// Token: 0x06000A4F RID: 2639 RVA: 0x0002D0EC File Offset: 0x0002B2EC
+		private void OnDotStackRemovedServer(DotController.DotStack dotStack)
+		{
+			DotController.DotDef dotDef = dotStack.dotDef;
+			if (dotDef.associatedBuff != BuffIndex.None && this.victimBody)
+			{
+				this.victimBody.RemoveBuff(dotDef.associatedBuff);
+			}
+		}
+
+		// Token: 0x06000A50 RID: 2640 RVA: 0x0002D128 File Offset: 0x0002B328
+		private void RemoveDotStackAtServer(int i)
+		{
+			DotController.DotStack dotStack = this.dotStackList[i];
+			this.dotStackList.RemoveAt(i);
+			this.OnDotStackRemovedServer(dotStack);
+		}
+
+		// Token: 0x06000A51 RID: 2641 RVA: 0x0002D158 File Offset: 0x0002B358
 		private void EvaluateDotStacksForType(DotController.DotIndex dotIndex, float dt, out int remainingActive)
 		{
 			List<DotController.PendingDamage> list = new List<DotController.PendingDamage>();
@@ -266,7 +341,7 @@ namespace RoR2
 					DotController.AddPendingDamageEntry(list, dotStack.attackerObject, dotStack.damage, dotStack.damageType);
 					if (dotStack.timer <= 0f)
 					{
-						this.dotStackList.RemoveAt(i);
+						this.RemoveDotStackAtServer(i);
 					}
 					else
 					{
@@ -276,6 +351,7 @@ namespace RoR2
 			}
 			if (this.victimObject && this.victimHealthComponent)
 			{
+				Vector3 corePosition = this.victimBody.corePosition;
 				for (int j = 0; j < list.Count; j++)
 				{
 					DamageInfo damageInfo = new DamageInfo();
@@ -284,16 +360,17 @@ namespace RoR2
 					damageInfo.damage = list[j].totalDamage;
 					damageInfo.force = Vector3.zero;
 					damageInfo.inflictor = base.gameObject;
-					damageInfo.position = Util.GetCorePosition(this.victimObject);
+					damageInfo.position = corePosition;
 					damageInfo.procCoefficient = 0f;
 					damageInfo.damageColorIndex = dotDef.damageColorIndex;
 					damageInfo.damageType = list[j].damageType;
+					damageInfo.dotIndex = dotIndex;
 					this.victimHealthComponent.TakeDamage(damageInfo);
 				}
 			}
 		}
 
-		// Token: 0x06000EA1 RID: 3745 RVA: 0x000481E4 File Offset: 0x000463E4
+		// Token: 0x06000A52 RID: 2642 RVA: 0x0002D2CC File Offset: 0x0002B4CC
 		[Server]
 		private void AddDot(GameObject attackerObject, float duration, DotController.DotIndex dotIndex, float damageMultiplier)
 		{
@@ -329,7 +406,9 @@ namespace RoR2
 				damage = dotDef.damageCoefficient * num * damageMultiplier,
 				damageType = DamageType.Generic
 			};
-			if (dotIndex == DotController.DotIndex.Helfire)
+			switch (dotIndex)
+			{
+			case DotController.DotIndex.Helfire:
 			{
 				if (!component2)
 				{
@@ -367,16 +446,62 @@ namespace RoR2
 				}
 				if (this.victimBody)
 				{
-					EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/HelfireIgniteEffect"), new EffectData
+					EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/HelfireIgniteEffect"), new EffectData
 					{
 						origin = this.victimBody.corePosition
 					}, true);
 				}
+				break;
+			}
+			case DotController.DotIndex.PercentBurn:
+				dotStack.damage = Mathf.Min(dotStack.damage, this.victimBody.healthComponent.fullCombinedHealth * 0.01f);
+				break;
+			case DotController.DotIndex.Poison:
+			{
+				float a = this.victimHealthComponent.fullCombinedHealth / 100f * 1f * dotDef.interval;
+				dotStack.damage = Mathf.Min(Mathf.Max(a, dotStack.damage), dotStack.damage * 50f);
+				dotStack.damageType = DamageType.NonLethal;
+				int j = 0;
+				int count2 = this.dotStackList.Count;
+				while (j < count2)
+				{
+					if (this.dotStackList[j].dotIndex == DotController.DotIndex.Poison)
+					{
+						this.dotStackList[j].timer = Mathf.Max(this.dotStackList[j].timer, duration);
+						this.dotStackList[j].damage = dotStack.damage;
+						return;
+					}
+					j++;
+				}
+				bool flag = false;
+				for (int k = 0; k < this.dotStackList.Count; k++)
+				{
+					if (this.dotStackList[k].dotIndex == DotController.DotIndex.Poison)
+					{
+						flag = true;
+						break;
+					}
+				}
+				if (!flag && component2 != null)
+				{
+					CharacterMaster master = component2.master;
+					if (master != null)
+					{
+						PlayerStatsComponent playerStatsComponent = master.playerStatsComponent;
+						if (playerStatsComponent != null)
+						{
+							playerStatsComponent.currentStats.PushStatValue(StatDef.totalCrocoInfectionsInflicted, 1UL);
+						}
+					}
+				}
+				break;
+			}
 			}
 			this.dotStackList.Add(dotStack);
+			this.OnDotStackAddedServer(dotStack);
 		}
 
-		// Token: 0x06000EA2 RID: 3746 RVA: 0x000483F4 File Offset: 0x000465F4
+		// Token: 0x06000A53 RID: 2643 RVA: 0x0002D654 File Offset: 0x0002B854
 		[Server]
 		public static void InflictDot(GameObject victimObject, GameObject attackerObject, DotController.DotIndex dotIndex, float duration = 8f, float damageMultiplier = 1f)
 		{
@@ -401,42 +526,82 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000EA4 RID: 3748 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000A54 RID: 2644 RVA: 0x0002D6E4 File Offset: 0x0002B8E4
+		[Server]
+		public static void RemoveAllDots(GameObject victimObject)
+		{
+			if (!NetworkServer.active)
+			{
+				Debug.LogWarning("[Server] function 'System.Void RoR2.DotController::RemoveAllDots(UnityEngine.GameObject)' called on client");
+				return;
+			}
+			DotController dotController;
+			if (DotController.dotControllerLocator.TryGetValue(victimObject.GetInstanceID(), out dotController))
+			{
+				UnityEngine.Object.Destroy(dotController.gameObject);
+			}
+		}
+
+		// Token: 0x06000A55 RID: 2645 RVA: 0x0002D728 File Offset: 0x0002B928
+		[Server]
+		public static DotController FindDotController(GameObject victimObject)
+		{
+			if (!NetworkServer.active)
+			{
+				Debug.LogWarning("[Server] function 'RoR2.DotController RoR2.DotController::FindDotController(UnityEngine.GameObject)' called on client");
+				return null;
+			}
+			int i = 0;
+			int count = DotController.instancesList.Count;
+			while (i < count)
+			{
+				if (victimObject == DotController.instancesList[i]._victimObject)
+				{
+					return DotController.instancesList[i];
+				}
+				i++;
+			}
+			return null;
+		}
+
+		// Token: 0x06000A57 RID: 2647 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x1700013C RID: 316
-		// (get) Token: 0x06000EA5 RID: 3749 RVA: 0x00048494 File Offset: 0x00046694
-		// (set) Token: 0x06000EA6 RID: 3750 RVA: 0x000484A7 File Offset: 0x000466A7
+		// Token: 0x1700014E RID: 334
+		// (get) Token: 0x06000A58 RID: 2648 RVA: 0x0002D79C File Offset: 0x0002B99C
+		// (set) Token: 0x06000A59 RID: 2649 RVA: 0x0002D7AF File Offset: 0x0002B9AF
 		public NetworkInstanceId NetworkvictimObjectId
 		{
 			get
 			{
 				return this.victimObjectId;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<NetworkInstanceId>(value, ref this.victimObjectId, 1u);
+				base.SetSyncVar<NetworkInstanceId>(value, ref this.victimObjectId, 1U);
 			}
 		}
 
-		// Token: 0x1700013D RID: 317
-		// (get) Token: 0x06000EA7 RID: 3751 RVA: 0x000484BC File Offset: 0x000466BC
-		// (set) Token: 0x06000EA8 RID: 3752 RVA: 0x000484CF File Offset: 0x000466CF
+		// Token: 0x1700014F RID: 335
+		// (get) Token: 0x06000A5A RID: 2650 RVA: 0x0002D7C4 File Offset: 0x0002B9C4
+		// (set) Token: 0x06000A5B RID: 2651 RVA: 0x0002D7D7 File Offset: 0x0002B9D7
 		public byte NetworkactiveDotFlags
 		{
 			get
 			{
 				return this.activeDotFlags;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<byte>(value, ref this.activeDotFlags, 2u);
+				base.SetSyncVar<byte>(value, ref this.activeDotFlags, 2U);
 			}
 		}
 
-		// Token: 0x06000EA9 RID: 3753 RVA: 0x000484E4 File Offset: 0x000466E4
+		// Token: 0x06000A5C RID: 2652 RVA: 0x0002D7EC File Offset: 0x0002B9EC
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -446,7 +611,7 @@ namespace RoR2
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -455,7 +620,7 @@ namespace RoR2
 				}
 				writer.Write(this.victimObjectId);
 			}
-			if ((base.syncVarDirtyBits & 2u) != 0u)
+			if ((base.syncVarDirtyBits & 2U) != 0U)
 			{
 				if (!flag)
 				{
@@ -471,7 +636,7 @@ namespace RoR2
 			return flag;
 		}
 
-		// Token: 0x06000EAA RID: 3754 RVA: 0x00048590 File Offset: 0x00046790
+		// Token: 0x06000A5D RID: 2653 RVA: 0x0002D898 File Offset: 0x0002BA98
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -491,111 +656,123 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x040012A5 RID: 4773
+		// Token: 0x04000A9A RID: 2714
 		private static DotController.DotDef[] dotDefs;
 
-		// Token: 0x040012A6 RID: 4774
+		// Token: 0x04000A9B RID: 2715
 		private static readonly Dictionary<int, DotController> dotControllerLocator = new Dictionary<int, DotController>();
 
-		// Token: 0x040012A7 RID: 4775
+		// Token: 0x04000A9C RID: 2716
 		private static readonly List<DotController> instancesList = new List<DotController>();
 
-		// Token: 0x040012A8 RID: 4776
+		// Token: 0x04000A9D RID: 2717
 		public static readonly ReadOnlyCollection<DotController> readOnlyInstancesList = DotController.instancesList.AsReadOnly();
 
-		// Token: 0x040012A9 RID: 4777
+		// Token: 0x04000A9E RID: 2718
 		[SyncVar]
 		private NetworkInstanceId victimObjectId;
 
-		// Token: 0x040012AA RID: 4778
+		// Token: 0x04000A9F RID: 2719
 		private GameObject _victimObject;
 
-		// Token: 0x040012AB RID: 4779
+		// Token: 0x04000AA0 RID: 2720
 		private CharacterBody _victimBody;
 
-		// Token: 0x040012AC RID: 4780
+		// Token: 0x04000AA1 RID: 2721
 		private BurnEffectController burnEffectController;
 
-		// Token: 0x040012AD RID: 4781
+		// Token: 0x04000AA2 RID: 2722
 		private BurnEffectController helfireEffectController;
 
-		// Token: 0x040012AE RID: 4782
+		// Token: 0x04000AA3 RID: 2723
 		private GameObject bleedEffect;
 
-		// Token: 0x040012AF RID: 4783
+		// Token: 0x04000AA4 RID: 2724
+		private GameObject poisonEffect;
+
+		// Token: 0x04000AA5 RID: 2725
 		[SyncVar]
 		private byte activeDotFlags;
 
-		// Token: 0x040012B0 RID: 4784
+		// Token: 0x04000AA6 RID: 2726
 		private List<DotController.DotStack> dotStackList;
 
-		// Token: 0x040012B1 RID: 4785
+		// Token: 0x04000AA7 RID: 2727
 		private float[] dotTimers;
 
-		// Token: 0x040012B2 RID: 4786
+		// Token: 0x04000AA8 RID: 2728
 		private int recordedVictimInstanceId = -1;
 
-		// Token: 0x020002DA RID: 730
+		// Token: 0x020001EC RID: 492
 		public enum DotIndex
 		{
-			// Token: 0x040012B4 RID: 4788
+			// Token: 0x04000AAA RID: 2730
+			None = -1,
+			// Token: 0x04000AAB RID: 2731
 			Bleed,
-			// Token: 0x040012B5 RID: 4789
+			// Token: 0x04000AAC RID: 2732
 			Burn,
-			// Token: 0x040012B6 RID: 4790
+			// Token: 0x04000AAD RID: 2733
 			Helfire,
-			// Token: 0x040012B7 RID: 4791
+			// Token: 0x04000AAE RID: 2734
+			PercentBurn,
+			// Token: 0x04000AAF RID: 2735
+			Poison,
+			// Token: 0x04000AB0 RID: 2736
 			Count
 		}
 
-		// Token: 0x020002DB RID: 731
+		// Token: 0x020001ED RID: 493
 		private class DotDef
 		{
-			// Token: 0x040012B8 RID: 4792
+			// Token: 0x04000AB1 RID: 2737
 			public float interval;
 
-			// Token: 0x040012B9 RID: 4793
+			// Token: 0x04000AB2 RID: 2738
 			public float damageCoefficient;
 
-			// Token: 0x040012BA RID: 4794
+			// Token: 0x04000AB3 RID: 2739
 			public DamageColorIndex damageColorIndex;
+
+			// Token: 0x04000AB4 RID: 2740
+			public BuffIndex associatedBuff = BuffIndex.None;
 		}
 
-		// Token: 0x020002DC RID: 732
+		// Token: 0x020001EE RID: 494
 		private class DotStack
 		{
-			// Token: 0x040012BB RID: 4795
+			// Token: 0x04000AB5 RID: 2741
 			public DotController.DotIndex dotIndex;
 
-			// Token: 0x040012BC RID: 4796
+			// Token: 0x04000AB6 RID: 2742
 			public DotController.DotDef dotDef;
 
-			// Token: 0x040012BD RID: 4797
+			// Token: 0x04000AB7 RID: 2743
 			public GameObject attackerObject;
 
-			// Token: 0x040012BE RID: 4798
+			// Token: 0x04000AB8 RID: 2744
 			public TeamIndex attackerTeam;
 
-			// Token: 0x040012BF RID: 4799
+			// Token: 0x04000AB9 RID: 2745
 			public float timer;
 
-			// Token: 0x040012C0 RID: 4800
+			// Token: 0x04000ABA RID: 2746
 			public float damage;
 
-			// Token: 0x040012C1 RID: 4801
+			// Token: 0x04000ABB RID: 2747
 			public DamageType damageType;
 		}
 
-		// Token: 0x020002DD RID: 733
+		// Token: 0x020001EF RID: 495
 		private class PendingDamage
 		{
-			// Token: 0x040012C2 RID: 4802
+			// Token: 0x04000ABC RID: 2748
 			public GameObject attackerObject;
 
-			// Token: 0x040012C3 RID: 4803
+			// Token: 0x04000ABD RID: 2749
 			public float totalDamage;
 
-			// Token: 0x040012C4 RID: 4804
+			// Token: 0x04000ABE RID: 2750
 			public DamageType damageType;
 		}
 	}

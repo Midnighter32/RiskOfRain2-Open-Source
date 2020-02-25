@@ -5,79 +5,148 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Drone
 {
-	// Token: 0x02000193 RID: 403
+	// Token: 0x02000897 RID: 2199
 	public class DeathState : GenericCharacterDeath
 	{
-		// Token: 0x060007C1 RID: 1985 RVA: 0x000265EC File Offset: 0x000247EC
+		// Token: 0x06003153 RID: 12627 RVA: 0x000D4498 File Offset: 0x000D2698
 		public override void OnEnter()
 		{
 			base.OnEnter();
-			Util.PlaySound(DeathState.initialSoundString, base.gameObject);
+			Util.PlaySound(this.initialSoundString, base.gameObject);
 			if (base.rigidbodyMotor)
 			{
 				base.rigidbodyMotor.forcePID.enabled = false;
 				base.rigidbodyMotor.rigid.useGravity = true;
-				base.rigidbodyMotor.rigid.AddForce(Vector3.up * DeathState.forceAmount, ForceMode.Force);
+				base.rigidbodyMotor.rigid.AddForce(Vector3.up * this.forceAmount, ForceMode.Force);
 				base.rigidbodyMotor.rigid.collisionDetectionMode = CollisionDetectionMode.Continuous;
 			}
 			if (base.rigidbodyDirection)
 			{
 				base.rigidbodyDirection.enabled = false;
 			}
-			if (DeathState.initialExplosionEffect)
+			if (this.initialExplosionEffect)
 			{
-				EffectManager.instance.SpawnEffect(DeathState.deathExplosionEffect, new EffectData
+				EffectManager.SpawnEffect(this.deathExplosionEffect, new EffectData
 				{
 					origin = base.characterBody.corePosition,
-					scale = base.characterBody.radius + DeathState.deathEffectRadius
+					scale = base.characterBody.radius + this.deathEffectRadius
 				}, false);
+			}
+			if (base.isAuthority && this.destroyOnImpact)
+			{
+				this.rigidbodyCollisionListener = base.gameObject.AddComponent<DeathState.RigidbodyCollisionListener>();
+				this.rigidbodyCollisionListener.deathState = this;
 			}
 		}
 
-		// Token: 0x060007C2 RID: 1986 RVA: 0x000266D2 File Offset: 0x000248D2
+		// Token: 0x06003154 RID: 12628 RVA: 0x000D45AB File Offset: 0x000D27AB
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
-			if (NetworkServer.active && base.fixedAge > DeathState.deathDuration)
+			if (NetworkServer.active && base.fixedAge > this.deathDuration)
 			{
-				EntityState.Destroy(base.gameObject);
+				this.Explode();
 			}
 		}
 
-		// Token: 0x060007C3 RID: 1987 RVA: 0x000266FC File Offset: 0x000248FC
+		// Token: 0x06003155 RID: 12629 RVA: 0x000D45CE File Offset: 0x000D27CE
+		public void Explode()
+		{
+			EntityState.Destroy(base.gameObject);
+		}
+
+		// Token: 0x06003156 RID: 12630 RVA: 0x000D45DC File Offset: 0x000D27DC
+		public virtual void OnImpactServer(Vector3 contactPoint)
+		{
+			string text = BodyCatalog.GetBodyName(base.characterBody.bodyIndex);
+			text = text.Replace("Body", "");
+			text = "iscBroken" + text;
+			SpawnCard spawnCard = Resources.Load<SpawnCard>("SpawnCards/InteractableSpawnCard/" + text);
+			if (spawnCard != null)
+			{
+				DirectorPlacementRule placementRule = new DirectorPlacementRule
+				{
+					placementMode = DirectorPlacementRule.PlacementMode.Direct,
+					position = contactPoint
+				};
+				GameObject gameObject = DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(spawnCard, placementRule, new Xoroshiro128Plus(0UL)));
+				if (gameObject)
+				{
+					PurchaseInteraction component = gameObject.GetComponent<PurchaseInteraction>();
+					if (component && component.costType == CostTypeIndex.Money)
+					{
+						component.Networkcost = Run.instance.GetDifficultyScaledCost(component.cost);
+					}
+				}
+			}
+		}
+
+		// Token: 0x06003157 RID: 12631 RVA: 0x000D469C File Offset: 0x000D289C
 		public override void OnExit()
 		{
-			if (DeathState.deathExplosionEffect)
+			if (this.deathExplosionEffect)
 			{
-				EffectManager.instance.SpawnEffect(DeathState.deathExplosionEffect, new EffectData
+				EffectManager.SpawnEffect(this.deathExplosionEffect, new EffectData
 				{
 					origin = base.characterBody.corePosition,
-					scale = base.characterBody.radius + DeathState.deathEffectRadius
+					scale = base.characterBody.radius + this.deathEffectRadius
 				}, false);
 			}
-			Util.PlaySound(DeathState.deathSoundString, base.gameObject);
+			if (this.rigidbodyCollisionListener)
+			{
+				EntityState.Destroy(this.rigidbodyCollisionListener);
+			}
+			Util.PlaySound(this.deathSoundString, base.gameObject);
 			base.OnExit();
 		}
 
-		// Token: 0x04000A0A RID: 2570
-		public static GameObject initialExplosionEffect;
+		// Token: 0x04002FA6 RID: 12198
+		[SerializeField]
+		public GameObject initialExplosionEffect;
 
-		// Token: 0x04000A0B RID: 2571
-		public static GameObject deathExplosionEffect;
+		// Token: 0x04002FA7 RID: 12199
+		[SerializeField]
+		public GameObject deathExplosionEffect;
 
-		// Token: 0x04000A0C RID: 2572
-		public static string initialSoundString;
+		// Token: 0x04002FA8 RID: 12200
+		[SerializeField]
+		public string initialSoundString;
 
-		// Token: 0x04000A0D RID: 2573
-		public static string deathSoundString;
+		// Token: 0x04002FA9 RID: 12201
+		[SerializeField]
+		public string deathSoundString;
 
-		// Token: 0x04000A0E RID: 2574
-		public static float deathEffectRadius;
+		// Token: 0x04002FAA RID: 12202
+		[SerializeField]
+		public float deathEffectRadius;
 
-		// Token: 0x04000A0F RID: 2575
-		public static float forceAmount = 20f;
+		// Token: 0x04002FAB RID: 12203
+		[SerializeField]
+		public float forceAmount = 20f;
 
-		// Token: 0x04000A10 RID: 2576
-		public static float deathDuration = 2f;
+		// Token: 0x04002FAC RID: 12204
+		[SerializeField]
+		public float deathDuration = 2f;
+
+		// Token: 0x04002FAD RID: 12205
+		[SerializeField]
+		public bool destroyOnImpact;
+
+		// Token: 0x04002FAE RID: 12206
+		private DeathState.RigidbodyCollisionListener rigidbodyCollisionListener;
+
+		// Token: 0x02000898 RID: 2200
+		public class RigidbodyCollisionListener : MonoBehaviour
+		{
+			// Token: 0x06003159 RID: 12633 RVA: 0x000D4740 File Offset: 0x000D2940
+			private void OnCollisionEnter(Collision collision)
+			{
+				this.deathState.OnImpactServer(collision.GetContact(0).point);
+				this.deathState.Explode();
+			}
+
+			// Token: 0x04002FAF RID: 12207
+			public DeathState deathState;
+		}
 	}
 }

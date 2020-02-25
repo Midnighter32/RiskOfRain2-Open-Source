@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005D1 RID: 1489
+	// Token: 0x020005B0 RID: 1456
 	[RequireComponent(typeof(MPEventSystemLocator))]
 	public class CursorOpener : MonoBehaviour
 	{
-		// Token: 0x170002ED RID: 749
-		// (get) Token: 0x0600215C RID: 8540 RVA: 0x0009C97C File Offset: 0x0009AB7C
-		// (set) Token: 0x0600215D RID: 8541 RVA: 0x0009C98C File Offset: 0x0009AB8C
+		// Token: 0x170003A1 RID: 929
+		// (get) Token: 0x0600228C RID: 8844 RVA: 0x000958D4 File Offset: 0x00093AD4
+		// (set) Token: 0x0600228D RID: 8845 RVA: 0x000958E4 File Offset: 0x00093AE4
 		private bool opening
 		{
 			get
@@ -70,48 +70,48 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600215E RID: 8542 RVA: 0x0009CAB8 File Offset: 0x0009ACB8
+		// Token: 0x0600228E RID: 8846 RVA: 0x00095A10 File Offset: 0x00093C10
 		private void Awake()
 		{
 			this.eventSystemLocator = base.GetComponent<MPEventSystemLocator>();
 			this.openForAllEventSystems = this.eventSystemLocator.eventSystemProvider.fallBackToMainEventSystem;
 		}
 
-		// Token: 0x0600215F RID: 8543 RVA: 0x0009CADC File Offset: 0x0009ACDC
+		// Token: 0x0600228F RID: 8847 RVA: 0x00095A34 File Offset: 0x00093C34
 		private void Start()
 		{
 			this.opening = true;
 		}
 
-		// Token: 0x06002160 RID: 8544 RVA: 0x0009CADC File Offset: 0x0009ACDC
+		// Token: 0x06002290 RID: 8848 RVA: 0x00095A34 File Offset: 0x00093C34
 		private void OnEnable()
 		{
 			this.opening = true;
 		}
 
-		// Token: 0x06002161 RID: 8545 RVA: 0x0009CAE5 File Offset: 0x0009ACE5
+		// Token: 0x06002291 RID: 8849 RVA: 0x00095A3D File Offset: 0x00093C3D
 		private void OnDisable()
 		{
 			this.opening = false;
 		}
 
-		// Token: 0x06002162 RID: 8546 RVA: 0x0009CAEE File Offset: 0x0009ACEE
+		// Token: 0x06002292 RID: 8850 RVA: 0x00095A46 File Offset: 0x00093C46
 		[AssetCheck(typeof(CursorOpener))]
-		private static void CheckCursorOpener(ProjectIssueChecker projectIssueChecker, UnityEngine.Object asset)
+		private static void CheckCursorOpener(AssetCheckArgs args)
 		{
-			if (!((CursorOpener)asset).GetComponent<MPEventSystemLocator>())
+			if (!((CursorOpener)args.asset).GetComponent<MPEventSystemLocator>())
 			{
-				projectIssueChecker.Log("Missing MPEventSystemLocator.", null);
+				args.Log("Missing MPEventSystemLocator.", null);
 			}
 		}
 
-		// Token: 0x040023EB RID: 9195
+		// Token: 0x04001FF9 RID: 8185
 		private MPEventSystemLocator eventSystemLocator;
 
-		// Token: 0x040023EC RID: 9196
+		// Token: 0x04001FFA RID: 8186
 		private MPEventSystem linkedEventSystem;
 
-		// Token: 0x040023ED RID: 9197
+		// Token: 0x04001FFB RID: 8187
 		private bool openForAllEventSystems;
 	}
 }

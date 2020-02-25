@@ -4,18 +4,18 @@ using UnityEngine.Networking;
 
 namespace RoR2.Projectile
 {
-	// Token: 0x0200055F RID: 1375
+	// Token: 0x02000525 RID: 1317
 	[RequireComponent(typeof(ProjectileController))]
 	public class ProjectileSingleTargetImpact : MonoBehaviour, IProjectileImpactBehavior
 	{
-		// Token: 0x06001EAF RID: 7855 RVA: 0x00090CF5 File Offset: 0x0008EEF5
+		// Token: 0x06001F20 RID: 7968 RVA: 0x00087149 File Offset: 0x00085349
 		private void Awake()
 		{
 			this.projectileController = base.GetComponent<ProjectileController>();
 			this.projectileDamage = base.GetComponent<ProjectileDamage>();
 		}
 
-		// Token: 0x06001EB0 RID: 7856 RVA: 0x00090D10 File Offset: 0x0008EF10
+		// Token: 0x06001F21 RID: 7969 RVA: 0x00087164 File Offset: 0x00085364
 		public void OnProjectileImpact(ProjectileImpactInfo impactInfo)
 		{
 			if (!this.alive)
@@ -60,11 +60,15 @@ namespace RoR2.Projectile
 						{
 							flag = (component2.teamIndex == component3.teamIndex);
 						}
-						if (NetworkServer.active && !flag)
+						if (!flag)
 						{
-							damageInfo.ModifyDamageInfo(component.damageModifier);
-							healthComponent.TakeDamage(damageInfo);
-							GlobalEventManager.instance.OnHitEnemy(damageInfo, component.healthComponent.gameObject);
+							Util.PlaySound(this.enemyHitSoundString, base.gameObject);
+							if (NetworkServer.active)
+							{
+								damageInfo.ModifyDamageInfo(component.damageModifier);
+								healthComponent.TakeDamage(damageInfo);
+								GlobalEventManager.instance.OnHitEnemy(damageInfo, component.healthComponent.gameObject);
+							}
 						}
 						this.alive = false;
 					}
@@ -81,37 +85,40 @@ namespace RoR2.Projectile
 			}
 			if (!this.alive)
 			{
-				if (NetworkServer.active)
+				if (NetworkServer.active && this.impactEffect)
 				{
-					if (this.impactEffect)
-					{
-						EffectManager.instance.SimpleImpactEffect(this.impactEffect, impactInfo.estimatedPointOfImpact, -base.transform.forward, !this.projectileController.isPrediction);
-					}
-					if (this.hitSoundString.Length > 0)
-					{
-						Util.PlaySound(this.hitSoundString, base.gameObject);
-					}
+					EffectManager.SimpleImpactEffect(this.impactEffect, impactInfo.estimatedPointOfImpact, -base.transform.forward, !this.projectileController.isPrediction);
 				}
-				UnityEngine.Object.Destroy(base.gameObject);
+				Util.PlaySound(this.hitSoundString, base.gameObject);
+				if (this.destroyWhenNotAlive)
+				{
+					UnityEngine.Object.Destroy(base.gameObject);
+				}
 			}
 		}
 
-		// Token: 0x0400215D RID: 8541
+		// Token: 0x04001CC6 RID: 7366
 		private ProjectileController projectileController;
 
-		// Token: 0x0400215E RID: 8542
+		// Token: 0x04001CC7 RID: 7367
 		private ProjectileDamage projectileDamage;
 
-		// Token: 0x0400215F RID: 8543
+		// Token: 0x04001CC8 RID: 7368
 		private bool alive = true;
 
-		// Token: 0x04002160 RID: 8544
+		// Token: 0x04001CC9 RID: 7369
+		public bool destroyWhenNotAlive = true;
+
+		// Token: 0x04001CCA RID: 7370
 		public bool destroyOnWorld;
 
-		// Token: 0x04002161 RID: 8545
+		// Token: 0x04001CCB RID: 7371
 		public GameObject impactEffect;
 
-		// Token: 0x04002162 RID: 8546
+		// Token: 0x04001CCC RID: 7372
 		public string hitSoundString;
+
+		// Token: 0x04001CCD RID: 7373
+		public string enemyHitSoundString;
 	}
 }

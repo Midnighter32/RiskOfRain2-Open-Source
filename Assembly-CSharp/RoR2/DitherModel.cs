@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020002D8 RID: 728
+	// Token: 0x020001EA RID: 490
 	public class DitherModel : MonoBehaviour
 	{
-		// Token: 0x06000E8C RID: 3724 RVA: 0x00047A3F File Offset: 0x00045C3F
+		// Token: 0x06000A38 RID: 2616 RVA: 0x0002C973 File Offset: 0x0002AB73
 		static DitherModel()
 		{
 			SceneCamera.onSceneCameraPreRender += DitherModel.OnSceneCameraPreRender;
 		}
 
-		// Token: 0x06000E8D RID: 3725 RVA: 0x00047A5C File Offset: 0x00045C5C
+		// Token: 0x06000A39 RID: 2617 RVA: 0x0002C990 File Offset: 0x0002AB90
 		private static void OnSceneCameraPreRender(SceneCamera sceneCamera)
 		{
 			if (sceneCamera.cameraRigController)
@@ -22,7 +22,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000E8E RID: 3726 RVA: 0x00047A78 File Offset: 0x00045C78
+		// Token: 0x06000A3A RID: 2618 RVA: 0x0002C9AC File Offset: 0x0002ABAC
 		private static void RefreshObstructorsForCamera(CameraRigController cameraRigController)
 		{
 			Vector3 position = cameraRigController.transform.position;
@@ -45,7 +45,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000E8F RID: 3727 RVA: 0x00047B20 File Offset: 0x00045D20
+		// Token: 0x06000A3B RID: 2619 RVA: 0x0002CA54 File Offset: 0x0002AC54
 		private void UpdateDither()
 		{
 			for (int i = this.renderers.Length - 1; i >= 0; i--)
@@ -57,38 +57,38 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000E90 RID: 3728 RVA: 0x00047B77 File Offset: 0x00045D77
+		// Token: 0x06000A3C RID: 2620 RVA: 0x0002CAAB File Offset: 0x0002ACAB
 		private void Awake()
 		{
 			this.propertyStorage = new MaterialPropertyBlock();
 		}
 
-		// Token: 0x06000E91 RID: 3729 RVA: 0x00047B84 File Offset: 0x00045D84
+		// Token: 0x06000A3D RID: 2621 RVA: 0x0002CAB8 File Offset: 0x0002ACB8
 		private void OnEnable()
 		{
 			DitherModel.instancesList.Add(this);
 		}
 
-		// Token: 0x06000E92 RID: 3730 RVA: 0x00047B91 File Offset: 0x00045D91
+		// Token: 0x06000A3E RID: 2622 RVA: 0x0002CAC5 File Offset: 0x0002ACC5
 		private void OnDisable()
 		{
 			DitherModel.instancesList.Remove(this);
 		}
 
-		// Token: 0x040012A0 RID: 4768
+		// Token: 0x04000A95 RID: 2709
 		[HideInInspector]
 		public float fade;
 
-		// Token: 0x040012A1 RID: 4769
+		// Token: 0x04000A96 RID: 2710
 		public Collider bounds;
 
-		// Token: 0x040012A2 RID: 4770
+		// Token: 0x04000A97 RID: 2711
 		public Renderer[] renderers;
 
-		// Token: 0x040012A3 RID: 4771
+		// Token: 0x04000A98 RID: 2712
 		private MaterialPropertyBlock propertyStorage;
 
-		// Token: 0x040012A4 RID: 4772
+		// Token: 0x04000A99 RID: 2713
 		private static List<DitherModel> instancesList = new List<DitherModel>();
 	}
 }

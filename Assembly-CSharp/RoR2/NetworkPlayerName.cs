@@ -4,10 +4,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x0200045D RID: 1117
+	// Token: 0x020003D4 RID: 980
 	public struct NetworkPlayerName
 	{
-		// Token: 0x060018F6 RID: 6390 RVA: 0x00077A7D File Offset: 0x00075C7D
+		// Token: 0x060017CF RID: 6095 RVA: 0x00067385 File Offset: 0x00065585
 		public void Deserialize(NetworkReader reader)
 		{
 			if (reader.ReadBoolean())
@@ -20,7 +20,7 @@ namespace RoR2
 			this.nameOverride = null;
 		}
 
-		// Token: 0x060018F7 RID: 6391 RVA: 0x00077AB8 File Offset: 0x00075CB8
+		// Token: 0x060017D0 RID: 6096 RVA: 0x000673C0 File Offset: 0x000655C0
 		public void Serialize(NetworkWriter writer)
 		{
 			bool flag = this.nameOverride != null;
@@ -33,7 +33,7 @@ namespace RoR2
 			writer.Write(this.steamId.value);
 		}
 
-		// Token: 0x060018F8 RID: 6392 RVA: 0x00077AF8 File Offset: 0x00075CF8
+		// Token: 0x060017D1 RID: 6097 RVA: 0x00067400 File Offset: 0x00065600
 		public string GetResolvedName()
 		{
 			if (this.nameOverride != null)
@@ -48,10 +48,10 @@ namespace RoR2
 			return "???";
 		}
 
-		// Token: 0x04001C68 RID: 7272
+		// Token: 0x0400166A RID: 5738
 		public CSteamID steamId;
 
-		// Token: 0x04001C69 RID: 7273
+		// Token: 0x0400166B RID: 5739
 		public string nameOverride;
 	}
 }

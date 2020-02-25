@@ -2,10 +2,10 @@
 
 namespace RoR2
 {
-	// Token: 0x02000369 RID: 873
+	// Token: 0x0200029A RID: 666
 	public interface INetworkedBodyAttachmentListener
 	{
-		// Token: 0x060011F7 RID: 4599
+		// Token: 0x06000ED2 RID: 3794
 		void OnAttachedBodyAssigned(NetworkedBodyAttachment networkedBodyAttachment);
 	}
 }

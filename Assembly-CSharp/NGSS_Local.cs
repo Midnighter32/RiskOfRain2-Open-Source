@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 // Token: 0x0200000C RID: 12
-[ExecuteInEditMode]
 [RequireComponent(typeof(Light))]
+[ExecuteInEditMode]
 public class NGSS_Local : MonoBehaviour
 {
 	// Token: 0x17000004 RID: 4
@@ -101,8 +101,8 @@ public class NGSS_Local : MonoBehaviour
 	public bool NGSS_MANAGE_GLOBAL_SETTINGS;
 
 	// Token: 0x0400004E RID: 78
-	[Header("GLOBAL SETTINGS")]
 	[Tooltip("PCSS Requires inline sampling and SM3.5.\nProvides Area Light soft-shadows.\nDisable it if you are looking for PCF filtering (uniform soft-shadows) which runs with SM3.0.")]
+	[Header("GLOBAL SETTINGS")]
 	public bool NGSS_PCSS_ENABLED = true;
 
 	// Token: 0x0400004F RID: 79
@@ -111,13 +111,13 @@ public class NGSS_Local : MonoBehaviour
 	public int NGSS_SAMPLING_TEST = 16;
 
 	// Token: 0x04000050 RID: 80
-	[Range(4f, 64f)]
 	[Tooltip("Number of samplers per pixel used for PCF and PCSS shadows algorithms.\nRecommended values: Mobile = 12, Consoles & VR = 24, Desktop Med = 32, Desktop High = 48, Desktop Ultra = 64")]
+	[Range(4f, 64f)]
 	public int NGSS_SAMPLING_FILTER = 32;
 
 	// Token: 0x04000051 RID: 81
-	[Range(0f, 1f)]
 	[Tooltip("If zero = no noise.\nIf one = 100% noise.\nUseful when fighting banding.")]
+	[Range(0f, 1f)]
 	public float NGSS_NOISE_SCALE = 1f;
 
 	// Token: 0x04000052 RID: 82
@@ -126,8 +126,8 @@ public class NGSS_Local : MonoBehaviour
 	public float NGSS_SHADOWS_OPACITY = 1f;
 
 	// Token: 0x04000053 RID: 83
-	[Range(0f, 1f)]
 	[Header("LOCAL SETTINGS")]
+	[Range(0f, 1f)]
 	public float NGSS_SHADOWS_SOFTNESS = 1f;
 
 	// Token: 0x04000054 RID: 84

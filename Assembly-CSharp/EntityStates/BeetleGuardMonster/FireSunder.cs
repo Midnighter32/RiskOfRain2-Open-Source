@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.BeetleGuardMonster
 {
-	// Token: 0x020001D8 RID: 472
+	// Token: 0x020008F3 RID: 2291
 	public class FireSunder : BaseState
 	{
-		// Token: 0x06000936 RID: 2358 RVA: 0x0002E588 File Offset: 0x0002C788
+		// Token: 0x06003336 RID: 13110 RVA: 0x000DE1F4 File Offset: 0x000DC3F4
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -41,7 +41,7 @@ namespace EntityStates.BeetleGuardMonster
 			}
 		}
 
-		// Token: 0x06000937 RID: 2359 RVA: 0x0002E69C File Offset: 0x0002C89C
+		// Token: 0x06003337 RID: 13111 RVA: 0x000DE308 File Offset: 0x000DC508
 		public override void OnExit()
 		{
 			EntityState.Destroy(this.rightHandChargeEffect);
@@ -56,7 +56,7 @@ namespace EntityStates.BeetleGuardMonster
 			base.OnExit();
 		}
 
-		// Token: 0x06000938 RID: 2360 RVA: 0x0002E6E4 File Offset: 0x0002C8E4
+		// Token: 0x06003338 RID: 13112 RVA: 0x000DE350 File Offset: 0x000DC550
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -78,52 +78,52 @@ namespace EntityStates.BeetleGuardMonster
 			}
 		}
 
-		// Token: 0x06000939 RID: 2361 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06003339 RID: 13113 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000C83 RID: 3203
+		// Token: 0x040032AB RID: 12971
 		public static float baseDuration = 3.5f;
 
-		// Token: 0x04000C84 RID: 3204
+		// Token: 0x040032AC RID: 12972
 		public static float damageCoefficient = 4f;
 
-		// Token: 0x04000C85 RID: 3205
+		// Token: 0x040032AD RID: 12973
 		public static float forceMagnitude = 16f;
 
-		// Token: 0x04000C86 RID: 3206
+		// Token: 0x040032AE RID: 12974
 		public static string initialAttackSoundString;
 
-		// Token: 0x04000C87 RID: 3207
+		// Token: 0x040032AF RID: 12975
 		public static GameObject chargeEffectPrefab;
 
-		// Token: 0x04000C88 RID: 3208
+		// Token: 0x040032B0 RID: 12976
 		public static GameObject projectilePrefab;
 
-		// Token: 0x04000C89 RID: 3209
+		// Token: 0x040032B1 RID: 12977
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000C8A RID: 3210
+		// Token: 0x040032B2 RID: 12978
 		private Animator modelAnimator;
 
-		// Token: 0x04000C8B RID: 3211
+		// Token: 0x040032B3 RID: 12979
 		private Transform modelTransform;
 
-		// Token: 0x04000C8C RID: 3212
+		// Token: 0x040032B4 RID: 12980
 		private bool hasAttacked;
 
-		// Token: 0x04000C8D RID: 3213
+		// Token: 0x040032B5 RID: 12981
 		private float duration;
 
-		// Token: 0x04000C8E RID: 3214
+		// Token: 0x040032B6 RID: 12982
 		private GameObject rightHandChargeEffect;
 
-		// Token: 0x04000C8F RID: 3215
+		// Token: 0x040032B7 RID: 12983
 		private ChildLocator modelChildLocator;
 
-		// Token: 0x04000C90 RID: 3216
+		// Token: 0x040032B8 RID: 12984
 		private Transform handRTransform;
 	}
 }

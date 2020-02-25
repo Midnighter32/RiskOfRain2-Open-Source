@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.Engi.EngiWeapon
 {
-	// Token: 0x02000188 RID: 392
-	internal class FireMines : BaseState
+	// Token: 0x02000887 RID: 2183
+	public class FireMines : BaseState
 	{
-		// Token: 0x06000791 RID: 1937 RVA: 0x000254F8 File Offset: 0x000236F8
+		// Token: 0x06003121 RID: 12577 RVA: 0x000D3758 File Offset: 0x000D1958
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -24,21 +24,21 @@ namespace EntityStates.Engi.EngiWeapon
 			string muzzleName = "MuzzleCenter";
 			if (FireMines.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireMines.effectPrefab, base.gameObject, muzzleName, false);
+				EffectManager.SimpleMuzzleFlash(FireMines.effectPrefab, base.gameObject, muzzleName, false);
 			}
 			if (base.isAuthority)
 			{
-				ProjectileManager.instance.FireProjectile(this.projectilePrefab, aimRay.origin, Util.QuaternionSafeLookRotation(aimRay.direction), base.gameObject, this.damageStat * FireMines.damageCoefficient, FireMines.force, Util.CheckRoll(this.critStat, base.characterBody.master), DamageColorIndex.Default, null, -1f);
+				ProjectileManager.instance.FireProjectile(this.projectilePrefab, aimRay.origin, Util.QuaternionSafeLookRotation(aimRay.direction), base.gameObject, this.damageStat * this.damageCoefficient, this.force, Util.CheckRoll(this.critStat, base.characterBody.master), DamageColorIndex.Default, null, -1f);
 			}
 		}
 
-		// Token: 0x06000792 RID: 1938 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06003122 RID: 12578 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000793 RID: 1939 RVA: 0x00025606 File Offset: 0x00023806
+		// Token: 0x06003123 RID: 12579 RVA: 0x000D3863 File Offset: 0x000D1A63
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -49,41 +49,37 @@ namespace EntityStates.Engi.EngiWeapon
 			}
 		}
 
-		// Token: 0x06000794 RID: 1940 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06003124 RID: 12580 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x040009B3 RID: 2483
+		// Token: 0x04002F63 RID: 12131
 		public static GameObject effectPrefab;
 
-		// Token: 0x040009B4 RID: 2484
+		// Token: 0x04002F64 RID: 12132
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x040009B5 RID: 2485
+		// Token: 0x04002F65 RID: 12133
 		[SerializeField]
 		public GameObject projectilePrefab;
 
-		// Token: 0x040009B6 RID: 2486
-		public static float damageCoefficient;
+		// Token: 0x04002F66 RID: 12134
+		[SerializeField]
+		public float damageCoefficient;
 
-		// Token: 0x040009B7 RID: 2487
-		public static float force;
+		// Token: 0x04002F67 RID: 12135
+		[SerializeField]
+		public float force;
 
-		// Token: 0x040009B8 RID: 2488
-		public static int bulletCount;
-
-		// Token: 0x040009B9 RID: 2489
+		// Token: 0x04002F68 RID: 12136
 		public static float baseDuration = 2f;
 
-		// Token: 0x040009BA RID: 2490
+		// Token: 0x04002F69 RID: 12137
 		public static string throwMineSoundString;
 
-		// Token: 0x040009BB RID: 2491
+		// Token: 0x04002F6A RID: 12138
 		private float duration;
-
-		// Token: 0x040009BC RID: 2492
-		public int bulletCountCurrent = 1;
 	}
 }

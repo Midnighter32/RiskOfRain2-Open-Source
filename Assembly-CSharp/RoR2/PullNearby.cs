@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200039A RID: 922
+	// Token: 0x020002D8 RID: 728
 	public class PullNearby : MonoBehaviour
 	{
-		// Token: 0x06001378 RID: 4984 RVA: 0x0005F157 File Offset: 0x0005D357
+		// Token: 0x0600109D RID: 4253 RVA: 0x00048DD4 File Offset: 0x00046FD4
 		private void Start()
 		{
 			this.teamFilter = base.GetComponent<TeamFilter>();
@@ -17,7 +17,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001379 RID: 4985 RVA: 0x0005F173 File Offset: 0x0005D373
+		// Token: 0x0600109E RID: 4254 RVA: 0x00048DF0 File Offset: 0x00046FF0
 		private void FixedUpdate()
 		{
 			this.fixedAge += Time.fixedDeltaTime;
@@ -27,7 +27,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600137A RID: 4986 RVA: 0x0005F1A0 File Offset: 0x0005D3A0
+		// Token: 0x0600109F RID: 4255 RVA: 0x00048E20 File Offset: 0x00047020
 		private void UpdatePull(float deltaTime)
 		{
 			if (!this.pulling)
@@ -56,7 +56,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600137B RID: 4987 RVA: 0x0005F274 File Offset: 0x0005D474
+		// Token: 0x060010A0 RID: 4256 RVA: 0x00048EF4 File Offset: 0x000470F4
 		public void InitializePull()
 		{
 			if (this.pulling)
@@ -88,7 +88,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600137C RID: 4988 RVA: 0x0005F334 File Offset: 0x0005D534
+		// Token: 0x060010A1 RID: 4257 RVA: 0x00048FB4 File Offset: 0x000471B4
 		private void AddToList(GameObject affectedObject)
 		{
 			CharacterBody component = affectedObject.GetComponent<CharacterBody>();
@@ -98,31 +98,31 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001725 RID: 5925
+		// Token: 0x04000FFA RID: 4090
 		public float pullRadius;
 
-		// Token: 0x04001726 RID: 5926
+		// Token: 0x04000FFB RID: 4091
 		public float pullDuration;
 
-		// Token: 0x04001727 RID: 5927
+		// Token: 0x04000FFC RID: 4092
 		public AnimationCurve pullStrengthCurve;
 
-		// Token: 0x04001728 RID: 5928
+		// Token: 0x04000FFD RID: 4093
 		public bool pullOnStart;
 
-		// Token: 0x04001729 RID: 5929
+		// Token: 0x04000FFE RID: 4094
 		public int maximumPullCount = int.MaxValue;
 
-		// Token: 0x0400172A RID: 5930
+		// Token: 0x04000FFF RID: 4095
 		private List<CharacterBody> victimBodyList = new List<CharacterBody>();
 
-		// Token: 0x0400172B RID: 5931
+		// Token: 0x04001000 RID: 4096
 		private bool pulling;
 
-		// Token: 0x0400172C RID: 5932
+		// Token: 0x04001001 RID: 4097
 		private TeamFilter teamFilter;
 
-		// Token: 0x0400172D RID: 5933
+		// Token: 0x04001002 RID: 4098
 		private float fixedAge;
 	}
 }

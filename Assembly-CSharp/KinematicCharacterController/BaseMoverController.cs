@@ -3,21 +3,21 @@ using UnityEngine;
 
 namespace KinematicCharacterController
 {
-	// Token: 0x020006C1 RID: 1729
+	// Token: 0x0200090C RID: 2316
 	public abstract class BaseMoverController : MonoBehaviour
 	{
-		// Token: 0x1700033B RID: 827
-		// (get) Token: 0x06002687 RID: 9863 RVA: 0x000B1886 File Offset: 0x000AFA86
-		// (set) Token: 0x06002688 RID: 9864 RVA: 0x000B188E File Offset: 0x000AFA8E
+		// Token: 0x17000478 RID: 1144
+		// (get) Token: 0x060033D1 RID: 13265 RVA: 0x000E0CCE File Offset: 0x000DEECE
+		// (set) Token: 0x060033D2 RID: 13266 RVA: 0x000E0CD6 File Offset: 0x000DEED6
 		public PhysicsMover Mover { get; private set; }
 
-		// Token: 0x06002689 RID: 9865 RVA: 0x000B1897 File Offset: 0x000AFA97
+		// Token: 0x060033D3 RID: 13267 RVA: 0x000E0CDF File Offset: 0x000DEEDF
 		public void SetupMover(PhysicsMover mover)
 		{
 			this.Mover = mover;
 		}
 
-		// Token: 0x0600268A RID: 9866
+		// Token: 0x060033D4 RID: 13268
 		public abstract void UpdateMovement(out Vector3 goalPosition, out Quaternion goalRotation, float deltaTime);
 	}
 }

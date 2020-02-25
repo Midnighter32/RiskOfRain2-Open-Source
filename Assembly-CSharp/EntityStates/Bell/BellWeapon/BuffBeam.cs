@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Bell.BellWeapon
 {
-	// Token: 0x020001C7 RID: 455
-	internal class BuffBeam : BaseState
+	// Token: 0x020008E2 RID: 2274
+	public class BuffBeam : BaseState
 	{
-		// Token: 0x060008E2 RID: 2274 RVA: 0x0002CBC0 File Offset: 0x0002ADC0
+		// Token: 0x060032E2 RID: 13026 RVA: 0x000DC838 File Offset: 0x000DAA38
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -37,7 +37,7 @@ namespace EntityStates.Bell.BellWeapon
 			if (this.target)
 			{
 				this.targetBody = this.target.healthComponent.body;
-				this.targetBody.AddBuff(BuffIndex.Invincibility);
+				this.targetBody.AddBuff(BuffIndex.HiddenInvincibility);
 			}
 			string childName = "Muzzle";
 			Transform modelTransform = base.GetModelTransform();
@@ -58,7 +58,7 @@ namespace EntityStates.Bell.BellWeapon
 			}
 		}
 
-		// Token: 0x060008E3 RID: 2275 RVA: 0x0002CD48 File Offset: 0x0002AF48
+		// Token: 0x060032E3 RID: 13027 RVA: 0x000DC9C0 File Offset: 0x000DABC0
 		private void UpdateHealBeamVisuals()
 		{
 			float widthMultiplier = BuffBeam.beamWidthCurve.Evaluate(base.age / BuffBeam.duration);
@@ -71,14 +71,14 @@ namespace EntityStates.Bell.BellWeapon
 			}
 		}
 
-		// Token: 0x060008E4 RID: 2276 RVA: 0x0002CDE5 File Offset: 0x0002AFE5
+		// Token: 0x060032E4 RID: 13028 RVA: 0x000DCA5D File Offset: 0x000DAC5D
 		public override void Update()
 		{
 			base.Update();
 			this.UpdateHealBeamVisuals();
 		}
 
-		// Token: 0x060008E5 RID: 2277 RVA: 0x0002CDF3 File Offset: 0x0002AFF3
+		// Token: 0x060032E5 RID: 13029 RVA: 0x000DCA6B File Offset: 0x000DAC6B
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -89,32 +89,32 @@ namespace EntityStates.Bell.BellWeapon
 			}
 		}
 
-		// Token: 0x060008E6 RID: 2278 RVA: 0x0002CE2A File Offset: 0x0002B02A
+		// Token: 0x060032E6 RID: 13030 RVA: 0x000DCAA2 File Offset: 0x000DACA2
 		public override void OnExit()
 		{
 			Util.PlaySound(BuffBeam.stopBeamSoundString, base.gameObject);
 			EntityState.Destroy(this.buffBeamInstance);
 			if (this.targetBody)
 			{
-				this.targetBody.RemoveBuff(BuffIndex.Invincibility);
+				this.targetBody.RemoveBuff(BuffIndex.HiddenInvincibility);
 			}
 			base.OnExit();
 		}
 
-		// Token: 0x060008E7 RID: 2279 RVA: 0x0000A1ED File Offset: 0x000083ED
+		// Token: 0x060032E7 RID: 13031 RVA: 0x0000AC89 File Offset: 0x00008E89
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Any;
 		}
 
-		// Token: 0x060008E8 RID: 2280 RVA: 0x0002CE68 File Offset: 0x0002B068
+		// Token: 0x060032E8 RID: 13032 RVA: 0x000DCAE0 File Offset: 0x000DACE0
 		public override void OnSerialize(NetworkWriter writer)
 		{
 			base.OnSerialize(writer);
 			HurtBoxReference.FromHurtBox(this.target).Write(writer);
 		}
 
-		// Token: 0x060008E9 RID: 2281 RVA: 0x0002CE90 File Offset: 0x0002B090
+		// Token: 0x060032E9 RID: 13033 RVA: 0x000DCB08 File Offset: 0x000DAD08
 		public override void OnDeserialize(NetworkReader reader)
 		{
 			base.OnDeserialize(reader);
@@ -124,46 +124,46 @@ namespace EntityStates.Bell.BellWeapon
 			this.target = ((gameObject != null) ? gameObject.GetComponent<HurtBox>() : null);
 		}
 
-		// Token: 0x04000C07 RID: 3079
+		// Token: 0x0400322F RID: 12847
 		public static float duration;
 
-		// Token: 0x04000C08 RID: 3080
+		// Token: 0x04003230 RID: 12848
 		public static GameObject buffBeamPrefab;
 
-		// Token: 0x04000C09 RID: 3081
+		// Token: 0x04003231 RID: 12849
 		public static AnimationCurve beamWidthCurve;
 
-		// Token: 0x04000C0A RID: 3082
+		// Token: 0x04003232 RID: 12850
 		public static string playBeamSoundString;
 
-		// Token: 0x04000C0B RID: 3083
+		// Token: 0x04003233 RID: 12851
 		public static string stopBeamSoundString;
 
-		// Token: 0x04000C0C RID: 3084
+		// Token: 0x04003234 RID: 12852
 		public HurtBox target;
 
-		// Token: 0x04000C0D RID: 3085
+		// Token: 0x04003235 RID: 12853
 		private float healTimer;
 
-		// Token: 0x04000C0E RID: 3086
+		// Token: 0x04003236 RID: 12854
 		private float healInterval;
 
-		// Token: 0x04000C0F RID: 3087
+		// Token: 0x04003237 RID: 12855
 		private float healChunk;
 
-		// Token: 0x04000C10 RID: 3088
+		// Token: 0x04003238 RID: 12856
 		private CharacterBody targetBody;
 
-		// Token: 0x04000C11 RID: 3089
+		// Token: 0x04003239 RID: 12857
 		private GameObject buffBeamInstance;
 
-		// Token: 0x04000C12 RID: 3090
+		// Token: 0x0400323A RID: 12858
 		private BezierCurveLine healBeamCurve;
 
-		// Token: 0x04000C13 RID: 3091
+		// Token: 0x0400323B RID: 12859
 		private Transform muzzleTransform;
 
-		// Token: 0x04000C14 RID: 3092
+		// Token: 0x0400323C RID: 12860
 		private Transform beamTipTransform;
 	}
 }

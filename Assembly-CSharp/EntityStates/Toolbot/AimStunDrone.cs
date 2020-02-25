@@ -3,18 +3,19 @@ using RoR2;
 
 namespace EntityStates.Toolbot
 {
-	// Token: 0x020000D9 RID: 217
+	// Token: 0x0200075D RID: 1885
 	public class AimStunDrone : AimGrenade
 	{
-		// Token: 0x06000445 RID: 1093 RVA: 0x00011BF8 File Offset: 0x0000FDF8
+		// Token: 0x06002B93 RID: 11155 RVA: 0x000B8014 File Offset: 0x000B6214
 		public override void OnEnter()
 		{
 			base.OnEnter();
 			Util.PlaySound(AimStunDrone.enterSoundString, base.gameObject);
 			base.PlayAnimation("Gesture, Additive", "PrepBomb", "PrepBomb.playbackRate", this.minimumDuration);
+			base.PlayAnimation("Stance, Override", "PutAwayGun");
 		}
 
-		// Token: 0x06000446 RID: 1094 RVA: 0x00011C2C File Offset: 0x0000FE2C
+		// Token: 0x06002B94 RID: 11156 RVA: 0x000B8063 File Offset: 0x000B6263
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -22,16 +23,16 @@ namespace EntityStates.Toolbot
 			Util.PlaySound(AimStunDrone.exitSoundString, base.gameObject);
 		}
 
-		// Token: 0x06000447 RID: 1095 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06002B95 RID: 11157 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000405 RID: 1029
+		// Token: 0x040027AB RID: 10155
 		public static string enterSoundString;
 
-		// Token: 0x04000406 RID: 1030
+		// Token: 0x040027AC RID: 10156
 		public static string exitSoundString;
 	}
 }

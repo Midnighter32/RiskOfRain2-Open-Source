@@ -3,17 +3,17 @@ using System.Globalization;
 
 namespace RoR2.Networking
 {
-	// Token: 0x02000577 RID: 1399
+	// Token: 0x02000543 RID: 1347
 	public struct AddressPortPair : IEquatable<AddressPortPair>
 	{
-		// Token: 0x06001F25 RID: 7973 RVA: 0x00092E22 File Offset: 0x00091022
+		// Token: 0x06001FC7 RID: 8135 RVA: 0x00089F06 File Offset: 0x00088106
 		public AddressPortPair(string address, ushort port)
 		{
 			this.address = address;
 			this.port = port;
 		}
 
-		// Token: 0x06001F26 RID: 7974 RVA: 0x00092E34 File Offset: 0x00091034
+		// Token: 0x06001FC8 RID: 8136 RVA: 0x00089F18 File Offset: 0x00088118
 		public static bool TryParse(string str, out AddressPortPair addressPortPair)
 		{
 			if (!string.IsNullOrEmpty(str))
@@ -38,8 +38,8 @@ namespace RoR2.Networking
 			return false;
 		}
 
-		// Token: 0x170002BA RID: 698
-		// (get) Token: 0x06001F27 RID: 7975 RVA: 0x00092EB8 File Offset: 0x000910B8
+		// Token: 0x17000358 RID: 856
+		// (get) Token: 0x06001FC9 RID: 8137 RVA: 0x00089F9C File Offset: 0x0008819C
 		public bool isValid
 		{
 			get
@@ -48,19 +48,19 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F28 RID: 7976 RVA: 0x00092EC8 File Offset: 0x000910C8
+		// Token: 0x06001FCA RID: 8138 RVA: 0x00089FAC File Offset: 0x000881AC
 		public override string ToString()
 		{
 			return string.Format(CultureInfo.InvariantCulture, "{0}:{1}", this.address, this.port);
 		}
 
-		// Token: 0x06001F29 RID: 7977 RVA: 0x00092EEA File Offset: 0x000910EA
+		// Token: 0x06001FCB RID: 8139 RVA: 0x00089FCE File Offset: 0x000881CE
 		public bool Equals(AddressPortPair other)
 		{
 			return string.Equals(this.address, other.address) && this.port == other.port;
 		}
 
-		// Token: 0x06001F2A RID: 7978 RVA: 0x00092F10 File Offset: 0x00091110
+		// Token: 0x06001FCC RID: 8140 RVA: 0x00089FF4 File Offset: 0x000881F4
 		public override bool Equals(object obj)
 		{
 			if (obj == null)
@@ -75,16 +75,16 @@ namespace RoR2.Networking
 			return false;
 		}
 
-		// Token: 0x06001F2B RID: 7979 RVA: 0x00092F3C File Offset: 0x0009113C
+		// Token: 0x06001FCD RID: 8141 RVA: 0x0008A020 File Offset: 0x00088220
 		public override int GetHashCode()
 		{
 			return ((this.address != null) ? this.address.GetHashCode() : 0) * 397 ^ this.port.GetHashCode();
 		}
 
-		// Token: 0x040021D5 RID: 8661
+		// Token: 0x04001D71 RID: 7537
 		public string address;
 
-		// Token: 0x040021D6 RID: 8662
+		// Token: 0x04001D72 RID: 7538
 		public ushort port;
 	}
 }

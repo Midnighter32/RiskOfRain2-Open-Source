@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.VagrantMonster
 {
-	// Token: 0x0200012F RID: 303
+	// Token: 0x02000805 RID: 2053
 	public class SpawnState : BaseState
 	{
-		// Token: 0x060005D8 RID: 1496 RVA: 0x0001ABB0 File Offset: 0x00018DB0
+		// Token: 0x06002EAF RID: 11951 RVA: 0x000C685C File Offset: 0x000C4A5C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -15,7 +15,7 @@ namespace EntityStates.VagrantMonster
 			Util.PlaySound(SpawnState.spawnSoundString, base.gameObject);
 			if (SpawnState.spawnEffectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(SpawnState.spawnEffectPrefab, base.gameObject, "SpawnOrigin", false);
+				EffectManager.SimpleMuzzleFlash(SpawnState.spawnEffectPrefab, base.gameObject, "SpawnOrigin", false);
 			}
 			Transform modelTransform = base.GetModelTransform();
 			if (modelTransform)
@@ -24,7 +24,7 @@ namespace EntityStates.VagrantMonster
 			}
 		}
 
-		// Token: 0x060005D9 RID: 1497 RVA: 0x0001AC30 File Offset: 0x00018E30
+		// Token: 0x06002EB0 RID: 11952 RVA: 0x000C68D7 File Offset: 0x000C4AD7
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -35,22 +35,22 @@ namespace EntityStates.VagrantMonster
 			}
 		}
 
-		// Token: 0x060005DA RID: 1498 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x06002EB1 RID: 11953 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Death;
 		}
 
-		// Token: 0x040006B4 RID: 1716
+		// Token: 0x04002BD8 RID: 11224
 		private float stopwatch;
 
-		// Token: 0x040006B5 RID: 1717
+		// Token: 0x04002BD9 RID: 11225
 		public static float duration = 4f;
 
-		// Token: 0x040006B6 RID: 1718
+		// Token: 0x04002BDA RID: 11226
 		public static string spawnSoundString;
 
-		// Token: 0x040006B7 RID: 1719
+		// Token: 0x04002BDB RID: 11227
 		public static GameObject spawnEffectPrefab;
 	}
 }

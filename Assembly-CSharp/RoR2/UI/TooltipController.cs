@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x0200064B RID: 1611
+	// Token: 0x02000640 RID: 1600
 	public class TooltipController : MonoBehaviour
 	{
-		// Token: 0x06002405 RID: 9221 RVA: 0x000A9208 File Offset: 0x000A7408
+		// Token: 0x060025A4 RID: 9636 RVA: 0x000A3CD0 File Offset: 0x000A1ED0
 		private void SetTooltipProvider(TooltipProvider provider)
 		{
 			this.titleLabel.text = provider.titleText;
@@ -19,7 +19,7 @@ namespace RoR2.UI
 			this.colorHighlightImage.color = provider.titleColor;
 		}
 
-		// Token: 0x06002406 RID: 9222 RVA: 0x000A9270 File Offset: 0x000A7470
+		// Token: 0x060025A5 RID: 9637 RVA: 0x000A3D38 File Offset: 0x000A1F38
 		private static UICamera FindUICamera(MPEventSystem mpEventSystem)
 		{
 			foreach (UICamera uicamera in UICamera.readOnlyInstancesList)
@@ -32,19 +32,19 @@ namespace RoR2.UI
 			return null;
 		}
 
-		// Token: 0x06002407 RID: 9223 RVA: 0x000A92D0 File Offset: 0x000A74D0
+		// Token: 0x060025A6 RID: 9638 RVA: 0x000A3D98 File Offset: 0x000A1F98
 		private void Awake()
 		{
 			TooltipController.instancesList.Add(this);
 		}
 
-		// Token: 0x06002408 RID: 9224 RVA: 0x000A92DD File Offset: 0x000A74DD
+		// Token: 0x060025A7 RID: 9639 RVA: 0x000A3DA5 File Offset: 0x000A1FA5
 		private void OnDestroy()
 		{
 			TooltipController.instancesList.Remove(this);
 		}
 
-		// Token: 0x06002409 RID: 9225 RVA: 0x000A92EC File Offset: 0x000A74EC
+		// Token: 0x060025A8 RID: 9640 RVA: 0x000A3DB4 File Offset: 0x000A1FB4
 		private void LateUpdate()
 		{
 			Vector2 v;
@@ -54,7 +54,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600240A RID: 9226 RVA: 0x000A9328 File Offset: 0x000A7528
+		// Token: 0x060025A9 RID: 9641 RVA: 0x000A3DF0 File Offset: 0x000A1FF0
 		public static void RemoveTooltip(TooltipProvider tooltipProvider)
 		{
 			if (tooltipProvider.userCount > 0)
@@ -66,7 +66,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600240B RID: 9227 RVA: 0x000A937C File Offset: 0x000A757C
+		// Token: 0x060025AA RID: 9642 RVA: 0x000A3E44 File Offset: 0x000A2044
 		public static void RemoveTooltip(MPEventSystem eventSystem, TooltipProvider tooltipProvider)
 		{
 			if (eventSystem.currentTooltipProvider == tooltipProvider)
@@ -75,7 +75,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600240C RID: 9228 RVA: 0x000A93A0 File Offset: 0x000A75A0
+		// Token: 0x060025AB RID: 9643 RVA: 0x000A3E68 File Offset: 0x000A2068
 		public static void SetTooltip(MPEventSystem eventSystem, TooltipProvider newTooltipProvider, Vector2 tooltipPosition)
 		{
 			if (eventSystem.currentTooltipProvider != newTooltipProvider)
@@ -126,29 +126,29 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x040026EE RID: 9966
+		// Token: 0x04002353 RID: 9043
 		private static readonly List<TooltipController> instancesList = new List<TooltipController>();
 
-		// Token: 0x040026EF RID: 9967
+		// Token: 0x04002354 RID: 9044
 		[NonSerialized]
 		public MPEventSystem owner;
 
-		// Token: 0x040026F0 RID: 9968
+		// Token: 0x04002355 RID: 9045
 		public RectTransform tooltipCenterTransform;
 
-		// Token: 0x040026F1 RID: 9969
+		// Token: 0x04002356 RID: 9046
 		public RectTransform tooltipFlipTransform;
 
-		// Token: 0x040026F2 RID: 9970
+		// Token: 0x04002357 RID: 9047
 		public Image colorHighlightImage;
 
-		// Token: 0x040026F3 RID: 9971
+		// Token: 0x04002358 RID: 9048
 		public TextMeshProUGUI titleLabel;
 
-		// Token: 0x040026F4 RID: 9972
+		// Token: 0x04002359 RID: 9049
 		public TextMeshProUGUI bodyLabel;
 
-		// Token: 0x040026F5 RID: 9973
+		// Token: 0x0400235A RID: 9050
 		private UICamera uiCamera;
 	}
 }

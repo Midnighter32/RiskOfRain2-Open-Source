@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace RoR2.Navigation
 {
-	// Token: 0x02000521 RID: 1313
+	// Token: 0x020004DB RID: 1243
 	[ExecuteInEditMode]
 	public class MapNode : MonoBehaviour
 	{
-		// Token: 0x1700029C RID: 668
-		// (get) Token: 0x06001D7E RID: 7550 RVA: 0x00089731 File Offset: 0x00087931
+		// Token: 0x17000332 RID: 818
+		// (get) Token: 0x06001DAF RID: 7599 RVA: 0x0007EA65 File Offset: 0x0007CC65
 		public static ReadOnlyCollection<MapNode> instances
 		{
 			get
@@ -19,19 +19,19 @@ namespace RoR2.Navigation
 			}
 		}
 
-		// Token: 0x06001D7F RID: 7551 RVA: 0x00089738 File Offset: 0x00087938
+		// Token: 0x06001DB0 RID: 7600 RVA: 0x0007EA6C File Offset: 0x0007CC6C
 		public void OnEnable()
 		{
 			MapNode._instances.Add(this);
 		}
 
-		// Token: 0x06001D80 RID: 7552 RVA: 0x00089745 File Offset: 0x00087945
+		// Token: 0x06001DB1 RID: 7601 RVA: 0x0007EA79 File Offset: 0x0007CC79
 		public void OnDisable()
 		{
 			MapNode._instances.Remove(this);
 		}
 
-		// Token: 0x06001D81 RID: 7553 RVA: 0x00089754 File Offset: 0x00087954
+		// Token: 0x06001DB2 RID: 7602 RVA: 0x0007EA88 File Offset: 0x0007CC88
 		private void AddLink(MapNode nodeB, float distanceScore, float minJumpHeight, HullClassification hullClassification)
 		{
 			int num = this.links.FindIndex((MapNode.Link item) => item.nodeB == nodeB);
@@ -58,7 +58,7 @@ namespace RoR2.Navigation
 			this.links[num] = link;
 		}
 
-		// Token: 0x06001D82 RID: 7554 RVA: 0x00089844 File Offset: 0x00087A44
+		// Token: 0x06001DB3 RID: 7603 RVA: 0x0007EB78 File Offset: 0x0007CD78
 		private void BuildGroundLinks(ReadOnlyCollection<MapNode> nodes, MapNode.MoveProbe moveProbe)
 		{
 			Vector3 position = base.transform.position;
@@ -101,7 +101,7 @@ namespace RoR2.Navigation
 			}
 		}
 
-		// Token: 0x06001D83 RID: 7555 RVA: 0x000899C4 File Offset: 0x00087BC4
+		// Token: 0x06001DB4 RID: 7604 RVA: 0x0007ECF8 File Offset: 0x0007CEF8
 		private void BuildAirLinks(ReadOnlyCollection<MapNode> nodes, MapNode.MoveProbe moveProbe)
 		{
 			Vector3 position = base.transform.position;
@@ -135,7 +135,7 @@ namespace RoR2.Navigation
 			}
 		}
 
-		// Token: 0x06001D84 RID: 7556 RVA: 0x00089AB8 File Offset: 0x00087CB8
+		// Token: 0x06001DB5 RID: 7605 RVA: 0x0007EDEC File Offset: 0x0007CFEC
 		private void BuildRailLinks(ReadOnlyCollection<MapNode> nodes, MapNode.MoveProbe moveProbe)
 		{
 			Vector3 position = base.transform.position;
@@ -175,7 +175,7 @@ namespace RoR2.Navigation
 			}
 		}
 
-		// Token: 0x06001D85 RID: 7557 RVA: 0x00089C04 File Offset: 0x00087E04
+		// Token: 0x06001DB6 RID: 7606 RVA: 0x0007EF38 File Offset: 0x0007D138
 		public void BuildLinks(ReadOnlyCollection<MapNode> nodes, MapNodeGroup.GraphType graphType)
 		{
 			this.links.Clear();
@@ -225,19 +225,19 @@ namespace RoR2.Navigation
 			moveProbe.Destroy();
 		}
 
-		// Token: 0x06001D86 RID: 7558 RVA: 0x00089D5C File Offset: 0x00087F5C
+		// Token: 0x06001DB7 RID: 7607 RVA: 0x0007F090 File Offset: 0x0007D290
 		public bool TestLineOfSight(MapNode other)
 		{
 			return !Physics.Linecast(base.transform.position + Vector3.up, other.transform.position + Vector3.up, LayerIndex.world.mask);
 		}
 
-		// Token: 0x06001D87 RID: 7559 RVA: 0x00089DB0 File Offset: 0x00087FB0
+		// Token: 0x06001DB8 RID: 7608 RVA: 0x0007F0E4 File Offset: 0x0007D2E4
 		public bool TestNoCeiling()
 		{
 			return !Physics.Raycast(new Ray(base.transform.position, Vector3.up), float.PositiveInfinity, LayerIndex.world.mask, QueryTriggerInteraction.Ignore);
 		}
 
-		// Token: 0x06001D88 RID: 7560 RVA: 0x00089DF4 File Offset: 0x00087FF4
+		// Token: 0x06001DB9 RID: 7609 RVA: 0x0007F128 File Offset: 0x0007D328
 		public bool TestTeleporterOK()
 		{
 			float d = 15f;
@@ -259,55 +259,55 @@ namespace RoR2.Navigation
 			return true;
 		}
 
-		// Token: 0x04001FCB RID: 8139
+		// Token: 0x04001AE4 RID: 6884
 		private static List<MapNode> _instances = new List<MapNode>();
 
-		// Token: 0x04001FCC RID: 8140
+		// Token: 0x04001AE5 RID: 6885
 		private static ReadOnlyCollection<MapNode> instancesReadOnly = MapNode._instances.AsReadOnly();
 
-		// Token: 0x04001FCD RID: 8141
+		// Token: 0x04001AE6 RID: 6886
 		public static readonly float maxConnectionDistance = 15f;
 
-		// Token: 0x04001FCE RID: 8142
+		// Token: 0x04001AE7 RID: 6887
 		public List<MapNode.Link> links = new List<MapNode.Link>();
 
-		// Token: 0x04001FCF RID: 8143
+		// Token: 0x04001AE8 RID: 6888
 		public HullMask forbiddenHulls;
 
-		// Token: 0x04001FD0 RID: 8144
+		// Token: 0x04001AE9 RID: 6889
 		[EnumMask(typeof(NodeFlags))]
 		public NodeFlags flags;
 
-		// Token: 0x04001FD1 RID: 8145
+		// Token: 0x04001AEA RID: 6890
 		[Tooltip("The name of the nodegraph gate associated with this node. If the named gate is closed this node will be treated as though it does not exist.")]
 		public string gateName = "";
 
-		// Token: 0x02000522 RID: 1314
+		// Token: 0x020004DC RID: 1244
 		public struct Link
 		{
-			// Token: 0x04001FD2 RID: 8146
+			// Token: 0x04001AEB RID: 6891
 			public MapNode nodeB;
 
-			// Token: 0x04001FD3 RID: 8147
+			// Token: 0x04001AEC RID: 6892
 			public float distanceScore;
 
-			// Token: 0x04001FD4 RID: 8148
+			// Token: 0x04001AED RID: 6893
 			public float minJumpHeight;
 
-			// Token: 0x04001FD5 RID: 8149
+			// Token: 0x04001AEE RID: 6894
 			public int hullMask;
 
-			// Token: 0x04001FD6 RID: 8150
+			// Token: 0x04001AEF RID: 6895
 			public int jumpHullMask;
 
-			// Token: 0x04001FD7 RID: 8151
+			// Token: 0x04001AF0 RID: 6896
 			public string gateName;
 		}
 
-		// Token: 0x02000523 RID: 1315
+		// Token: 0x020004DD RID: 1245
 		private class MoveProbe
 		{
-			// Token: 0x06001D8B RID: 7563 RVA: 0x00089F18 File Offset: 0x00088118
+			// Token: 0x06001DBC RID: 7612 RVA: 0x0007F24C File Offset: 0x0007D44C
 			public void Init()
 			{
 				GameObject gameObject = new GameObject();
@@ -318,7 +318,7 @@ namespace RoR2.Navigation
 				this.testCharacterController.slopeLimit = 60f;
 			}
 
-			// Token: 0x06001D8C RID: 7564 RVA: 0x00089F6C File Offset: 0x0008816C
+			// Token: 0x06001DBD RID: 7613 RVA: 0x0007F2A0 File Offset: 0x0007D4A0
 			public void SetHull(HullClassification hullClassification)
 			{
 				HullDef hullDef = HullDef.Find(hullClassification);
@@ -326,13 +326,13 @@ namespace RoR2.Navigation
 				this.testCharacterController.height = hullDef.height;
 			}
 
-			// Token: 0x06001D8D RID: 7565 RVA: 0x00089FA2 File Offset: 0x000881A2
+			// Token: 0x06001DBE RID: 7614 RVA: 0x0007F2D6 File Offset: 0x0007D4D6
 			public void Destroy()
 			{
 				UnityEngine.Object.DestroyImmediate(this.testCharacterController.gameObject);
 			}
 
-			// Token: 0x06001D8E RID: 7566 RVA: 0x00078729 File Offset: 0x00076929
+			// Token: 0x06001DBF RID: 7615 RVA: 0x00068305 File Offset: 0x00066505
 			private static float DistanceXZ(Vector3 a, Vector3 b)
 			{
 				a.y = 0f;
@@ -340,7 +340,7 @@ namespace RoR2.Navigation
 				return Vector3.Distance(a, b);
 			}
 
-			// Token: 0x06001D8F RID: 7567 RVA: 0x00089FB4 File Offset: 0x000881B4
+			// Token: 0x06001DC0 RID: 7616 RVA: 0x0007F2E8 File Offset: 0x0007D4E8
 			public Vector3 GetGroundPosition(Vector3 footPosition)
 			{
 				Vector3 b = Vector3.up * (this.testCharacterController.height * 0.5f - this.testCharacterController.radius);
@@ -359,7 +359,7 @@ namespace RoR2.Navigation
 				return footPosition;
 			}
 
-			// Token: 0x06001D90 RID: 7568 RVA: 0x0008A0D4 File Offset: 0x000882D4
+			// Token: 0x06001DC1 RID: 7617 RVA: 0x0007F408 File Offset: 0x0007D608
 			public bool CapsuleOverlapTest(Vector3 centerOfCapsule)
 			{
 				Vector3 b = Vector3.up * (this.testCharacterController.height * 0.5f - this.testCharacterController.radius);
@@ -367,20 +367,33 @@ namespace RoR2.Navigation
 				return Physics.OverlapCapsule(centerOfCapsule + b, centerOfCapsule - b, this.testCharacterController.radius, LayerIndex.world.mask | LayerIndex.defaultLayer.mask, QueryTriggerInteraction.Ignore).Length == 0;
 			}
 
-			// Token: 0x06001D91 RID: 7569 RVA: 0x0008A170 File Offset: 0x00088370
+			// Token: 0x06001DC2 RID: 7618 RVA: 0x0007F4A4 File Offset: 0x0007D6A4
 			public bool FlyTest(Vector3 startPos, Vector3 endPos, float flySpeed)
 			{
 				Vector3 b = Vector3.up * (this.testCharacterController.height * 0.5f - this.testCharacterController.radius);
 				return !Physics.CapsuleCast(startPos + b, startPos - b, this.testCharacterController.radius, (endPos - startPos).normalized, (endPos - startPos).magnitude, LayerIndex.world.mask);
 			}
 
-			// Token: 0x06001D92 RID: 7570 RVA: 0x0008A1F8 File Offset: 0x000883F8
+			// Token: 0x06001DC3 RID: 7619 RVA: 0x0007F52A File Offset: 0x0007D72A
+			private void MoveCapsule(Vector3 displacement)
+			{
+				this.testCharacterController.Move(displacement);
+			}
+
+			// Token: 0x06001DC4 RID: 7620 RVA: 0x0007F539 File Offset: 0x0007D739
+			private void SetCapsulePosition(Vector3 position)
+			{
+				this.testCharacterController.transform.position = position;
+				Physics.SyncTransforms();
+			}
+
+			// Token: 0x06001DC5 RID: 7621 RVA: 0x0007F554 File Offset: 0x0007D754
 			public bool GroundTest(Vector3 startCenterOfCapsulePos, Vector3 endCenterOfCapsulePos, float hSpeed)
 			{
-				this.testCharacterController.Move(Vector3.zero);
+				this.MoveCapsule(Vector3.zero);
 				Vector3 a = Vector3.zero;
 				float num = MapNode.MoveProbe.DistanceXZ(startCenterOfCapsulePos, endCenterOfCapsulePos);
-				this.testCharacterController.transform.position = startCenterOfCapsulePos + Vector3.up;
+				this.SetCapsulePosition(startCenterOfCapsulePos + Vector3.up);
 				int num2 = Mathf.CeilToInt(num * 1.5f / hSpeed / this.testTimeStep);
 				Vector3 rhs = this.testCharacterController.transform.position;
 				for (int i = 0; i < num2; i++)
@@ -396,7 +409,7 @@ namespace RoR2.Navigation
 					a.x = vector2.x * hSpeed;
 					a.z = vector2.z * hSpeed;
 					a += Physics.gravity * this.testTimeStep;
-					this.testCharacterController.Move(a * this.testTimeStep);
+					this.MoveCapsule(a * this.testTimeStep);
 					Vector3 position = this.testCharacterController.transform.position;
 					if (position == rhs)
 					{
@@ -407,7 +420,7 @@ namespace RoR2.Navigation
 				return false;
 			}
 
-			// Token: 0x06001D93 RID: 7571 RVA: 0x0008A328 File Offset: 0x00088528
+			// Token: 0x06001DC6 RID: 7622 RVA: 0x0007F66C File Offset: 0x0007D86C
 			public float JumpTest(Vector3 startCenterOfCapsulePos, Vector3 endCenterOfCapsulePos, float hSpeed)
 			{
 				float y = Trajectory.CalculateInitialYSpeed(Trajectory.CalculateGroundTravelTime(hSpeed, MapNode.MoveProbe.DistanceXZ(startCenterOfCapsulePos, endCenterOfCapsulePos)), endCenterOfCapsulePos.y - startCenterOfCapsulePos.y);
@@ -418,7 +431,7 @@ namespace RoR2.Navigation
 				a *= hSpeed;
 				a.y = y;
 				float num = MapNode.MoveProbe.DistanceXZ(startCenterOfCapsulePos, endCenterOfCapsulePos);
-				this.testCharacterController.transform.position = startCenterOfCapsulePos;
+				this.SetCapsulePosition(startCenterOfCapsulePos);
 				int num2 = Mathf.CeilToInt(num * 1.5f / hSpeed / this.testTimeStep);
 				float num3 = float.NegativeInfinity;
 				Vector3 rhs = this.testCharacterController.transform.position;
@@ -447,10 +460,10 @@ namespace RoR2.Navigation
 				return 0f;
 			}
 
-			// Token: 0x04001FD8 RID: 8152
+			// Token: 0x04001AF1 RID: 6897
 			public CharacterController testCharacterController;
 
-			// Token: 0x04001FD9 RID: 8153
+			// Token: 0x04001AF2 RID: 6898
 			private float testTimeStep = 0.06666667f;
 		}
 	}

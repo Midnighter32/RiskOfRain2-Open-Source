@@ -9,25 +9,25 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000408 RID: 1032
+	// Token: 0x02000361 RID: 865
 	public class MPEventSystemManager : MonoBehaviour
 	{
-		// Token: 0x1700021B RID: 539
-		// (get) Token: 0x060016F6 RID: 5878 RVA: 0x0006D5F1 File Offset: 0x0006B7F1
-		// (set) Token: 0x060016F7 RID: 5879 RVA: 0x0006D5F8 File Offset: 0x0006B7F8
+		// Token: 0x17000280 RID: 640
+		// (get) Token: 0x060014FC RID: 5372 RVA: 0x000599A1 File Offset: 0x00057BA1
+		// (set) Token: 0x060014FD RID: 5373 RVA: 0x000599A8 File Offset: 0x00057BA8
 		public static MPEventSystem combinedEventSystem { get; private set; }
 
-		// Token: 0x1700021C RID: 540
-		// (get) Token: 0x060016F8 RID: 5880 RVA: 0x0006D600 File Offset: 0x0006B800
-		// (set) Token: 0x060016F9 RID: 5881 RVA: 0x0006D607 File Offset: 0x0006B807
+		// Token: 0x17000281 RID: 641
+		// (get) Token: 0x060014FE RID: 5374 RVA: 0x000599B0 File Offset: 0x00057BB0
+		// (set) Token: 0x060014FF RID: 5375 RVA: 0x000599B7 File Offset: 0x00057BB7
 		public static MPEventSystem kbmEventSystem { get; private set; }
 
-		// Token: 0x1700021D RID: 541
-		// (get) Token: 0x060016FA RID: 5882 RVA: 0x0006D60F File Offset: 0x0006B80F
-		// (set) Token: 0x060016FB RID: 5883 RVA: 0x0006D616 File Offset: 0x0006B816
+		// Token: 0x17000282 RID: 642
+		// (get) Token: 0x06001500 RID: 5376 RVA: 0x000599BF File Offset: 0x00057BBF
+		// (set) Token: 0x06001501 RID: 5377 RVA: 0x000599C6 File Offset: 0x00057BC6
 		public static MPEventSystem primaryEventSystem { get; private set; }
 
-		// Token: 0x060016FC RID: 5884 RVA: 0x0006D620 File Offset: 0x0006B820
+		// Token: 0x06001502 RID: 5378 RVA: 0x000599D0 File Offset: 0x00057BD0
 		public static MPEventSystem FindEventSystem(Player inputPlayer)
 		{
 			MPEventSystem result;
@@ -35,7 +35,7 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x060016FD RID: 5885 RVA: 0x0006D644 File Offset: 0x0006B844
+		// Token: 0x06001503 RID: 5379 RVA: 0x000599F4 File Offset: 0x00057BF4
 		private static void Initialize()
 		{
 			GameObject original = Resources.Load<GameObject>("Prefabs/UI/MPEventSystem");
@@ -65,7 +65,7 @@ namespace RoR2
 			MPEventSystemManager.RefreshEventSystems();
 		}
 
-		// Token: 0x060016FE RID: 5886 RVA: 0x0006D73C File Offset: 0x0006B93C
+		// Token: 0x06001504 RID: 5380 RVA: 0x00059AEC File Offset: 0x00057CEC
 		private static void RefreshEventSystems()
 		{
 			int count = LocalUserManager.readOnlyLocalUsersList.Count;
@@ -94,17 +94,17 @@ namespace RoR2
 			MPEventSystemManager.availability.MakeAvailable();
 		}
 
-		// Token: 0x060016FF RID: 5887 RVA: 0x0006D7FE File Offset: 0x0006B9FE
+		// Token: 0x06001505 RID: 5381 RVA: 0x00059BAE File Offset: 0x00057DAE
 		static MPEventSystemManager()
 		{
 			LocalUserManager.onLocalUsersUpdated += MPEventSystemManager.RefreshEventSystems;
 			RoR2Application.onLoad = (Action)Delegate.Combine(RoR2Application.onLoad, new Action(MPEventSystemManager.Initialize));
 		}
 
-		// Token: 0x04001A36 RID: 6710
+		// Token: 0x040013A6 RID: 5030
 		private static readonly Dictionary<int, MPEventSystem> eventSystems = new Dictionary<int, MPEventSystem>();
 
-		// Token: 0x04001A3A RID: 6714
+		// Token: 0x040013AA RID: 5034
 		public static ResourceAvailability availability;
 	}
 }

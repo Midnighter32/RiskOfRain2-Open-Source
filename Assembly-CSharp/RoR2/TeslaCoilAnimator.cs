@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003FE RID: 1022
+	// Token: 0x02000356 RID: 854
 	public class TeslaCoilAnimator : MonoBehaviour
 	{
-		// Token: 0x060016C1 RID: 5825 RVA: 0x0006C6F4 File Offset: 0x0006A8F4
+		// Token: 0x060014C0 RID: 5312 RVA: 0x000589BC File Offset: 0x00056BBC
 		private void Start()
 		{
 			CharacterModel componentInParent = base.GetComponentInParent<CharacterModel>();
@@ -16,7 +16,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060016C2 RID: 5826 RVA: 0x0006C71C File Offset: 0x0006A91C
+		// Token: 0x060014C1 RID: 5313 RVA: 0x000589E4 File Offset: 0x00056BE4
 		private void FixedUpdate()
 		{
 			if (this.characterBody)
@@ -25,10 +25,10 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x040019EE RID: 6638
+		// Token: 0x04001355 RID: 4949
 		public GameObject activeEffectParent;
 
-		// Token: 0x040019EF RID: 6639
+		// Token: 0x04001356 RID: 4950
 		private CharacterBody characterBody;
 	}
 }

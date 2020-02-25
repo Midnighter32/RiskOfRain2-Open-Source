@@ -5,17 +5,17 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000424 RID: 1060
+	// Token: 0x02000380 RID: 896
 	public class WispAI : MonoBehaviour
 	{
-		// Token: 0x0600179F RID: 6047 RVA: 0x0006FF79 File Offset: 0x0006E179
+		// Token: 0x060015D9 RID: 5593 RVA: 0x0005D295 File Offset: 0x0005B495
 		private void Awake()
 		{
 			this.bodyDirectionComponent = this.body.GetComponent<CharacterDirection>();
 			this.bodyMotorComponent = this.body.GetComponent<CharacterMotor>();
 		}
 
-		// Token: 0x060017A0 RID: 6048 RVA: 0x0006FFA0 File Offset: 0x0006E1A0
+		// Token: 0x060015DA RID: 5594 RVA: 0x0005D2BC File Offset: 0x0005B4BC
 		private void FixedUpdate()
 		{
 			if (!this.body)
@@ -38,7 +38,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060017A1 RID: 6049 RVA: 0x00070060 File Offset: 0x0006E260
+		// Token: 0x060015DB RID: 5595 RVA: 0x0005D37C File Offset: 0x0005B57C
 		private Transform SearchForTarget()
 		{
 			Vector3 position = this.body.transform.position;
@@ -83,41 +83,41 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x04001ACF RID: 6863
+		// Token: 0x04001465 RID: 5221
 		[Tooltip("The character to control.")]
 		public GameObject body;
 
-		// Token: 0x04001AD0 RID: 6864
+		// Token: 0x04001466 RID: 5222
 		[Tooltip("The enemy to target.")]
 		public Transform targetTransform;
 
-		// Token: 0x04001AD1 RID: 6865
+		// Token: 0x04001467 RID: 5223
 		[Tooltip("The skill to activate for a ranged attack.")]
 		public GenericSkill fireSkill;
 
-		// Token: 0x04001AD2 RID: 6866
+		// Token: 0x04001468 RID: 5224
 		[Tooltip("How close the character must be to the enemy to use a ranged attack.")]
 		public float fireRange;
 
-		// Token: 0x04001AD3 RID: 6867
+		// Token: 0x04001469 RID: 5225
 		private CharacterDirection bodyDirectionComponent;
 
-		// Token: 0x04001AD4 RID: 6868
+		// Token: 0x0400146A RID: 5226
 		private CharacterMotor bodyMotorComponent;
 
-		// Token: 0x04001AD5 RID: 6869
+		// Token: 0x0400146B RID: 5227
 		private static List<WispAI.TargetSearchCandidate> candidateList = new List<WispAI.TargetSearchCandidate>();
 
-		// Token: 0x02000425 RID: 1061
+		// Token: 0x02000381 RID: 897
 		private struct TargetSearchCandidate
 		{
-			// Token: 0x04001AD6 RID: 6870
+			// Token: 0x0400146C RID: 5228
 			public Transform transform;
 
-			// Token: 0x04001AD7 RID: 6871
+			// Token: 0x0400146D RID: 5229
 			public Vector3 positionDiff;
 
-			// Token: 0x04001AD8 RID: 6872
+			// Token: 0x0400146E RID: 5230
 			public float sqrDistance;
 		}
 	}

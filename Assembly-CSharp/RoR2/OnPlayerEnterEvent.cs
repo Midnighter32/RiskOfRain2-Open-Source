@@ -5,11 +5,11 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x0200037B RID: 891
+	// Token: 0x020002B0 RID: 688
 	[RequireComponent(typeof(Collider))]
 	public class OnPlayerEnterEvent : MonoBehaviour
 	{
-		// Token: 0x0600129F RID: 4767 RVA: 0x0005B204 File Offset: 0x00059404
+		// Token: 0x06000F9C RID: 3996 RVA: 0x000446C4 File Offset: 0x000428C4
 		private void OnTriggerEnter(Collider other)
 		{
 			if ((this.serverOnly && !NetworkServer.active) || this.calledAction)
@@ -33,13 +33,13 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001648 RID: 5704
+		// Token: 0x04000F04 RID: 3844
 		public bool serverOnly;
 
-		// Token: 0x04001649 RID: 5705
+		// Token: 0x04000F05 RID: 3845
 		public UnityEvent action;
 
-		// Token: 0x0400164A RID: 5706
+		// Token: 0x04000F06 RID: 3846
 		private bool calledAction;
 	}
 }

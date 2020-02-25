@@ -7,17 +7,17 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000648 RID: 1608
+	// Token: 0x0200063D RID: 1597
 	[RequireComponent(typeof(MPButton))]
 	public class SurvivorIconController : MonoBehaviour
 	{
-		// Token: 0x060023F8 RID: 9208 RVA: 0x000A8EA6 File Offset: 0x000A70A6
+		// Token: 0x06002597 RID: 9623 RVA: 0x000A38B6 File Offset: 0x000A1AB6
 		private void Awake()
 		{
 			this.button = base.GetComponent<MPButton>();
 		}
 
-		// Token: 0x060023F9 RID: 9209 RVA: 0x000A8EB4 File Offset: 0x000A70B4
+		// Token: 0x06002598 RID: 9624 RVA: 0x000A38C4 File Offset: 0x000A1AC4
 		public void PushSurvivorIndexToCharacterSelect(CharacterSelectController chararcterSelectController)
 		{
 			if (!PreGameController.instance || !PreGameController.instance.IsCharacterSwitchingCurrentlyAllowed())
@@ -37,7 +37,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060023FA RID: 9210 RVA: 0x000A8F30 File Offset: 0x000A7130
+		// Token: 0x06002599 RID: 9625 RVA: 0x000A3940 File Offset: 0x000A1B40
 		private void Update()
 		{
 			if (this.shouldRebuild)
@@ -54,6 +54,11 @@ namespace RoR2.UI
 				if (!flag)
 				{
 					color = Color.black;
+					this.tooltipProvider.enabled = true;
+				}
+				else
+				{
+					this.tooltipProvider.enabled = false;
 				}
 				if (this.characterSelectController.selectedSurvivorIndex == this.survivorIndex)
 				{
@@ -65,7 +70,7 @@ namespace RoR2.UI
 			this.survivorIsSelectedEffect.SetActive(this.isSelected);
 		}
 
-		// Token: 0x060023FB RID: 9211 RVA: 0x000A8FCC File Offset: 0x000A71CC
+		// Token: 0x0600259A RID: 9626 RVA: 0x000A39F4 File Offset: 0x000A1BF4
 		private void Rebuild()
 		{
 			SurvivorDef survivorDef = SurvivorCatalog.GetSurvivorDef(this.survivorIndex);
@@ -87,46 +92,67 @@ namespace RoR2.UI
 							this.viewableTag.viewableName = viewableName;
 							this.viewableTag.Refresh();
 						}
+						if (this.loadoutViewableTag)
+						{
+							this.loadoutViewableTag.viewableName = string.Format(CultureInfo.InvariantCulture, "/Loadout/Bodies/{0}/", BodyCatalog.GetBodyName(SurvivorCatalog.GetBodyIndexFromSurvivorIndex(this.survivorIndex)));
+							this.loadoutViewableTag.Refresh();
+						}
 						if (this.viewableTrigger)
 						{
 							this.viewableTrigger.viewableName = viewableName;
+						}
+						if (this.tooltipProvider)
+						{
+							UnlockableDef unlockableDef = UnlockableCatalog.GetUnlockableDef(survivorDef.unlockableName);
+							if (unlockableDef != null)
+							{
+								this.tooltipProvider.titleToken = "UNIDENTIFIED";
+								this.tooltipProvider.titleColor = Color.gray;
+								this.tooltipProvider.overrideBodyText = unlockableDef.getHowToUnlockString();
+							}
 						}
 					}
 				}
 			}
 		}
 
-		// Token: 0x060023FC RID: 9212 RVA: 0x000A9088 File Offset: 0x000A7288
+		// Token: 0x0600259B RID: 9627 RVA: 0x000A3B4C File Offset: 0x000A1D4C
 		private static bool SurvivorIsUnlockedOnThisClient(SurvivorIndex survivorIndex)
 		{
 			return LocalUserManager.readOnlyLocalUsersList.Any((LocalUser localUser) => localUser.userProfile.HasSurvivorUnlocked(survivorIndex));
 		}
 
-		// Token: 0x040026E0 RID: 9952
+		// Token: 0x04002343 RID: 9027
 		public CharacterSelectController characterSelectController;
 
-		// Token: 0x040026E1 RID: 9953
+		// Token: 0x04002344 RID: 9028
 		public SurvivorIndex survivorIndex;
 
-		// Token: 0x040026E2 RID: 9954
+		// Token: 0x04002345 RID: 9029
 		public RawImage survivorIcon;
 
-		// Token: 0x040026E3 RID: 9955
+		// Token: 0x04002346 RID: 9030
 		public GameObject survivorIsSelectedEffect;
 
-		// Token: 0x040026E4 RID: 9956
+		// Token: 0x04002347 RID: 9031
 		private bool shouldRebuild = true;
 
-		// Token: 0x040026E5 RID: 9957
+		// Token: 0x04002348 RID: 9032
 		private bool isSelected;
 
-		// Token: 0x040026E6 RID: 9958
+		// Token: 0x04002349 RID: 9033
 		private MPButton button;
 
-		// Token: 0x040026E7 RID: 9959
+		// Token: 0x0400234A RID: 9034
 		public ViewableTag viewableTag;
 
-		// Token: 0x040026E8 RID: 9960
+		// Token: 0x0400234B RID: 9035
+		public ViewableTag loadoutViewableTag;
+
+		// Token: 0x0400234C RID: 9036
 		public ViewableTrigger viewableTrigger;
+
+		// Token: 0x0400234D RID: 9037
+		public TooltipProvider tooltipProvider;
 	}
 }

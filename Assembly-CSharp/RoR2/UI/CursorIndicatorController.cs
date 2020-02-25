@@ -4,10 +4,10 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005CE RID: 1486
+	// Token: 0x020005AD RID: 1453
 	public class CursorIndicatorController : MonoBehaviour
 	{
-		// Token: 0x06002157 RID: 8535 RVA: 0x0009C870 File Offset: 0x0009AA70
+		// Token: 0x06002287 RID: 8839 RVA: 0x000957C8 File Offset: 0x000939C8
 		public void SetCursor(CursorIndicatorController.CursorSet cursorSet, CursorIndicatorController.CursorImage cursorImage, Color color)
 		{
 			GameObject gameObject = cursorSet.GetGameObject(cursorImage);
@@ -32,7 +32,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002158 RID: 8536 RVA: 0x0009C8EC File Offset: 0x0009AAEC
+		// Token: 0x06002288 RID: 8840 RVA: 0x00095844 File Offset: 0x00093A44
 		private void ApplyIndicatorColor()
 		{
 			if (!this.currentChildIndicator)
@@ -46,47 +46,47 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002159 RID: 8537 RVA: 0x0009C92F File Offset: 0x0009AB2F
+		// Token: 0x06002289 RID: 8841 RVA: 0x00095887 File Offset: 0x00093A87
 		public void SetPosition(Vector2 position)
 		{
 			this.containerTransform.position = position;
 		}
 
-		// Token: 0x040023DF RID: 9183
+		// Token: 0x04001FED RID: 8173
 		[NonSerialized]
 		public CursorIndicatorController.CursorSet noneCursorSet;
 
-		// Token: 0x040023E0 RID: 9184
+		// Token: 0x04001FEE RID: 8174
 		public CursorIndicatorController.CursorSet mouseCursorSet;
 
-		// Token: 0x040023E1 RID: 9185
+		// Token: 0x04001FEF RID: 8175
 		public CursorIndicatorController.CursorSet gamepadCursorSet;
 
-		// Token: 0x040023E2 RID: 9186
+		// Token: 0x04001FF0 RID: 8176
 		private GameObject currentChildIndicator;
 
-		// Token: 0x040023E3 RID: 9187
+		// Token: 0x04001FF1 RID: 8177
 		public RectTransform containerTransform;
 
-		// Token: 0x040023E4 RID: 9188
+		// Token: 0x04001FF2 RID: 8178
 		private Color cachedIndicatorColor = Color.clear;
 
-		// Token: 0x020005CF RID: 1487
+		// Token: 0x020005AE RID: 1454
 		public enum CursorImage
 		{
-			// Token: 0x040023E6 RID: 9190
+			// Token: 0x04001FF4 RID: 8180
 			None,
-			// Token: 0x040023E7 RID: 9191
+			// Token: 0x04001FF5 RID: 8181
 			Pointer,
-			// Token: 0x040023E8 RID: 9192
+			// Token: 0x04001FF6 RID: 8182
 			Hover
 		}
 
-		// Token: 0x020005D0 RID: 1488
+		// Token: 0x020005AF RID: 1455
 		[Serializable]
 		public struct CursorSet
 		{
-			// Token: 0x0600215B RID: 8539 RVA: 0x0009C955 File Offset: 0x0009AB55
+			// Token: 0x0600228B RID: 8843 RVA: 0x000958AD File Offset: 0x00093AAD
 			public GameObject GetGameObject(CursorIndicatorController.CursorImage cursorImage)
 			{
 				switch (cursorImage)
@@ -102,10 +102,10 @@ namespace RoR2.UI
 				}
 			}
 
-			// Token: 0x040023E9 RID: 9193
+			// Token: 0x04001FF7 RID: 8183
 			public GameObject pointerObject;
 
-			// Token: 0x040023EA RID: 9194
+			// Token: 0x04001FF8 RID: 8184
 			public GameObject hoverObject;
 		}
 	}

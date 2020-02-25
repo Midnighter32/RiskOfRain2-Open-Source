@@ -3,31 +3,31 @@ using RoR2.Stats;
 
 namespace RoR2.Achievements
 {
-	// Token: 0x02000694 RID: 1684
+	// Token: 0x0200069A RID: 1690
 	[RegisterAchievement("CompleteThreeStages", "Characters.Huntress", null, null)]
 	public class CompleteThreeStagesAchievement : BaseAchievement
 	{
-		// Token: 0x0600258C RID: 9612 RVA: 0x000AF57B File Offset: 0x000AD77B
+		// Token: 0x0600278F RID: 10127 RVA: 0x000AAD53 File Offset: 0x000A8F53
 		public override void OnInstall()
 		{
 			base.OnInstall();
 			TeleporterInteraction.onTeleporterChargedGlobal += this.OnTeleporterCharged;
 		}
 
-		// Token: 0x0600258D RID: 9613 RVA: 0x000AF594 File Offset: 0x000AD794
+		// Token: 0x06002790 RID: 10128 RVA: 0x000AAD6C File Offset: 0x000A8F6C
 		public override void OnUninstall()
 		{
 			TeleporterInteraction.onTeleporterChargedGlobal -= this.OnTeleporterCharged;
 			base.OnUninstall();
 		}
 
-		// Token: 0x0600258E RID: 9614 RVA: 0x000AF5AD File Offset: 0x000AD7AD
+		// Token: 0x06002791 RID: 10129 RVA: 0x000AAD85 File Offset: 0x000A8F85
 		private void OnTeleporterCharged(TeleporterInteraction teleporterInteraction)
 		{
 			this.Check();
 		}
 
-		// Token: 0x0600258F RID: 9615 RVA: 0x000AF5B8 File Offset: 0x000AD7B8
+		// Token: 0x06002792 RID: 10130 RVA: 0x000AAD90 File Offset: 0x000A8F90
 		private void Check()
 		{
 			if (Run.instance && Run.instance.GetType() == typeof(Run))
@@ -37,14 +37,14 @@ namespace RoR2.Achievements
 				{
 					return;
 				}
-				if (this.localUser.currentNetworkUser.masterPlayerStatsComponent.currentStats.GetStatValueULong(StatDef.totalDeaths) == 0UL && sceneDefForCurrentScene.stageOrder == 3)
+				if (base.localUser.currentNetworkUser.masterPlayerStatsComponent.currentStats.GetStatValueULong(StatDef.totalDeaths) == 0UL && sceneDefForCurrentScene.stageOrder == 3)
 				{
 					base.Grant();
 				}
 			}
 		}
 
-		// Token: 0x04002869 RID: 10345
+		// Token: 0x040024F5 RID: 9461
 		private const int requirement = 3;
 	}
 }

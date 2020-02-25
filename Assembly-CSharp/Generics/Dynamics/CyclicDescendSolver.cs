@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace Generics.Dynamics
 {
-	// Token: 0x020006DA RID: 1754
+	// Token: 0x02000925 RID: 2341
 	public static class CyclicDescendSolver
 	{
-		// Token: 0x0600274B RID: 10059 RVA: 0x000B60A8 File Offset: 0x000B42A8
+		// Token: 0x06003495 RID: 13461 RVA: 0x000E54F0 File Offset: 0x000E36F0
 		public static bool Process(Core.Chain chain)
 		{
 			if (chain.joints.Count <= 0)

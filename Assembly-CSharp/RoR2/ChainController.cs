@@ -7,12 +7,12 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x0200027E RID: 638
-	[RequireComponent(typeof(Rigidbody))]
+	// Token: 0x02000176 RID: 374
 	[RequireComponent(typeof(ProjectileController))]
+	[RequireComponent(typeof(Rigidbody))]
 	public class ChainController : MonoBehaviour, IProjectileImpactBehavior
 	{
-		// Token: 0x06000C10 RID: 3088 RVA: 0x0003BC64 File Offset: 0x00039E64
+		// Token: 0x06000709 RID: 1801 RVA: 0x0001DBDC File Offset: 0x0001BDDC
 		private void Start()
 		{
 			if (!NetworkServer.active)
@@ -29,7 +29,7 @@ namespace RoR2
 			this.pastTargetList = new List<Transform>();
 		}
 
-		// Token: 0x06000C11 RID: 3089 RVA: 0x0003BCE8 File Offset: 0x00039EE8
+		// Token: 0x0600070A RID: 1802 RVA: 0x0001DC60 File Offset: 0x0001BE60
 		private void FixedUpdate()
 		{
 			if (!this.currentTarget)
@@ -65,7 +65,7 @@ namespace RoR2
 			this.rigidbody.velocity = this.transform.forward * Mathf.Min(this.maxVelocity, Vector3.Magnitude(vector) / Time.fixedDeltaTime);
 		}
 
-		// Token: 0x06000C12 RID: 3090 RVA: 0x0003BE4C File Offset: 0x0003A04C
+		// Token: 0x0600070B RID: 1803 RVA: 0x0001DDC4 File Offset: 0x0001BFC4
 		private Transform FindTarget()
 		{
 			TeamIndex teamIndex = TeamIndex.Monster;
@@ -101,7 +101,7 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x06000C13 RID: 3091 RVA: 0x0003BF50 File Offset: 0x0003A150
+		// Token: 0x0600070C RID: 1804 RVA: 0x0001DEC8 File Offset: 0x0001C0C8
 		public void OnProjectileImpact(ProjectileImpactInfo impactInfo)
 		{
 			if (!this.alive)
@@ -157,7 +157,7 @@ namespace RoR2
 							}
 							if (this.impactEffect)
 							{
-								EffectManager.instance.SimpleImpactEffect(this.impactEffect, this.transform.position, -this.transform.forward, !this.projectileController.isPrediction);
+								EffectManager.SimpleImpactEffect(this.impactEffect, this.transform.position, -this.transform.forward, !this.projectileController.isPrediction);
 							}
 							if (this.bounceCount >= this.maxBounceCount)
 							{
@@ -172,7 +172,7 @@ namespace RoR2
 					GlobalEventManager.instance.OnHitAll(damageInfo, collider.gameObject);
 					if (this.impactEffect)
 					{
-						EffectManager.instance.SimpleImpactEffect(this.impactEffect, this.transform.position, -this.transform.forward, !this.projectileController.isPrediction);
+						EffectManager.SimpleImpactEffect(this.impactEffect, this.transform.position, -this.transform.forward, !this.projectileController.isPrediction);
 					}
 					this.alive = false;
 				}
@@ -183,89 +183,89 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0400102E RID: 4142
+		// Token: 0x04000782 RID: 1922
 		private new Transform transform;
 
-		// Token: 0x0400102F RID: 4143
+		// Token: 0x04000783 RID: 1923
 		private Rigidbody rigidbody;
 
-		// Token: 0x04001030 RID: 4144
+		// Token: 0x04000784 RID: 1924
 		[HideInInspector]
 		public Transform currentTarget;
 
-		// Token: 0x04001031 RID: 4145
+		// Token: 0x04000785 RID: 1925
 		private Transform lastTarget;
 
-		// Token: 0x04001032 RID: 4146
+		// Token: 0x04000786 RID: 1926
 		private TeamFilter teamFilter;
 
-		// Token: 0x04001033 RID: 4147
+		// Token: 0x04000787 RID: 1927
 		private ProjectileController projectileController;
 
-		// Token: 0x04001034 RID: 4148
+		// Token: 0x04000788 RID: 1928
 		private ProjectileDamage projectileDamage;
 
-		// Token: 0x04001035 RID: 4149
+		// Token: 0x04000789 RID: 1929
 		private bool alive = true;
 
-		// Token: 0x04001036 RID: 4150
+		// Token: 0x0400078A RID: 1930
 		private int bounceCount;
 
-		// Token: 0x04001037 RID: 4151
+		// Token: 0x0400078B RID: 1931
 		[HideInInspector]
 		public List<Transform> pastTargetList;
 
-		// Token: 0x04001038 RID: 4152
+		// Token: 0x0400078C RID: 1932
 		public GameObject impactEffect;
 
-		// Token: 0x04001039 RID: 4153
+		// Token: 0x0400078D RID: 1933
 		public float maxVelocity;
 
-		// Token: 0x0400103A RID: 4154
+		// Token: 0x0400078E RID: 1934
 		public int maxBounceCount = 3;
 
-		// Token: 0x0400103B RID: 4155
+		// Token: 0x0400078F RID: 1935
 		public float maxChainDistance = 10f;
 
-		// Token: 0x0400103C RID: 4156
+		// Token: 0x04000790 RID: 1936
 		public float lifeTime = 5f;
 
-		// Token: 0x0400103D RID: 4157
+		// Token: 0x04000791 RID: 1937
 		private float stopwatch;
 
-		// Token: 0x0400103E RID: 4158
+		// Token: 0x04000792 RID: 1938
 		[Tooltip("Multiplier for damage on every chain. >1 for increasing damage, <1 for decreasing damage.")]
 		public float damageMultiplier = 1f;
 
-		// Token: 0x0400103F RID: 4159
+		// Token: 0x04000793 RID: 1939
 		[Tooltip("Whether or not the projectile will automatically detect its first target or fly dumb until the first hit.")]
 		public bool assignFirstTarget;
 
-		// Token: 0x04001040 RID: 4160
+		// Token: 0x04000794 RID: 1940
 		[Tooltip("Whether or not the projectile will automatically ignore the first target, preventing it from getting hit.")]
 		public bool ignoreFirstTarget;
 
-		// Token: 0x04001041 RID: 4161
+		// Token: 0x04000795 RID: 1941
 		[Tooltip("Whether or not the projectile will destroy itself on colliding with terrain.")]
 		public bool destroyOnWorldIfNoTarget;
 
-		// Token: 0x04001042 RID: 4162
+		// Token: 0x04000796 RID: 1942
 		[Tooltip("Whether or not the projectile can bounce between the same targets.")]
 		public bool canBounceToSameTarget;
 
-		// Token: 0x04001043 RID: 4163
+		// Token: 0x04000797 RID: 1943
 		[Tooltip("Whether or not the projectile can hit targets accidentally on the way.")]
 		public bool canHitNonTarget;
 
-		// Token: 0x04001044 RID: 4164
+		// Token: 0x04000798 RID: 1944
 		[Tooltip("Whether or not the projectile will raycast to make sure it can hit its target. Can be expensive.")]
 		public bool smartSeeking;
 
-		// Token: 0x04001045 RID: 4165
+		// Token: 0x04000799 RID: 1945
 		[Tooltip("Whether or not the projectile will continue to search for targets after its first failure. Can be expensive, especially with smart seeking.")]
 		public bool searchAfterFirstFailure;
 
-		// Token: 0x04001046 RID: 4166
+		// Token: 0x0400079A RID: 1946
 		[Tooltip("Whether or not the projectile should destruct on failure.")]
 		public bool destroyOnFailure;
 	}

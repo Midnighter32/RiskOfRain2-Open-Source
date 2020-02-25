@@ -1,14 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using RoR2;
 using UnityEngine;
 
 namespace EntityStates.Headstompers
 {
-	// Token: 0x0200015D RID: 349
+	// Token: 0x0200083F RID: 2111
 	public class BaseHeadstompersState : EntityState
 	{
-		// Token: 0x1700009A RID: 154
-		// (get) Token: 0x060006C7 RID: 1735 RVA: 0x00020573 File Offset: 0x0001E773
+		// Token: 0x06002FC8 RID: 12232 RVA: 0x000CCBF8 File Offset: 0x000CADF8
+		public static BaseHeadstompersState FindForBody(CharacterBody body)
+		{
+			for (int i = 0; i < BaseHeadstompersState.instancesList.Count; i++)
+			{
+				if (BaseHeadstompersState.instancesList[i].body == body)
+				{
+					return BaseHeadstompersState.instancesList[i];
+				}
+			}
+			return null;
+		}
+
+		// Token: 0x1700043F RID: 1087
+		// (get) Token: 0x06002FC9 RID: 12233 RVA: 0x000CCC3A File Offset: 0x000CAE3A
 		protected bool jumpButtonDown
 		{
 			get
@@ -17,8 +31,18 @@ namespace EntityStates.Headstompers
 			}
 		}
 
-		// Token: 0x1700009B RID: 155
-		// (get) Token: 0x060006C8 RID: 1736 RVA: 0x00020594 File Offset: 0x0001E794
+		// Token: 0x17000440 RID: 1088
+		// (get) Token: 0x06002FCA RID: 12234 RVA: 0x000CCC5B File Offset: 0x000CAE5B
+		protected bool slamButtonDown
+		{
+			get
+			{
+				return this.bodyInputBank && this.bodyInputBank.interact.down;
+			}
+		}
+
+		// Token: 0x17000441 RID: 1089
+		// (get) Token: 0x06002FCB RID: 12235 RVA: 0x000CCC7C File Offset: 0x000CAE7C
 		protected bool isGrounded
 		{
 			get
@@ -27,10 +51,11 @@ namespace EntityStates.Headstompers
 			}
 		}
 
-		// Token: 0x060006C9 RID: 1737 RVA: 0x000205B0 File Offset: 0x0001E7B0
+		// Token: 0x06002FCC RID: 12236 RVA: 0x000CCC98 File Offset: 0x000CAE98
 		public override void OnEnter()
 		{
 			base.OnEnter();
+			BaseHeadstompersState.instancesList.Add(this);
 			this.networkedBodyAttachment = base.GetComponent<NetworkedBodyAttachment>();
 			if (this.networkedBodyAttachment)
 			{
@@ -44,7 +69,14 @@ namespace EntityStates.Headstompers
 			}
 		}
 
-		// Token: 0x060006CA RID: 1738 RVA: 0x0002062D File Offset: 0x0001E82D
+		// Token: 0x06002FCD RID: 12237 RVA: 0x000CCD20 File Offset: 0x000CAF20
+		public override void OnExit()
+		{
+			BaseHeadstompersState.instancesList.Remove(this);
+			base.OnExit();
+		}
+
+		// Token: 0x06002FCE RID: 12238 RVA: 0x000CCD34 File Offset: 0x000CAF34
 		protected bool ReturnToIdleIfGrounded()
 		{
 			if (this.bodyMotor && this.bodyMotor.isGrounded)
@@ -55,19 +87,22 @@ namespace EntityStates.Headstompers
 			return false;
 		}
 
-		// Token: 0x04000855 RID: 2133
+		// Token: 0x04002D9A RID: 11674
+		private static readonly List<BaseHeadstompersState> instancesList = new List<BaseHeadstompersState>();
+
+		// Token: 0x04002D9B RID: 11675
 		protected NetworkedBodyAttachment networkedBodyAttachment;
 
-		// Token: 0x04000856 RID: 2134
+		// Token: 0x04002D9C RID: 11676
 		protected GameObject bodyGameObject;
 
-		// Token: 0x04000857 RID: 2135
+		// Token: 0x04002D9D RID: 11677
 		protected CharacterBody body;
 
-		// Token: 0x04000858 RID: 2136
+		// Token: 0x04002D9E RID: 11678
 		protected CharacterMotor bodyMotor;
 
-		// Token: 0x04000859 RID: 2137
+		// Token: 0x04002D9F RID: 11679
 		protected InputBankTest bodyInputBank;
 	}
 }

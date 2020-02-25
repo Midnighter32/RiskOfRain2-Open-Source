@@ -1,28 +1,28 @@
 ﻿using System;
-using System.Linq;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Serialization;
 
 namespace RoR2
 {
-	// Token: 0x0200030C RID: 780
+	// Token: 0x0200022D RID: 557
 	[RequireComponent(typeof(NetworkedBodyAttachment))]
 	public class HelfireController : NetworkBehaviour
 	{
-		// Token: 0x17000164 RID: 356
-		// (get) Token: 0x0600102E RID: 4142 RVA: 0x000514AF File Offset: 0x0004F6AF
-		// (set) Token: 0x0600102F RID: 4143 RVA: 0x000514B7 File Offset: 0x0004F6B7
+		// Token: 0x1700019C RID: 412
+		// (get) Token: 0x06000C74 RID: 3188 RVA: 0x000382EA File Offset: 0x000364EA
+		// (set) Token: 0x06000C75 RID: 3189 RVA: 0x000382F2 File Offset: 0x000364F2
 		public NetworkedBodyAttachment networkedBodyAttachment { get; private set; }
 
-		// Token: 0x06001030 RID: 4144 RVA: 0x000514C0 File Offset: 0x0004F6C0
+		// Token: 0x06000C76 RID: 3190 RVA: 0x000382FB File Offset: 0x000364FB
 		private void Awake()
 		{
 			this.networkedBodyAttachment = base.GetComponent<NetworkedBodyAttachment>();
 			this.auraEffectTransform.SetParent(null);
 		}
 
-		// Token: 0x06001031 RID: 4145 RVA: 0x000514DA File Offset: 0x0004F6DA
+		// Token: 0x06000C77 RID: 3191 RVA: 0x00038315 File Offset: 0x00036515
 		private void OnDestroy()
 		{
 			if (this.auraEffectTransform)
@@ -36,43 +36,40 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001032 RID: 4146 RVA: 0x00051519 File Offset: 0x0004F719
-		private void Start()
-		{
-			if (NetworkServer.active)
-			{
-				this.bullseyeSearch = new BullseyeSearch
-				{
-					teamMaskFilter = TeamMask.all
-				};
-			}
-		}
-
-		// Token: 0x06001033 RID: 4147 RVA: 0x00051538 File Offset: 0x0004F738
+		// Token: 0x06000C78 RID: 3192 RVA: 0x00038354 File Offset: 0x00036554
 		private void FixedUpdate()
 		{
 			this.radius = this.baseRadius * (1f + (float)(this.stack - 1) * 0.5f);
 			if (NetworkServer.active)
 			{
-				this.timer -= Time.fixedDeltaTime;
-				if (this.timer <= 0f)
+				this.ServerFixedUpdate();
+			}
+		}
+
+		// Token: 0x06000C79 RID: 3193 RVA: 0x00038388 File Offset: 0x00036588
+		private void ServerFixedUpdate()
+		{
+			this.timer -= Time.fixedDeltaTime;
+			if (this.timer <= 0f)
+			{
+				float damageMultiplier = 1f + (float)(this.stack - 1) * 0.5f;
+				this.timer = this.interval;
+				Collider[] array = Physics.OverlapSphere(base.transform.position, this.radius, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.Collide);
+				GameObject[] array2 = new GameObject[array.Length];
+				int count = 0;
+				for (int i = 0; i < array.Length; i++)
 				{
-					float damageMultiplier = 1f + (float)(this.stack - 1) * 0.5f;
-					this.timer = this.interval;
-					this.bullseyeSearch.searchOrigin = base.transform.position;
-					this.bullseyeSearch.maxDistanceFilter = this.radius;
-					this.bullseyeSearch.RefreshCandidates();
-					foreach (GameObject victimObject in (from hurtBox in this.bullseyeSearch.GetResults()
-					where hurtBox.healthComponent
-					select hurtBox.healthComponent.gameObject).Distinct<GameObject>())
+					GameObject gameObject = Util.HurtBoxColliderToBody(array[i]).gameObject;
+					if (gameObject && Array.IndexOf<GameObject>(array2, gameObject, 0, count) == -1)
 					{
-						DotController.InflictDot(victimObject, this.networkedBodyAttachment.attachedBodyObject, DotController.DotIndex.Helfire, this.dotDuration, damageMultiplier);
+						DotController.InflictDot(gameObject, this.networkedBodyAttachment.attachedBodyObject, DotController.DotIndex.Helfire, this.dotDuration, damageMultiplier);
+						array2[count++] = gameObject;
 					}
 				}
 			}
 		}
 
-		// Token: 0x06001034 RID: 4148 RVA: 0x0005168C File Offset: 0x0004F88C
+		// Token: 0x06000C7A RID: 3194 RVA: 0x0003846C File Offset: 0x0003666C
 		private void LateUpdate()
 		{
 			CharacterBody attachedBody = this.networkedBodyAttachment.attachedBody;
@@ -89,27 +86,28 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001036 RID: 4150 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000C7C RID: 3196 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x17000165 RID: 357
-		// (get) Token: 0x06001037 RID: 4151 RVA: 0x00051720 File Offset: 0x0004F920
-		// (set) Token: 0x06001038 RID: 4152 RVA: 0x00051733 File Offset: 0x0004F933
+		// Token: 0x1700019D RID: 413
+		// (get) Token: 0x06000C7D RID: 3197 RVA: 0x00038500 File Offset: 0x00036700
+		// (set) Token: 0x06000C7E RID: 3198 RVA: 0x00038513 File Offset: 0x00036713
 		public int Networkstack
 		{
 			get
 			{
 				return this.stack;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<int>(value, ref this.stack, 1u);
+				base.SetSyncVar<int>(value, ref this.stack, 1U);
 			}
 		}
 
-		// Token: 0x06001039 RID: 4153 RVA: 0x00051748 File Offset: 0x0004F948
+		// Token: 0x06000C7F RID: 3199 RVA: 0x00038528 File Offset: 0x00036728
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -118,7 +116,7 @@ namespace RoR2
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -134,7 +132,7 @@ namespace RoR2
 			return flag;
 		}
 
-		// Token: 0x0600103A RID: 4154 RVA: 0x000517B4 File Offset: 0x0004F9B4
+		// Token: 0x06000C80 RID: 3200 RVA: 0x00038594 File Offset: 0x00036794
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -149,33 +147,30 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001423 RID: 5155
+		// Token: 0x04000C65 RID: 3173
 		[SyncVar]
 		public int stack = 1;
 
-		// Token: 0x04001424 RID: 5156
+		// Token: 0x04000C66 RID: 3174
 		[FormerlySerializedAs("radius")]
 		public float baseRadius;
 
-		// Token: 0x04001425 RID: 5157
+		// Token: 0x04000C67 RID: 3175
 		public float dotDuration;
 
-		// Token: 0x04001426 RID: 5158
+		// Token: 0x04000C68 RID: 3176
 		public float interval;
 
-		// Token: 0x04001427 RID: 5159
+		// Token: 0x04000C69 RID: 3177
 		public Transform auraEffectTransform;
 
-		// Token: 0x04001428 RID: 5160
+		// Token: 0x04000C6A RID: 3178
 		private float timer;
 
-		// Token: 0x04001429 RID: 5161
+		// Token: 0x04000C6B RID: 3179
 		private float radius;
 
-		// Token: 0x0400142B RID: 5163
-		private BullseyeSearch bullseyeSearch;
-
-		// Token: 0x0400142C RID: 5164
+		// Token: 0x04000C6D RID: 3181
 		private CameraTargetParams cameraTargetParams;
 	}
 }

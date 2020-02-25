@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2.Mecanim
 {
-	// Token: 0x02000569 RID: 1385
+	// Token: 0x02000533 RID: 1331
 	public class RandomBlinkController : MonoBehaviour
 	{
-		// Token: 0x06001EDF RID: 7903 RVA: 0x00091BF4 File Offset: 0x0008FDF4
+		// Token: 0x06001F6D RID: 8045 RVA: 0x00088768 File Offset: 0x00086968
 		private void FixedUpdate()
 		{
 			this.stopwatch += Time.fixedDeltaTime;
@@ -23,19 +23,19 @@ namespace RoR2.Mecanim
 			}
 		}
 
-		// Token: 0x04002194 RID: 8596
+		// Token: 0x04001D1E RID: 7454
 		public Animator animator;
 
-		// Token: 0x04002195 RID: 8597
+		// Token: 0x04001D1F RID: 7455
 		public string[] blinkTriggers;
 
-		// Token: 0x04002196 RID: 8598
+		// Token: 0x04001D20 RID: 7456
 		public float blinkChancePerUpdate;
 
-		// Token: 0x04002197 RID: 8599
+		// Token: 0x04001D21 RID: 7457
 		private float stopwatch;
 
-		// Token: 0x04002198 RID: 8600
+		// Token: 0x04001D22 RID: 7458
 		private const float updateFrequency = 4f;
 	}
 }

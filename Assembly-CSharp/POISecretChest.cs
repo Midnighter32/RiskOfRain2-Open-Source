@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x0200004A RID: 74
+// Token: 0x02000045 RID: 69
 public class POISecretChest : MonoBehaviour
 {
-	// Token: 0x06000144 RID: 324 RVA: 0x00007ADC File Offset: 0x00005CDC
+	// Token: 0x06000126 RID: 294 RVA: 0x0000797C File Offset: 0x00005B7C
 	private void OnDrawGizmos()
 	{
 		Gizmos.matrix = base.transform.localToWorldMatrix;
@@ -14,6 +14,6 @@ public class POISecretChest : MonoBehaviour
 		Gizmos.DrawWireCube(Vector3.zero, base.transform.localScale / 2f);
 	}
 
-	// Token: 0x04000157 RID: 343
+	// Token: 0x04000154 RID: 340
 	public float influence = 5f;
 }

@@ -4,22 +4,22 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000631 RID: 1585
+	// Token: 0x0200061F RID: 1567
 	public class ScoreboardController : MonoBehaviour
 	{
-		// Token: 0x06002390 RID: 9104 RVA: 0x000A7620 File Offset: 0x000A5820
+		// Token: 0x0600250D RID: 9485 RVA: 0x000A19B4 File Offset: 0x0009FBB4
 		private void Awake()
 		{
 			this.stripAllocator = new UIElementAllocator<ScoreboardStrip>(this.container, this.stripPrefab);
 		}
 
-		// Token: 0x06002391 RID: 9105 RVA: 0x000A7639 File Offset: 0x000A5839
+		// Token: 0x0600250E RID: 9486 RVA: 0x000A19CD File Offset: 0x0009FBCD
 		private void SetStripCount(int newCount)
 		{
 			this.stripAllocator.AllocateElements(newCount);
 		}
 
-		// Token: 0x06002392 RID: 9106 RVA: 0x000A7648 File Offset: 0x000A5848
+		// Token: 0x0600250F RID: 9487 RVA: 0x000A19DC File Offset: 0x0009FBDC
 		private void Rebuild()
 		{
 			ReadOnlyCollection<PlayerCharacterMasterController> instances = PlayerCharacterMasterController.instances;
@@ -31,13 +31,13 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002393 RID: 9107 RVA: 0x000A7697 File Offset: 0x000A5897
+		// Token: 0x06002510 RID: 9488 RVA: 0x000A1A2B File Offset: 0x0009FC2B
 		private void PlayerEventToRebuild(PlayerCharacterMasterController playerCharacterMasterController)
 		{
 			this.Rebuild();
 		}
 
-		// Token: 0x06002394 RID: 9108 RVA: 0x000A769F File Offset: 0x000A589F
+		// Token: 0x06002511 RID: 9489 RVA: 0x000A1A33 File Offset: 0x0009FC33
 		private void OnEnable()
 		{
 			PlayerCharacterMasterController.onPlayerAdded += this.PlayerEventToRebuild;
@@ -45,20 +45,20 @@ namespace RoR2.UI
 			this.Rebuild();
 		}
 
-		// Token: 0x06002395 RID: 9109 RVA: 0x000A76C9 File Offset: 0x000A58C9
+		// Token: 0x06002512 RID: 9490 RVA: 0x000A1A5D File Offset: 0x0009FC5D
 		private void OnDisable()
 		{
 			PlayerCharacterMasterController.onPlayerRemoved -= this.PlayerEventToRebuild;
 			PlayerCharacterMasterController.onPlayerAdded -= this.PlayerEventToRebuild;
 		}
 
-		// Token: 0x04002687 RID: 9863
+		// Token: 0x040022CE RID: 8910
 		public GameObject stripPrefab;
 
-		// Token: 0x04002688 RID: 9864
+		// Token: 0x040022CF RID: 8911
 		public RectTransform container;
 
-		// Token: 0x04002689 RID: 9865
+		// Token: 0x040022D0 RID: 8912
 		private UIElementAllocator<ScoreboardStrip> stripAllocator;
 	}
 }

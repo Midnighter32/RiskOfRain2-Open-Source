@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200027C RID: 636
+	// Token: 0x02000174 RID: 372
 	public class CameraTargetParams : MonoBehaviour
 	{
-		// Token: 0x06000C0A RID: 3082 RVA: 0x0003B946 File Offset: 0x00039B46
+		// Token: 0x06000703 RID: 1795 RVA: 0x0001D8C0 File Offset: 0x0001BAC0
 		public void AddRecoil(float verticalMin, float verticalMax, float horizontalMin, float horizontalMax)
 		{
 			this.targetRecoil += new Vector2(UnityEngine.Random.Range(horizontalMin, horizontalMax), UnityEngine.Random.Range(verticalMin, verticalMax));
 		}
 
-		// Token: 0x170000D9 RID: 217
-		// (get) Token: 0x06000C0B RID: 3083 RVA: 0x0003B96D File Offset: 0x00039B6D
+		// Token: 0x170000D1 RID: 209
+		// (get) Token: 0x06000704 RID: 1796 RVA: 0x0001D8E7 File Offset: 0x0001BAE7
 		public Vector3 cameraPivotPosition
 		{
 			get
@@ -22,7 +22,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000C0C RID: 3084 RVA: 0x0003B9AC File Offset: 0x00039BAC
+		// Token: 0x06000705 RID: 1797 RVA: 0x0001D924 File Offset: 0x0001BB24
 		private void Awake()
 		{
 			CharacterBody component = base.GetComponent<CharacterBody>();
@@ -32,7 +32,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000C0D RID: 3085 RVA: 0x0003B9E4 File Offset: 0x00039BE4
+		// Token: 0x06000706 RID: 1798 RVA: 0x0001D95C File Offset: 0x0001BB5C
 		private void Update()
 		{
 			this.targetRecoil = Vector2.SmoothDamp(this.targetRecoil, Vector2.zero, ref this.targetRecoilVelocity, CameraTargetParams.targetRecoilDampTime, 180f, Time.deltaTime);
@@ -70,68 +70,68 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001019 RID: 4121
+		// Token: 0x0400076D RID: 1901
 		public CharacterCameraParams cameraParams;
 
-		// Token: 0x0400101A RID: 4122
+		// Token: 0x0400076E RID: 1902
 		public Transform cameraPivotTransform;
 
-		// Token: 0x0400101B RID: 4123
+		// Token: 0x0400076F RID: 1903
 		public CameraTargetParams.AimType aimMode;
 
-		// Token: 0x0400101C RID: 4124
+		// Token: 0x04000770 RID: 1904
 		[HideInInspector]
 		public Vector2 recoil;
 
-		// Token: 0x0400101D RID: 4125
+		// Token: 0x04000771 RID: 1905
 		[HideInInspector]
 		public Vector3 idealLocalCameraPos;
 
-		// Token: 0x0400101E RID: 4126
+		// Token: 0x04000772 RID: 1906
 		[HideInInspector]
 		[NonSerialized]
 		public float fovOverride = -1f;
 
-		// Token: 0x0400101F RID: 4127
+		// Token: 0x04000773 RID: 1907
 		[HideInInspector]
 		public bool dontRaycastToPivot;
 
-		// Token: 0x04001020 RID: 4128
+		// Token: 0x04000774 RID: 1908
 		private float currentPivotVerticalOffset;
 
-		// Token: 0x04001021 RID: 4129
+		// Token: 0x04000775 RID: 1909
 		private float currentPivotVerticalOffsetVelocity;
 
-		// Token: 0x04001022 RID: 4130
+		// Token: 0x04000776 RID: 1910
 		private static float targetRecoilDampTime = 0.08f;
 
-		// Token: 0x04001023 RID: 4131
+		// Token: 0x04000777 RID: 1911
 		private static float recoilDampTime = 0.05f;
 
-		// Token: 0x04001024 RID: 4132
+		// Token: 0x04000778 RID: 1912
 		private Vector2 targetRecoil;
 
-		// Token: 0x04001025 RID: 4133
+		// Token: 0x04000779 RID: 1913
 		private Vector2 recoilVelocity;
 
-		// Token: 0x04001026 RID: 4134
+		// Token: 0x0400077A RID: 1914
 		private Vector2 targetRecoilVelocity;
 
-		// Token: 0x04001027 RID: 4135
+		// Token: 0x0400077B RID: 1915
 		private Vector3 aimVelocity;
 
-		// Token: 0x0200027D RID: 637
+		// Token: 0x02000175 RID: 373
 		public enum AimType
 		{
-			// Token: 0x04001029 RID: 4137
+			// Token: 0x0400077D RID: 1917
 			Standard,
-			// Token: 0x0400102A RID: 4138
+			// Token: 0x0400077E RID: 1918
 			FirstPerson,
-			// Token: 0x0400102B RID: 4139
+			// Token: 0x0400077F RID: 1919
 			Aura,
-			// Token: 0x0400102C RID: 4140
+			// Token: 0x04000780 RID: 1920
 			Sprinting,
-			// Token: 0x0400102D RID: 4141
+			// Token: 0x04000781 RID: 1921
 			AimThrow
 		}
 	}

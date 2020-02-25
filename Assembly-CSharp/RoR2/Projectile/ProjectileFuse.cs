@@ -5,11 +5,11 @@ using UnityEngine.Networking;
 
 namespace RoR2.Projectile
 {
-	// Token: 0x02000549 RID: 1353
+	// Token: 0x02000507 RID: 1287
 	[RequireComponent(typeof(ProjectileController))]
 	public class ProjectileFuse : MonoBehaviour
 	{
-		// Token: 0x06001E37 RID: 7735 RVA: 0x0008E60D File Offset: 0x0008C80D
+		// Token: 0x06001E8A RID: 7818 RVA: 0x00083E45 File Offset: 0x00082045
 		private void Awake()
 		{
 			if (!NetworkServer.active)
@@ -18,7 +18,7 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001E38 RID: 7736 RVA: 0x0008E61D File Offset: 0x0008C81D
+		// Token: 0x06001E8B RID: 7819 RVA: 0x00083E55 File Offset: 0x00082055
 		private void FixedUpdate()
 		{
 			this.fuse -= Time.fixedDeltaTime;
@@ -29,10 +29,10 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x040020BB RID: 8379
+		// Token: 0x04001BEF RID: 7151
 		public float fuse;
 
-		// Token: 0x040020BC RID: 8380
+		// Token: 0x04001BF0 RID: 7152
 		public UnityEvent onFuse;
 	}
 }

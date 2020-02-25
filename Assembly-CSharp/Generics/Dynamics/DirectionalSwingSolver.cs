@@ -3,16 +3,16 @@ using UnityEngine;
 
 namespace Generics.Dynamics
 {
-	// Token: 0x020006DB RID: 1755
+	// Token: 0x02000926 RID: 2342
 	public static class DirectionalSwingSolver
 	{
-		// Token: 0x0600274C RID: 10060 RVA: 0x000B61EF File Offset: 0x000B43EF
+		// Token: 0x06003496 RID: 13462 RVA: 0x000E5637 File Offset: 0x000E3837
 		public static void Process(Core.Chain chain, Vector3 lookAtAxis)
 		{
 			DirectionalSwingSolver.Process(chain, lookAtAxis, chain.GetEndEffector());
 		}
 
-		// Token: 0x0600274D RID: 10061 RVA: 0x000B6200 File Offset: 0x000B4400
+		// Token: 0x06003497 RID: 13463 RVA: 0x000E5648 File Offset: 0x000E3848
 		public static void Process(Core.Chain chain, Vector3 lookAtAxis, Transform virtualEndEffector)
 		{
 			Transform endEffector = virtualEndEffector ?? chain.GetEndEffector();
@@ -22,7 +22,7 @@ namespace Generics.Dynamics
 			}
 		}
 
-		// Token: 0x0600274E RID: 10062 RVA: 0x000B6234 File Offset: 0x000B4434
+		// Token: 0x06003498 RID: 13464 RVA: 0x000E567C File Offset: 0x000E387C
 		private static void Solve(Core.Chain chain, Transform endEffector, Vector3 LookAtAxis)
 		{
 			for (int i = 0; i < chain.joints.Count; i++)

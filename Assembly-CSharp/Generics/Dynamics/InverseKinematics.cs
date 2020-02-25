@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace Generics.Dynamics
 {
-	// Token: 0x020006DD RID: 1757
+	// Token: 0x02000928 RID: 2344
 	public class InverseKinematics : MonoBehaviour
 	{
-		// Token: 0x06002753 RID: 10067 RVA: 0x000B65B6 File Offset: 0x000B47B6
+		// Token: 0x0600349D RID: 13469 RVA: 0x000E59FE File Offset: 0x000E3BFE
 		private void OnEnable()
 		{
 			if (this.rigReader == null)
@@ -15,7 +15,7 @@ namespace Generics.Dynamics
 			}
 		}
 
-		// Token: 0x06002754 RID: 10068 RVA: 0x000B65C8 File Offset: 0x000B47C8
+		// Token: 0x0600349E RID: 13470 RVA: 0x000E5A10 File Offset: 0x000E3C10
 		private void LateUpdate()
 		{
 			Core.Solvers solvers = this.solver;
@@ -50,7 +50,7 @@ namespace Generics.Dynamics
 			}
 		}
 
-		// Token: 0x06002755 RID: 10069 RVA: 0x000B66AC File Offset: 0x000B48AC
+		// Token: 0x0600349F RID: 13471 RVA: 0x000E5AF4 File Offset: 0x000E3CF4
 		public void DetectRig()
 		{
 			if (!this.animator)
@@ -60,7 +60,7 @@ namespace Generics.Dynamics
 			this.rigReader = new RigReader(this.animator);
 		}
 
-		// Token: 0x06002756 RID: 10070 RVA: 0x000B66D8 File Offset: 0x000B48D8
+		// Token: 0x060034A0 RID: 13472 RVA: 0x000E5B20 File Offset: 0x000E3D20
 		public void BuildRig()
 		{
 			this.rArm = this.rigReader.RightArmChain();
@@ -69,31 +69,31 @@ namespace Generics.Dynamics
 			this.lLeg = this.rigReader.LeftLegChain();
 		}
 
-		// Token: 0x0400297D RID: 10621
+		// Token: 0x04003416 RID: 13334
 		public Core.Solvers solver;
 
-		// Token: 0x0400297E RID: 10622
+		// Token: 0x04003417 RID: 13335
 		public Core.Chain rArm;
 
-		// Token: 0x0400297F RID: 10623
+		// Token: 0x04003418 RID: 13336
 		public Core.Chain lArm;
 
-		// Token: 0x04002980 RID: 10624
+		// Token: 0x04003419 RID: 13337
 		public Core.Chain rLeg;
 
-		// Token: 0x04002981 RID: 10625
+		// Token: 0x0400341A RID: 13338
 		public Core.Chain lLeg;
 
-		// Token: 0x04002982 RID: 10626
+		// Token: 0x0400341B RID: 13339
 		public Core.Chain[] otherChains;
 
-		// Token: 0x04002983 RID: 10627
+		// Token: 0x0400341C RID: 13340
 		public Core.KinematicChain[] otherKChains;
 
-		// Token: 0x04002984 RID: 10628
+		// Token: 0x0400341D RID: 13341
 		public RigReader rigReader;
 
-		// Token: 0x04002985 RID: 10629
+		// Token: 0x0400341E RID: 13342
 		public Animator animator;
 	}
 }

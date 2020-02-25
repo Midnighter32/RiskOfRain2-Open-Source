@@ -8,10 +8,10 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000614 RID: 1556
+	// Token: 0x02000603 RID: 1539
 	public class ObjectivePanelController : MonoBehaviour
 	{
-		// Token: 0x06002311 RID: 8977 RVA: 0x000A5264 File Offset: 0x000A3464
+		// Token: 0x06002481 RID: 9345 RVA: 0x0009F3D4 File Offset: 0x0009D5D4
 		public void SetCurrentMaster(CharacterMaster newMaster)
 		{
 			if (newMaster == this.currentMaster)
@@ -27,7 +27,7 @@ namespace RoR2.UI
 			this.RefreshObjectiveTrackers();
 		}
 
-		// Token: 0x06002312 RID: 8978 RVA: 0x000A52C8 File Offset: 0x000A34C8
+		// Token: 0x06002482 RID: 9346 RVA: 0x0009F438 File Offset: 0x0009D638
 		private void AddObjectiveTracker(ObjectivePanelController.ObjectiveTracker objectiveTracker)
 		{
 			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.objectiveTrackerPrefab, this.objectiveTrackerContainer);
@@ -38,7 +38,7 @@ namespace RoR2.UI
 			this.objectiveSourceToTrackerDictionary.Add(objectiveTracker.sourceDescriptor, objectiveTracker);
 		}
 
-		// Token: 0x06002313 RID: 8979 RVA: 0x000A531A File Offset: 0x000A351A
+		// Token: 0x06002483 RID: 9347 RVA: 0x0009F48A File Offset: 0x0009D68A
 		private void RemoveObjectiveTracker(ObjectivePanelController.ObjectiveTracker objectiveTracker)
 		{
 			this.objectiveTrackers.Remove(objectiveTracker);
@@ -47,7 +47,7 @@ namespace RoR2.UI
 			this.AddExitAnimation(objectiveTracker);
 		}
 
-		// Token: 0x06002314 RID: 8980 RVA: 0x000A5348 File Offset: 0x000A3548
+		// Token: 0x06002484 RID: 9348 RVA: 0x0009F4B8 File Offset: 0x0009D6B8
 		private void RefreshObjectiveTrackers()
 		{
 			foreach (ObjectivePanelController.ObjectiveTracker objectiveTracker in this.objectiveTrackers)
@@ -85,7 +85,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002315 RID: 8981 RVA: 0x000A54A8 File Offset: 0x000A36A8
+		// Token: 0x06002485 RID: 9349 RVA: 0x0009F618 File Offset: 0x0009D818
 		private void GetObjectiveSources(CharacterMaster master, [NotNull] List<ObjectivePanelController.ObjectiveSourceDescriptor> output)
 		{
 			output.Clear();
@@ -125,19 +125,10 @@ namespace RoR2.UI
 					});
 				}
 			}
-			if (BossGroup.instance && BossGroup.instance.readOnlyMembersList.Count != 0)
-			{
-				output.Add(new ObjectivePanelController.ObjectiveSourceDescriptor
-				{
-					source = BossGroup.instance,
-					master = master,
-					objectiveType = typeof(ObjectivePanelController.DefeatBossObjectiveTracker)
-				});
-			}
 			if (GoldshoresMissionController.instance)
 			{
 				Type type2 = GoldshoresMissionController.instance.entityStateMachine.state.GetType();
-				if (type2 == typeof(ActivateBeacons) || type2 == typeof(GoldshoresBossfight))
+				if ((type2 == typeof(ActivateBeacons) || type2 == typeof(GoldshoresBossfight)) && GoldshoresMissionController.instance.beaconsActive < GoldshoresMissionController.instance.beaconCount)
 				{
 					output.Add(new ObjectivePanelController.ObjectiveSourceDescriptor
 					{
@@ -147,22 +138,42 @@ namespace RoR2.UI
 					});
 				}
 			}
+			if (ArenaMissionController.instance && ArenaMissionController.instance.clearedRounds < ArenaMissionController.instance.totalRoundsMax)
+			{
+				output.Add(new ObjectivePanelController.ObjectiveSourceDescriptor
+				{
+					source = ArenaMissionController.instance,
+					master = master,
+					objectiveType = typeof(ObjectivePanelController.ClearArena)
+				});
+			}
+			Action<CharacterMaster, List<ObjectivePanelController.ObjectiveSourceDescriptor>> action = ObjectivePanelController.collectObjectiveSources;
+			if (action == null)
+			{
+				return;
+			}
+			action(master, output);
 		}
 
-		// Token: 0x06002316 RID: 8982 RVA: 0x000A5662 File Offset: 0x000A3862
+		// Token: 0x14000086 RID: 134
+		// (add) Token: 0x06002486 RID: 9350 RVA: 0x0009F804 File Offset: 0x0009DA04
+		// (remove) Token: 0x06002487 RID: 9351 RVA: 0x0009F838 File Offset: 0x0009DA38
+		public static event Action<CharacterMaster, List<ObjectivePanelController.ObjectiveSourceDescriptor>> collectObjectiveSources;
+
+		// Token: 0x06002488 RID: 9352 RVA: 0x0009F86B File Offset: 0x0009DA6B
 		private void Update()
 		{
 			this.RefreshObjectiveTrackers();
 			this.RunExitAnimations();
 		}
 
-		// Token: 0x06002317 RID: 8983 RVA: 0x000A5670 File Offset: 0x000A3870
+		// Token: 0x06002489 RID: 9353 RVA: 0x0009F879 File Offset: 0x0009DA79
 		private void AddExitAnimation(ObjectivePanelController.ObjectiveTracker objectiveTracker)
 		{
 			this.exitAnimations.Add(new ObjectivePanelController.StripExitAnimation(objectiveTracker));
 		}
 
-		// Token: 0x06002318 RID: 8984 RVA: 0x000A5684 File Offset: 0x000A3884
+		// Token: 0x0600248A RID: 9354 RVA: 0x0009F88C File Offset: 0x0009DA8C
 		private void RunExitAnimations()
 		{
 			float deltaTime = Time.deltaTime;
@@ -180,82 +191,82 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x04002602 RID: 9730
+		// Token: 0x04002246 RID: 8774
 		public RectTransform objectiveTrackerContainer;
 
-		// Token: 0x04002603 RID: 9731
+		// Token: 0x04002247 RID: 8775
 		public GameObject objectiveTrackerPrefab;
 
-		// Token: 0x04002604 RID: 9732
+		// Token: 0x04002248 RID: 8776
 		public Sprite checkboxActiveSprite;
 
-		// Token: 0x04002605 RID: 9733
+		// Token: 0x04002249 RID: 8777
 		public Sprite checkboxSuccessSprite;
 
-		// Token: 0x04002606 RID: 9734
+		// Token: 0x0400224A RID: 8778
 		public Sprite checkboxFailSprite;
 
-		// Token: 0x04002607 RID: 9735
+		// Token: 0x0400224B RID: 8779
 		private CharacterMaster currentMaster;
 
-		// Token: 0x04002608 RID: 9736
+		// Token: 0x0400224C RID: 8780
 		private readonly List<ObjectivePanelController.ObjectiveTracker> objectiveTrackers = new List<ObjectivePanelController.ObjectiveTracker>();
 
-		// Token: 0x04002609 RID: 9737
+		// Token: 0x0400224D RID: 8781
 		private Dictionary<ObjectivePanelController.ObjectiveSourceDescriptor, ObjectivePanelController.ObjectiveTracker> objectiveSourceToTrackerDictionary = new Dictionary<ObjectivePanelController.ObjectiveSourceDescriptor, ObjectivePanelController.ObjectiveTracker>(EqualityComparer<ObjectivePanelController.ObjectiveSourceDescriptor>.Default);
 
-		// Token: 0x0400260A RID: 9738
+		// Token: 0x0400224E RID: 8782
 		private readonly List<ObjectivePanelController.ObjectiveSourceDescriptor> objectiveSourceDescriptors = new List<ObjectivePanelController.ObjectiveSourceDescriptor>();
 
-		// Token: 0x0400260B RID: 9739
+		// Token: 0x04002250 RID: 8784
 		private readonly List<ObjectivePanelController.StripExitAnimation> exitAnimations = new List<ObjectivePanelController.StripExitAnimation>();
 
-		// Token: 0x02000615 RID: 1557
+		// Token: 0x02000604 RID: 1540
 		public struct ObjectiveSourceDescriptor : IEquatable<ObjectivePanelController.ObjectiveSourceDescriptor>
 		{
-			// Token: 0x0600231A RID: 8986 RVA: 0x000A5750 File Offset: 0x000A3950
+			// Token: 0x0600248C RID: 9356 RVA: 0x0009F958 File Offset: 0x0009DB58
 			public override int GetHashCode()
 			{
 				return (((this.source != null) ? this.source.GetHashCode() : 0) * 397 ^ ((this.master != null) ? this.master.GetHashCode() : 0)) * 397 ^ ((this.objectiveType != null) ? this.objectiveType.GetHashCode() : 0);
 			}
 
-			// Token: 0x0600231B RID: 8987 RVA: 0x000A57BF File Offset: 0x000A39BF
+			// Token: 0x0600248D RID: 9357 RVA: 0x0009F9C7 File Offset: 0x0009DBC7
 			public static bool Equals(ObjectivePanelController.ObjectiveSourceDescriptor a, ObjectivePanelController.ObjectiveSourceDescriptor b)
 			{
 				return a.source == b.source && a.master == b.master && a.objectiveType == b.objectiveType;
 			}
 
-			// Token: 0x0600231C RID: 8988 RVA: 0x000A57BF File Offset: 0x000A39BF
+			// Token: 0x0600248E RID: 9358 RVA: 0x0009F9C7 File Offset: 0x0009DBC7
 			public bool Equals(ObjectivePanelController.ObjectiveSourceDescriptor other)
 			{
 				return this.source == other.source && this.master == other.master && this.objectiveType == other.objectiveType;
 			}
 
-			// Token: 0x0600231D RID: 8989 RVA: 0x000A57FA File Offset: 0x000A39FA
+			// Token: 0x0600248F RID: 9359 RVA: 0x0009FA02 File Offset: 0x0009DC02
 			public override bool Equals(object obj)
 			{
 				return obj != null && obj is ObjectivePanelController.ObjectiveSourceDescriptor && this.Equals((ObjectivePanelController.ObjectiveSourceDescriptor)obj);
 			}
 
-			// Token: 0x0400260C RID: 9740
+			// Token: 0x04002251 RID: 8785
 			public UnityEngine.Object source;
 
-			// Token: 0x0400260D RID: 9741
+			// Token: 0x04002252 RID: 8786
 			public CharacterMaster master;
 
-			// Token: 0x0400260E RID: 9742
+			// Token: 0x04002253 RID: 8787
 			public Type objectiveType;
 		}
 
-		// Token: 0x02000616 RID: 1558
-		private class ObjectiveTracker
+		// Token: 0x02000605 RID: 1541
+		public class ObjectiveTracker
 		{
-			// Token: 0x17000317 RID: 791
-			// (get) Token: 0x0600231E RID: 8990 RVA: 0x000A5817 File Offset: 0x000A3A17
-			// (set) Token: 0x0600231F RID: 8991 RVA: 0x000A581F File Offset: 0x000A3A1F
+			// Token: 0x170003CD RID: 973
+			// (get) Token: 0x06002490 RID: 9360 RVA: 0x0009FA1F File Offset: 0x0009DC1F
+			// (set) Token: 0x06002491 RID: 9361 RVA: 0x0009FA27 File Offset: 0x0009DC27
 			public GameObject stripObject { get; private set; }
 
-			// Token: 0x06002320 RID: 8992 RVA: 0x000A5828 File Offset: 0x000A3A28
+			// Token: 0x06002492 RID: 9362 RVA: 0x0009FA30 File Offset: 0x0009DC30
 			public void SetStrip(GameObject stripObject)
 			{
 				this.stripObject = stripObject;
@@ -264,7 +275,7 @@ namespace RoR2.UI
 				this.UpdateStrip();
 			}
 
-			// Token: 0x06002321 RID: 8993 RVA: 0x000A5878 File Offset: 0x000A3A78
+			// Token: 0x06002493 RID: 9363 RVA: 0x0009FA80 File Offset: 0x0009DC80
 			public string GetString()
 			{
 				if (this.IsDirty())
@@ -274,19 +285,19 @@ namespace RoR2.UI
 				return this.cachedString;
 			}
 
-			// Token: 0x06002322 RID: 8994 RVA: 0x000A5894 File Offset: 0x000A3A94
+			// Token: 0x06002494 RID: 9364 RVA: 0x0009FA9C File Offset: 0x0009DC9C
 			protected virtual string GenerateString()
 			{
 				return Language.GetString(this.baseToken);
 			}
 
-			// Token: 0x06002323 RID: 8995 RVA: 0x000A58A1 File Offset: 0x000A3AA1
+			// Token: 0x06002495 RID: 9365 RVA: 0x0009FAA9 File Offset: 0x0009DCA9
 			protected virtual bool IsDirty()
 			{
 				return this.cachedString == null;
 			}
 
-			// Token: 0x06002324 RID: 8996 RVA: 0x000A58AC File Offset: 0x000A3AAC
+			// Token: 0x06002496 RID: 9366 RVA: 0x0009FAB4 File Offset: 0x0009DCB4
 			public void Retire()
 			{
 				this.retired = true;
@@ -294,12 +305,12 @@ namespace RoR2.UI
 				this.UpdateStrip();
 			}
 
-			// Token: 0x06002325 RID: 8997 RVA: 0x00004507 File Offset: 0x00002707
+			// Token: 0x06002497 RID: 9367 RVA: 0x0000409B File Offset: 0x0000229B
 			protected virtual void OnRetired()
 			{
 			}
 
-			// Token: 0x06002326 RID: 8998 RVA: 0x000A58C4 File Offset: 0x000A3AC4
+			// Token: 0x06002498 RID: 9368 RVA: 0x0009FACC File Offset: 0x0009DCCC
 			public virtual void UpdateStrip()
 			{
 				if (this.label)
@@ -318,7 +329,7 @@ namespace RoR2.UI
 				}
 			}
 
-			// Token: 0x06002327 RID: 8999 RVA: 0x000A5984 File Offset: 0x000A3B84
+			// Token: 0x06002499 RID: 9369 RVA: 0x0009FB8C File Offset: 0x0009DD8C
 			public static ObjectivePanelController.ObjectiveTracker Instantiate(ObjectivePanelController.ObjectiveSourceDescriptor sourceDescriptor)
 			{
 				if (sourceDescriptor.objectiveType != null && sourceDescriptor.objectiveType.IsSubclassOf(typeof(ObjectivePanelController.ObjectiveTracker)))
@@ -336,96 +347,150 @@ namespace RoR2.UI
 				return null;
 			}
 
-			// Token: 0x0400260F RID: 9743
+			// Token: 0x04002254 RID: 8788
 			public ObjectivePanelController.ObjectiveSourceDescriptor sourceDescriptor;
 
-			// Token: 0x04002610 RID: 9744
+			// Token: 0x04002255 RID: 8789
 			public ObjectivePanelController owner;
 
-			// Token: 0x04002611 RID: 9745
+			// Token: 0x04002256 RID: 8790
 			public bool isRelevant;
 
-			// Token: 0x04002613 RID: 9747
+			// Token: 0x04002258 RID: 8792
 			protected Image checkbox;
 
-			// Token: 0x04002614 RID: 9748
+			// Token: 0x04002259 RID: 8793
 			protected TextMeshProUGUI label;
 
-			// Token: 0x04002615 RID: 9749
+			// Token: 0x0400225A RID: 8794
 			protected string cachedString;
 
-			// Token: 0x04002616 RID: 9750
+			// Token: 0x0400225B RID: 8795
 			protected string baseToken = "";
 
-			// Token: 0x04002617 RID: 9751
+			// Token: 0x0400225C RID: 8796
 			protected bool retired;
 		}
 
-		// Token: 0x02000617 RID: 1559
+		// Token: 0x02000606 RID: 1542
 		private class FindTeleporterObjectiveTracker : ObjectivePanelController.ObjectiveTracker
 		{
-			// Token: 0x06002329 RID: 9001 RVA: 0x000A5A07 File Offset: 0x000A3C07
+			// Token: 0x0600249B RID: 9371 RVA: 0x0009FC0F File Offset: 0x0009DE0F
 			public FindTeleporterObjectiveTracker()
 			{
 				this.baseToken = "OBJECTIVE_FIND_TELEPORTER";
 			}
 		}
 
-		// Token: 0x02000618 RID: 1560
+		// Token: 0x02000607 RID: 1543
 		private class ActivateGoldshoreBeaconTracker : ObjectivePanelController.ObjectiveTracker
 		{
-			// Token: 0x0600232A RID: 9002 RVA: 0x000A5A1A File Offset: 0x000A3C1A
+			// Token: 0x170003CE RID: 974
+			// (get) Token: 0x0600249C RID: 9372 RVA: 0x0009FC22 File Offset: 0x0009DE22
+			private GoldshoresMissionController missionController
+			{
+				get
+				{
+					return this.sourceDescriptor.source as GoldshoresMissionController;
+				}
+			}
+
+			// Token: 0x0600249D RID: 9373 RVA: 0x0009FC34 File Offset: 0x0009DE34
 			public ActivateGoldshoreBeaconTracker()
 			{
 				this.baseToken = "OBJECTIVE_GOLDSHORES_ACTIVATE_BEACONS";
 			}
 
-			// Token: 0x0600232B RID: 9003 RVA: 0x000A5A2D File Offset: 0x000A3C2D
-			protected override string GenerateString()
+			// Token: 0x0600249E RID: 9374 RVA: 0x0009FC58 File Offset: 0x0009DE58
+			private bool UpdateCachedValues()
 			{
-				return string.Format(Language.GetString(this.baseToken), GoldshoresMissionController.instance.beaconsActive, GoldshoresMissionController.instance.beaconsToSpawnOnMap);
+				int beaconsActive = this.missionController.beaconsActive;
+				int beaconCount = this.missionController.beaconCount;
+				if (beaconsActive != this.cachedActiveBeaconCount || beaconCount != this.cachedRequiredBeaconCount)
+				{
+					this.cachedActiveBeaconCount = beaconsActive;
+					this.cachedRequiredBeaconCount = beaconCount;
+					return true;
+				}
+				return false;
 			}
 
-			// Token: 0x0600232C RID: 9004 RVA: 0x0000AE8B File Offset: 0x0000908B
+			// Token: 0x0600249F RID: 9375 RVA: 0x0009FCA0 File Offset: 0x0009DEA0
+			protected override string GenerateString()
+			{
+				this.UpdateCachedValues();
+				return string.Format(Language.GetString(this.baseToken), this.cachedActiveBeaconCount, this.cachedRequiredBeaconCount);
+			}
+
+			// Token: 0x060024A0 RID: 9376 RVA: 0x0009FCCF File Offset: 0x0009DECF
+			protected override bool IsDirty()
+			{
+				return !(this.sourceDescriptor.source as GoldshoresMissionController) || this.UpdateCachedValues();
+			}
+
+			// Token: 0x0400225D RID: 8797
+			private int cachedActiveBeaconCount = -1;
+
+			// Token: 0x0400225E RID: 8798
+			private int cachedRequiredBeaconCount = -1;
+		}
+
+		// Token: 0x02000608 RID: 1544
+		private class ClearArena : ObjectivePanelController.ObjectiveTracker
+		{
+			// Token: 0x060024A1 RID: 9377 RVA: 0x0009FCF0 File Offset: 0x0009DEF0
+			public ClearArena()
+			{
+				this.baseToken = "OBJECTIVE_CLEAR_ARENA";
+			}
+
+			// Token: 0x060024A2 RID: 9378 RVA: 0x0009FD04 File Offset: 0x0009DF04
+			protected override string GenerateString()
+			{
+				ArenaMissionController instance = ArenaMissionController.instance;
+				return string.Format(Language.GetString(this.baseToken), instance.clearedRounds, instance.totalRoundsMax);
+			}
+
+			// Token: 0x060024A3 RID: 9379 RVA: 0x0000B933 File Offset: 0x00009B33
 			protected override bool IsDirty()
 			{
 				return true;
 			}
 		}
 
-		// Token: 0x02000619 RID: 1561
+		// Token: 0x02000609 RID: 1545
 		private class DestroyTimeCrystals : ObjectivePanelController.ObjectiveTracker
 		{
-			// Token: 0x0600232D RID: 9005 RVA: 0x000A5A5D File Offset: 0x000A3C5D
+			// Token: 0x060024A4 RID: 9380 RVA: 0x0009FD3D File Offset: 0x0009DF3D
 			public DestroyTimeCrystals()
 			{
 				this.baseToken = "OBJECTIVE_WEEKLYRUN_DESTROY_CRYSTALS";
 			}
 
-			// Token: 0x0600232E RID: 9006 RVA: 0x000A5A70 File Offset: 0x000A3C70
+			// Token: 0x060024A5 RID: 9381 RVA: 0x0009FD50 File Offset: 0x0009DF50
 			protected override string GenerateString()
 			{
 				WeeklyRun weeklyRun = Run.instance as WeeklyRun;
 				return string.Format(Language.GetString(this.baseToken), weeklyRun.crystalsKilled, weeklyRun.crystalsRequiredToKill);
 			}
 
-			// Token: 0x0600232F RID: 9007 RVA: 0x0000AE8B File Offset: 0x0000908B
+			// Token: 0x060024A6 RID: 9382 RVA: 0x0000B933 File Offset: 0x00009B33
 			protected override bool IsDirty()
 			{
 				return true;
 			}
 		}
 
-		// Token: 0x0200061A RID: 1562
+		// Token: 0x0200060A RID: 1546
 		private class ChargeTeleporterObjectiveTracker : ObjectivePanelController.ObjectiveTracker
 		{
-			// Token: 0x06002330 RID: 9008 RVA: 0x000A5AAE File Offset: 0x000A3CAE
+			// Token: 0x060024A7 RID: 9383 RVA: 0x0009FD8E File Offset: 0x0009DF8E
 			public ChargeTeleporterObjectiveTracker()
 			{
 				this.baseToken = "OBJECTIVE_CHARGE_TELEPORTER";
 			}
 
-			// Token: 0x06002331 RID: 9009 RVA: 0x000A5AC8 File Offset: 0x000A3CC8
+			// Token: 0x060024A8 RID: 9384 RVA: 0x0009FDA8 File Offset: 0x0009DFA8
 			private bool ShouldBeFlashing()
 			{
 				bool flag = true;
@@ -444,7 +509,7 @@ namespace RoR2.UI
 				return !flag;
 			}
 
-			// Token: 0x06002332 RID: 9010 RVA: 0x000A5B18 File Offset: 0x000A3D18
+			// Token: 0x060024A9 RID: 9385 RVA: 0x0009FDF8 File Offset: 0x0009DFF8
 			protected override string GenerateString()
 			{
 				this.lastPercent = ObjectivePanelController.ChargeTeleporterObjectiveTracker.GetTeleporterPercent();
@@ -460,7 +525,7 @@ namespace RoR2.UI
 				return text;
 			}
 
-			// Token: 0x06002333 RID: 9011 RVA: 0x000A5B8C File Offset: 0x000A3D8C
+			// Token: 0x060024AA RID: 9386 RVA: 0x0009FE6C File Offset: 0x0009E06C
 			private static int GetTeleporterPercent()
 			{
 				if (!TeleporterInteraction.instance)
@@ -470,40 +535,30 @@ namespace RoR2.UI
 				return Mathf.CeilToInt(TeleporterInteraction.instance.chargeFraction * 100f);
 			}
 
-			// Token: 0x06002334 RID: 9012 RVA: 0x0000AE8B File Offset: 0x0000908B
+			// Token: 0x060024AB RID: 9387 RVA: 0x0000B933 File Offset: 0x00009B33
 			protected override bool IsDirty()
 			{
 				return true;
 			}
 
-			// Token: 0x04002618 RID: 9752
+			// Token: 0x0400225F RID: 8799
 			private int lastPercent = -1;
 		}
 
-		// Token: 0x0200061B RID: 1563
+		// Token: 0x0200060B RID: 1547
 		private class FinishTeleporterObjectiveTracker : ObjectivePanelController.ObjectiveTracker
 		{
-			// Token: 0x06002335 RID: 9013 RVA: 0x000A5BB1 File Offset: 0x000A3DB1
+			// Token: 0x060024AC RID: 9388 RVA: 0x0009FE91 File Offset: 0x0009E091
 			public FinishTeleporterObjectiveTracker()
 			{
 				this.baseToken = "OBJECTIVE_FINISH_TELEPORTER";
 			}
 		}
 
-		// Token: 0x0200061C RID: 1564
-		private class DefeatBossObjectiveTracker : ObjectivePanelController.ObjectiveTracker
-		{
-			// Token: 0x06002336 RID: 9014 RVA: 0x000A5BC4 File Offset: 0x000A3DC4
-			public DefeatBossObjectiveTracker()
-			{
-				this.baseToken = "OBJECTIVE_DEFEAT_BOSS";
-			}
-		}
-
-		// Token: 0x0200061D RID: 1565
+		// Token: 0x0200060C RID: 1548
 		private class StripExitAnimation
 		{
-			// Token: 0x06002337 RID: 9015 RVA: 0x000A5BD8 File Offset: 0x000A3DD8
+			// Token: 0x060024AD RID: 9389 RVA: 0x0009FEA4 File Offset: 0x0009E0A4
 			public StripExitAnimation(ObjectivePanelController.ObjectiveTracker objectiveTracker)
 			{
 				this.objectiveTracker = objectiveTracker;
@@ -512,7 +567,7 @@ namespace RoR2.UI
 				this.originalHeight = this.layoutElement.minHeight;
 			}
 
-			// Token: 0x06002338 RID: 9016 RVA: 0x000A5C28 File Offset: 0x000A3E28
+			// Token: 0x060024AE RID: 9390 RVA: 0x0009FEF4 File Offset: 0x0009E0F4
 			public void SetT(float newT)
 			{
 				this.t = newT;
@@ -525,19 +580,19 @@ namespace RoR2.UI
 				this.layoutElement.flexibleHeight = 0f;
 			}
 
-			// Token: 0x04002619 RID: 9753
+			// Token: 0x04002260 RID: 8800
 			public float t;
 
-			// Token: 0x0400261A RID: 9754
+			// Token: 0x04002261 RID: 8801
 			private readonly float originalHeight;
 
-			// Token: 0x0400261B RID: 9755
+			// Token: 0x04002262 RID: 8802
 			public readonly ObjectivePanelController.ObjectiveTracker objectiveTracker;
 
-			// Token: 0x0400261C RID: 9756
+			// Token: 0x04002263 RID: 8803
 			private readonly LayoutElement layoutElement;
 
-			// Token: 0x0400261D RID: 9757
+			// Token: 0x04002264 RID: 8804
 			private readonly CanvasGroup canvasGroup;
 		}
 	}

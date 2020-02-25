@@ -2,32 +2,32 @@
 
 namespace RoR2.Achievements
 {
-	// Token: 0x02000699 RID: 1689
+	// Token: 0x020006A1 RID: 1697
 	[RegisterAchievement("Discover10UniqueTier1", "Items.Crowbar", null, null)]
 	public class Discover10UniqueTier1Achievement : BaseAchievement
 	{
-		// Token: 0x060025A2 RID: 9634 RVA: 0x000AF7FF File Offset: 0x000AD9FF
+		// Token: 0x060027AD RID: 10157 RVA: 0x000AB041 File Offset: 0x000A9241
 		public override void OnInstall()
 		{
 			base.OnInstall();
-			this.userProfile.onPickupDiscovered += this.OnPickupDiscovered;
+			base.userProfile.onPickupDiscovered += this.OnPickupDiscovered;
 			this.Check();
 		}
 
-		// Token: 0x060025A3 RID: 9635 RVA: 0x000AF824 File Offset: 0x000ADA24
+		// Token: 0x060027AE RID: 10158 RVA: 0x000AB066 File Offset: 0x000A9266
 		public override void OnUninstall()
 		{
-			this.userProfile.onPickupDiscovered -= this.OnPickupDiscovered;
+			base.userProfile.onPickupDiscovered -= this.OnPickupDiscovered;
 			base.OnUninstall();
 		}
 
-		// Token: 0x060025A4 RID: 9636 RVA: 0x000AF843 File Offset: 0x000ADA43
+		// Token: 0x060027AF RID: 10159 RVA: 0x000AB085 File Offset: 0x000A9285
 		public override float ProgressForAchievement()
 		{
 			return (float)this.UniqueTier1Discovered() / 10f;
 		}
 
-		// Token: 0x060025A5 RID: 9637 RVA: 0x000AF854 File Offset: 0x000ADA54
+		// Token: 0x060027B0 RID: 10160 RVA: 0x000AB094 File Offset: 0x000A9294
 		private void OnPickupDiscovered(PickupIndex pickupIndex)
 		{
 			ItemIndex itemIndex = pickupIndex.itemIndex;
@@ -37,21 +37,24 @@ namespace RoR2.Achievements
 			}
 		}
 
-		// Token: 0x060025A6 RID: 9638 RVA: 0x000AF880 File Offset: 0x000ADA80
+		// Token: 0x060027B1 RID: 10161 RVA: 0x000AB0C0 File Offset: 0x000A92C0
 		private int UniqueTier1Discovered()
 		{
 			int num = 0;
-			for (ItemIndex itemIndex = ItemIndex.Syringe; itemIndex < ItemIndex.Count; itemIndex++)
+			ItemIndex itemIndex = ItemIndex.Syringe;
+			ItemIndex itemCount = (ItemIndex)ItemCatalog.itemCount;
+			while (itemIndex < itemCount)
 			{
-				if (ItemCatalog.GetItemDef(itemIndex).tier == ItemTier.Tier1 && this.userProfile.HasDiscoveredPickup(new PickupIndex(itemIndex)))
+				if (ItemCatalog.GetItemDef(itemIndex).tier == ItemTier.Tier1 && base.userProfile.HasDiscoveredPickup(new PickupIndex(itemIndex)))
 				{
 					num++;
 				}
+				itemIndex++;
 			}
 			return num;
 		}
 
-		// Token: 0x060025A7 RID: 9639 RVA: 0x000AF8C1 File Offset: 0x000ADAC1
+		// Token: 0x060027B2 RID: 10162 RVA: 0x000AB106 File Offset: 0x000A9306
 		private void Check()
 		{
 			if (this.UniqueTier1Discovered() >= 10)
@@ -60,7 +63,7 @@ namespace RoR2.Achievements
 			}
 		}
 
-		// Token: 0x0400286C RID: 10348
+		// Token: 0x040024FA RID: 9466
 		private const int requirement = 10;
 	}
 }

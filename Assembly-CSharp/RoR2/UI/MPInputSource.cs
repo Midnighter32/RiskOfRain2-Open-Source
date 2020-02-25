@@ -4,53 +4,53 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x0200060A RID: 1546
+	// Token: 0x020005F9 RID: 1529
 	public class MPInputSource : IMouseInputSource
 	{
-		// Token: 0x060022D4 RID: 8916 RVA: 0x0007E12C File Offset: 0x0007C32C
+		// Token: 0x06002444 RID: 9284 RVA: 0x0006FBB0 File Offset: 0x0006DDB0
 		public bool GetButtonDown(int button)
 		{
 			throw new NotImplementedException();
 		}
 
-		// Token: 0x060022D5 RID: 8917 RVA: 0x0007E12C File Offset: 0x0007C32C
+		// Token: 0x06002445 RID: 9285 RVA: 0x0006FBB0 File Offset: 0x0006DDB0
 		public bool GetButtonUp(int button)
 		{
 			throw new NotImplementedException();
 		}
 
-		// Token: 0x060022D6 RID: 8918 RVA: 0x0007E12C File Offset: 0x0007C32C
+		// Token: 0x06002446 RID: 9286 RVA: 0x0006FBB0 File Offset: 0x0006DDB0
 		public bool GetButton(int button)
 		{
 			throw new NotImplementedException();
 		}
 
-		// Token: 0x1700030A RID: 778
-		// (get) Token: 0x060022D7 RID: 8919 RVA: 0x000A4814 File Offset: 0x000A2A14
+		// Token: 0x170003C0 RID: 960
+		// (get) Token: 0x06002447 RID: 9287 RVA: 0x0009E984 File Offset: 0x0009CB84
 		public int playerId { get; }
 
-		// Token: 0x1700030B RID: 779
-		// (get) Token: 0x060022D8 RID: 8920 RVA: 0x000A481C File Offset: 0x000A2A1C
+		// Token: 0x170003C1 RID: 961
+		// (get) Token: 0x06002448 RID: 9288 RVA: 0x0009E98C File Offset: 0x0009CB8C
 		public bool enabled { get; }
 
-		// Token: 0x1700030C RID: 780
-		// (get) Token: 0x060022D9 RID: 8921 RVA: 0x000A4824 File Offset: 0x000A2A24
+		// Token: 0x170003C2 RID: 962
+		// (get) Token: 0x06002449 RID: 9289 RVA: 0x0009E994 File Offset: 0x0009CB94
 		public bool locked { get; }
 
-		// Token: 0x1700030D RID: 781
-		// (get) Token: 0x060022DA RID: 8922 RVA: 0x000A482C File Offset: 0x000A2A2C
+		// Token: 0x170003C3 RID: 963
+		// (get) Token: 0x0600244A RID: 9290 RVA: 0x0009E99C File Offset: 0x0009CB9C
 		public int buttonCount { get; }
 
-		// Token: 0x1700030E RID: 782
-		// (get) Token: 0x060022DB RID: 8923 RVA: 0x000A4834 File Offset: 0x000A2A34
+		// Token: 0x170003C4 RID: 964
+		// (get) Token: 0x0600244B RID: 9291 RVA: 0x0009E9A4 File Offset: 0x0009CBA4
 		public Vector2 screenPosition { get; }
 
-		// Token: 0x1700030F RID: 783
-		// (get) Token: 0x060022DC RID: 8924 RVA: 0x000A483C File Offset: 0x000A2A3C
+		// Token: 0x170003C5 RID: 965
+		// (get) Token: 0x0600244C RID: 9292 RVA: 0x0009E9AC File Offset: 0x0009CBAC
 		public Vector2 screenPositionDelta { get; }
 
-		// Token: 0x17000310 RID: 784
-		// (get) Token: 0x060022DD RID: 8925 RVA: 0x000A4844 File Offset: 0x000A2A44
+		// Token: 0x170003C6 RID: 966
+		// (get) Token: 0x0600244D RID: 9293 RVA: 0x0009E9B4 File Offset: 0x0009CBB4
 		public Vector2 wheelDelta { get; }
 	}
 }

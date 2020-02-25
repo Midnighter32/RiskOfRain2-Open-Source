@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000383 RID: 899
+	// Token: 0x020002BB RID: 699
 	public class ParticleSystemRandomColor : MonoBehaviour
 	{
-		// Token: 0x060012B9 RID: 4793 RVA: 0x0005BD44 File Offset: 0x00059F44
+		// Token: 0x06000FC5 RID: 4037 RVA: 0x000453A8 File Offset: 0x000435A8
 		private void Awake()
 		{
 			if (this.colors.Length != 0)
@@ -19,16 +19,16 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060012BA RID: 4794 RVA: 0x0005BDA4 File Offset: 0x00059FA4
+		// Token: 0x06000FC6 RID: 4038 RVA: 0x00045408 File Offset: 0x00043608
 		[AssetCheck(typeof(ParticleSystemRandomColor))]
-		private static void CheckParticleSystemRandomColor(ProjectIssueChecker projectIssueChecker, UnityEngine.Object asset)
+		private static void CheckParticleSystemRandomColor(AssetCheckArgs args)
 		{
-			ParticleSystemRandomColor particleSystemRandomColor = (ParticleSystemRandomColor)asset;
+			ParticleSystemRandomColor particleSystemRandomColor = (ParticleSystemRandomColor)args.asset;
 			for (int i = 0; i < particleSystemRandomColor.particleSystems.Length; i++)
 			{
 				if (!particleSystemRandomColor.particleSystems[i])
 				{
-					projectIssueChecker.LogErrorFormat(asset, "Null particle system in slot {0}", new object[]
+					args.LogErrorFormat(args.asset, "Null particle system in slot {0}", new object[]
 					{
 						i
 					});
@@ -36,10 +36,10 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001689 RID: 5769
+		// Token: 0x04000F46 RID: 3910
 		public Color[] colors;
 
-		// Token: 0x0400168A RID: 5770
+		// Token: 0x04000F47 RID: 3911
 		public ParticleSystem[] particleSystems;
 	}
 }

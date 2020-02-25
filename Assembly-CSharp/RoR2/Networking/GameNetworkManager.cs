@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net;
+using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Facepunch.Steamworks;
 using RoR2.ConVar;
@@ -14,10 +15,10 @@ using UnityEngine.SceneManagement;
 
 namespace RoR2.Networking
 {
-	// Token: 0x02000578 RID: 1400
+	// Token: 0x02000544 RID: 1348
 	public class GameNetworkManager : NetworkManager
 	{
-		// Token: 0x06001F2C RID: 7980 RVA: 0x00092F68 File Offset: 0x00091168
+		// Token: 0x06001FCE RID: 8142 RVA: 0x0008A04C File Offset: 0x0008824C
 		static GameNetworkManager()
 		{
 			GameNetworkManager.loadingSceneAsyncFieldInfo = typeof(NetworkManager).GetField("s_LoadingSceneAsync", BindingFlags.Static | BindingFlags.NonPublic);
@@ -25,27 +26,10 @@ namespace RoR2.Networking
 			{
 				Debug.LogError("NetworkManager.s_LoadingSceneAsync field could not be found! Make sure to provide a proper implementation for this version of Unity.");
 			}
-			GameNetworkManager.StaticInit();
 		}
 
-		// Token: 0x06001F2D RID: 7981 RVA: 0x00093008 File Offset: 0x00091208
-		private static void StaticInit()
-		{
-			GameNetworkManager.onStartServerGlobal += delegate()
-			{
-				if (!NetworkServer.dontListen)
-				{
-					GameNetworkManager.singleton.StartSteamworksServer();
-				}
-			};
-			GameNetworkManager.onStopServerGlobal += delegate()
-			{
-				GameNetworkManager.singleton.StopSteamworksServer();
-			};
-		}
-
-		// Token: 0x170002BB RID: 699
-		// (get) Token: 0x06001F2E RID: 7982 RVA: 0x00093060 File Offset: 0x00091260
+		// Token: 0x17000359 RID: 857
+		// (get) Token: 0x06001FCF RID: 8143 RVA: 0x0008A164 File Offset: 0x00088364
 		private static bool isLoadingScene
 		{
 			get
@@ -55,8 +39,8 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x170002BC RID: 700
-		// (get) Token: 0x06001F2F RID: 7983 RVA: 0x0009308C File Offset: 0x0009128C
+		// Token: 0x1700035A RID: 858
+		// (get) Token: 0x06001FD0 RID: 8144 RVA: 0x0008A190 File Offset: 0x00088390
 		public new static GameNetworkManager singleton
 		{
 			get
@@ -65,22 +49,98 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x170002BD RID: 701
-		// (get) Token: 0x06001F30 RID: 7984 RVA: 0x00093098 File Offset: 0x00091298
-		// (set) Token: 0x06001F31 RID: 7985 RVA: 0x000930A0 File Offset: 0x000912A0
-		public float unpredictedServerFixedTime { get; private set; }
+		// Token: 0x1700035B RID: 859
+		// (get) Token: 0x06001FD1 RID: 8145 RVA: 0x0008A19C File Offset: 0x0008839C
+		public float unpredictedServerFixedTime
+		{
+			get
+			{
+				return this._unpredictedServerFixedTime;
+			}
+		}
 
-		// Token: 0x170002BE RID: 702
-		// (get) Token: 0x06001F32 RID: 7986 RVA: 0x000930A9 File Offset: 0x000912A9
+		// Token: 0x1700035C RID: 860
+		// (get) Token: 0x06001FD2 RID: 8146 RVA: 0x0008A1A4 File Offset: 0x000883A4
+		public float unpredictedServerFixedTimeSmoothed
+		{
+			get
+			{
+				return this._unpredictedServerFixedTimeSmoothed;
+			}
+		}
+
+		// Token: 0x1700035D RID: 861
+		// (get) Token: 0x06001FD3 RID: 8147 RVA: 0x0008A1AC File Offset: 0x000883AC
 		public float serverFixedTime
 		{
 			get
 			{
-				return this.unpredictedServerFixedTime + this.filteredClientRTT;
+				return this.unpredictedServerFixedTimeSmoothed + this.filteredClientRttFixed;
 			}
 		}
 
-		// Token: 0x06001F33 RID: 7987 RVA: 0x000930B8 File Offset: 0x000912B8
+		// Token: 0x1700035E RID: 862
+		// (get) Token: 0x06001FD4 RID: 8148 RVA: 0x0008A1BB File Offset: 0x000883BB
+		public float unpredictedServerFrameTime
+		{
+			get
+			{
+				return this._unpredictedServerFrameTime;
+			}
+		}
+
+		// Token: 0x1700035F RID: 863
+		// (get) Token: 0x06001FD5 RID: 8149 RVA: 0x0008A1C3 File Offset: 0x000883C3
+		public float unpredictedServerFrameTimeSmoothed
+		{
+			get
+			{
+				return this._unpredictedServerFrameTimeSmoothed;
+			}
+		}
+
+		// Token: 0x17000360 RID: 864
+		// (get) Token: 0x06001FD6 RID: 8150 RVA: 0x0008A1CB File Offset: 0x000883CB
+		public float serverFrameTime
+		{
+			get
+			{
+				return this.unpredictedServerFrameTimeSmoothed + this.filteredClientRttFrame;
+			}
+		}
+
+		// Token: 0x06001FD7 RID: 8151 RVA: 0x0008A1DC File Offset: 0x000883DC
+		private void InitializeTime()
+		{
+			this._unpredictedServerFixedTime = 0f;
+			this._unpredictedServerFixedTimeSmoothed = 0f;
+			this.unpredictedServerFixedTimeVelocity = 1f;
+			this._unpredictedServerFrameTime = 0f;
+			this._unpredictedServerFrameTimeSmoothed = 0f;
+			this.unpredictedServerFrameTimeVelocity = 1f;
+		}
+
+		// Token: 0x06001FD8 RID: 8152 RVA: 0x0008A22C File Offset: 0x0008842C
+		private void UpdateTime(ref float targetValue, ref float currentValue, ref float velocity, float deltaTime)
+		{
+			if (deltaTime <= 0f)
+			{
+				return;
+			}
+			targetValue += deltaTime;
+			float num = (targetValue - currentValue) / deltaTime;
+			float num2 = 1f;
+			if (velocity == 0f || Mathf.Abs(num) > num2 * 3f)
+			{
+				currentValue = targetValue;
+				velocity = num2;
+				return;
+			}
+			currentValue += velocity * deltaTime;
+			velocity = Mathf.MoveTowards(velocity, num, GameNetworkManager.cvNetTimeSmoothRate.value * deltaTime);
+		}
+
+		// Token: 0x06001FD9 RID: 8153 RVA: 0x0008A29C File Offset: 0x0008849C
 		private static NetworkUser[] GetConnectionNetworkUsers(NetworkConnection conn)
 		{
 			List<PlayerController> playerControllers = conn.playerControllers;
@@ -92,16 +152,7 @@ namespace RoR2.Networking
 			return array;
 		}
 
-		// Token: 0x06001F34 RID: 7988 RVA: 0x000930FE File Offset: 0x000912FE
-		private void Ping(NetworkConnection conn, int channelId)
-		{
-			conn.SendByChannel(65, new GameNetworkManager.PingMessage
-			{
-				timeStampMs = (uint)RoR2Application.instance.stopwatch.ElapsedMilliseconds
-			}, channelId);
-		}
-
-		// Token: 0x06001F35 RID: 7989 RVA: 0x00093128 File Offset: 0x00091328
+		// Token: 0x06001FDA RID: 8154 RVA: 0x0008A2E4 File Offset: 0x000884E4
 		protected void Start()
 		{
 			foreach (QosType value in base.channels)
@@ -128,39 +179,37 @@ namespace RoR2.Networking
 			action();
 		}
 
-		// Token: 0x1400004B RID: 75
-		// (add) Token: 0x06001F36 RID: 7990 RVA: 0x00093214 File Offset: 0x00091414
-		// (remove) Token: 0x06001F37 RID: 7991 RVA: 0x00093248 File Offset: 0x00091448
+		// Token: 0x1400006F RID: 111
+		// (add) Token: 0x06001FDB RID: 8155 RVA: 0x0008A3D0 File Offset: 0x000885D0
+		// (remove) Token: 0x06001FDC RID: 8156 RVA: 0x0008A404 File Offset: 0x00088604
 		public static event Action onStartGlobal;
 
-		// Token: 0x06001F38 RID: 7992 RVA: 0x0009327B File Offset: 0x0009147B
+		// Token: 0x06001FDD RID: 8157 RVA: 0x0008A437 File Offset: 0x00088637
 		private void OnDestroy()
 		{
 			typeof(NetworkManager).GetMethod("OnDestroy", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(this, null);
 		}
 
-		// Token: 0x06001F39 RID: 7993 RVA: 0x0009329C File Offset: 0x0009149C
+		// Token: 0x06001FDE RID: 8158 RVA: 0x0008A458 File Offset: 0x00088658
 		protected void FixedUpdate()
 		{
-			if (NetworkServer.active || NetworkClient.active)
-			{
-				this.unpredictedServerFixedTime += Time.fixedDeltaTime;
-			}
+			this.UpdateTime(ref this._unpredictedServerFixedTime, ref this._unpredictedServerFixedTimeSmoothed, ref this.unpredictedServerFixedTimeVelocity, Time.fixedDeltaTime);
 			this.FixedUpdateServer();
 			this.FixedUpdateClient();
 			this.debugServerTime = this.unpredictedServerFixedTime;
-			this.debugRTT = this.clientRTT;
+			this.debugRTT = this.clientRttFrame;
 		}
 
-		// Token: 0x06001F3A RID: 7994 RVA: 0x000932ED File Offset: 0x000914ED
+		// Token: 0x06001FDF RID: 8159 RVA: 0x0008A4A6 File Offset: 0x000886A6
 		protected void Update()
 		{
+			this.UpdateTime(ref this._unpredictedServerFrameTime, ref this._unpredictedServerFrameTimeSmoothed, ref this.unpredictedServerFrameTimeVelocity, Time.deltaTime);
 			this.EnsureDesiredHost();
 			this.UpdateServer();
 			this.UpdateClient();
 		}
 
-		// Token: 0x06001F3B RID: 7995 RVA: 0x00093304 File Offset: 0x00091504
+		// Token: 0x06001FE0 RID: 8160 RVA: 0x0008A4D8 File Offset: 0x000886D8
 		private void EnsureDesiredHost()
 		{
 			if (false | this.serverShuttingDown | this.clientIsConnecting | (NetworkServer.active && GameNetworkManager.isLoadingScene) | (!NetworkClient.active && GameNetworkManager.isLoadingScene))
@@ -183,14 +232,21 @@ namespace RoR2.Networking
 					this.actedUponDesiredHost = true;
 					base.maxConnections = this.desiredHost.hostingParameters.maxPlayers;
 					NetworkServer.dontListen = !this.desiredHost.hostingParameters.listen;
-					this.StartHost();
+					if (LocalUserManager.readOnlyLocalUsersList.Count == 0)
+					{
+						base.StartServer();
+					}
+					else
+					{
+						this.StartHost();
+					}
 				}
-				if (this.desiredHost.hostType == GameNetworkManager.HostDescription.HostType.Steam && Time.unscaledTime - this.lastDesiredHostSetTime >= 1f)
+				if (this.desiredHost.hostType == GameNetworkManager.HostDescription.HostType.Steam && Time.unscaledTime - this.lastDesiredHostSetTime >= 0f)
 				{
 					this.actedUponDesiredHost = true;
 					this.StartClientSteam(this.desiredHost.steamId);
 				}
-				if (this.desiredHost.hostType == GameNetworkManager.HostDescription.HostType.IPv4 && Time.unscaledTime - this.lastDesiredHostSetTime >= 1f)
+				if (this.desiredHost.hostType == GameNetworkManager.HostDescription.HostType.IPv4 && Time.unscaledTime - this.lastDesiredHostSetTime >= 0f)
 				{
 					this.actedUponDesiredHost = true;
 					Debug.LogFormat("Attempting connection. ip={0} port={1}", new object[]
@@ -205,9 +261,9 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x170002BF RID: 703
-		// (get) Token: 0x06001F3C RID: 7996 RVA: 0x000934A8 File Offset: 0x000916A8
-		// (set) Token: 0x06001F3D RID: 7997 RVA: 0x000934B0 File Offset: 0x000916B0
+		// Token: 0x17000361 RID: 865
+		// (get) Token: 0x06001FE1 RID: 8161 RVA: 0x0008A691 File Offset: 0x00088891
+		// (set) Token: 0x06001FE2 RID: 8162 RVA: 0x0008A69C File Offset: 0x0008889C
 		public GameNetworkManager.HostDescription desiredHost
 		{
 			get
@@ -230,8 +286,8 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F3E RID: 7998 RVA: 0x0009350C File Offset: 0x0009170C
-		public void ForceCloseAllConnections()
+		// Token: 0x06001FE3 RID: 8163 RVA: 0x0008A6F8 File Offset: 0x000888F8
+		public void ForceCloseAllSteamConnections()
 		{
 			Client instance = Client.Instance;
 			Networking networking = (instance != null) ? instance.Networking : null;
@@ -258,8 +314,13 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x170002C0 RID: 704
-		// (get) Token: 0x06001F3F RID: 7999 RVA: 0x000935B0 File Offset: 0x000917B0
+		// Token: 0x17000362 RID: 866
+		// (get) Token: 0x06001FE4 RID: 8164 RVA: 0x0008A79C File Offset: 0x0008899C
+		// (set) Token: 0x06001FE5 RID: 8165 RVA: 0x0008A7A4 File Offset: 0x000889A4
+		public bool clientHasConfirmedQuit { get; private set; }
+
+		// Token: 0x17000363 RID: 867
+		// (get) Token: 0x06001FE6 RID: 8166 RVA: 0x0008A7AD File Offset: 0x000889AD
 		private bool clientIsConnecting
 		{
 			get
@@ -269,30 +330,31 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x1400004C RID: 76
-		// (add) Token: 0x06001F40 RID: 8000 RVA: 0x000935D8 File Offset: 0x000917D8
-		// (remove) Token: 0x06001F41 RID: 8001 RVA: 0x0009360C File Offset: 0x0009180C
+		// Token: 0x14000070 RID: 112
+		// (add) Token: 0x06001FE7 RID: 8167 RVA: 0x0008A7D4 File Offset: 0x000889D4
+		// (remove) Token: 0x06001FE8 RID: 8168 RVA: 0x0008A808 File Offset: 0x00088A08
 		public static event Action<NetworkClient> onStartClientGlobal;
 
-		// Token: 0x1400004D RID: 77
-		// (add) Token: 0x06001F42 RID: 8002 RVA: 0x00093640 File Offset: 0x00091840
-		// (remove) Token: 0x06001F43 RID: 8003 RVA: 0x00093674 File Offset: 0x00091874
+		// Token: 0x14000071 RID: 113
+		// (add) Token: 0x06001FE9 RID: 8169 RVA: 0x0008A83C File Offset: 0x00088A3C
+		// (remove) Token: 0x06001FEA RID: 8170 RVA: 0x0008A870 File Offset: 0x00088A70
 		public static event Action onStopClientGlobal;
 
-		// Token: 0x1400004E RID: 78
-		// (add) Token: 0x06001F44 RID: 8004 RVA: 0x000936A8 File Offset: 0x000918A8
-		// (remove) Token: 0x06001F45 RID: 8005 RVA: 0x000936DC File Offset: 0x000918DC
+		// Token: 0x14000072 RID: 114
+		// (add) Token: 0x06001FEB RID: 8171 RVA: 0x0008A8A4 File Offset: 0x00088AA4
+		// (remove) Token: 0x06001FEC RID: 8172 RVA: 0x0008A8D8 File Offset: 0x00088AD8
 		public static event Action<NetworkConnection> onClientConnectGlobal;
 
-		// Token: 0x1400004F RID: 79
-		// (add) Token: 0x06001F46 RID: 8006 RVA: 0x00093710 File Offset: 0x00091910
-		// (remove) Token: 0x06001F47 RID: 8007 RVA: 0x00093744 File Offset: 0x00091944
+		// Token: 0x14000073 RID: 115
+		// (add) Token: 0x06001FED RID: 8173 RVA: 0x0008A90C File Offset: 0x00088B0C
+		// (remove) Token: 0x06001FEE RID: 8174 RVA: 0x0008A940 File Offset: 0x00088B40
 		public static event Action<NetworkConnection> onClientDisconnectGlobal;
 
-		// Token: 0x06001F48 RID: 8008 RVA: 0x00093778 File Offset: 0x00091978
+		// Token: 0x06001FEF RID: 8175 RVA: 0x0008A974 File Offset: 0x00088B74
 		public override void OnStartClient(NetworkClient newClient)
 		{
 			base.OnStartClient(newClient);
+			this.InitializeTime();
 			foreach (string str in GameNetworkManager.spawnableFolders)
 			{
 				GameObject[] array2 = Resources.LoadAll<GameObject>("Prefabs/" + str + "/");
@@ -312,10 +374,21 @@ namespace RoR2.Networking
 			action(newClient);
 		}
 
-		// Token: 0x06001F49 RID: 8009 RVA: 0x0009380C File Offset: 0x00091A0C
+		// Token: 0x06001FF0 RID: 8176 RVA: 0x0008AA0C File Offset: 0x00088C0C
 		public override void OnStopClient()
 		{
-			this.ForceCloseAllConnections();
+			foreach (NetworkClient networkClient in NetworkClient.allClients)
+			{
+				if (networkClient != null)
+				{
+					NetworkConnection connection = networkClient.connection;
+					if (connection != null)
+					{
+						connection.Disconnect();
+					}
+				}
+			}
+			this.ForceCloseAllSteamConnections();
 			if (this.actedUponDesiredHost)
 			{
 				GameNetworkManager.singleton.desiredHost = default(GameNetworkManager.HostDescription);
@@ -328,12 +401,13 @@ namespace RoR2.Networking
 			base.OnStopClient();
 		}
 
-		// Token: 0x06001F4A RID: 8010 RVA: 0x00093850 File Offset: 0x00091A50
+		// Token: 0x06001FF1 RID: 8177 RVA: 0x0008AAA4 File Offset: 0x00088CA4
 		public override void OnClientConnect(NetworkConnection conn)
 		{
 			base.OnClientConnect(conn);
-			this.clientRTT = 0f;
-			this.filteredClientRTT = 0f;
+			this.clientRttFrame = 0f;
+			this.filteredClientRttFixed = 0f;
+			this.ClientSendAuth(conn);
 			this.ClientSetPlayers(conn);
 			Action<NetworkConnection> action = GameNetworkManager.onClientConnectGlobal;
 			if (action == null)
@@ -343,7 +417,7 @@ namespace RoR2.Networking
 			action(conn);
 		}
 
-		// Token: 0x06001F4B RID: 8011 RVA: 0x00093888 File Offset: 0x00091A88
+		// Token: 0x06001FF2 RID: 8178 RVA: 0x0008AAE4 File Offset: 0x00088CE4
 		public override void OnClientDisconnect(NetworkConnection conn)
 		{
 			SteamNetworkConnection steamNetworkConnection;
@@ -363,7 +437,7 @@ namespace RoR2.Networking
 			action(conn);
 		}
 
-		// Token: 0x06001F4C RID: 8012 RVA: 0x000938D4 File Offset: 0x00091AD4
+		// Token: 0x06001FF3 RID: 8179 RVA: 0x0008AB30 File Offset: 0x00088D30
 		public void ClientAddPlayer(short playerControllerId, NetworkConnection connection = null)
 		{
 			foreach (PlayerController playerController in ClientScene.localPlayers)
@@ -383,12 +457,12 @@ namespace RoR2.Networking
 				connection
 			});
 			GameNetworkManager.AddPlayerMessage extraMessage;
-			if (RoR2Application.instance.steamworksClient != null)
+			if (Client.Instance != null)
 			{
 				extraMessage = new GameNetworkManager.AddPlayerMessage
 				{
-					steamId = RoR2Application.instance.steamworksClient.SteamId,
-					steamAuthTicketData = RoR2Application.instance.steamworksAuthTicket.Data
+					steamId = Client.Instance.SteamId,
+					steamAuthTicketData = Client.Instance.Auth.GetAuthSessionTicket().Data
 				};
 			}
 			else
@@ -402,7 +476,7 @@ namespace RoR2.Networking
 			ClientScene.AddPlayer(connection, playerControllerId, extraMessage);
 		}
 
-		// Token: 0x06001F4D RID: 8013 RVA: 0x000939D8 File Offset: 0x00091BD8
+		// Token: 0x06001FF4 RID: 8180 RVA: 0x0008AC30 File Offset: 0x00088E30
 		private void UpdateClient()
 		{
 			NetworkClient client = this.client;
@@ -411,8 +485,15 @@ namespace RoR2.Networking
 				Networking.P2PSessionState p2PSessionState = default(Networking.P2PSessionState);
 				if (Client.Instance.Networking.GetP2PSessionState(((SteamNetworkConnection)this.client.connection).steamId.value, ref p2PSessionState) && p2PSessionState.Connecting == 0 && p2PSessionState.ConnectionActive == 0)
 				{
+					this.client.connection.InvokeHandlerNoData(33);
 					base.StopClient();
 				}
+			}
+			NetworkClient client2 = this.client;
+			if (((client2 != null) ? client2.connection : null) != null)
+			{
+				this.filteredClientRttFrame = RttManager.GetConnectionFrameSmoothedRtt(this.client.connection);
+				this.clientRttFrame = RttManager.GetConnectionRTT(this.client.connection);
 			}
 			bool flag = (this.client != null && !ClientScene.ready) || GameNetworkManager.isLoadingScene;
 			if (GameNetworkManager.wasFading != flag)
@@ -429,62 +510,80 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x170002C1 RID: 705
-		// (get) Token: 0x06001F4E RID: 8014 RVA: 0x00093A8C File Offset: 0x00091C8C
-		// (set) Token: 0x06001F4F RID: 8015 RVA: 0x00093A94 File Offset: 0x00091C94
-		public float clientRTT { get; private set; }
+		// Token: 0x17000364 RID: 868
+		// (get) Token: 0x06001FF5 RID: 8181 RVA: 0x0008AD37 File Offset: 0x00088F37
+		// (set) Token: 0x06001FF6 RID: 8182 RVA: 0x0008AD3F File Offset: 0x00088F3F
+		public float clientRttFixed { get; private set; }
 
-		// Token: 0x170002C2 RID: 706
-		// (get) Token: 0x06001F50 RID: 8016 RVA: 0x00093A9D File Offset: 0x00091C9D
-		// (set) Token: 0x06001F51 RID: 8017 RVA: 0x00093AA5 File Offset: 0x00091CA5
-		public float filteredClientRTT { get; private set; }
+		// Token: 0x17000365 RID: 869
+		// (get) Token: 0x06001FF7 RID: 8183 RVA: 0x0008AD48 File Offset: 0x00088F48
+		// (set) Token: 0x06001FF8 RID: 8184 RVA: 0x0008AD50 File Offset: 0x00088F50
+		public float clientRttFrame { get; private set; }
 
-		// Token: 0x06001F52 RID: 8018 RVA: 0x00093AB0 File Offset: 0x00091CB0
+		// Token: 0x17000366 RID: 870
+		// (get) Token: 0x06001FF9 RID: 8185 RVA: 0x0008AD59 File Offset: 0x00088F59
+		// (set) Token: 0x06001FFA RID: 8186 RVA: 0x0008AD61 File Offset: 0x00088F61
+		public float filteredClientRttFixed { get; private set; }
+
+		// Token: 0x17000367 RID: 871
+		// (get) Token: 0x06001FFB RID: 8187 RVA: 0x0008AD6A File Offset: 0x00088F6A
+		// (set) Token: 0x06001FFC RID: 8188 RVA: 0x0008AD72 File Offset: 0x00088F72
+		public float filteredClientRttFrame { get; private set; }
+
+		// Token: 0x06001FFD RID: 8189 RVA: 0x0008AD7C File Offset: 0x00088F7C
 		private void FixedUpdateClient()
 		{
 			if (!NetworkClient.active || this.client == null)
 			{
 				return;
 			}
-			SteamNetworkConnection steamNetworkConnection;
-			if ((steamNetworkConnection = (this.client.connection as SteamNetworkConnection)) != null)
+			NetworkClient client = this.client;
+			if (((client != null) ? client.connection : null) != null && this.client.connection.isConnected)
 			{
-				this.clientRTT = steamNetworkConnection.rtt * 0.001f;
-			}
-			else
-			{
-				this.clientRTT = (float)this.client.GetRTT() * 0.001f;
-			}
-			if (this.filteredClientRTT == 0f)
-			{
-				this.filteredClientRTT = this.clientRTT;
-			}
-			else
-			{
-				this.filteredClientRTT = Mathf.SmoothDamp(this.filteredClientRTT, this.clientRTT, ref this.rttVelocity, this.filteredRTTSmoothDuration, 100f, Time.fixedDeltaTime);
-			}
-			int i = 0;
-			int count = NetworkClient.allClients.Count;
-			while (i < count)
-			{
-				NetworkConnection connection = NetworkClient.allClients[i].connection;
+				NetworkConnection connection = this.client.connection;
+				this.filteredClientRttFixed = RttManager.GetConnectionFixedSmoothedRtt(connection);
+				this.clientRttFixed = RttManager.GetConnectionRTT(connection);
 				if (!Util.ConnectionIsLocal(connection))
 				{
-					this.Ping(connection, QosChannelIndex.ping.intVal);
+					RttManager.Ping(connection, QosChannelIndex.ping.intVal);
 				}
-				i++;
 			}
 		}
 
-		// Token: 0x06001F53 RID: 8019 RVA: 0x00093B98 File Offset: 0x00091D98
+		// Token: 0x06001FFE RID: 8190 RVA: 0x0008ADFC File Offset: 0x00088FFC
 		public override void OnClientSceneChanged(NetworkConnection conn)
 		{
+			string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(NetworkManager.networkSceneName);
+			string fileNameWithoutExtension2 = Path.GetFileNameWithoutExtension(SceneManager.GetActiveScene().name);
+			Debug.LogFormat("OnClientSceneChanged networkSceneName={0} currentSceneName={1}", new object[]
+			{
+				fileNameWithoutExtension,
+				fileNameWithoutExtension2
+			});
+			if (fileNameWithoutExtension != fileNameWithoutExtension2)
+			{
+				Debug.Log("OnClientSceneChanged skipped due to scene mismatch.");
+				return;
+			}
 			base.autoCreatePlayer = false;
 			base.OnClientSceneChanged(conn);
 			this.ClientSetPlayers(conn);
+			FadeToBlackManager.ForceFullBlack();
 		}
 
-		// Token: 0x06001F54 RID: 8020 RVA: 0x00093BB0 File Offset: 0x00091DB0
+		// Token: 0x06001FFF RID: 8191 RVA: 0x0008AE70 File Offset: 0x00089070
+		private void ClientSendAuth(NetworkConnection conn)
+		{
+			conn.Send(74, new ClientAuthData
+			{
+				steamId = new CSteamID(Client.Instance.SteamId),
+				authTicket = Client.Instance.Auth.GetAuthSessionTicket().Data,
+				password = GameNetworkManager.cvClPassword.value,
+				version = ""
+			});
+		}
+
+		// Token: 0x06002000 RID: 8192 RVA: 0x0008AED8 File Offset: 0x000890D8
 		private void ClientSetPlayers(NetworkConnection conn)
 		{
 			ReadOnlyCollection<LocalUser> readOnlyLocalUsersList = LocalUserManager.readOnlyLocalUsersList;
@@ -494,7 +593,7 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F55 RID: 8021 RVA: 0x00093BE8 File Offset: 0x00091DE8
+		// Token: 0x06002001 RID: 8193 RVA: 0x0008AF10 File Offset: 0x00089110
 		private void StartClientSteam(CSteamID serverId)
 		{
 			if (!NetworkServer.active)
@@ -542,7 +641,7 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F56 RID: 8022 RVA: 0x00093D10 File Offset: 0x00091F10
+		// Token: 0x06002002 RID: 8194 RVA: 0x0008B038 File Offset: 0x00089238
 		public bool IsConnectedToServer(CSteamID serverSteamId)
 		{
 			if (this.client == null || !this.client.connection.isConnected || Client.Instance == null)
@@ -557,23 +656,23 @@ namespace RoR2.Networking
 			return this.client.connection.address == "localServer" && serverSteamId.value == Client.Instance.SteamId;
 		}
 
-		// Token: 0x06001F57 RID: 8023 RVA: 0x00093D91 File Offset: 0x00091F91
+		// Token: 0x06002003 RID: 8195 RVA: 0x0008B0B9 File Offset: 0x000892B9
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void ClientInit()
 		{
 			SceneCatalog.onMostRecentSceneDefChanged += GameNetworkManager.ClientUpdateOfflineScene;
 		}
 
-		// Token: 0x06001F58 RID: 8024 RVA: 0x00093DA4 File Offset: 0x00091FA4
+		// Token: 0x06002004 RID: 8196 RVA: 0x0008B0CC File Offset: 0x000892CC
 		private static void ClientUpdateOfflineScene(SceneDef sceneDef)
 		{
 			if (GameNetworkManager.singleton && sceneDef.isOfflineScene)
 			{
-				GameNetworkManager.singleton.offlineScene = sceneDef.sceneName;
+				GameNetworkManager.singleton.offlineScene = sceneDef.baseSceneName;
 			}
 		}
 
-		// Token: 0x06001F59 RID: 8025 RVA: 0x00093DCA File Offset: 0x00091FCA
+		// Token: 0x06002005 RID: 8197 RVA: 0x0008B0F2 File Offset: 0x000892F2
 		private static void EnsureNetworkManagerNotBusy()
 		{
 			if (!GameNetworkManager.singleton)
@@ -586,7 +685,7 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F5A RID: 8026 RVA: 0x00093DF8 File Offset: 0x00091FF8
+		// Token: 0x06002006 RID: 8198 RVA: 0x0008B120 File Offset: 0x00089320
 		[ConCommand(commandName = "client_set_players", flags = ConVarFlags.None, helpText = "Adds network players for all local players. Debug only.")]
 		private static void CCClientSetPlayers(ConCommandArgs args)
 		{
@@ -596,29 +695,36 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F5B RID: 8027 RVA: 0x00093E48 File Offset: 0x00092048
+		// Token: 0x06002007 RID: 8199 RVA: 0x0008B170 File Offset: 0x00089370
 		[ConCommand(commandName = "ping", flags = ConVarFlags.None, helpText = "Prints the current round trip time from this client to the server and back.")]
 		private static void CCPing(ConCommandArgs args)
 		{
-			if (GameNetworkManager.singleton && GameNetworkManager.singleton.client != null && GameNetworkManager.singleton.client.connection != null)
+			GameNetworkManager singleton = GameNetworkManager.singleton;
+			NetworkConnection networkConnection;
+			if (singleton == null)
 			{
-				uint rtt;
-				if (GameNetworkManager.singleton.client.connection is SteamNetworkConnection)
-				{
-					rtt = ((SteamNetworkConnection)GameNetworkManager.singleton.client.connection).rtt;
-				}
-				else
-				{
-					rtt = (uint)GameNetworkManager.singleton.client.GetRTT();
-				}
-				Debug.LogFormat("rtt={0}ms", new object[]
-				{
-					rtt
-				});
+				networkConnection = null;
 			}
+			else
+			{
+				NetworkClient client = singleton.client;
+				networkConnection = ((client != null) ? client.connection : null);
+			}
+			NetworkConnection networkConnection2 = networkConnection;
+			if (networkConnection2 != null)
+			{
+				Debug.LogFormat("rtt={0}ms smoothedFrame={1} smoothedFixed={2}", new object[]
+				{
+					RttManager.GetConnectionRTTInMilliseconds(networkConnection2),
+					RttManager.GetConnectionFrameSmoothedRtt(networkConnection2),
+					RttManager.GetConnectionFixedSmoothedRtt(networkConnection2)
+				});
+				return;
+			}
+			Debug.Log("No connection to server.");
 		}
 
-		// Token: 0x06001F5C RID: 8028 RVA: 0x00093EDC File Offset: 0x000920DC
+		// Token: 0x06002008 RID: 8200 RVA: 0x0008B1E4 File Offset: 0x000893E4
 		[ConCommand(commandName = "set_scene", flags = ConVarFlags.None, helpText = "Changes to the named scene.")]
 		private static void CCSetScene(ConCommandArgs args)
 		{
@@ -654,7 +760,7 @@ namespace RoR2.Networking
 			throw new ConCommandException("Cannot change scene while connected to a remote server.");
 		}
 
-		// Token: 0x06001F5D RID: 8029 RVA: 0x00093FBC File Offset: 0x000921BC
+		// Token: 0x06002009 RID: 8201 RVA: 0x0008B2C4 File Offset: 0x000894C4
 		[ConCommand(commandName = "scene_list", flags = ConVarFlags.None, helpText = "Prints a list of all available scene names.")]
 		private static void CCSceneList(ConCommandArgs args)
 		{
@@ -666,7 +772,7 @@ namespace RoR2.Networking
 			Debug.Log(string.Join("\n", array));
 		}
 
-		// Token: 0x06001F5E RID: 8030 RVA: 0x00094010 File Offset: 0x00092210
+		// Token: 0x0600200A RID: 8202 RVA: 0x0008B318 File Offset: 0x00089518
 		[ConCommand(commandName = "dump_network_ids", flags = ConVarFlags.None, helpText = "Lists the network ids of all currently networked game objects.")]
 		private static void CCDumpNetworkIDs(ConCommandArgs args)
 		{
@@ -681,14 +787,14 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F5F RID: 8031 RVA: 0x0009406C File Offset: 0x0009226C
+		// Token: 0x0600200B RID: 8203 RVA: 0x0008B374 File Offset: 0x00089574
 		[ConCommand(commandName = "disconnect", flags = ConVarFlags.None, helpText = "Disconnect from a server or shut down the current server.")]
 		private static void CCDisconnect(ConCommandArgs args)
 		{
 			GameNetworkManager.singleton.desiredHost = default(GameNetworkManager.HostDescription);
 		}
 
-		// Token: 0x06001F60 RID: 8032 RVA: 0x0009408C File Offset: 0x0009228C
+		// Token: 0x0600200C RID: 8204 RVA: 0x0008B394 File Offset: 0x00089594
 		private void Disconnect()
 		{
 			if (this.serverShuttingDown)
@@ -707,7 +813,7 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F61 RID: 8033 RVA: 0x000940CC File Offset: 0x000922CC
+		// Token: 0x0600200D RID: 8205 RVA: 0x0008B3D4 File Offset: 0x000895D4
 		[ConCommand(commandName = "connect", flags = ConVarFlags.None, helpText = "Connect to a server.")]
 		private static void CCConnect(ConCommandArgs args)
 		{
@@ -717,20 +823,24 @@ namespace RoR2.Networking
 				return;
 			}
 			GameNetworkManager.EnsureNetworkManagerNotBusy();
-			string[] array = args[0].Split(new char[]
+			AddressPortPair addressPortPair;
+			if (AddressPortPair.TryParse(args[0], out addressPortPair))
 			{
-				':'
-			});
-			string address = array[0];
-			ushort port = 7777;
-			if (array.Length > 1)
-			{
-				TextSerialization.TryParseInvariant(array[1], out port);
+				Debug.LogFormat("Parsed address={0} port={1}. Setting desired host.", new object[]
+				{
+					addressPortPair.address,
+					addressPortPair.port
+				});
+				GameNetworkManager.singleton.desiredHost = new GameNetworkManager.HostDescription(addressPortPair);
+				return;
 			}
-			GameNetworkManager.singleton.desiredHost = new GameNetworkManager.HostDescription(new AddressPortPair(address, port));
+			Debug.LogFormat("Could not parse address and port from \"{0}\".", new object[]
+			{
+				args[0]
+			});
 		}
 
-		// Token: 0x06001F62 RID: 8034 RVA: 0x00094140 File Offset: 0x00092340
+		// Token: 0x0600200E RID: 8206 RVA: 0x0008B460 File Offset: 0x00089660
 		[ConCommand(commandName = "connect_steamworks_p2p", flags = ConVarFlags.None, helpText = "Connect to a server using Steamworks P2P. Argument is the 64-bit Steam ID of the server to connect to.")]
 		private static void CCConnectSteamworksP2P(ConCommandArgs args)
 		{
@@ -756,7 +866,7 @@ namespace RoR2.Networking
 			GameNetworkManager.singleton.desiredHost = new GameNetworkManager.HostDescription(csteamID);
 		}
 
-		// Token: 0x06001F63 RID: 8035 RVA: 0x000941D8 File Offset: 0x000923D8
+		// Token: 0x0600200F RID: 8207 RVA: 0x0008B4F8 File Offset: 0x000896F8
 		[ConCommand(commandName = "host", flags = ConVarFlags.None, helpText = "Host a server. First argument is whether or not to listen for incoming connections.")]
 		private static void CCHost(ConCommandArgs args)
 		{
@@ -790,7 +900,7 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F64 RID: 8036 RVA: 0x00094270 File Offset: 0x00092470
+		// Token: 0x06002010 RID: 8208 RVA: 0x0008B590 File Offset: 0x00089790
 		[ConCommand(commandName = "steam_get_p2p_session_state")]
 		private static void CCSteamGetP2PSessionState(ConCommandArgs args)
 		{
@@ -827,23 +937,7 @@ namespace RoR2.Networking
 			});
 		}
 
-		// Token: 0x06001F65 RID: 8037 RVA: 0x00094374 File Offset: 0x00092574
-		[ConCommand(commandName = "steam_server_print_info")]
-		private static void CCSteamServerPrintInfo(ConCommandArgs args)
-		{
-			ConCommandException.CheckSteamworks();
-			if (!GameNetworkManager.singleton)
-			{
-				return;
-			}
-			if (GameNetworkManager.singleton.steamworksServer == null)
-			{
-				throw new ConCommandException("No steamworks server.");
-			}
-			Debug.Log("" + string.Format("IsValid={0}\n", GameNetworkManager.singleton.steamworksServer.IsValid) + string.Format("Product={0}\n", GameNetworkManager.singleton.steamworksServer.Product) + string.Format("ModDir={0}\n", GameNetworkManager.singleton.steamworksServer.ModDir) + string.Format("SteamId={0}\n", GameNetworkManager.singleton.steamworksServer.SteamId) + string.Format("DedicatedServer={0}\n", GameNetworkManager.singleton.steamworksServer.DedicatedServer) + string.Format("LoggedOn={0}\n", GameNetworkManager.singleton.steamworksServer.LoggedOn) + string.Format("ServerName={0}\n", GameNetworkManager.singleton.steamworksServer.ServerName) + string.Format("PublicIp={0}\n", GameNetworkManager.singleton.steamworksServer.PublicIp) + string.Format("Passworded={0}\n", GameNetworkManager.singleton.steamworksServer.Passworded) + string.Format("MaxPlayers={0}\n", GameNetworkManager.singleton.steamworksServer.MaxPlayers) + string.Format("BotCount={0}\n", GameNetworkManager.singleton.steamworksServer.BotCount) + string.Format("MapName={0}\n", GameNetworkManager.singleton.steamworksServer.MapName) + string.Format("GameDescription={0}\n", GameNetworkManager.singleton.steamworksServer.GameDescription) + string.Format("GameTags={0}\n", GameNetworkManager.singleton.steamworksServer.GameTags));
-		}
-
-		// Token: 0x06001F66 RID: 8038 RVA: 0x0009457C File Offset: 0x0009277C
+		// Token: 0x06002011 RID: 8209 RVA: 0x0008B694 File Offset: 0x00089894
 		[ConCommand(commandName = "kick_steam", flags = ConVarFlags.SenderMustBeServer, helpText = "Kicks the user with the specified steam id from the server.")]
 		private static void CCKickSteam(ConCommandArgs args)
 		{
@@ -860,7 +954,7 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F67 RID: 8039 RVA: 0x000945C4 File Offset: 0x000927C4
+		// Token: 0x06002012 RID: 8210 RVA: 0x0008B6DC File Offset: 0x000898DC
 		[ConCommand(commandName = "ban_steam", flags = ConVarFlags.SenderMustBeServer, helpText = "Bans the user with the specified steam id from the server.")]
 		private static void CCBanSteam(ConCommandArgs args)
 		{
@@ -877,22 +971,22 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x170002C3 RID: 707
-		// (get) Token: 0x06001F68 RID: 8040 RVA: 0x0009460A File Offset: 0x0009280A
-		// (set) Token: 0x06001F69 RID: 8041 RVA: 0x00094612 File Offset: 0x00092812
+		// Token: 0x17000368 RID: 872
+		// (get) Token: 0x06002013 RID: 8211 RVA: 0x0008B722 File Offset: 0x00089922
+		// (set) Token: 0x06002014 RID: 8212 RVA: 0x0008B72A File Offset: 0x0008992A
 		public bool isHost { get; private set; }
 
-		// Token: 0x14000050 RID: 80
-		// (add) Token: 0x06001F6A RID: 8042 RVA: 0x0009461C File Offset: 0x0009281C
-		// (remove) Token: 0x06001F6B RID: 8043 RVA: 0x00094650 File Offset: 0x00092850
+		// Token: 0x14000074 RID: 116
+		// (add) Token: 0x06002015 RID: 8213 RVA: 0x0008B734 File Offset: 0x00089934
+		// (remove) Token: 0x06002016 RID: 8214 RVA: 0x0008B768 File Offset: 0x00089968
 		public static event Action onStartHostGlobal;
 
-		// Token: 0x14000051 RID: 81
-		// (add) Token: 0x06001F6C RID: 8044 RVA: 0x00094684 File Offset: 0x00092884
-		// (remove) Token: 0x06001F6D RID: 8045 RVA: 0x000946B8 File Offset: 0x000928B8
+		// Token: 0x14000075 RID: 117
+		// (add) Token: 0x06002017 RID: 8215 RVA: 0x0008B79C File Offset: 0x0008999C
+		// (remove) Token: 0x06002018 RID: 8216 RVA: 0x0008B7D0 File Offset: 0x000899D0
 		public static event Action onStopHostGlobal;
 
-		// Token: 0x06001F6E RID: 8046 RVA: 0x000946EB File Offset: 0x000928EB
+		// Token: 0x06002019 RID: 8217 RVA: 0x0008B803 File Offset: 0x00089A03
 		public override void OnStartHost()
 		{
 			base.OnStartHost();
@@ -905,7 +999,7 @@ namespace RoR2.Networking
 			action();
 		}
 
-		// Token: 0x06001F6F RID: 8047 RVA: 0x00094709 File Offset: 0x00092909
+		// Token: 0x0600201A RID: 8218 RVA: 0x0008B821 File Offset: 0x00089A21
 		public override void OnStopHost()
 		{
 			Action action = GameNetworkManager.onStopHostGlobal;
@@ -917,7 +1011,7 @@ namespace RoR2.Networking
 			base.OnStopHost();
 		}
 
-		// Token: 0x06001F70 RID: 8048 RVA: 0x00094728 File Offset: 0x00092928
+		// Token: 0x0600201B RID: 8219 RVA: 0x0008B840 File Offset: 0x00089A40
 		[NetworkMessageHandler(client = true, server = false, msgType = 67)]
 		private static void HandleKick(NetworkMessage netMsg)
 		{
@@ -935,15 +1029,17 @@ namespace RoR2.Networking
 			simpleDialogBox.rootObject.transform.SetParent(RoR2Application.instance.mainCanvas.transform);
 		}
 
-		// Token: 0x06001F71 RID: 8049 RVA: 0x000947C8 File Offset: 0x000929C8
+		// Token: 0x0600201C RID: 8220 RVA: 0x0008B8E0 File Offset: 0x00089AE0
 		[NetworkMessageHandler(msgType = 54, client = true)]
 		private static void HandleUpdateTime(NetworkMessage netMsg)
 		{
-			float unpredictedServerFixedTime = netMsg.reader.ReadSingle();
-			GameNetworkManager.singleton.unpredictedServerFixedTime = unpredictedServerFixedTime;
+			float num = netMsg.reader.ReadSingle();
+			GameNetworkManager.singleton._unpredictedServerFixedTime = num;
+			float num2 = Time.time - Time.fixedTime;
+			GameNetworkManager.singleton._unpredictedServerFrameTime = num + num2;
 		}
 
-		// Token: 0x06001F72 RID: 8050 RVA: 0x000947EC File Offset: 0x000929EC
+		// Token: 0x0600201D RID: 8221 RVA: 0x0008B920 File Offset: 0x00089B20
 		[NetworkMessageHandler(msgType = 64, client = true, server = true)]
 		private static void HandleTest(NetworkMessage netMsg)
 		{
@@ -954,34 +1050,13 @@ namespace RoR2.Networking
 			});
 		}
 
-		// Token: 0x06001F73 RID: 8051 RVA: 0x00094820 File Offset: 0x00092A20
-		[NetworkMessageHandler(msgType = 65, client = true, server = true)]
-		private static void HandlePing(NetworkMessage netMsg)
-		{
-			NetworkReader reader = netMsg.reader;
-			netMsg.conn.SendByChannel(66, reader.ReadMessage<GameNetworkManager.PingMessage>(), netMsg.channelId);
-		}
-
-		// Token: 0x06001F74 RID: 8052 RVA: 0x00094850 File Offset: 0x00092A50
-		[NetworkMessageHandler(msgType = 66, client = true, server = true)]
-		private static void HandlePingResponse(NetworkMessage netMsg)
-		{
-			uint timeStampMs = netMsg.reader.ReadMessage<GameNetworkManager.PingMessage>().timeStampMs;
-			uint rtt = (uint)RoR2Application.instance.stopwatch.ElapsedMilliseconds - timeStampMs;
-			SteamNetworkConnection steamNetworkConnection;
-			if ((steamNetworkConnection = (netMsg.conn as SteamNetworkConnection)) != null)
-			{
-				steamNetworkConnection.rtt = rtt;
-			}
-		}
-
-		// Token: 0x06001F75 RID: 8053 RVA: 0x00094897 File Offset: 0x00092A97
+		// Token: 0x0600201E RID: 8222 RVA: 0x0008B952 File Offset: 0x00089B52
 		public static bool IsMemberInSteamLobby(CSteamID steamId)
 		{
 			return Client.Instance.Lobby.UserIsInCurrentLobby(steamId.value);
 		}
 
-		// Token: 0x06001F76 RID: 8054 RVA: 0x000948B0 File Offset: 0x00092AB0
+		// Token: 0x0600201F RID: 8223 RVA: 0x0008B96C File Offset: 0x00089B6C
 		private void OnP2PData(ulong steamId, byte[] data, int dataLength, int channel)
 		{
 			CSteamID steamId2 = new CSteamID(steamId);
@@ -1010,7 +1085,7 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F77 RID: 8055 RVA: 0x00094930 File Offset: 0x00092B30
+		// Token: 0x06002020 RID: 8224 RVA: 0x0008B9EC File Offset: 0x00089BEC
 		public CSteamID GetSteamIDForConnection(NetworkConnection conn)
 		{
 			if (this.client != null && conn == this.client.connection)
@@ -1034,7 +1109,7 @@ namespace RoR2.Networking
 			return CSteamID.nil;
 		}
 
-		// Token: 0x06001F78 RID: 8056 RVA: 0x000949B4 File Offset: 0x00092BB4
+		// Token: 0x06002021 RID: 8225 RVA: 0x0008BA70 File Offset: 0x00089C70
 		private bool OnIncomingP2PConnection(ulong steamId)
 		{
 			bool flag = false;
@@ -1058,26 +1133,7 @@ namespace RoR2.Networking
 			return flag;
 		}
 
-		// Token: 0x06001F79 RID: 8057 RVA: 0x00094A58 File Offset: 0x00092C58
-		private void OnServerP2PConnectionFailed(ulong steamId, Networking.SessionError sessionError)
-		{
-			Debug.LogFormat("GameNetworkManager.OnServerP2PConnectionFailed steamId={0} sessionError={1}", new object[]
-			{
-				steamId,
-				sessionError
-			});
-			ReadOnlyCollection<NetworkConnection> connections = NetworkServer.connections;
-			for (int i = connections.Count - 1; i >= 0; i--)
-			{
-				SteamNetworkConnection steamNetworkConnection;
-				if ((steamNetworkConnection = (connections[i] as SteamNetworkConnection)) != null && steamNetworkConnection.steamId.value == steamId)
-				{
-					this.ServerHandleClientDisconnect(steamNetworkConnection);
-				}
-			}
-		}
-
-		// Token: 0x06001F7A RID: 8058 RVA: 0x00094AC8 File Offset: 0x00092CC8
+		// Token: 0x06002022 RID: 8226 RVA: 0x0008BB14 File Offset: 0x00089D14
 		private void OnClientP2PConnectionFailed(ulong steamId, Networking.SessionError sessionError)
 		{
 			Debug.LogFormat("GameNetworkManager.OnClientP2PConnectionFailed steamId={0} sessionError={1}", new object[]
@@ -1100,15 +1156,13 @@ namespace RoR2.Networking
 					SteamNetworkConnection steamNetworkConnection2;
 					if ((steamNetworkConnection2 = (connections[i] as SteamNetworkConnection)) != null && steamNetworkConnection2.steamId.value == steamId)
 					{
-						steamNetworkConnection2.InvokeHandlerNoData(33);
-						steamNetworkConnection2.Disconnect();
-						steamNetworkConnection2.Dispose();
+						this.ServerHandleClientDisconnect(steamNetworkConnection2);
 					}
 				}
 			}
 		}
 
-		// Token: 0x06001F7B RID: 8059 RVA: 0x00094B8C File Offset: 0x00092D8C
+		// Token: 0x06002023 RID: 8227 RVA: 0x0008BBC8 File Offset: 0x00089DC8
 		public void CreateP2PConnectionWithPeer(CSteamID peer)
 		{
 			SteamNetworkConnection steamNetworkConnection = new SteamNetworkConnection(peer);
@@ -1135,130 +1189,32 @@ namespace RoR2.Networking
 			steamNetworkConnection.SendWriter(networkWriter, QosChannelIndex.defaultReliable.intVal);
 		}
 
-		// Token: 0x14000052 RID: 82
-		// (add) Token: 0x06001F7C RID: 8060 RVA: 0x00094C18 File Offset: 0x00092E18
-		// (remove) Token: 0x06001F7D RID: 8061 RVA: 0x00094C4C File Offset: 0x00092E4C
+		// Token: 0x14000076 RID: 118
+		// (add) Token: 0x06002024 RID: 8228 RVA: 0x0008BC54 File Offset: 0x00089E54
+		// (remove) Token: 0x06002025 RID: 8229 RVA: 0x0008BC88 File Offset: 0x00089E88
 		public static event Action onStartServerGlobal;
 
-		// Token: 0x14000053 RID: 83
-		// (add) Token: 0x06001F7E RID: 8062 RVA: 0x00094C80 File Offset: 0x00092E80
-		// (remove) Token: 0x06001F7F RID: 8063 RVA: 0x00094CB4 File Offset: 0x00092EB4
+		// Token: 0x14000077 RID: 119
+		// (add) Token: 0x06002026 RID: 8230 RVA: 0x0008BCBC File Offset: 0x00089EBC
+		// (remove) Token: 0x06002027 RID: 8231 RVA: 0x0008BCF0 File Offset: 0x00089EF0
 		public static event Action onStopServerGlobal;
 
-		// Token: 0x14000054 RID: 84
-		// (add) Token: 0x06001F80 RID: 8064 RVA: 0x00094CE8 File Offset: 0x00092EE8
-		// (remove) Token: 0x06001F81 RID: 8065 RVA: 0x00094D1C File Offset: 0x00092F1C
+		// Token: 0x14000078 RID: 120
+		// (add) Token: 0x06002028 RID: 8232 RVA: 0x0008BD24 File Offset: 0x00089F24
+		// (remove) Token: 0x06002029 RID: 8233 RVA: 0x0008BD58 File Offset: 0x00089F58
 		public static event Action<NetworkConnection> onServerConnectGlobal;
 
-		// Token: 0x14000055 RID: 85
-		// (add) Token: 0x06001F82 RID: 8066 RVA: 0x00094D50 File Offset: 0x00092F50
-		// (remove) Token: 0x06001F83 RID: 8067 RVA: 0x00094D84 File Offset: 0x00092F84
+		// Token: 0x14000079 RID: 121
+		// (add) Token: 0x0600202A RID: 8234 RVA: 0x0008BD8C File Offset: 0x00089F8C
+		// (remove) Token: 0x0600202B RID: 8235 RVA: 0x0008BDC0 File Offset: 0x00089FC0
 		public static event Action<NetworkConnection> onServerDisconnectGlobal;
 
-		// Token: 0x14000056 RID: 86
-		// (add) Token: 0x06001F84 RID: 8068 RVA: 0x00094DB8 File Offset: 0x00092FB8
-		// (remove) Token: 0x06001F85 RID: 8069 RVA: 0x00094DEC File Offset: 0x00092FEC
+		// Token: 0x1400007A RID: 122
+		// (add) Token: 0x0600202C RID: 8236 RVA: 0x0008BDF4 File Offset: 0x00089FF4
+		// (remove) Token: 0x0600202D RID: 8237 RVA: 0x0008BE28 File Offset: 0x0008A028
 		public static event Action<string> onServerSceneChangedGlobal;
 
-		// Token: 0x06001F86 RID: 8070 RVA: 0x00094E20 File Offset: 0x00093020
-		private void StartSteamworksServer()
-		{
-			string modDir = "Risk of Rain 2";
-			string gameDesc = "Risk of Rain 2";
-			this.steamworksServer = new Server(632360u, new ServerInit(modDir, gameDesc)
-			{
-				VersionString = "0.0.0.0",
-				Secure = true,
-				IpAddress = IPAddress.Any,
-				GamePort = 7777
-			});
-			Debug.LogFormat("steamworksServer.IsValid={0}", new object[]
-			{
-				this.steamworksServer.IsValid
-			});
-			if (!this.steamworksServer.IsValid)
-			{
-				this.steamworksServer.Dispose();
-				this.steamworksServer = null;
-			}
-			if (this.steamworksServer != null)
-			{
-				this.steamworksServer.MaxPlayers = base.maxConnections;
-				this.steamworksServer.ServerName = "NAME";
-				this.steamworksServer.DedicatedServer = false;
-				this.steamworksServer.AutomaticHeartbeats = true;
-				this.steamworksServer.MapName = SceneManager.GetActiveScene().name;
-				this.steamworksServer.LogOnAnonymous();
-				Debug.LogFormat("steamworksServer.LoggedOn={0}", new object[]
-				{
-					this.steamworksServer.LoggedOn
-				});
-				base.StartCoroutine("CheckIPUntilAvailable");
-				base.StartCoroutine("UpdateSteamServerPlayers");
-				SteamworksLobbyManager.OnServerSteamIDDiscovered(new CSteamID(Client.Instance.SteamId));
-				GameNetworkManager.onServerSceneChangedGlobal += this.UpdateSteamMapName;
-			}
-		}
-
-		// Token: 0x06001F87 RID: 8071 RVA: 0x00094F81 File Offset: 0x00093181
-		private void UpdateSteamMapName(string sceneName)
-		{
-			if (this.steamworksServer != null)
-			{
-				this.steamworksServer.MapName = sceneName;
-			}
-		}
-
-		// Token: 0x06001F88 RID: 8072 RVA: 0x00094F97 File Offset: 0x00093197
-		private void StopSteamworksServer()
-		{
-			GameNetworkManager.onServerSceneChangedGlobal -= this.UpdateSteamMapName;
-			if (this.steamworksServer != null)
-			{
-				this.steamworksServer.Dispose();
-				this.steamworksServer = null;
-			}
-			base.StopCoroutine("CheckIPUntilAvailable");
-		}
-
-		// Token: 0x06001F89 RID: 8073 RVA: 0x00094FCF File Offset: 0x000931CF
-		private IEnumerator CheckIPUntilAvailable()
-		{
-			IPAddress address = null;
-			while (this.steamworksServer != null && (address = this.steamworksServer.PublicIp) == null)
-			{
-				yield return new WaitForSecondsRealtime(0.1f);
-			}
-			if (address != null)
-			{
-				SteamworksLobbyManager.OnServerIPDiscovered(address.ToString(), (ushort)NetworkServer.listenPort);
-			}
-			else
-			{
-				Debug.Log("Failed to find Steamworks server IP.");
-			}
-			yield break;
-		}
-
-		// Token: 0x06001F8A RID: 8074 RVA: 0x00094FDE File Offset: 0x000931DE
-		private IEnumerator UpdateSteamServerPlayers()
-		{
-			while (this.steamworksServer != null)
-			{
-				foreach (NetworkUser networkUser in NetworkUser.readOnlyInstancesList)
-				{
-					SteamNetworkConnection steamNetworkConnection;
-					if ((steamNetworkConnection = (networkUser.connectionToClient as SteamNetworkConnection)) != null)
-					{
-						this.steamworksServer.UpdatePlayer(steamNetworkConnection.steamId.value, networkUser.userName, 0);
-					}
-				}
-				yield return new WaitForSecondsRealtime(1f);
-			}
-			yield break;
-		}
-
-		// Token: 0x06001F8B RID: 8075 RVA: 0x00094FF0 File Offset: 0x000931F0
+		// Token: 0x0600202E RID: 8238 RVA: 0x0008BE5C File Offset: 0x0008A05C
 		public NetworkConnection GetClient(CSteamID steamId)
 		{
 			if (!NetworkServer.active)
@@ -1284,12 +1240,12 @@ namespace RoR2.Networking
 			return null;
 		}
 
-		// Token: 0x06001F8C RID: 8076 RVA: 0x00095098 File Offset: 0x00093298
+		// Token: 0x0600202F RID: 8239 RVA: 0x0008BF04 File Offset: 0x0008A104
 		public override void OnStartServer()
 		{
 			base.OnStartServer();
 			NetworkMessageHandlerAttribute.RegisterServerMessages();
-			this.unpredictedServerFixedTime = 0f;
+			this.InitializeTime();
 			UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkSession"));
 			Action action = GameNetworkManager.onStartServerGlobal;
 			if (action == null)
@@ -1299,7 +1255,7 @@ namespace RoR2.Networking
 			action();
 		}
 
-		// Token: 0x06001F8D RID: 8077 RVA: 0x000950CF File Offset: 0x000932CF
+		// Token: 0x06002030 RID: 8240 RVA: 0x0008BF38 File Offset: 0x0008A138
 		public override void OnStopServer()
 		{
 			Action action = GameNetworkManager.onStopServerGlobal;
@@ -1307,10 +1263,18 @@ namespace RoR2.Networking
 			{
 				action();
 			}
+			for (int i = 0; i < NetworkServer.connections.Count; i++)
+			{
+				NetworkConnection networkConnection = NetworkServer.connections[i];
+				if (networkConnection != null)
+				{
+					this.OnServerDisconnect(networkConnection);
+				}
+			}
 			base.OnStopServer();
 		}
 
-		// Token: 0x06001F8E RID: 8078 RVA: 0x000950E7 File Offset: 0x000932E7
+		// Token: 0x06002031 RID: 8241 RVA: 0x0008BF86 File Offset: 0x0008A186
 		public override void OnServerConnect(NetworkConnection conn)
 		{
 			base.OnServerConnect(conn);
@@ -1327,7 +1291,7 @@ namespace RoR2.Networking
 			action(conn);
 		}
 
-		// Token: 0x06001F8F RID: 8079 RVA: 0x0009511C File Offset: 0x0009331C
+		// Token: 0x06002032 RID: 8242 RVA: 0x0008BFBC File Offset: 0x0008A1BC
 		public override void OnServerDisconnect(NetworkConnection conn)
 		{
 			Action<NetworkConnection> action = GameNetworkManager.onServerDisconnectGlobal;
@@ -1369,9 +1333,10 @@ namespace RoR2.Networking
 			base.OnServerDisconnect(conn);
 		}
 
-		// Token: 0x06001F90 RID: 8080 RVA: 0x00095238 File Offset: 0x00093438
+		// Token: 0x06002033 RID: 8243 RVA: 0x0008C0D8 File Offset: 0x0008A2D8
 		private void ServerHandleClientDisconnect(NetworkConnection conn)
 		{
+			this.OnServerDisconnect(conn);
 			conn.InvokeHandlerNoData(33);
 			conn.Disconnect();
 			conn.Dispose();
@@ -1381,8 +1346,8 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F91 RID: 8081 RVA: 0x00095264 File Offset: 0x00093464
-		private void ServerKickClient(NetworkConnection conn, GameNetworkManager.KickReason reason)
+		// Token: 0x06002034 RID: 8244 RVA: 0x0008C10C File Offset: 0x0008A30C
+		public void ServerKickClient(NetworkConnection conn, GameNetworkManager.KickReason reason)
 		{
 			Debug.LogFormat("Kicking client on connection {0}: Reason {1}", new object[]
 			{
@@ -1405,33 +1370,19 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F92 RID: 8082 RVA: 0x000952E8 File Offset: 0x000934E8
-		private void ServerDisconnectClient(NetworkConnection conn)
-		{
-			Debug.LogFormat("Disconnecting client on connection {0}", new object[]
-			{
-				conn.connectionId
-			});
-			NetworkWriter networkWriter = new NetworkWriter();
-			networkWriter.StartMessage(33);
-			networkWriter.FinishMessage();
-			conn.SendWriter(networkWriter, QosChannelIndex.defaultReliable.intVal);
-			this.ServerHandleClientDisconnect(conn);
-		}
-
-		// Token: 0x06001F93 RID: 8083 RVA: 0x00095340 File Offset: 0x00093540
+		// Token: 0x06002035 RID: 8245 RVA: 0x0008C190 File Offset: 0x0008A390
 		public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
 		{
 			this.OnServerAddPlayer(conn, playerControllerId, null);
 		}
 
-		// Token: 0x06001F94 RID: 8084 RVA: 0x0009534B File Offset: 0x0009354B
+		// Token: 0x06002036 RID: 8246 RVA: 0x0008C19B File Offset: 0x0008A39B
 		public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId, NetworkReader extraMessageReader)
 		{
 			this.OnServerAddPlayerInternal(conn, playerControllerId, extraMessageReader);
 		}
 
-		// Token: 0x06001F95 RID: 8085 RVA: 0x00095358 File Offset: 0x00093558
+		// Token: 0x06002037 RID: 8247 RVA: 0x0008C1A8 File Offset: 0x0008A3A8
 		private void OnServerAddPlayerInternal(NetworkConnection conn, short playerControllerId, NetworkReader extraMessageReader)
 		{
 			if (base.playerPrefab == null)
@@ -1466,7 +1417,7 @@ namespace RoR2.Networking
 				}
 				return;
 			}
-			GameNetworkManager.AddPlayerMessage addPlayerMessage = extraMessageReader.ReadMessage<GameNetworkManager.AddPlayerMessage>();
+			extraMessageReader.ReadMessage<GameNetworkManager.AddPlayerMessage>();
 			Transform startPosition = base.GetStartPosition();
 			GameObject gameObject;
 			if (startPosition != null)
@@ -1484,39 +1435,22 @@ namespace RoR2.Networking
 				extraMessageReader
 			});
 			NetworkUser component = gameObject.GetComponent<NetworkUser>();
-			bool flag = Util.ConnectionIsLocal(conn);
+			Util.ConnectionIsLocal(conn);
 			NetworkUserId id = NetworkUserId.FromIp(conn.address, (byte)playerControllerId);
-			CSteamID csteamID = CSteamID.nil;
-			SteamNetworkConnection steamNetworkConnection;
-			if ((steamNetworkConnection = (conn as SteamNetworkConnection)) != null)
-			{
-				csteamID = steamNetworkConnection.steamId;
-			}
-			else if (flag && Client.Instance != null)
-			{
-				csteamID = new CSteamID(Client.Instance.SteamId);
-			}
+			ClientAuthData clientAuthData = ServerAuthManager.FindAuthData(conn);
+			CSteamID csteamID = (clientAuthData != null) ? clientAuthData.steamId : CSteamID.nil;
 			if (csteamID != CSteamID.nil)
 			{
 				id = NetworkUserId.FromSteamId(csteamID.value, (byte)playerControllerId);
-			}
-			if (this.steamworksServer != null && csteamID != CSteamID.nil && this.steamworksServer.Auth.StartSession(addPlayerMessage.steamAuthTicketData, csteamID.value))
-			{
-				this.steamworksServer.UpdatePlayer(csteamID.value, RoR2Application.instance.steamworksClient.Friends.GetName(csteamID.value), 0);
 			}
 			component.id = id;
 			Chat.SendPlayerConnectedMessage(component);
 			NetworkServer.AddPlayerForConnection(conn, gameObject, playerControllerId);
 		}
 
-		// Token: 0x06001F96 RID: 8086 RVA: 0x00095570 File Offset: 0x00093770
+		// Token: 0x06002038 RID: 8248 RVA: 0x0008C334 File Offset: 0x0008A534
 		private void UpdateServer()
 		{
-			Server server = this.steamworksServer;
-			if (server != null)
-			{
-				server.Update();
-			}
 			if (NetworkServer.active)
 			{
 				ReadOnlyCollection<NetworkConnection> connections = NetworkServer.connections;
@@ -1535,7 +1469,7 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06001F97 RID: 8087 RVA: 0x000955FC File Offset: 0x000937FC
+		// Token: 0x06002039 RID: 8249 RVA: 0x0008C3B0 File Offset: 0x0008A5B0
 		private void FixedUpdateServer()
 		{
 			if (!NetworkServer.active)
@@ -1550,18 +1484,18 @@ namespace RoR2.Networking
 				networkWriter.Write(this.unpredictedServerFixedTime);
 				networkWriter.FinishMessage();
 				NetworkServer.SendWriterToReady(null, networkWriter, QosChannelIndex.time.intVal);
-				this.timeTransmitTimer += this.timeTransmitInterval;
+				this.timeTransmitTimer += GameNetworkManager.svTimeTransmitInterval.value;
 			}
 			foreach (NetworkConnection networkConnection in NetworkServer.connections)
 			{
 				if (networkConnection != null && !Util.ConnectionIsLocal(networkConnection))
 				{
-					this.Ping(networkConnection, QosChannelIndex.ping.intVal);
+					RttManager.Ping(networkConnection, QosChannelIndex.ping.intVal);
 				}
 			}
 		}
 
-		// Token: 0x06001F98 RID: 8088 RVA: 0x000956CC File Offset: 0x000938CC
+		// Token: 0x0600203A RID: 8250 RVA: 0x0008C480 File Offset: 0x0008A680
 		public override void OnServerSceneChanged(string sceneName)
 		{
 			base.OnServerSceneChanged(sceneName);
@@ -1570,28 +1504,42 @@ namespace RoR2.Networking
 				Run.instance.OnServerSceneChanged(sceneName);
 			}
 			Action<string> action = GameNetworkManager.onServerSceneChangedGlobal;
-			if (action == null)
+			if (action != null)
 			{
-				return;
+				action(sceneName);
 			}
-			action(sceneName);
+			while (GameNetworkManager.clientsReadyDuringLevelTransition.Count > 0)
+			{
+				NetworkConnection networkConnection = GameNetworkManager.clientsReadyDuringLevelTransition.Dequeue();
+				try
+				{
+					if (networkConnection.isConnected)
+					{
+						this.OnServerReady(networkConnection);
+					}
+				}
+				catch (Exception ex)
+				{
+					Debug.LogErrorFormat("OnServerReady could not be called for client: {0}", new object[]
+					{
+						ex.Message
+					});
+				}
+			}
 		}
 
-		// Token: 0x06001F99 RID: 8089 RVA: 0x000956FC File Offset: 0x000938FC
+		// Token: 0x0600203B RID: 8251 RVA: 0x0008C514 File Offset: 0x0008A714
 		private bool IsServerAtMaxConnections()
 		{
 			ReadOnlyCollection<NetworkConnection> connections = NetworkServer.connections;
 			if (connections.Count >= base.maxConnections)
 			{
 				int num = 0;
-				using (IEnumerator<NetworkConnection> enumerator = connections.GetEnumerator())
+				for (int i = 0; i < connections.Count; i++)
 				{
-					while (enumerator.MoveNext())
+					if (connections[i] != null)
 					{
-						if (enumerator.Current != null)
-						{
-							num++;
-						}
+						num++;
 					}
 				}
 				return num >= base.maxConnections;
@@ -1599,38 +1547,40 @@ namespace RoR2.Networking
 			return false;
 		}
 
-		// Token: 0x06001F9A RID: 8090 RVA: 0x00095768 File Offset: 0x00093968
+		// Token: 0x0600203C RID: 8252 RVA: 0x0008C564 File Offset: 0x0008A764
+		private NetworkUser FindNetworkUserForConnectionServer(NetworkConnection connection)
+		{
+			ReadOnlyCollection<NetworkUser> readOnlyInstancesList = NetworkUser.readOnlyInstancesList;
+			int count = readOnlyInstancesList.Count;
+			for (int i = 0; i < count; i++)
+			{
+				NetworkUser networkUser = readOnlyInstancesList[i];
+				if (networkUser.connectionToClient == connection)
+				{
+					return networkUser;
+				}
+			}
+			return null;
+		}
+
+		// Token: 0x0600203D RID: 8253 RVA: 0x0008C5A0 File Offset: 0x0008A7A0
 		public int GetConnectingClientCount()
 		{
 			int num = 0;
 			ReadOnlyCollection<NetworkConnection> connections = NetworkServer.connections;
 			int count = connections.Count;
-			ReadOnlyCollection<NetworkUser> readOnlyInstancesList = NetworkUser.readOnlyInstancesList;
-			int count2 = readOnlyInstancesList.Count;
 			for (int i = 0; i < count; i++)
 			{
 				NetworkConnection networkConnection = connections[i];
-				if (networkConnection != null)
+				if (networkConnection != null && !this.FindNetworkUserForConnectionServer(networkConnection))
 				{
-					bool flag = false;
-					for (int j = 0; j < count2; j++)
-					{
-						if (readOnlyInstancesList[j].connectionToClient == networkConnection)
-						{
-							flag = true;
-							break;
-						}
-					}
-					if (!flag)
-					{
-						num++;
-					}
+					num++;
 				}
 			}
 			return num;
 		}
 
-		// Token: 0x06001F9B RID: 8091 RVA: 0x000957E3 File Offset: 0x000939E3
+		// Token: 0x0600203E RID: 8254 RVA: 0x0008C5E9 File Offset: 0x0008A7E9
 		public void RequestServerShutdown()
 		{
 			if (this.serverShuttingDown)
@@ -1641,7 +1591,7 @@ namespace RoR2.Networking
 			base.StartCoroutine(this.ServerShutdownCoroutine());
 		}
 
-		// Token: 0x06001F9C RID: 8092 RVA: 0x00095802 File Offset: 0x00093A02
+		// Token: 0x0600203F RID: 8255 RVA: 0x0008C608 File Offset: 0x0008A808
 		private IEnumerator ServerShutdownCoroutine()
 		{
 			Debug.Log("Server shutting down...");
@@ -1657,7 +1607,7 @@ namespace RoR2.Networking
 			Debug.Log("Issued kick message to all remote clients.");
 			float maxWait = 0.2f;
 			float t = 0f;
-			while (t < maxWait && !GameNetworkManager.<ServerShutdownCoroutine>g__CheckConnectionsEmpty|161_0())
+			while (t < maxWait && !GameNetworkManager.<ServerShutdownCoroutine>g__CheckConnectionsEmpty|178_0())
 			{
 				yield return new WaitForEndOfFrame();
 				t += Time.unscaledDeltaTime;
@@ -1678,10 +1628,71 @@ namespace RoR2.Networking
 			yield break;
 		}
 
-		// Token: 0x040021D7 RID: 8663
+		// Token: 0x06002040 RID: 8256 RVA: 0x0008C617 File Offset: 0x0008A817
+		private static void ServerHandleReady(NetworkMessage netMsg)
+		{
+			if (GameNetworkManager.isLoadingScene)
+			{
+				GameNetworkManager.clientsReadyDuringLevelTransition.Enqueue(netMsg.conn);
+				Debug.Log("Client readied during a level transition! Queuing their request.");
+				return;
+			}
+			GameNetworkManager.singleton.OnServerReady(netMsg.conn);
+			Debug.Log("Client ready.");
+		}
+
+		// Token: 0x06002041 RID: 8257 RVA: 0x0008C655 File Offset: 0x0008A855
+		private void RegisterServerOverrideMessages()
+		{
+			NetworkServer.RegisterHandler(35, new NetworkMessageDelegate(GameNetworkManager.ServerHandleReady));
+		}
+
+		// Token: 0x06002042 RID: 8258 RVA: 0x0008C66A File Offset: 0x0008A86A
+		public override void ServerChangeScene(string newSceneName)
+		{
+			this.RegisterServerOverrideMessages();
+			base.ServerChangeScene(newSceneName);
+		}
+
+		// Token: 0x06002044 RID: 8260 RVA: 0x0008C698 File Offset: 0x0008A898
+		[CompilerGenerated]
+		internal static bool <ServerShutdownCoroutine>g__CheckConnectionsEmpty|178_0()
+		{
+			foreach (NetworkConnection networkConnection in NetworkServer.connections)
+			{
+				if (networkConnection != null && !Util.ConnectionIsLocal(networkConnection))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		// Token: 0x04001D73 RID: 7539
 		private static readonly FieldInfo loadingSceneAsyncFieldInfo;
 
-		// Token: 0x040021D9 RID: 8665
+		// Token: 0x04001D74 RID: 7540
+		private float _unpredictedServerFixedTime;
+
+		// Token: 0x04001D75 RID: 7541
+		private float _unpredictedServerFixedTimeSmoothed;
+
+		// Token: 0x04001D76 RID: 7542
+		private float unpredictedServerFixedTimeVelocity;
+
+		// Token: 0x04001D77 RID: 7543
+		private float _unpredictedServerFrameTime;
+
+		// Token: 0x04001D78 RID: 7544
+		private float _unpredictedServerFrameTimeSmoothed;
+
+		// Token: 0x04001D79 RID: 7545
+		private float unpredictedServerFrameTimeVelocity;
+
+		// Token: 0x04001D7A RID: 7546
+		private static FloatConVar cvNetTimeSmoothRate = new FloatConVar("net_time_smooth_rate", ConVarFlags.None, "1.05", "The smoothing rate for the network time.");
+
+		// Token: 0x04001D7B RID: 7547
 		private static readonly string[] spawnableFolders = new string[]
 		{
 			"CharacterBodies",
@@ -1691,31 +1702,25 @@ namespace RoR2.Networking
 			"GameModes"
 		};
 
-		// Token: 0x040021DB RID: 8667
+		// Token: 0x04001D7D RID: 7549
 		public float debugServerTime;
 
-		// Token: 0x040021DC RID: 8668
+		// Token: 0x04001D7E RID: 7550
 		public float debugRTT;
 
-		// Token: 0x040021DD RID: 8669
+		// Token: 0x04001D7F RID: 7551
 		private bool actedUponDesiredHost;
 
-		// Token: 0x040021DE RID: 8670
+		// Token: 0x04001D80 RID: 7552
 		private float lastDesiredHostSetTime = float.NegativeInfinity;
 
-		// Token: 0x040021DF RID: 8671
+		// Token: 0x04001D81 RID: 7553
 		private GameNetworkManager.HostDescription _desiredHost;
 
-		// Token: 0x040021E4 RID: 8676
+		// Token: 0x04001D87 RID: 7559
 		private static bool wasFading = false;
 
-		// Token: 0x040021E6 RID: 8678
-		private float rttVelocity;
-
-		// Token: 0x040021E7 RID: 8679
-		public float filteredRTTSmoothDuration = 0.1f;
-
-		// Token: 0x040021E9 RID: 8681
+		// Token: 0x04001D8C RID: 7564
 		private static readonly string[] sceneWhiteList = new string[]
 		{
 			"title",
@@ -1723,25 +1728,34 @@ namespace RoR2.Networking
 			"logbook"
 		};
 
-		// Token: 0x040021ED RID: 8685
+		// Token: 0x04001D8D RID: 7565
+		private static readonly StringConVar cvSvPassword = new StringConVar("sv_password", ConVarFlags.None, "", "The password clients must provide before joining the server.");
+
+		// Token: 0x04001D8E RID: 7566
+		private static readonly StringConVar cvClPassword = new StringConVar("cl_password", ConVarFlags.None, "", "The password to use when joining a passworded server.");
+
+		// Token: 0x04001D92 RID: 7570
 		private List<ulong> steamIdBanList = new List<ulong>();
 
-		// Token: 0x040021F3 RID: 8691
+		// Token: 0x04001D98 RID: 7576
 		public Server steamworksServer;
 
-		// Token: 0x040021F4 RID: 8692
-		public float timeTransmitInterval = 0.016666668f;
+		// Token: 0x04001D99 RID: 7577
+		private static readonly FloatConVar svTimeTransmitInterval = new FloatConVar("sv_time_transmit_interval", ConVarFlags.Cheat, 0.016666668f.ToString(), "How long it takes for the server to issue a time update to clients.");
 
-		// Token: 0x040021F5 RID: 8693
+		// Token: 0x04001D9A RID: 7578
 		private float timeTransmitTimer;
 
-		// Token: 0x040021F6 RID: 8694
+		// Token: 0x04001D9B RID: 7579
 		private bool serverShuttingDown;
 
-		// Token: 0x02000579 RID: 1401
+		// Token: 0x04001D9C RID: 7580
+		private static readonly Queue<NetworkConnection> clientsReadyDuringLevelTransition = new Queue<NetworkConnection>();
+
+		// Token: 0x02000545 RID: 1349
 		public struct HostDescription : IEquatable<GameNetworkManager.HostDescription>
 		{
-			// Token: 0x06001F9F RID: 8095 RVA: 0x000958A0 File Offset: 0x00093AA0
+			// Token: 0x06002045 RID: 8261 RVA: 0x0008C6F0 File Offset: 0x0008A8F0
 			public HostDescription(CSteamID steamId)
 			{
 				this = default(GameNetworkManager.HostDescription);
@@ -1749,7 +1763,7 @@ namespace RoR2.Networking
 				this.steamId = steamId;
 			}
 
-			// Token: 0x06001FA0 RID: 8096 RVA: 0x000958B7 File Offset: 0x00093AB7
+			// Token: 0x06002046 RID: 8262 RVA: 0x0008C707 File Offset: 0x0008A907
 			public HostDescription(AddressPortPair addressPortPair)
 			{
 				this = default(GameNetworkManager.HostDescription);
@@ -1757,7 +1771,7 @@ namespace RoR2.Networking
 				this.addressPortPair = addressPortPair;
 			}
 
-			// Token: 0x06001FA1 RID: 8097 RVA: 0x000958CE File Offset: 0x00093ACE
+			// Token: 0x06002047 RID: 8263 RVA: 0x0008C71E File Offset: 0x0008A91E
 			public HostDescription(GameNetworkManager.HostDescription.HostingParameters hostingParameters)
 			{
 				this = default(GameNetworkManager.HostDescription);
@@ -1765,7 +1779,7 @@ namespace RoR2.Networking
 				this.hostingParameters = hostingParameters;
 			}
 
-			// Token: 0x06001FA2 RID: 8098 RVA: 0x000958E8 File Offset: 0x00093AE8
+			// Token: 0x06002048 RID: 8264 RVA: 0x0008C738 File Offset: 0x0008A938
 			public bool DescribesCurrentHost()
 			{
 				switch (this.hostType)
@@ -1791,20 +1805,20 @@ namespace RoR2.Networking
 				}
 			}
 
-			// Token: 0x06001FA3 RID: 8099 RVA: 0x000959B3 File Offset: 0x00093BB3
+			// Token: 0x06002049 RID: 8265 RVA: 0x0008C803 File Offset: 0x0008AA03
 			private HostDescription(object o)
 			{
 				this = default(GameNetworkManager.HostDescription);
 				this.hostType = GameNetworkManager.HostDescription.HostType.None;
 			}
 
-			// Token: 0x06001FA4 RID: 8100 RVA: 0x000959C4 File Offset: 0x00093BC4
+			// Token: 0x0600204A RID: 8266 RVA: 0x0008C814 File Offset: 0x0008AA14
 			public bool Equals(GameNetworkManager.HostDescription other)
 			{
 				return this.hostType == other.hostType && this.steamId.Equals(other.steamId) && this.addressPortPair.Equals(other.addressPortPair) && this.hostingParameters.Equals(other.hostingParameters);
 			}
 
-			// Token: 0x06001FA5 RID: 8101 RVA: 0x00095A24 File Offset: 0x00093C24
+			// Token: 0x0600204B RID: 8267 RVA: 0x0008C874 File Offset: 0x0008AA74
 			public override bool Equals(object obj)
 			{
 				if (obj == null)
@@ -1819,13 +1833,13 @@ namespace RoR2.Networking
 				return false;
 			}
 
-			// Token: 0x06001FA6 RID: 8102 RVA: 0x00095A50 File Offset: 0x00093C50
+			// Token: 0x0600204C RID: 8268 RVA: 0x0008C8A0 File Offset: 0x0008AAA0
 			public override int GetHashCode()
 			{
 				return (int)(((this.hostType * (GameNetworkManager.HostDescription.HostType)397 ^ (GameNetworkManager.HostDescription.HostType)this.steamId.GetHashCode()) * (GameNetworkManager.HostDescription.HostType)397 ^ (GameNetworkManager.HostDescription.HostType)this.addressPortPair.GetHashCode()) * (GameNetworkManager.HostDescription.HostType)397 ^ (GameNetworkManager.HostDescription.HostType)this.hostingParameters.GetHashCode());
 			}
 
-			// Token: 0x06001FA7 RID: 8103 RVA: 0x00095AB4 File Offset: 0x00093CB4
+			// Token: 0x0600204D RID: 8269 RVA: 0x0008C904 File Offset: 0x0008AB04
 			public override string ToString()
 			{
 				GameNetworkManager.HostDescription.sharedStringBuilder.Clear();
@@ -1852,47 +1866,47 @@ namespace RoR2.Networking
 				return GameNetworkManager.HostDescription.sharedStringBuilder.ToString();
 			}
 
-			// Token: 0x040021F7 RID: 8695
+			// Token: 0x04001D9D RID: 7581
 			public readonly GameNetworkManager.HostDescription.HostType hostType;
 
-			// Token: 0x040021F8 RID: 8696
+			// Token: 0x04001D9E RID: 7582
 			public readonly CSteamID steamId;
 
-			// Token: 0x040021F9 RID: 8697
+			// Token: 0x04001D9F RID: 7583
 			public readonly AddressPortPair addressPortPair;
 
-			// Token: 0x040021FA RID: 8698
+			// Token: 0x04001DA0 RID: 7584
 			public readonly GameNetworkManager.HostDescription.HostingParameters hostingParameters;
 
-			// Token: 0x040021FB RID: 8699
+			// Token: 0x04001DA1 RID: 7585
 			public static readonly GameNetworkManager.HostDescription none = new GameNetworkManager.HostDescription(null);
 
-			// Token: 0x040021FC RID: 8700
+			// Token: 0x04001DA2 RID: 7586
 			private static readonly StringBuilder sharedStringBuilder = new StringBuilder();
 
-			// Token: 0x0200057A RID: 1402
+			// Token: 0x02000546 RID: 1350
 			public enum HostType
 			{
-				// Token: 0x040021FE RID: 8702
+				// Token: 0x04001DA4 RID: 7588
 				None,
-				// Token: 0x040021FF RID: 8703
+				// Token: 0x04001DA5 RID: 7589
 				Self,
-				// Token: 0x04002200 RID: 8704
+				// Token: 0x04001DA6 RID: 7590
 				Steam,
-				// Token: 0x04002201 RID: 8705
+				// Token: 0x04001DA7 RID: 7591
 				IPv4
 			}
 
-			// Token: 0x0200057B RID: 1403
+			// Token: 0x02000547 RID: 1351
 			public struct HostingParameters : IEquatable<GameNetworkManager.HostDescription.HostingParameters>
 			{
-				// Token: 0x06001FA9 RID: 8105 RVA: 0x00095BEB File Offset: 0x00093DEB
+				// Token: 0x0600204F RID: 8271 RVA: 0x0008CA3B File Offset: 0x0008AC3B
 				public bool Equals(GameNetworkManager.HostDescription.HostingParameters other)
 				{
 					return this.listen == other.listen && this.maxPlayers == other.maxPlayers;
 				}
 
-				// Token: 0x06001FAA RID: 8106 RVA: 0x00095C0C File Offset: 0x00093E0C
+				// Token: 0x06002050 RID: 8272 RVA: 0x0008CA5C File Offset: 0x0008AC5C
 				public override bool Equals(object obj)
 				{
 					if (obj == null)
@@ -1907,29 +1921,29 @@ namespace RoR2.Networking
 					return false;
 				}
 
-				// Token: 0x06001FAB RID: 8107 RVA: 0x00095C38 File Offset: 0x00093E38
+				// Token: 0x06002051 RID: 8273 RVA: 0x0008CA88 File Offset: 0x0008AC88
 				public override int GetHashCode()
 				{
 					return this.listen.GetHashCode() * 397 ^ this.maxPlayers;
 				}
 
-				// Token: 0x04002202 RID: 8706
+				// Token: 0x04001DA8 RID: 7592
 				public bool listen;
 
-				// Token: 0x04002203 RID: 8707
+				// Token: 0x04001DA9 RID: 7593
 				public int maxPlayers;
 			}
 		}
 
-		// Token: 0x0200057C RID: 1404
+		// Token: 0x02000548 RID: 1352
 		private class NetLogLevelConVar : BaseConVar
 		{
-			// Token: 0x06001FAC RID: 8108 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x06002052 RID: 8274 RVA: 0x0000972B File Offset: 0x0000792B
 			public NetLogLevelConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06001FAD RID: 8109 RVA: 0x00095C54 File Offset: 0x00093E54
+			// Token: 0x06002053 RID: 8275 RVA: 0x0008CAA4 File Offset: 0x0008ACA4
 			public override void SetString(string newValue)
 			{
 				int currentLogLevel;
@@ -1939,25 +1953,25 @@ namespace RoR2.Networking
 				}
 			}
 
-			// Token: 0x06001FAE RID: 8110 RVA: 0x00095C71 File Offset: 0x00093E71
+			// Token: 0x06002054 RID: 8276 RVA: 0x0008CAC1 File Offset: 0x0008ACC1
 			public override string GetString()
 			{
 				return TextSerialization.ToStringInvariant(LogFilter.currentLogLevel);
 			}
 
-			// Token: 0x04002204 RID: 8708
+			// Token: 0x04001DAA RID: 7594
 			private static GameNetworkManager.NetLogLevelConVar cvNetLogLevel = new GameNetworkManager.NetLogLevelConVar("net_loglevel", ConVarFlags.Engine, null, "Network log verbosity.");
 		}
 
-		// Token: 0x0200057D RID: 1405
+		// Token: 0x02000549 RID: 1353
 		private class SvListenConVar : BaseConVar
 		{
-			// Token: 0x06001FB0 RID: 8112 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x06002056 RID: 8278 RVA: 0x0000972B File Offset: 0x0000792B
 			public SvListenConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06001FB1 RID: 8113 RVA: 0x00095C98 File Offset: 0x00093E98
+			// Token: 0x06002057 RID: 8279 RVA: 0x0008CAE8 File Offset: 0x0008ACE8
 			public override void SetString(string newValue)
 			{
 				if (NetworkServer.active)
@@ -1972,7 +1986,7 @@ namespace RoR2.Networking
 				}
 			}
 
-			// Token: 0x06001FB2 RID: 8114 RVA: 0x00095CCA File Offset: 0x00093ECA
+			// Token: 0x06002058 RID: 8280 RVA: 0x0008CB1A File Offset: 0x0008AD1A
 			public override string GetString()
 			{
 				if (!NetworkServer.dontListen)
@@ -1982,25 +1996,24 @@ namespace RoR2.Networking
 				return "0";
 			}
 
-			// Token: 0x04002205 RID: 8709
+			// Token: 0x04001DAB RID: 7595
 			private static GameNetworkManager.SvListenConVar cvSvListen = new GameNetworkManager.SvListenConVar("sv_listen", ConVarFlags.Engine, null, "Whether or not the server will accept connections from other players.");
 		}
 
-		// Token: 0x0200057E RID: 1406
+		// Token: 0x0200054A RID: 1354
 		private class SvMaxPlayersConVar : BaseConVar
 		{
-			// Token: 0x06001FB4 RID: 8116 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x0600205A RID: 8282 RVA: 0x0000972B File Offset: 0x0000792B
 			public SvMaxPlayersConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06001FB5 RID: 8117 RVA: 0x00095CF8 File Offset: 0x00093EF8
+			// Token: 0x0600205B RID: 8283 RVA: 0x0008CB48 File Offset: 0x0008AD48
 			public override void SetString(string newValue)
 			{
 				if (NetworkServer.active)
 				{
-					Debug.Log("Can't change value of sv_maxplayers while server is running.");
-					return;
+					throw new ConCommandException("Cannot change this convar while the server is running.");
 				}
 				int val;
 				if (NetworkManager.singleton && TextSerialization.TryParseInvariant(newValue, out val))
@@ -2009,7 +2022,7 @@ namespace RoR2.Networking
 				}
 			}
 
-			// Token: 0x06001FB6 RID: 8118 RVA: 0x00095D48 File Offset: 0x00093F48
+			// Token: 0x0600205C RID: 8284 RVA: 0x0008CB98 File Offset: 0x0008AD98
 			public override string GetString()
 			{
 				if (!NetworkManager.singleton)
@@ -2019,8 +2032,8 @@ namespace RoR2.Networking
 				return TextSerialization.ToStringInvariant(NetworkManager.singleton.maxConnections);
 			}
 
-			// Token: 0x170002C4 RID: 708
-			// (get) Token: 0x06001FB7 RID: 8119 RVA: 0x00095D6B File Offset: 0x00093F6B
+			// Token: 0x17000369 RID: 873
+			// (get) Token: 0x0600205D RID: 8285 RVA: 0x0008CBBB File Offset: 0x0008ADBB
 			public int intValue
 			{
 				get
@@ -2029,16 +2042,16 @@ namespace RoR2.Networking
 				}
 			}
 
-			// Token: 0x04002206 RID: 8710
+			// Token: 0x04001DAC RID: 7596
 			public static readonly GameNetworkManager.SvMaxPlayersConVar instance = new GameNetworkManager.SvMaxPlayersConVar("sv_maxplayers", ConVarFlags.Engine, null, "Maximum number of players allowed.");
 		}
 
-		// Token: 0x0200057F RID: 1407
+		// Token: 0x0200054B RID: 1355
 		private class KickMessage : MessageBase
 		{
-			// Token: 0x170002C5 RID: 709
-			// (get) Token: 0x06001FB9 RID: 8121 RVA: 0x00095D90 File Offset: 0x00093F90
-			// (set) Token: 0x06001FBA RID: 8122 RVA: 0x00095D98 File Offset: 0x00093F98
+			// Token: 0x1700036A RID: 874
+			// (get) Token: 0x0600205F RID: 8287 RVA: 0x0008CBE0 File Offset: 0x0008ADE0
+			// (set) Token: 0x06002060 RID: 8288 RVA: 0x0008CBE8 File Offset: 0x0008ADE8
 			public GameNetworkManager.KickReason reason
 			{
 				get
@@ -2051,7 +2064,7 @@ namespace RoR2.Networking
 				}
 			}
 
-			// Token: 0x06001FBB RID: 8123 RVA: 0x00095DA4 File Offset: 0x00093FA4
+			// Token: 0x06002061 RID: 8289 RVA: 0x0008CBF4 File Offset: 0x0008ADF4
 			public string GetDisplayToken()
 			{
 				switch (this.reason)
@@ -2075,84 +2088,223 @@ namespace RoR2.Networking
 				}
 			}
 
-			// Token: 0x06001FBD RID: 8125 RVA: 0x00095E0D File Offset: 0x0009400D
+			// Token: 0x06002063 RID: 8291 RVA: 0x0008CC5D File Offset: 0x0008AE5D
 			public override void Serialize(NetworkWriter writer)
 			{
 				writer.WritePackedUInt32((uint)this.netReason);
 			}
 
-			// Token: 0x06001FBE RID: 8126 RVA: 0x00095E1B File Offset: 0x0009401B
+			// Token: 0x06002064 RID: 8292 RVA: 0x0008CC6B File Offset: 0x0008AE6B
 			public override void Deserialize(NetworkReader reader)
 			{
 				this.netReason = (int)reader.ReadPackedUInt32();
 			}
 
-			// Token: 0x04002207 RID: 8711
+			// Token: 0x04001DAD RID: 7597
 			public int netReason;
 		}
 
-		// Token: 0x02000580 RID: 1408
+		// Token: 0x0200054C RID: 1356
 		protected class AddPlayerMessage : MessageBase
 		{
-			// Token: 0x06001FC0 RID: 8128 RVA: 0x00095E29 File Offset: 0x00094029
+			// Token: 0x06002066 RID: 8294 RVA: 0x0008CC79 File Offset: 0x0008AE79
 			public override void Serialize(NetworkWriter writer)
 			{
 				writer.WritePackedUInt64(this.steamId);
 				writer.WriteBytesFull(this.steamAuthTicketData);
 			}
 
-			// Token: 0x06001FC1 RID: 8129 RVA: 0x00095E43 File Offset: 0x00094043
+			// Token: 0x06002067 RID: 8295 RVA: 0x0008CC93 File Offset: 0x0008AE93
 			public override void Deserialize(NetworkReader reader)
 			{
 				this.steamId = reader.ReadPackedUInt64();
 				this.steamAuthTicketData = reader.ReadBytesAndSize();
 			}
 
-			// Token: 0x04002208 RID: 8712
+			// Token: 0x04001DAE RID: 7598
 			public ulong steamId;
 
-			// Token: 0x04002209 RID: 8713
+			// Token: 0x04001DAF RID: 7599
 			public byte[] steamAuthTicketData;
 		}
 
-		// Token: 0x02000581 RID: 1409
-		public enum KickReason
+		// Token: 0x0200054D RID: 1357
+		public enum KickReason : uint
 		{
-			// Token: 0x0400220B RID: 8715
+			// Token: 0x04001DB1 RID: 7601
 			Unspecified,
-			// Token: 0x0400220C RID: 8716
+			// Token: 0x04001DB2 RID: 7602
 			ServerShutdown,
-			// Token: 0x0400220D RID: 8717
+			// Token: 0x04001DB3 RID: 7603
 			Timeout,
-			// Token: 0x0400220E RID: 8718
+			// Token: 0x04001DB4 RID: 7604
 			Kick,
-			// Token: 0x0400220F RID: 8719
+			// Token: 0x04001DB5 RID: 7605
 			Ban,
-			// Token: 0x04002210 RID: 8720
+			// Token: 0x04001DB6 RID: 7606
 			BadPassword,
-			// Token: 0x04002211 RID: 8721
+			// Token: 0x04001DB7 RID: 7607
 			BadVersion,
-			// Token: 0x04002212 RID: 8722
-			ServerFull
+			// Token: 0x04001DB8 RID: 7608
+			ServerFull,
+			// Token: 0x04001DB9 RID: 7609
+			MalformedAuthData
 		}
 
-		// Token: 0x02000582 RID: 1410
-		private class PingMessage : MessageBase
+		// Token: 0x0200054E RID: 1358
+		public class SvHostNameConVar : BaseConVar
 		{
-			// Token: 0x06001FC3 RID: 8131 RVA: 0x00095E5D File Offset: 0x0009405D
-			public override void Serialize(NetworkWriter writer)
+			// Token: 0x1400007B RID: 123
+			// (add) Token: 0x06002068 RID: 8296 RVA: 0x0008CCB0 File Offset: 0x0008AEB0
+			// (remove) Token: 0x06002069 RID: 8297 RVA: 0x0008CCE8 File Offset: 0x0008AEE8
+			public event Action<string> onValueChanged;
+
+			// Token: 0x0600206A RID: 8298 RVA: 0x0008CD1D File Offset: 0x0008AF1D
+			public SvHostNameConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
-				writer.WritePackedUInt32(this.timeStampMs);
 			}
 
-			// Token: 0x06001FC4 RID: 8132 RVA: 0x00095E6B File Offset: 0x0009406B
-			public override void Deserialize(NetworkReader reader)
+			// Token: 0x0600206B RID: 8299 RVA: 0x0008CD35 File Offset: 0x0008AF35
+			public override void SetString(string newValue)
 			{
-				this.timeStampMs = reader.ReadPackedUInt32();
+				this.value = newValue;
+				Action<string> action = this.onValueChanged;
+				if (action == null)
+				{
+					return;
+				}
+				action(newValue);
 			}
 
-			// Token: 0x04002213 RID: 8723
-			public uint timeStampMs;
+			// Token: 0x0600206C RID: 8300 RVA: 0x0008CD4F File Offset: 0x0008AF4F
+			public override string GetString()
+			{
+				return this.value;
+			}
+
+			// Token: 0x04001DBA RID: 7610
+			public static readonly GameNetworkManager.SvHostNameConVar instance = new GameNetworkManager.SvHostNameConVar("sv_hostname", ConVarFlags.None, "NAME", "The public name to use for the server if hosting.");
+
+			// Token: 0x04001DBB RID: 7611
+			private string value = "NAME";
+		}
+
+		// Token: 0x0200054F RID: 1359
+		public class SvPortConVar : BaseConVar
+		{
+			// Token: 0x1700036B RID: 875
+			// (get) Token: 0x0600206E RID: 8302 RVA: 0x0008CD73 File Offset: 0x0008AF73
+			public ushort value
+			{
+				get
+				{
+					return (ushort)GameNetworkManager.singleton.networkPort;
+				}
+			}
+
+			// Token: 0x0600206F RID: 8303 RVA: 0x0000972B File Offset: 0x0000792B
+			public SvPortConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
+			{
+			}
+
+			// Token: 0x06002070 RID: 8304 RVA: 0x0008CD80 File Offset: 0x0008AF80
+			public override void SetString(string newValueString)
+			{
+				if (NetworkServer.active)
+				{
+					throw new ConCommandException("Cannot change this convar while the server is running.");
+				}
+				ushort networkPort;
+				if (TextSerialization.TryParseInvariant(newValueString, out networkPort))
+				{
+					GameNetworkManager.singleton.networkPort = (int)networkPort;
+				}
+			}
+
+			// Token: 0x06002071 RID: 8305 RVA: 0x0008CDB4 File Offset: 0x0008AFB4
+			public override string GetString()
+			{
+				return this.value.ToString();
+			}
+
+			// Token: 0x04001DBD RID: 7613
+			public static readonly GameNetworkManager.SvPortConVar instance = new GameNetworkManager.SvPortConVar("sv_port", ConVarFlags.Engine, null, "The port to use for the server if hosting.");
+		}
+
+		// Token: 0x02000550 RID: 1360
+		public class SvIPConVar : BaseConVar
+		{
+			// Token: 0x06002073 RID: 8307 RVA: 0x0000972B File Offset: 0x0000792B
+			public SvIPConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
+			{
+			}
+
+			// Token: 0x06002074 RID: 8308 RVA: 0x0008CDE8 File Offset: 0x0008AFE8
+			public override void SetString(string newValueString)
+			{
+				if (NetworkServer.active)
+				{
+					throw new ConCommandException("Cannot change this convar while the server is running.");
+				}
+				GameNetworkManager.singleton.serverBindAddress = newValueString;
+			}
+
+			// Token: 0x06002075 RID: 8309 RVA: 0x0008CE07 File Offset: 0x0008B007
+			public override string GetString()
+			{
+				return GameNetworkManager.singleton.serverBindAddress;
+			}
+
+			// Token: 0x04001DBE RID: 7614
+			public static readonly GameNetworkManager.SvIPConVar instance = new GameNetworkManager.SvIPConVar("sv_ip", ConVarFlags.Engine, null, "The IP for the server to bind to if hosting.");
+		}
+
+		// Token: 0x02000551 RID: 1361
+		public class SvPasswordConVar : BaseConVar
+		{
+			// Token: 0x1700036C RID: 876
+			// (get) Token: 0x06002077 RID: 8311 RVA: 0x0008CE2C File Offset: 0x0008B02C
+			// (set) Token: 0x06002078 RID: 8312 RVA: 0x0008CE34 File Offset: 0x0008B034
+			public string value { get; private set; }
+
+			// Token: 0x1400007C RID: 124
+			// (add) Token: 0x06002079 RID: 8313 RVA: 0x0008CE40 File Offset: 0x0008B040
+			// (remove) Token: 0x0600207A RID: 8314 RVA: 0x0008CE78 File Offset: 0x0008B078
+			public event Action<string> onValueChanged;
+
+			// Token: 0x0600207B RID: 8315 RVA: 0x0000972B File Offset: 0x0000792B
+			public SvPasswordConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
+			{
+			}
+
+			// Token: 0x0600207C RID: 8316 RVA: 0x0008CEAD File Offset: 0x0008B0AD
+			public override void SetString(string newValue)
+			{
+				if (newValue == null)
+				{
+					newValue = "";
+				}
+				if (this.value == newValue)
+				{
+					return;
+				}
+				this.value = newValue;
+				Action<string> action = this.onValueChanged;
+				if (action == null)
+				{
+					return;
+				}
+				action(this.value);
+			}
+
+			// Token: 0x0600207D RID: 8317 RVA: 0x0008CEE5 File Offset: 0x0008B0E5
+			public override string GetString()
+			{
+				return this.value;
+			}
+
+			// Token: 0x04001DBF RID: 7615
+			public static readonly GameNetworkManager.SvPasswordConVar instance = new GameNetworkManager.SvPasswordConVar("sv_password", ConVarFlags.None, "", "The password to use for the server if hosting.");
 		}
 	}
 }

@@ -2,14 +2,14 @@
 
 namespace EntityStates.Toolbot
 {
-	// Token: 0x020000D8 RID: 216
+	// Token: 0x0200075C RID: 1884
 	public abstract class AimGrenade : AimThrowableBase
 	{
-		// Token: 0x06000443 RID: 1091 RVA: 0x00011BDD File Offset: 0x0000FDDD
+		// Token: 0x06002B91 RID: 11153 RVA: 0x000B7FFE File Offset: 0x000B61FE
 		public override void OnEnter()
 		{
 			base.OnEnter();
-			this.detonationRadius = DroneProjectileHover.pulseRadius;
+			this.detonationRadius = 7f;
 		}
 	}
 }

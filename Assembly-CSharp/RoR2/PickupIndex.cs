@@ -6,397 +6,283 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000466 RID: 1126
+	// Token: 0x020003E1 RID: 993
 	[Serializable]
 	public struct PickupIndex : IEquatable<PickupIndex>
 	{
-		// Token: 0x17000253 RID: 595
-		// (get) Token: 0x0600191F RID: 6431 RVA: 0x00078B31 File Offset: 0x00076D31
+		// Token: 0x170002CE RID: 718
+		// (get) Token: 0x06001817 RID: 6167 RVA: 0x00068CCF File Offset: 0x00066ECF
 		public bool isValid
 		{
 			get
 			{
-				return this.value < 106;
+				return (ulong)this.value < (ulong)((long)PickupCatalog.pickupCount);
 			}
 		}
 
-		// Token: 0x06001920 RID: 6432 RVA: 0x00078B3D File Offset: 0x00076D3D
-		private PickupIndex(int value)
+		// Token: 0x06001818 RID: 6168 RVA: 0x00068CE0 File Offset: 0x00066EE0
+		public PickupIndex(int value)
 		{
 			this.value = ((value < 0) ? -1 : value);
 		}
 
-		// Token: 0x06001921 RID: 6433 RVA: 0x00078B3D File Offset: 0x00076D3D
+		// Token: 0x06001819 RID: 6169 RVA: 0x00068CF0 File Offset: 0x00066EF0
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
 		public PickupIndex(ItemIndex itemIndex)
 		{
-			this.value = (int)((itemIndex < ItemIndex.Syringe) ? ItemIndex.None : itemIndex);
+			this.value = PickupCatalog.FindPickupIndex(itemIndex).value;
 		}
 
-		// Token: 0x06001922 RID: 6434 RVA: 0x00078B4D File Offset: 0x00076D4D
+		// Token: 0x0600181A RID: 6170 RVA: 0x00068D03 File Offset: 0x00066F03
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
 		public PickupIndex(EquipmentIndex equipmentIndex)
 		{
-			this.value = (int)((equipmentIndex < EquipmentIndex.CommandMissile) ? EquipmentIndex.None : (78 + equipmentIndex));
+			this.value = PickupCatalog.FindPickupIndex(equipmentIndex).value;
 		}
 
-		// Token: 0x06001923 RID: 6435 RVA: 0x00078B60 File Offset: 0x00076D60
+		// Token: 0x170002CF RID: 719
+		// (get) Token: 0x0600181B RID: 6171 RVA: 0x00068D16 File Offset: 0x00066F16
+		private PickupDef pickupDef
+		{
+			get
+			{
+				return PickupCatalog.GetPickupDef(this);
+			}
+		}
+
+		// Token: 0x0600181C RID: 6172 RVA: 0x00068D23 File Offset: 0x00066F23
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
 		public GameObject GetHiddenPickupDisplayPrefab()
 		{
-			return Resources.Load<GameObject>("Prefabs/PickupModels/PickupMystery");
+			return PickupCatalog.GetHiddenPickupDisplayPrefab();
 		}
 
-		// Token: 0x06001924 RID: 6436 RVA: 0x00078B6C File Offset: 0x00076D6C
+		// Token: 0x0600181D RID: 6173 RVA: 0x00068D2A File Offset: 0x00066F2A
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
 		public GameObject GetPickupDisplayPrefab()
 		{
-			if (this.value >= 0)
+			PickupDef pickupDef = this.pickupDef;
+			if (pickupDef == null)
 			{
-				if (this.value < 78)
-				{
-					return Resources.Load<GameObject>(ItemCatalog.GetItemDef((ItemIndex)this.value).pickupModelPath);
-				}
-				if (this.value < 105)
-				{
-					return Resources.Load<GameObject>(EquipmentCatalog.GetEquipmentDef((EquipmentIndex)(this.value - 78)).pickupModelPath);
-				}
-				if (this.value < 106)
-				{
-					return Resources.Load<GameObject>("Prefabs/PickupModels/PickupLunarCoin");
-				}
+				return null;
 			}
-			return null;
+			return pickupDef.displayPrefab;
 		}
 
-		// Token: 0x06001925 RID: 6437 RVA: 0x00078BDC File Offset: 0x00076DDC
+		// Token: 0x0600181E RID: 6174 RVA: 0x00068D3D File Offset: 0x00066F3D
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
 		public GameObject GetPickupDropletDisplayPrefab()
 		{
-			if (this.value >= 0)
+			PickupDef pickupDef = this.pickupDef;
+			if (pickupDef == null)
 			{
-				if (this.value < 78)
-				{
-					ItemDef itemDef = ItemCatalog.GetItemDef((ItemIndex)this.value);
-					string path = null;
-					switch (itemDef.tier)
-					{
-					case ItemTier.Tier1:
-						path = "Prefabs/ItemPickups/Tier1Orb";
-						break;
-					case ItemTier.Tier2:
-						path = "Prefabs/ItemPickups/Tier2Orb";
-						break;
-					case ItemTier.Tier3:
-						path = "Prefabs/ItemPickups/Tier3Orb";
-						break;
-					case ItemTier.Lunar:
-						path = "Prefabs/ItemPickups/LunarOrb";
-						break;
-					}
-					if (!string.IsNullOrEmpty(path))
-					{
-						return Resources.Load<GameObject>(path);
-					}
-					return null;
-				}
-				else
-				{
-					if (this.value < 105)
-					{
-						return Resources.Load<GameObject>("Prefabs/ItemPickups/EquipmentOrb");
-					}
-					if (this.value < 106)
-					{
-						return Resources.Load<GameObject>("Prefabs/ItemPickups/LunarOrb");
-					}
-				}
+				return null;
 			}
-			return null;
+			return pickupDef.dropletDisplayPrefab;
 		}
 
-		// Token: 0x06001926 RID: 6438 RVA: 0x00078C84 File Offset: 0x00076E84
+		// Token: 0x0600181F RID: 6175 RVA: 0x00068D50 File Offset: 0x00066F50
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
 		public Color GetPickupColor()
 		{
-			if (this.value >= 0)
+			PickupDef pickupDef = this.pickupDef;
+			if (pickupDef == null)
 			{
-				if (this.value < 78)
-				{
-					return ColorCatalog.GetColor(ItemCatalog.GetItemDef((ItemIndex)this.value).colorIndex);
-				}
-				if (this.value < 105)
-				{
-					return ColorCatalog.GetColor(EquipmentCatalog.GetEquipmentDef((EquipmentIndex)(this.value - 78)).colorIndex);
-				}
-				if (this.value < 106)
-				{
-					return ColorCatalog.GetColor(ColorCatalog.ColorIndex.LunarItem);
-				}
+				return Color.black;
 			}
-			return Color.black;
+			return pickupDef.baseColor;
 		}
 
-		// Token: 0x06001927 RID: 6439 RVA: 0x00078D04 File Offset: 0x00076F04
-		public Color GetPickupColorDark()
-		{
-			if (this.value >= 0)
-			{
-				if (this.value < 78)
-				{
-					return ColorCatalog.GetColor(ItemCatalog.GetItemDef((ItemIndex)this.value).darkColorIndex);
-				}
-				if (this.value < 105)
-				{
-					return ColorCatalog.GetColor(EquipmentCatalog.GetEquipmentDef((EquipmentIndex)(this.value - 78)).colorIndex);
-				}
-				if (this.value < 106)
-				{
-					return ColorCatalog.GetColor(ColorCatalog.ColorIndex.LunarItem);
-				}
-			}
-			return Color.black;
-		}
-
-		// Token: 0x06001928 RID: 6440 RVA: 0x00078D84 File Offset: 0x00076F84
+		// Token: 0x06001820 RID: 6176 RVA: 0x00068D67 File Offset: 0x00066F67
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
 		public string GetPickupNameToken()
 		{
-			if (this.value >= 0)
-			{
-				if (this.value < 78)
-				{
-					return ItemCatalog.GetItemDef((ItemIndex)this.value).nameToken;
-				}
-				if (this.value < 105)
-				{
-					return EquipmentCatalog.GetEquipmentDef((EquipmentIndex)(this.value - 78)).nameToken;
-				}
-				if (this.value < 106)
-				{
-					return "PICKUP_LUNAR_COIN";
-				}
-			}
-			return "???";
+			PickupDef pickupDef = this.pickupDef;
+			return ((pickupDef != null) ? pickupDef.nameToken : null) ?? "???";
 		}
 
-		// Token: 0x06001929 RID: 6441 RVA: 0x00078DE8 File Offset: 0x00076FE8
+		// Token: 0x06001821 RID: 6177 RVA: 0x00068D84 File Offset: 0x00066F84
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
 		public string GetUnlockableName()
 		{
-			if (this.value >= 0)
-			{
-				if (this.value < 78)
-				{
-					return ItemCatalog.GetItemDef((ItemIndex)this.value).unlockableName;
-				}
-				if (this.value < 105)
-				{
-					return EquipmentCatalog.GetEquipmentDef((EquipmentIndex)(this.value - 78)).unlockableName;
-				}
-			}
-			return "";
+			PickupDef pickupDef = this.pickupDef;
+			return ((pickupDef != null) ? pickupDef.unlockableName : null) ?? "";
 		}
 
-		// Token: 0x0600192A RID: 6442 RVA: 0x00078E3C File Offset: 0x0007703C
+		// Token: 0x06001822 RID: 6178 RVA: 0x00068DA1 File Offset: 0x00066FA1
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
 		public bool IsLunar()
 		{
-			if (this.value >= 0)
-			{
-				if (this.value < 78)
-				{
-					return ItemCatalog.GetItemDef((ItemIndex)this.value).tier == ItemTier.Lunar;
-				}
-				if (this.value < 105)
-				{
-					return EquipmentCatalog.GetEquipmentDef((EquipmentIndex)(this.value - 78)).isLunar;
-				}
-			}
-			return false;
+			PickupDef pickupDef = this.pickupDef;
+			return pickupDef != null && pickupDef.isLunar;
 		}
 
-		// Token: 0x0600192B RID: 6443 RVA: 0x00078E90 File Offset: 0x00077090
+		// Token: 0x06001823 RID: 6179 RVA: 0x00068DB4 File Offset: 0x00066FB4
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
 		public bool IsBoss()
 		{
-			if (this.value >= 0)
-			{
-				if (this.value < 78)
-				{
-					return ItemCatalog.GetItemDef((ItemIndex)this.value).tier == ItemTier.Boss;
-				}
-				if (this.value < 105)
-				{
-					return EquipmentCatalog.GetEquipmentDef((EquipmentIndex)(this.value - 78)).isBoss;
-				}
-			}
-			return false;
+			PickupDef pickupDef = this.pickupDef;
+			return pickupDef != null && pickupDef.isBoss;
 		}
 
-		// Token: 0x17000254 RID: 596
-		// (get) Token: 0x0600192C RID: 6444 RVA: 0x00078EE3 File Offset: 0x000770E3
+		// Token: 0x06001824 RID: 6180 RVA: 0x00068DC7 File Offset: 0x00066FC7
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
+		public string GetInteractContextToken()
+		{
+			PickupDef pickupDef = this.pickupDef;
+			return ((pickupDef != null) ? pickupDef.interactContextToken : null) ?? "";
+		}
+
+		// Token: 0x170002D0 RID: 720
+		// (get) Token: 0x06001825 RID: 6181 RVA: 0x00068DE4 File Offset: 0x00066FE4
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
 		public ItemIndex itemIndex
 		{
 			get
 			{
-				if (this.value < 0 || this.value >= 78)
+				PickupDef pickupDef = this.pickupDef;
+				if (pickupDef == null)
 				{
 					return ItemIndex.None;
 				}
-				return (ItemIndex)this.value;
+				return pickupDef.itemIndex;
 			}
 		}
 
-		// Token: 0x17000255 RID: 597
-		// (get) Token: 0x0600192D RID: 6445 RVA: 0x00078F00 File Offset: 0x00077100
+		// Token: 0x170002D1 RID: 721
+		// (get) Token: 0x06001826 RID: 6182 RVA: 0x00068DF7 File Offset: 0x00066FF7
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
 		public EquipmentIndex equipmentIndex
 		{
 			get
 			{
-				if (this.value < 78 || this.value >= 105)
+				PickupDef pickupDef = this.pickupDef;
+				if (pickupDef == null)
 				{
 					return EquipmentIndex.None;
 				}
-				return (EquipmentIndex)(this.value - 78);
+				return pickupDef.equipmentIndex;
 			}
 		}
 
-		// Token: 0x17000256 RID: 598
-		// (get) Token: 0x0600192E RID: 6446 RVA: 0x00078F21 File Offset: 0x00077121
-		public int coinIndex
+		// Token: 0x170002D2 RID: 722
+		// (get) Token: 0x06001827 RID: 6183 RVA: 0x00068E0A File Offset: 0x0006700A
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
+		public uint coinValue
 		{
 			get
 			{
-				if (this.value < 105 || this.value >= 106)
+				PickupDef pickupDef = this.pickupDef;
+				if (pickupDef == null)
 				{
-					return -1;
+					return 0U;
 				}
-				return this.value - 105;
+				return pickupDef.coinValue;
 			}
 		}
 
-		// Token: 0x0600192F RID: 6447 RVA: 0x00078F42 File Offset: 0x00077142
+		// Token: 0x06001828 RID: 6184 RVA: 0x00068E1D File Offset: 0x0006701D
 		public static bool operator ==(PickupIndex a, PickupIndex b)
 		{
 			return a.value == b.value;
 		}
 
-		// Token: 0x06001930 RID: 6448 RVA: 0x00078F52 File Offset: 0x00077152
+		// Token: 0x06001829 RID: 6185 RVA: 0x00068E2D File Offset: 0x0006702D
 		public static bool operator !=(PickupIndex a, PickupIndex b)
 		{
 			return a.value != b.value;
 		}
 
-		// Token: 0x06001931 RID: 6449 RVA: 0x00078F65 File Offset: 0x00077165
+		// Token: 0x0600182A RID: 6186 RVA: 0x00068E40 File Offset: 0x00067040
 		public static bool operator <(PickupIndex a, PickupIndex b)
 		{
 			return a.value < b.value;
 		}
 
-		// Token: 0x06001932 RID: 6450 RVA: 0x00078F75 File Offset: 0x00077175
+		// Token: 0x0600182B RID: 6187 RVA: 0x00068E50 File Offset: 0x00067050
 		public static bool operator >(PickupIndex a, PickupIndex b)
 		{
 			return a.value > b.value;
 		}
 
-		// Token: 0x06001933 RID: 6451 RVA: 0x00078F85 File Offset: 0x00077185
+		// Token: 0x0600182C RID: 6188 RVA: 0x00068E60 File Offset: 0x00067060
 		public static bool operator <=(PickupIndex a, PickupIndex b)
 		{
 			return a.value >= b.value;
 		}
 
-		// Token: 0x06001934 RID: 6452 RVA: 0x00078F98 File Offset: 0x00077198
+		// Token: 0x0600182D RID: 6189 RVA: 0x00068E73 File Offset: 0x00067073
 		public static bool operator >=(PickupIndex a, PickupIndex b)
 		{
 			return a.value <= b.value;
 		}
 
-		// Token: 0x06001935 RID: 6453 RVA: 0x00078FAB File Offset: 0x000771AB
+		// Token: 0x0600182E RID: 6190 RVA: 0x00068E86 File Offset: 0x00067086
 		public static PickupIndex operator ++(PickupIndex a)
 		{
 			return new PickupIndex(a.value + 1);
 		}
 
-		// Token: 0x06001936 RID: 6454 RVA: 0x00078FBA File Offset: 0x000771BA
+		// Token: 0x0600182F RID: 6191 RVA: 0x00068E95 File Offset: 0x00067095
 		public static PickupIndex operator --(PickupIndex a)
 		{
 			return new PickupIndex(a.value - 1);
 		}
 
-		// Token: 0x06001937 RID: 6455 RVA: 0x00078FC9 File Offset: 0x000771C9
+		// Token: 0x06001830 RID: 6192 RVA: 0x00068EA4 File Offset: 0x000670A4
 		public override bool Equals(object obj)
 		{
 			return obj is PickupIndex && this == (PickupIndex)obj;
 		}
 
-		// Token: 0x06001938 RID: 6456 RVA: 0x00078F42 File Offset: 0x00077142
+		// Token: 0x06001831 RID: 6193 RVA: 0x00068E1D File Offset: 0x0006701D
 		public bool Equals(PickupIndex other)
 		{
 			return this.value == other.value;
 		}
 
-		// Token: 0x06001939 RID: 6457 RVA: 0x00078FE8 File Offset: 0x000771E8
+		// Token: 0x06001832 RID: 6194 RVA: 0x00068EC4 File Offset: 0x000670C4
 		public override int GetHashCode()
 		{
 			return this.value.GetHashCode();
 		}
 
-		// Token: 0x0600193A RID: 6458 RVA: 0x00079003 File Offset: 0x00077203
+		// Token: 0x06001833 RID: 6195 RVA: 0x00068EDF File Offset: 0x000670DF
 		public static void WriteToNetworkWriter(NetworkWriter writer, PickupIndex value)
 		{
-			writer.Write((byte)(value.value + 1));
+			writer.WritePackedIndex32(value.value);
 		}
 
-		// Token: 0x0600193B RID: 6459 RVA: 0x00079014 File Offset: 0x00077214
+		// Token: 0x06001834 RID: 6196 RVA: 0x00068EED File Offset: 0x000670ED
 		public static PickupIndex ReadFromNetworkReader(NetworkReader reader)
 		{
-			return new PickupIndex((int)(reader.ReadByte() - 1));
+			return new PickupIndex(reader.ReadPackedIndex32());
 		}
 
-		// Token: 0x0600193C RID: 6460 RVA: 0x00079024 File Offset: 0x00077224
-		static PickupIndex()
-		{
-			PickupIndex.allPickupNames[0] = "None";
-			for (ItemIndex itemIndex = ItemIndex.Syringe; itemIndex < ItemIndex.Count; itemIndex++)
-			{
-				PickupIndex.allPickupNames[(int)(1 + itemIndex)] = "ItemIndex." + itemIndex.ToString();
-			}
-			for (EquipmentIndex equipmentIndex = EquipmentIndex.CommandMissile; equipmentIndex < EquipmentIndex.Count; equipmentIndex++)
-			{
-				PickupIndex.allPickupNames[(int)(79 + equipmentIndex)] = "EquipmentIndex." + equipmentIndex.ToString();
-			}
-			for (int i = 105; i < 106; i++)
-			{
-				PickupIndex.allPickupNames[1 + i] = "LunarCoin.Coin" + (i - 105);
-			}
-			PickupIndex.stringToPickupIndexTable = new Dictionary<string, PickupIndex>();
-			for (int j = 0; j < PickupIndex.allPickupNames.Length; j++)
-			{
-				PickupIndex.stringToPickupIndexTable.Add(PickupIndex.allPickupNames[j], new PickupIndex(j - 1));
-			}
-		}
-
-		// Token: 0x0600193D RID: 6461 RVA: 0x00079140 File Offset: 0x00077340
+		// Token: 0x06001835 RID: 6197 RVA: 0x00068EFA File Offset: 0x000670FA
 		public override string ToString()
 		{
-			int num = this.value + 1;
-			if (num > -1 && num < PickupIndex.allPickupNames.Length)
-			{
-				return PickupIndex.allPickupNames[num];
-			}
-			return string.Format("BadPickupIndex{0}", this.value);
+			PickupDef pickupDef = this.pickupDef;
+			return ((pickupDef != null) ? pickupDef.internalName : null) ?? string.Format("BadPickupIndex{0}", this.value);
 		}
 
-		// Token: 0x0600193E RID: 6462 RVA: 0x00079184 File Offset: 0x00077384
+		// Token: 0x06001836 RID: 6198 RVA: 0x00068F27 File Offset: 0x00067127
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
 		public static PickupIndex Find(string name)
 		{
-			PickupIndex result;
-			if (PickupIndex.stringToPickupIndexTable.TryGetValue(name, out result))
-			{
-				return result;
-			}
-			return PickupIndex.none;
+			return PickupCatalog.FindPickupIndex(name);
 		}
 
-		// Token: 0x0600193F RID: 6463 RVA: 0x000791A8 File Offset: 0x000773A8
+		// Token: 0x06001837 RID: 6199 RVA: 0x00068F30 File Offset: 0x00067130
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
 		public static PickupIndex.Enumerator GetEnumerator()
 		{
 			return default(PickupIndex.Enumerator);
 		}
 
-		// Token: 0x17000257 RID: 599
-		// (get) Token: 0x06001940 RID: 6464 RVA: 0x000791C0 File Offset: 0x000773C0
+		// Token: 0x170002D3 RID: 723
+		// (get) Token: 0x06001838 RID: 6200 RVA: 0x00068F48 File Offset: 0x00067148
+		[Obsolete("PickupIndex methods are deprecated. Use PickupCatalog instead.")]
 		public static GenericStaticEnumerable<PickupIndex, PickupIndex.Enumerator> allPickups
 		{
 			get
@@ -405,79 +291,31 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001CA7 RID: 7335
+		// Token: 0x040016CB RID: 5835
 		public static readonly PickupIndex none = new PickupIndex(-1);
 
-		// Token: 0x04001CA8 RID: 7336
+		// Token: 0x040016CC RID: 5836
 		[SerializeField]
 		public readonly int value;
 
-		// Token: 0x04001CA9 RID: 7337
-		private const int pickupsStart = -1;
-
-		// Token: 0x04001CAA RID: 7338
-		private const int itemStart = 0;
-
-		// Token: 0x04001CAB RID: 7339
-		private const int itemEnd = 78;
-
-		// Token: 0x04001CAC RID: 7340
-		private const int equipmentStart = 78;
-
-		// Token: 0x04001CAD RID: 7341
-		private const int equipmentEnd = 105;
-
-		// Token: 0x04001CAE RID: 7342
-		private const int coinsStart = 105;
-
-		// Token: 0x04001CAF RID: 7343
-		private const int coinsCount = 1;
-
-		// Token: 0x04001CB0 RID: 7344
-		private const int coinsEnd = 106;
-
-		// Token: 0x04001CB1 RID: 7345
-		public static readonly PickupIndex lunarCoin1 = new PickupIndex(105);
-
-		// Token: 0x04001CB2 RID: 7346
-		private const int pickupsEnd = 106;
-
-		// Token: 0x04001CB3 RID: 7347
-		public static readonly PickupIndex first = new PickupIndex(0);
-
-		// Token: 0x04001CB4 RID: 7348
-		public static readonly PickupIndex last = new PickupIndex(105);
-
-		// Token: 0x04001CB5 RID: 7349
-		public static readonly PickupIndex end = new PickupIndex(106);
-
-		// Token: 0x04001CB6 RID: 7350
-		public const int count = 106;
-
-		// Token: 0x04001CB7 RID: 7351
-		public static readonly string[] allPickupNames = new string[107];
-
-		// Token: 0x04001CB8 RID: 7352
-		private static readonly Dictionary<string, PickupIndex> stringToPickupIndexTable;
-
-		// Token: 0x02000467 RID: 1127
+		// Token: 0x020003E2 RID: 994
 		public struct Enumerator : IEnumerator<PickupIndex>, IEnumerator, IDisposable
 		{
-			// Token: 0x06001941 RID: 6465 RVA: 0x000791D6 File Offset: 0x000773D6
+			// Token: 0x0600183A RID: 6202 RVA: 0x00068F6B File Offset: 0x0006716B
 			public bool MoveNext()
 			{
 				this.position = ++this.position;
-				return this.position < PickupIndex.end;
+				return this.position.value < PickupCatalog.pickupCount;
 			}
 
-			// Token: 0x06001942 RID: 6466 RVA: 0x000791F9 File Offset: 0x000773F9
+			// Token: 0x0600183B RID: 6203 RVA: 0x00068F90 File Offset: 0x00067190
 			public void Reset()
 			{
 				this.position = PickupIndex.none;
 			}
 
-			// Token: 0x17000258 RID: 600
-			// (get) Token: 0x06001943 RID: 6467 RVA: 0x00079206 File Offset: 0x00077406
+			// Token: 0x170002D4 RID: 724
+			// (get) Token: 0x0600183C RID: 6204 RVA: 0x00068F9D File Offset: 0x0006719D
 			public PickupIndex Current
 			{
 				get
@@ -486,8 +324,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x17000259 RID: 601
-			// (get) Token: 0x06001944 RID: 6468 RVA: 0x0007920E File Offset: 0x0007740E
+			// Token: 0x170002D5 RID: 725
+			// (get) Token: 0x0600183D RID: 6205 RVA: 0x00068FA5 File Offset: 0x000671A5
 			object IEnumerator.Current
 			{
 				get
@@ -496,12 +334,12 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001945 RID: 6469 RVA: 0x00004507 File Offset: 0x00002707
+			// Token: 0x0600183E RID: 6206 RVA: 0x0000409B File Offset: 0x0000229B
 			void IDisposable.Dispose()
 			{
 			}
 
-			// Token: 0x04001CB9 RID: 7353
+			// Token: 0x040016CD RID: 5837
 			private PickupIndex position;
 		}
 	}

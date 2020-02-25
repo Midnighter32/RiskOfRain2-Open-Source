@@ -7,35 +7,35 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005E4 RID: 1508
+	// Token: 0x020005C9 RID: 1481
 	[RequireComponent(typeof(Canvas))]
 	public class HighlightRect : MonoBehaviour
 	{
-		// Token: 0x060021C4 RID: 8644 RVA: 0x0009F794 File Offset: 0x0009D994
+		// Token: 0x06002303 RID: 8963 RVA: 0x00098B87 File Offset: 0x00096D87
 		static HighlightRect()
 		{
 			RoR2Application.onLateUpdate += HighlightRect.UpdateAll;
 		}
 
-		// Token: 0x060021C5 RID: 8645 RVA: 0x0009F7BC File Offset: 0x0009D9BC
+		// Token: 0x06002304 RID: 8964 RVA: 0x00098BAF File Offset: 0x00096DAF
 		private void Awake()
 		{
 			this.canvas = base.GetComponent<Canvas>();
 		}
 
-		// Token: 0x060021C6 RID: 8646 RVA: 0x0009F7CA File Offset: 0x0009D9CA
+		// Token: 0x06002305 RID: 8965 RVA: 0x00098BBD File Offset: 0x00096DBD
 		private void OnEnable()
 		{
 			HighlightRect.instancesList.Add(this);
 		}
 
-		// Token: 0x060021C7 RID: 8647 RVA: 0x0009F7D7 File Offset: 0x0009D9D7
+		// Token: 0x06002306 RID: 8966 RVA: 0x00098BCA File Offset: 0x00096DCA
 		private void OnDisable()
 		{
 			HighlightRect.instancesList.Remove(this);
 		}
 
-		// Token: 0x060021C8 RID: 8648 RVA: 0x0009F7E8 File Offset: 0x0009D9E8
+		// Token: 0x06002307 RID: 8967 RVA: 0x00098BD8 File Offset: 0x00096DD8
 		private void Start()
 		{
 			this.highlightState = HighlightRect.HighlightState.Expanding;
@@ -59,7 +59,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060021C9 RID: 8649 RVA: 0x0009F908 File Offset: 0x0009DB08
+		// Token: 0x06002308 RID: 8968 RVA: 0x00098CF8 File Offset: 0x00096EF8
 		private static void UpdateAll()
 		{
 			for (int i = HighlightRect.instancesList.Count - 1; i >= 0; i--)
@@ -68,7 +68,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060021CA RID: 8650 RVA: 0x0009F93C File Offset: 0x0009DB3C
+		// Token: 0x06002309 RID: 8969 RVA: 0x00098D2C File Offset: 0x00096F2C
 		private void DoUpdate()
 		{
 			if (!this.targetRenderer)
@@ -119,7 +119,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060021CB RID: 8651 RVA: 0x0009FB48 File Offset: 0x0009DD48
+		// Token: 0x0600230A RID: 8970 RVA: 0x00098F38 File Offset: 0x00097138
 		public static Rect GUIRectWithObject(Camera cam, Renderer rend)
 		{
 			Vector3 center = rend.bounds.center;
@@ -142,13 +142,13 @@ namespace RoR2.UI
 			return new Rect(vector.x, vector.y, vector2.x - vector.x, vector2.y - vector.y);
 		}
 
-		// Token: 0x060021CC RID: 8652 RVA: 0x0009FDD7 File Offset: 0x0009DFD7
+		// Token: 0x0600230B RID: 8971 RVA: 0x000991C7 File Offset: 0x000973C7
 		public static Vector2 WorldToGUIPoint(Camera cam, Vector3 world)
 		{
 			return cam.WorldToScreenPoint(world);
 		}
 
-		// Token: 0x060021CD RID: 8653 RVA: 0x0009FDE8 File Offset: 0x0009DFE8
+		// Token: 0x0600230C RID: 8972 RVA: 0x000991D8 File Offset: 0x000973D8
 		public static void CreateHighlight(GameObject viewerBodyObject, Renderer targetRenderer, GameObject highlightPrefab, float overrideDuration = -1f, bool visibleToAll = false)
 		{
 			ReadOnlyCollection<CameraRigController> readOnlyInstancesList = CameraRigController.readOnlyInstancesList;
@@ -173,92 +173,92 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x040024A7 RID: 9383
+		// Token: 0x040020CA RID: 8394
 		public AnimationCurve curve;
 
-		// Token: 0x040024A8 RID: 9384
+		// Token: 0x040020CB RID: 8395
 		public Color highlightColor;
 
-		// Token: 0x040024A9 RID: 9385
+		// Token: 0x040020CC RID: 8396
 		public Sprite cornerImage;
 
-		// Token: 0x040024AA RID: 9386
+		// Token: 0x040020CD RID: 8397
 		public string nametagString;
 
-		// Token: 0x040024AB RID: 9387
+		// Token: 0x040020CE RID: 8398
 		private Image bottomLeftImage;
 
-		// Token: 0x040024AC RID: 9388
+		// Token: 0x040020CF RID: 8399
 		private Image bottomRightImage;
 
-		// Token: 0x040024AD RID: 9389
+		// Token: 0x040020D0 RID: 8400
 		private Image topLeftImage;
 
-		// Token: 0x040024AE RID: 9390
+		// Token: 0x040020D1 RID: 8401
 		private Image topRightImage;
 
-		// Token: 0x040024AF RID: 9391
+		// Token: 0x040020D2 RID: 8402
 		private TextMeshProUGUI nametagText;
 
-		// Token: 0x040024B0 RID: 9392
+		// Token: 0x040020D3 RID: 8403
 		public Renderer targetRenderer;
 
-		// Token: 0x040024B1 RID: 9393
+		// Token: 0x040020D4 RID: 8404
 		public GameObject cameraTarget;
 
-		// Token: 0x040024B2 RID: 9394
+		// Token: 0x040020D5 RID: 8405
 		public RectTransform nametagRectTransform;
 
-		// Token: 0x040024B3 RID: 9395
+		// Token: 0x040020D6 RID: 8406
 		public RectTransform bottomLeftRectTransform;
 
-		// Token: 0x040024B4 RID: 9396
+		// Token: 0x040020D7 RID: 8407
 		public RectTransform bottomRightRectTransform;
 
-		// Token: 0x040024B5 RID: 9397
+		// Token: 0x040020D8 RID: 8408
 		public RectTransform topLeftRectTransform;
 
-		// Token: 0x040024B6 RID: 9398
+		// Token: 0x040020D9 RID: 8409
 		public RectTransform topRightRectTransform;
 
-		// Token: 0x040024B7 RID: 9399
+		// Token: 0x040020DA RID: 8410
 		public float expandTime = 1f;
 
-		// Token: 0x040024B8 RID: 9400
+		// Token: 0x040020DB RID: 8411
 		public float maxLifeTime;
 
-		// Token: 0x040024B9 RID: 9401
+		// Token: 0x040020DC RID: 8412
 		public bool destroyOnLifeEnd;
 
-		// Token: 0x040024BA RID: 9402
+		// Token: 0x040020DD RID: 8413
 		private float time;
 
-		// Token: 0x040024BB RID: 9403
+		// Token: 0x040020DE RID: 8414
 		public HighlightRect.HighlightState highlightState;
 
-		// Token: 0x040024BC RID: 9404
+		// Token: 0x040020DF RID: 8415
 		private static List<HighlightRect> instancesList = new List<HighlightRect>();
 
-		// Token: 0x040024BD RID: 9405
+		// Token: 0x040020E0 RID: 8416
 		private Canvas canvas;
 
-		// Token: 0x040024BE RID: 9406
+		// Token: 0x040020E1 RID: 8417
 		private Camera uiCam;
 
-		// Token: 0x040024BF RID: 9407
+		// Token: 0x040020E2 RID: 8418
 		private Camera sceneCam;
 
-		// Token: 0x040024C0 RID: 9408
+		// Token: 0x040020E3 RID: 8419
 		private static readonly Vector2[] extentPoints = new Vector2[8];
 
-		// Token: 0x020005E5 RID: 1509
+		// Token: 0x020005CA RID: 1482
 		public enum HighlightState
 		{
-			// Token: 0x040024C2 RID: 9410
+			// Token: 0x040020E5 RID: 8421
 			Expanding,
-			// Token: 0x040024C3 RID: 9411
+			// Token: 0x040020E6 RID: 8422
 			Holding,
-			// Token: 0x040024C4 RID: 9412
+			// Token: 0x040020E7 RID: 8423
 			Contracting
 		}
 	}

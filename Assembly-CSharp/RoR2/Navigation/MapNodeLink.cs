@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace RoR2.Navigation
 {
-	// Token: 0x02000527 RID: 1319
+	// Token: 0x020004E1 RID: 1249
 	[RequireComponent(typeof(MapNode))]
 	public class MapNodeLink : MonoBehaviour
 	{
-		// Token: 0x06001D9E RID: 7582 RVA: 0x0008A790 File Offset: 0x00088990
+		// Token: 0x06001DD1 RID: 7633 RVA: 0x0007FACC File Offset: 0x0007DCCC
 		private void OnValidate()
 		{
 			if (this.other == this)
@@ -22,7 +22,7 @@ namespace RoR2.Navigation
 			}
 		}
 
-		// Token: 0x06001D9F RID: 7583 RVA: 0x0008A7F4 File Offset: 0x000889F4
+		// Token: 0x06001DD2 RID: 7634 RVA: 0x0007FB30 File Offset: 0x0007DD30
 		private void OnDrawGizmos()
 		{
 			if (this.other)
@@ -39,20 +39,20 @@ namespace RoR2.Navigation
 			}
 		}
 
-		// Token: 0x04001FE4 RID: 8164
+		// Token: 0x04001AFD RID: 6909
 		public MapNode other;
 
-		// Token: 0x04001FE5 RID: 8165
+		// Token: 0x04001AFE RID: 6910
 		public float minJumpHeight;
 
-		// Token: 0x04001FE6 RID: 8166
+		// Token: 0x04001AFF RID: 6911
 		[Tooltip("The gate name associated with this link. If the named gate is closed, this link will not be used in pathfinding.")]
 		public string gateName = "";
 
-		// Token: 0x04001FE7 RID: 8167
+		// Token: 0x04001B00 RID: 6912
 		public GameObject[] objectsToEnableDuringTest;
 
-		// Token: 0x04001FE8 RID: 8168
+		// Token: 0x04001B01 RID: 6913
 		public GameObject[] objectsToDisableDuringTest;
 	}
 }

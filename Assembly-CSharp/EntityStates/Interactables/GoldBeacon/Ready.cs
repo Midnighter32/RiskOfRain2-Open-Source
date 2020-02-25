@@ -4,30 +4,38 @@ using UnityEngine;
 
 namespace EntityStates.Interactables.GoldBeacon
 {
-	// Token: 0x0200013C RID: 316
+	// Token: 0x02000813 RID: 2067
 	public class Ready : GoldBeaconBaseState
 	{
-		// Token: 0x0600060A RID: 1546 RVA: 0x0001BD12 File Offset: 0x00019F12
+		// Token: 0x1700043E RID: 1086
+		// (get) Token: 0x06002EE8 RID: 12008 RVA: 0x000C7AA1 File Offset: 0x000C5CA1
+		// (set) Token: 0x06002EE9 RID: 12009 RVA: 0x000C7AA8 File Offset: 0x000C5CA8
+		public static int count { get; private set; }
+
+		// Token: 0x06002EEA RID: 12010 RVA: 0x000C7AB0 File Offset: 0x000C5CB0
 		public override void OnEnter()
 		{
 			base.OnEnter();
 			base.SetReady(true);
-			GoldshoresMissionController.instance.beaconsActive++;
+			Ready.count++;
 		}
 
-		// Token: 0x0600060B RID: 1547 RVA: 0x0001BD34 File Offset: 0x00019F34
+		// Token: 0x06002EEB RID: 12011 RVA: 0x000C7ACC File Offset: 0x000C5CCC
 		public override void OnExit()
 		{
-			base.OnExit();
-			GoldshoresMissionController.instance.beaconsActive--;
-			EffectManager.instance.SpawnEffect(Ready.activationEffectPrefab, new EffectData
+			Ready.count--;
+			if (!this.outer.destroying)
 			{
-				origin = base.transform.position,
-				scale = 10f
-			}, true);
+				EffectManager.SpawnEffect(Ready.activationEffectPrefab, new EffectData
+				{
+					origin = base.transform.position,
+					scale = 10f
+				}, false);
+			}
+			base.OnExit();
 		}
 
-		// Token: 0x04000707 RID: 1799
+		// Token: 0x04002C2E RID: 11310
 		public static GameObject activationEffectPrefab;
 	}
 }

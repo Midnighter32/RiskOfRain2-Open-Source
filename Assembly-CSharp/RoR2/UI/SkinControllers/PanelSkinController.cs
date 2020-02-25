@@ -4,18 +4,18 @@ using UnityEngine.UI;
 
 namespace RoR2.UI.SkinControllers
 {
-	// Token: 0x02000662 RID: 1634
+	// Token: 0x02000657 RID: 1623
 	[RequireComponent(typeof(Image))]
 	public class PanelSkinController : BaseSkinController
 	{
-		// Token: 0x06002479 RID: 9337 RVA: 0x000AAF24 File Offset: 0x000A9124
+		// Token: 0x0600261D RID: 9757 RVA: 0x000A5A60 File Offset: 0x000A3C60
 		protected new void Awake()
 		{
 			this.image = base.GetComponent<Image>();
 			base.Awake();
 		}
 
-		// Token: 0x0600247A RID: 9338 RVA: 0x000AAF38 File Offset: 0x000A9138
+		// Token: 0x0600261E RID: 9758 RVA: 0x000A5A74 File Offset: 0x000A3C74
 		protected override void OnSkinUI()
 		{
 			switch (this.panelType)
@@ -34,20 +34,20 @@ namespace RoR2.UI.SkinControllers
 			}
 		}
 
-		// Token: 0x04002778 RID: 10104
+		// Token: 0x040023DF RID: 9183
 		public PanelSkinController.PanelType panelType;
 
-		// Token: 0x04002779 RID: 10105
+		// Token: 0x040023E0 RID: 9184
 		private Image image;
 
-		// Token: 0x02000663 RID: 1635
+		// Token: 0x02000658 RID: 1624
 		public enum PanelType
 		{
-			// Token: 0x0400277B RID: 10107
+			// Token: 0x040023E2 RID: 9186
 			Default,
-			// Token: 0x0400277C RID: 10108
+			// Token: 0x040023E3 RID: 9187
 			Header,
-			// Token: 0x0400277D RID: 10109
+			// Token: 0x040023E4 RID: 9188
 			Detail
 		}
 	}

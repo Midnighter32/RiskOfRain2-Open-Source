@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Sniper.Scope
 {
-	// Token: 0x020000F7 RID: 247
-	internal class ScopeSniper : BaseState
+	// Token: 0x02000789 RID: 1929
+	public class ScopeSniper : BaseState
 	{
-		// Token: 0x060004BB RID: 1211 RVA: 0x00013C64 File Offset: 0x00011E64
+		// Token: 0x06002C4B RID: 11339 RVA: 0x000BAF9C File Offset: 0x000B919C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -31,7 +31,7 @@ namespace EntityStates.Sniper.Scope
 			this.laserPointerObject.GetComponent<LaserPointerController>().source = base.inputBank;
 		}
 
-		// Token: 0x060004BC RID: 1212 RVA: 0x00013D24 File Offset: 0x00011F24
+		// Token: 0x06002C4C RID: 11340 RVA: 0x000BB05C File Offset: 0x000B925C
 		public override void OnExit()
 		{
 			EntityState.Destroy(this.laserPointerObject);
@@ -51,7 +51,7 @@ namespace EntityStates.Sniper.Scope
 			base.OnExit();
 		}
 
-		// Token: 0x060004BD RID: 1213 RVA: 0x00013DAC File Offset: 0x00011FAC
+		// Token: 0x06002C4D RID: 11341 RVA: 0x000BB0E4 File Offset: 0x000B92E4
 		public override void FixedUpdate()
 		{
 			this.charge = Mathf.Min(this.charge + this.attackSpeedStat / ScopeSniper.baseChargeDuration * Time.fixedDeltaTime, 1f);
@@ -62,25 +62,25 @@ namespace EntityStates.Sniper.Scope
 			}
 		}
 
-		// Token: 0x060004BE RID: 1214 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06002C4E RID: 11342 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000480 RID: 1152
+		// Token: 0x04002853 RID: 10323
 		public static float baseChargeDuration = 4f;
 
-		// Token: 0x04000481 RID: 1153
+		// Token: 0x04002854 RID: 10324
 		public static GameObject crosshairPrefab;
 
-		// Token: 0x04000482 RID: 1154
+		// Token: 0x04002855 RID: 10325
 		public float charge;
 
-		// Token: 0x04000483 RID: 1155
+		// Token: 0x04002856 RID: 10326
 		private GameObject originalCrosshairPrefab;
 
-		// Token: 0x04000484 RID: 1156
+		// Token: 0x04002857 RID: 10327
 		private GameObject laserPointerObject;
 	}
 }

@@ -2,66 +2,80 @@
 
 namespace RoR2
 {
-	// Token: 0x02000242 RID: 578
+	// Token: 0x02000130 RID: 304
 	public enum EquipmentIndex
 	{
-		// Token: 0x04000EAC RID: 3756
+		// Token: 0x040005B7 RID: 1463
 		None = -1,
-		// Token: 0x04000EAD RID: 3757
+		// Token: 0x040005B8 RID: 1464
 		CommandMissile,
-		// Token: 0x04000EAE RID: 3758
+		// Token: 0x040005B9 RID: 1465
 		Saw,
-		// Token: 0x04000EAF RID: 3759
+		// Token: 0x040005BA RID: 1466
 		Fruit,
-		// Token: 0x04000EB0 RID: 3760
+		// Token: 0x040005BB RID: 1467
 		Meteor,
-		// Token: 0x04000EB1 RID: 3761
+		// Token: 0x040005BC RID: 1468
 		SoulJar,
-		// Token: 0x04000EB2 RID: 3762
+		// Token: 0x040005BD RID: 1469
 		AffixRed,
-		// Token: 0x04000EB3 RID: 3763
+		// Token: 0x040005BE RID: 1470
 		AffixBlue,
-		// Token: 0x04000EB4 RID: 3764
+		// Token: 0x040005BF RID: 1471
 		AffixYellow,
-		// Token: 0x04000EB5 RID: 3765
+		// Token: 0x040005C0 RID: 1472
 		AffixGold,
-		// Token: 0x04000EB6 RID: 3766
+		// Token: 0x040005C1 RID: 1473
 		AffixWhite,
-		// Token: 0x04000EB7 RID: 3767
-		AffixGreen,
-		// Token: 0x04000EB8 RID: 3768
+		// Token: 0x040005C2 RID: 1474
+		AffixPoison,
+		// Token: 0x040005C3 RID: 1475
 		Blackhole,
-		// Token: 0x04000EB9 RID: 3769
+		// Token: 0x040005C4 RID: 1476
 		GhostGun,
-		// Token: 0x04000EBA RID: 3770
+		// Token: 0x040005C5 RID: 1477
 		CritOnUse,
-		// Token: 0x04000EBB RID: 3771
+		// Token: 0x040005C6 RID: 1478
 		DroneBackup,
-		// Token: 0x04000EBC RID: 3772
+		// Token: 0x040005C7 RID: 1479
 		OrbitalLaser,
-		// Token: 0x04000EBD RID: 3773
+		// Token: 0x040005C8 RID: 1480
 		BFG,
-		// Token: 0x04000EBE RID: 3774
+		// Token: 0x040005C9 RID: 1481
 		Enigma,
-		// Token: 0x04000EBF RID: 3775
+		// Token: 0x040005CA RID: 1482
 		Jetpack,
-		// Token: 0x04000EC0 RID: 3776
+		// Token: 0x040005CB RID: 1483
 		Lightning,
-		// Token: 0x04000EC1 RID: 3777
+		// Token: 0x040005CC RID: 1484
 		GoldGat,
-		// Token: 0x04000EC2 RID: 3778
+		// Token: 0x040005CD RID: 1485
 		PassiveHealing,
-		// Token: 0x04000EC3 RID: 3779
+		// Token: 0x040005CE RID: 1486
 		LunarPotion,
-		// Token: 0x04000EC4 RID: 3780
+		// Token: 0x040005CF RID: 1487
 		BurnNearby,
-		// Token: 0x04000EC5 RID: 3781
+		// Token: 0x040005D0 RID: 1488
 		SoulCorruptor,
-		// Token: 0x04000EC6 RID: 3782
+		// Token: 0x040005D1 RID: 1489
 		Scanner,
-		// Token: 0x04000EC7 RID: 3783
+		// Token: 0x040005D2 RID: 1490
 		CrippleWard,
-		// Token: 0x04000EC8 RID: 3784
+		// Token: 0x040005D3 RID: 1491
+		Gateway,
+		// Token: 0x040005D4 RID: 1492
+		Tonic,
+		// Token: 0x040005D5 RID: 1493
+		QuestVolatileBattery,
+		// Token: 0x040005D6 RID: 1494
+		Cleanse,
+		// Token: 0x040005D7 RID: 1495
+		FireBallDash,
+		// Token: 0x040005D8 RID: 1496
+		AffixHaunted,
+		// Token: 0x040005D9 RID: 1497
+		GainArmor,
+		// Token: 0x040005DA RID: 1498
 		Count
 	}
 }

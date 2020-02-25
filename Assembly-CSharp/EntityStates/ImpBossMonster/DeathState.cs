@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.ImpBossMonster
 {
-	// Token: 0x0200013E RID: 318
+	// Token: 0x0200081A RID: 2074
 	public class DeathState : GenericCharacterDeath
 	{
-		// Token: 0x06000616 RID: 1558 RVA: 0x0001C38C File Offset: 0x0001A58C
+		// Token: 0x06002F03 RID: 12035 RVA: 0x000C872C File Offset: 0x000C692C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -27,36 +27,39 @@ namespace EntityStates.ImpBossMonster
 					component.FindChild("DustCenter").gameObject.SetActive(false);
 					if (DeathState.initialEffect)
 					{
-						EffectManager.instance.SimpleMuzzleFlash(DeathState.initialEffect, base.gameObject, "DeathCenter", false);
+						EffectManager.SimpleMuzzleFlash(DeathState.initialEffect, base.gameObject, "DeathCenter", false);
 					}
 				}
 				if (component2)
 				{
-					for (int i = 0; i < component2.rendererInfos.Length; i++)
+					for (int i = 0; i < component2.baseRendererInfos.Length; i++)
 					{
-						component2.rendererInfos[i].ignoreOverlays = true;
+						component2.baseRendererInfos[i].ignoreOverlays = true;
 					}
 				}
 			}
 			base.PlayAnimation("Fullbody Override", "Death");
 		}
 
-		// Token: 0x06000617 RID: 1559 RVA: 0x0001C470 File Offset: 0x0001A670
+		// Token: 0x06002F04 RID: 12036 RVA: 0x000C880C File Offset: 0x000C6A0C
 		public override void FixedUpdate()
 		{
-			this.stopwatch += Time.fixedDeltaTime;
-			if (!this.hasPlayedDeathEffect && this.animator.GetFloat("DeathEffect") > 0.5f)
+			if (this.animator)
 			{
-				this.hasPlayedDeathEffect = true;
-				EffectManager.instance.SimpleMuzzleFlash(DeathState.deathEffect, base.gameObject, "DeathCenter", false);
-			}
-			if (this.stopwatch >= DeathState.duration)
-			{
-				this.AttemptDeathBehavior();
+				this.stopwatch += Time.fixedDeltaTime;
+				if (!this.hasPlayedDeathEffect && this.animator.GetFloat("DeathEffect") > 0.5f)
+				{
+					this.hasPlayedDeathEffect = true;
+					EffectManager.SimpleMuzzleFlash(DeathState.deathEffect, base.gameObject, "DeathCenter", false);
+				}
+				if (this.stopwatch >= DeathState.duration)
+				{
+					this.AttemptDeathBehavior();
+				}
 			}
 		}
 
-		// Token: 0x06000618 RID: 1560 RVA: 0x0001C4E4 File Offset: 0x0001A6E4
+		// Token: 0x06002F05 RID: 12037 RVA: 0x000C8888 File Offset: 0x000C6A88
 		private void AttemptDeathBehavior()
 		{
 			if (this.attemptedDeathBehavior)
@@ -74,7 +77,7 @@ namespace EntityStates.ImpBossMonster
 			}
 		}
 
-		// Token: 0x06000619 RID: 1561 RVA: 0x0001C53A File Offset: 0x0001A73A
+		// Token: 0x06002F06 RID: 12038 RVA: 0x000C88DE File Offset: 0x000C6ADE
 		public override void OnExit()
 		{
 			if (!this.outer.destroying)
@@ -84,25 +87,25 @@ namespace EntityStates.ImpBossMonster
 			base.OnExit();
 		}
 
-		// Token: 0x0400071F RID: 1823
+		// Token: 0x04002C5F RID: 11359
 		public static GameObject initialEffect;
 
-		// Token: 0x04000720 RID: 1824
+		// Token: 0x04002C60 RID: 11360
 		public static GameObject deathEffect;
 
-		// Token: 0x04000721 RID: 1825
+		// Token: 0x04002C61 RID: 11361
 		private static float duration = 3.3166666f;
 
-		// Token: 0x04000722 RID: 1826
+		// Token: 0x04002C62 RID: 11362
 		private float stopwatch;
 
-		// Token: 0x04000723 RID: 1827
+		// Token: 0x04002C63 RID: 11363
 		private Animator animator;
 
-		// Token: 0x04000724 RID: 1828
+		// Token: 0x04002C64 RID: 11364
 		private bool hasPlayedDeathEffect;
 
-		// Token: 0x04000725 RID: 1829
+		// Token: 0x04002C65 RID: 11365
 		private bool attemptedDeathBehavior;
 	}
 }

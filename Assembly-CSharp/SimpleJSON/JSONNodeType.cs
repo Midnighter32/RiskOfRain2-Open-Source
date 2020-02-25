@@ -2,22 +2,22 @@
 
 namespace SimpleJSON
 {
-	// Token: 0x0200007A RID: 122
+	// Token: 0x0200007F RID: 127
 	public enum JSONNodeType
 	{
-		// Token: 0x04000212 RID: 530
+		// Token: 0x0400021D RID: 541
 		Array = 1,
-		// Token: 0x04000213 RID: 531
+		// Token: 0x0400021E RID: 542
 		Object,
-		// Token: 0x04000214 RID: 532
+		// Token: 0x0400021F RID: 543
 		String,
-		// Token: 0x04000215 RID: 533
+		// Token: 0x04000220 RID: 544
 		Number,
-		// Token: 0x04000216 RID: 534
+		// Token: 0x04000221 RID: 545
 		NullValue,
-		// Token: 0x04000217 RID: 535
+		// Token: 0x04000222 RID: 546
 		Boolean,
-		// Token: 0x04000218 RID: 536
+		// Token: 0x04000223 RID: 547
 		None
 	}
 }

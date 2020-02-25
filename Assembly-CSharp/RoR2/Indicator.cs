@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200043E RID: 1086
+	// Token: 0x020003A1 RID: 929
 	public class Indicator
 	{
-		// Token: 0x0600181C RID: 6172 RVA: 0x00073168 File Offset: 0x00071368
+		// Token: 0x0600167E RID: 5758 RVA: 0x00060C24 File Offset: 0x0005EE24
 		public Indicator(GameObject owner, GameObject visualizerPrefab)
 		{
 			this.owner = owner;
@@ -16,9 +16,9 @@ namespace RoR2
 			this.visualizerRenderers = Array.Empty<Renderer>();
 		}
 
-		// Token: 0x1700022E RID: 558
-		// (get) Token: 0x0600181D RID: 6173 RVA: 0x00073190 File Offset: 0x00071390
-		// (set) Token: 0x0600181E RID: 6174 RVA: 0x00073198 File Offset: 0x00071398
+		// Token: 0x1700029D RID: 669
+		// (get) Token: 0x0600167F RID: 5759 RVA: 0x00060C4C File Offset: 0x0005EE4C
+		// (set) Token: 0x06001680 RID: 5760 RVA: 0x00060C54 File Offset: 0x0005EE54
 		public GameObject visualizerPrefab
 		{
 			get
@@ -39,23 +39,23 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x1700022F RID: 559
-		// (get) Token: 0x0600181F RID: 6175 RVA: 0x000731C3 File Offset: 0x000713C3
-		// (set) Token: 0x06001820 RID: 6176 RVA: 0x000731CB File Offset: 0x000713CB
+		// Token: 0x1700029E RID: 670
+		// (get) Token: 0x06001681 RID: 5761 RVA: 0x00060C7F File Offset: 0x0005EE7F
+		// (set) Token: 0x06001682 RID: 5762 RVA: 0x00060C87 File Offset: 0x0005EE87
 		private protected GameObject visualizerInstance { protected get; private set; }
 
-		// Token: 0x17000230 RID: 560
-		// (get) Token: 0x06001821 RID: 6177 RVA: 0x000731D4 File Offset: 0x000713D4
-		// (set) Token: 0x06001822 RID: 6178 RVA: 0x000731DC File Offset: 0x000713DC
+		// Token: 0x1700029F RID: 671
+		// (get) Token: 0x06001683 RID: 5763 RVA: 0x00060C90 File Offset: 0x0005EE90
+		// (set) Token: 0x06001684 RID: 5764 RVA: 0x00060C98 File Offset: 0x0005EE98
 		private protected Transform visualizerTransform { protected get; private set; }
 
-		// Token: 0x17000231 RID: 561
-		// (get) Token: 0x06001823 RID: 6179 RVA: 0x000731E5 File Offset: 0x000713E5
-		// (set) Token: 0x06001824 RID: 6180 RVA: 0x000731ED File Offset: 0x000713ED
+		// Token: 0x170002A0 RID: 672
+		// (get) Token: 0x06001685 RID: 5765 RVA: 0x00060CA1 File Offset: 0x0005EEA1
+		// (set) Token: 0x06001686 RID: 5766 RVA: 0x00060CA9 File Offset: 0x0005EEA9
 		private protected Renderer[] visualizerRenderers { protected get; private set; }
 
-		// Token: 0x17000232 RID: 562
-		// (get) Token: 0x06001825 RID: 6181 RVA: 0x000731F6 File Offset: 0x000713F6
+		// Token: 0x170002A1 RID: 673
+		// (get) Token: 0x06001687 RID: 5767 RVA: 0x00060CB2 File Offset: 0x0005EEB2
 		public bool hasVisualizer
 		{
 			get
@@ -64,9 +64,9 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000233 RID: 563
-		// (get) Token: 0x06001826 RID: 6182 RVA: 0x00073203 File Offset: 0x00071403
-		// (set) Token: 0x06001827 RID: 6183 RVA: 0x0007320B File Offset: 0x0007140B
+		// Token: 0x170002A2 RID: 674
+		// (get) Token: 0x06001688 RID: 5768 RVA: 0x00060CBF File Offset: 0x0005EEBF
+		// (set) Token: 0x06001689 RID: 5769 RVA: 0x00060CC7 File Offset: 0x0005EEC7
 		public bool active
 		{
 			get
@@ -89,7 +89,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001828 RID: 6184 RVA: 0x00073233 File Offset: 0x00071433
+		// Token: 0x0600168A RID: 5770 RVA: 0x00060CEF File Offset: 0x0005EEEF
 		public void SetVisualizerInstantiated(bool newVisualizerInstantiated)
 		{
 			if (this.visualizerInstance != newVisualizerInstantiated)
@@ -103,14 +103,14 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001829 RID: 6185 RVA: 0x00073253 File Offset: 0x00071453
+		// Token: 0x0600168B RID: 5771 RVA: 0x00060D0F File Offset: 0x0005EF0F
 		private void InstantiateVisualizer()
 		{
 			this.visualizerInstance = UnityEngine.Object.Instantiate<GameObject>(this.visualizerPrefab);
 			this.OnInstantiateVisualizer();
 		}
 
-		// Token: 0x0600182A RID: 6186 RVA: 0x0007326C File Offset: 0x0007146C
+		// Token: 0x0600168C RID: 5772 RVA: 0x00060D28 File Offset: 0x0005EF28
 		private void DestroyVisualizer()
 		{
 			this.OnDestroyVisualizer();
@@ -118,7 +118,7 @@ namespace RoR2
 			this.visualizerInstance = null;
 		}
 
-		// Token: 0x0600182B RID: 6187 RVA: 0x00073286 File Offset: 0x00071486
+		// Token: 0x0600168D RID: 5773 RVA: 0x00060D42 File Offset: 0x0005EF42
 		public void OnInstantiateVisualizer()
 		{
 			this.visualizerTransform = this.visualizerInstance.transform;
@@ -126,19 +126,19 @@ namespace RoR2
 			this.SetVisibleInternal(this.visible);
 		}
 
-		// Token: 0x0600182C RID: 6188 RVA: 0x000732B6 File Offset: 0x000714B6
+		// Token: 0x0600168E RID: 5774 RVA: 0x00060D72 File Offset: 0x0005EF72
 		public virtual void OnDestroyVisualizer()
 		{
 			this.visualizerTransform = null;
 			this.visualizerRenderers = Array.Empty<Renderer>();
 		}
 
-		// Token: 0x0600182D RID: 6189 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x0600168F RID: 5775 RVA: 0x0000409B File Offset: 0x0000229B
 		public virtual void UpdateVisualizer()
 		{
 		}
 
-		// Token: 0x0600182E RID: 6190 RVA: 0x000732CC File Offset: 0x000714CC
+		// Token: 0x06001690 RID: 5776 RVA: 0x00060D88 File Offset: 0x0005EF88
 		public virtual void PositionForUI(Camera sceneCamera, Camera uiCamera)
 		{
 			if (this.targetTransform)
@@ -151,7 +151,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600182F RID: 6191 RVA: 0x0007332E File Offset: 0x0007152E
+		// Token: 0x06001691 RID: 5777 RVA: 0x00060DEA File Offset: 0x0005EFEA
 		public void SetVisible(bool newVisible)
 		{
 			newVisible &= this.targetTransform;
@@ -161,7 +161,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001830 RID: 6192 RVA: 0x00073350 File Offset: 0x00071550
+		// Token: 0x06001692 RID: 5778 RVA: 0x00060E0C File Offset: 0x0005F00C
 		private void SetVisibleInternal(bool newVisible)
 		{
 			this.visible = newVisible;
@@ -172,39 +172,39 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001B7C RID: 7036
+		// Token: 0x04001529 RID: 5417
 		private GameObject _visualizerPrefab;
 
-		// Token: 0x04001B7D RID: 7037
+		// Token: 0x0400152A RID: 5418
 		public readonly GameObject owner;
 
-		// Token: 0x04001B7E RID: 7038
+		// Token: 0x0400152B RID: 5419
 		public Transform targetTransform;
 
-		// Token: 0x04001B82 RID: 7042
+		// Token: 0x0400152F RID: 5423
 		private bool _active;
 
-		// Token: 0x04001B83 RID: 7043
+		// Token: 0x04001530 RID: 5424
 		private bool visible = true;
 
-		// Token: 0x0200043F RID: 1087
+		// Token: 0x020003A2 RID: 930
 		private static class IndicatorManager
 		{
-			// Token: 0x06001831 RID: 6193 RVA: 0x00073382 File Offset: 0x00071582
+			// Token: 0x06001693 RID: 5779 RVA: 0x00060E3E File Offset: 0x0005F03E
 			public static void AddIndicator([NotNull] Indicator indicator)
 			{
 				Indicator.IndicatorManager.runningIndicators.Add(indicator);
 				Indicator.IndicatorManager.RebuildVisualizer(indicator);
 			}
 
-			// Token: 0x06001832 RID: 6194 RVA: 0x00073395 File Offset: 0x00071595
+			// Token: 0x06001694 RID: 5780 RVA: 0x00060E51 File Offset: 0x0005F051
 			public static void RemoveIndicator([NotNull] Indicator indicator)
 			{
 				indicator.SetVisualizerInstantiated(false);
 				Indicator.IndicatorManager.runningIndicators.Remove(indicator);
 			}
 
-			// Token: 0x06001833 RID: 6195 RVA: 0x000733AC File Offset: 0x000715AC
+			// Token: 0x06001695 RID: 5781 RVA: 0x00060E68 File Offset: 0x0005F068
 			static IndicatorManager()
 			{
 				CameraRigController.onCameraTargetChanged += delegate(CameraRigController cameraRigController, GameObject target)
@@ -216,7 +216,7 @@ namespace RoR2
 				RoR2Application.onUpdate += Indicator.IndicatorManager.Update;
 			}
 
-			// Token: 0x06001834 RID: 6196 RVA: 0x0007340C File Offset: 0x0007160C
+			// Token: 0x06001696 RID: 5782 RVA: 0x00060EC8 File Offset: 0x0005F0C8
 			private static void RebuildVisualizerForAll()
 			{
 				foreach (Indicator indicator in Indicator.IndicatorManager.runningIndicators)
@@ -225,7 +225,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001835 RID: 6197 RVA: 0x0007345C File Offset: 0x0007165C
+			// Token: 0x06001697 RID: 5783 RVA: 0x00060F18 File Offset: 0x0005F118
 			private static void Update()
 			{
 				foreach (Indicator indicator in Indicator.IndicatorManager.runningIndicators)
@@ -237,7 +237,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001836 RID: 6198 RVA: 0x000734B8 File Offset: 0x000716B8
+			// Token: 0x06001698 RID: 5784 RVA: 0x00060F74 File Offset: 0x0005F174
 			private static void RebuildVisualizer(Indicator indicator)
 			{
 				bool visualizerInstantiated = false;
@@ -255,7 +255,7 @@ namespace RoR2
 				indicator.SetVisualizerInstantiated(visualizerInstantiated);
 			}
 
-			// Token: 0x06001837 RID: 6199 RVA: 0x0007351C File Offset: 0x0007171C
+			// Token: 0x06001699 RID: 5785 RVA: 0x00060FD8 File Offset: 0x0005F1D8
 			private static void OnPreRenderUI(UICamera uiCam)
 			{
 				GameObject target = uiCam.cameraRigController.target;
@@ -271,7 +271,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001838 RID: 6200 RVA: 0x000735AC File Offset: 0x000717AC
+			// Token: 0x0600169A RID: 5786 RVA: 0x00061068 File Offset: 0x0005F268
 			private static void OnPostRenderUI(UICamera uiCamera)
 			{
 				foreach (Indicator indicator in Indicator.IndicatorManager.runningIndicators)
@@ -280,7 +280,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x04001B84 RID: 7044
+			// Token: 0x04001531 RID: 5425
 			private static readonly List<Indicator> runningIndicators = new List<Indicator>();
 		}
 	}

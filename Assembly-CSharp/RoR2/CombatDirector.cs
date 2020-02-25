@@ -4,15 +4,27 @@ using System.Collections.ObjectModel;
 using RoR2.ConVar;
 using RoR2.Navigation;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Serialization;
 
 namespace RoR2
 {
-	// Token: 0x020002A1 RID: 673
+	// Token: 0x020001AD RID: 429
 	public class CombatDirector : MonoBehaviour
 	{
-		// Token: 0x1700012A RID: 298
-		// (get) Token: 0x06000DB3 RID: 3507 RVA: 0x0004341B File Offset: 0x0004161B
+		// Token: 0x17000132 RID: 306
+		// (get) Token: 0x06000922 RID: 2338 RVA: 0x000276CF File Offset: 0x000258CF
+		// (set) Token: 0x06000923 RID: 2339 RVA: 0x000276D7 File Offset: 0x000258D7
+		public float monsterSpawnTimer { get; set; }
+
+		// Token: 0x17000133 RID: 307
+		// (get) Token: 0x06000924 RID: 2340 RVA: 0x000276E0 File Offset: 0x000258E0
+		// (set) Token: 0x06000925 RID: 2341 RVA: 0x000276E8 File Offset: 0x000258E8
+		public DirectorCard lastAttemptedMonsterCard { get; set; }
+
+		// Token: 0x17000134 RID: 308
+		// (get) Token: 0x06000926 RID: 2342 RVA: 0x000276F1 File Offset: 0x000258F1
 		private WeightedSelection<DirectorCard> monsterCards
 		{
 			get
@@ -21,12 +33,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x1700012B RID: 299
-		// (get) Token: 0x06000DB4 RID: 3508 RVA: 0x00043427 File Offset: 0x00041627
-		// (set) Token: 0x06000DB5 RID: 3509 RVA: 0x0004342F File Offset: 0x0004162F
-		public BossGroup bossGroup { get; private set; }
-
-		// Token: 0x06000DB6 RID: 3510 RVA: 0x00043438 File Offset: 0x00041638
+		// Token: 0x06000927 RID: 2343 RVA: 0x00027700 File Offset: 0x00025900
 		private void Awake()
 		{
 			if (NetworkServer.active)
@@ -44,20 +51,20 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000DB7 RID: 3511 RVA: 0x000434DC File Offset: 0x000416DC
+		// Token: 0x06000928 RID: 2344 RVA: 0x000277A4 File Offset: 0x000259A4
 		private void OnEnable()
 		{
 			CombatDirector.instancesList.Add(this);
 		}
 
-		// Token: 0x06000DB8 RID: 3512 RVA: 0x000434EC File Offset: 0x000416EC
+		// Token: 0x06000929 RID: 2345 RVA: 0x000277B4 File Offset: 0x000259B4
 		private void OnDisable()
 		{
 			CombatDirector.instancesList.Remove(this);
 			if (NetworkServer.active && CombatDirector.instancesList.Count > 0)
 			{
 				float num = 0.4f;
-				CombatDirector combatDirector = CombatDirector.instancesList[this.rng.RangeInt(0, CombatDirector.instancesList.Count)];
+				CombatDirector combatDirector = this.rng.NextElementUniform<CombatDirector>(CombatDirector.instancesList);
 				this.monsterCredit *= num;
 				combatDirector.monsterCredit += this.monsterCredit;
 				Debug.LogFormat("Transfered {0} monster credits from {1} to {2}", new object[]
@@ -70,7 +77,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000DB9 RID: 3513 RVA: 0x000435A4 File Offset: 0x000417A4
+		// Token: 0x0600092A RID: 2346 RVA: 0x00027858 File Offset: 0x00025A58
 		private void GenerateAmbush(Vector3 victimPosition)
 		{
 			NodeGraph groundNodes = SceneInfo.instance.groundNodes;
@@ -96,11 +103,11 @@ namespace RoR2
 			{
 				Vector3 position;
 				groundNodes.GetNodePosition(list[j].node, out position);
-				Resources.Load<SpawnCard>("SpawnCards/scLemurian").DoSpawn(position, Quaternion.identity);
+				Resources.Load<SpawnCard>("SpawnCards/scLemurian").DoSpawn(position, Quaternion.identity, null);
 			}
 		}
 
-		// Token: 0x06000DBA RID: 3514 RVA: 0x0004367C File Offset: 0x0004187C
+		// Token: 0x0600092B RID: 2347 RVA: 0x00027930 File Offset: 0x00025B30
 		private static bool IsAcceptableAmbushSpiderStep(NodeGraph nodeGraph, NodeGraph.NodeIndex startNode, NodeGraphSpider.StepInfo stepInfo)
 		{
 			int num = 0;
@@ -120,44 +127,40 @@ namespace RoR2
 			return false;
 		}
 
-		// Token: 0x06000DBB RID: 3515 RVA: 0x000436B9 File Offset: 0x000418B9
+		// Token: 0x0600092C RID: 2348 RVA: 0x0002796D File Offset: 0x00025B6D
 		public void OverrideCurrentMonsterCard(DirectorCard overrideMonsterCard)
 		{
-			this.currentMonsterCard = overrideMonsterCard;
+			this.PrepareNewMonsterWave(overrideMonsterCard);
 		}
 
-		// Token: 0x06000DBC RID: 3516 RVA: 0x000436C4 File Offset: 0x000418C4
+		// Token: 0x0600092D RID: 2349 RVA: 0x00027978 File Offset: 0x00025B78
 		public void SetNextSpawnAsBoss()
 		{
 			WeightedSelection<DirectorCard> weightedSelection = new WeightedSelection<DirectorCard>(8);
-			Debug.LogFormat("CombatDirector.SetNextSpawnAsBoss() monsterCards.Count={0}", new object[]
-			{
-				this.monsterCards.Count
-			});
-			bool flag = this.rng.nextNormalizedFloat > 0.1f;
+			bool flag = !Run.instance.ShouldAllowNonChampionBossSpawn() || this.rng.nextNormalizedFloat > 0.1f;
 			int i = 0;
 			int count = this.monsterCards.Count;
 			while (i < count)
 			{
 				WeightedSelection<DirectorCard>.ChoiceInfo choice = this.monsterCards.GetChoice(i);
-				if (choice.value.spawnCard.prefab.GetComponent<CharacterMaster>().bodyPrefab.GetComponent<CharacterBody>().isChampion == flag && choice.value.CardIsValid() && !choice.value.spawnCard.name.Contains("cscGolem"))
+				SpawnCard spawnCard = choice.value.spawnCard;
+				bool isChampion = spawnCard.prefab.GetComponent<CharacterMaster>().bodyPrefab.GetComponent<CharacterBody>().isChampion;
+				CharacterSpawnCard characterSpawnCard = spawnCard as CharacterSpawnCard;
+				bool flag2 = characterSpawnCard != null && characterSpawnCard.forbiddenAsBoss;
+				if (isChampion == flag && !flag2 && choice.value.CardIsValid())
 				{
 					weightedSelection.AddChoice(choice);
-					Debug.LogFormat("bossCards.AddChoice({0})", new object[]
-					{
-						choice.value.spawnCard.name
-					});
 				}
 				i++;
 			}
 			if (weightedSelection.Count > 0)
 			{
-				this.currentMonsterCard = weightedSelection.Evaluate(this.rng.nextNormalizedFloat);
+				this.PrepareNewMonsterWave(weightedSelection.Evaluate(this.rng.nextNormalizedFloat));
 			}
 			this.monsterSpawnTimer = -600f;
 		}
 
-		// Token: 0x06000DBD RID: 3517 RVA: 0x000437E4 File Offset: 0x000419E4
+		// Token: 0x0600092E RID: 2350 RVA: 0x00027A5C File Offset: 0x00025C5C
 		private void PickPlayerAsSpawnTarget()
 		{
 			ReadOnlyCollection<PlayerCharacterMasterController> instances = PlayerCharacterMasterController.instances;
@@ -171,11 +174,11 @@ namespace RoR2
 			}
 			if (list.Count > 0)
 			{
-				this.currentSpawnTarget = list[this.rng.RangeInt(0, list.Count)].master.GetBodyObject();
+				this.currentSpawnTarget = this.rng.NextElementUniform<PlayerCharacterMasterController>(list).master.GetBodyObject();
 			}
 		}
 
-		// Token: 0x06000DBE RID: 3518 RVA: 0x00043874 File Offset: 0x00041A74
+		// Token: 0x0600092F RID: 2351 RVA: 0x00027AE0 File Offset: 0x00025CE0
 		private void Simulate(float deltaTime)
 		{
 			if (this.targetPlayers)
@@ -191,7 +194,7 @@ namespace RoR2
 			if (this.monsterSpawnTimer <= 0f)
 			{
 				bool flag = false;
-				if (TeamComponent.GetTeamMembers(TeamIndex.Monster).Count < 40 || this.isBoss)
+				if (TeamComponent.GetTeamMembers(TeamIndex.Monster).Count < 40 || this.ignoreTeamSizeLimit)
 				{
 					flag = this.AttemptSpawnOnTarget(this.currentSpawnTarget);
 				}
@@ -205,7 +208,10 @@ namespace RoR2
 					return;
 				}
 				this.monsterSpawnTimer += this.rng.RangeFloat(this.minRerollSpawnInterval, this.maxRerollSpawnInterval);
-				this.currentMonsterCard = null;
+				if (this.resetMonsterCardIfFailed)
+				{
+					this.currentMonsterCard = null;
+				}
 				if (this.shouldSpawnOneWave && this.hasStartedWave)
 				{
 					base.enabled = false;
@@ -214,93 +220,298 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000DBF RID: 3519 RVA: 0x00043984 File Offset: 0x00041B84
-		private bool AttemptSpawnOnTarget(GameObject spawnTarget)
+		// Token: 0x17000135 RID: 309
+		// (get) Token: 0x06000930 RID: 2352 RVA: 0x00027BF8 File Offset: 0x00025DF8
+		public static float highestEliteCostMultiplier
 		{
-			if (spawnTarget)
+			get
 			{
-				if (this.currentMonsterCard == null)
+				float num = 1f;
+				for (int i = 1; i < CombatDirector.eliteTiers.Length; i++)
 				{
-					this.currentMonsterCard = this.monsterCards.Evaluate(this.rng.nextNormalizedFloat);
-					this.lastAttemptedMonsterCard = this.currentMonsterCard;
-					this.currentActiveEliteIndex = EliteCatalog.eliteList[this.rng.RangeInt(0, EliteCatalog.eliteList.Count)];
+					if (CombatDirector.eliteTiers[i].isAvailable())
+					{
+						num = Mathf.Max(num, CombatDirector.eliteTiers[i].costMultiplier);
+					}
 				}
-				bool flag = !(this.currentMonsterCard.spawnCard as CharacterSpawnCard).noElites;
-				float num = CombatDirector.maximumNumberToSpawnBeforeSkipping * (flag ? CombatDirector.eliteMultiplierCost : 1f);
-				if (this.currentMonsterCard.CardIsValid() && this.monsterCredit >= (float)this.currentMonsterCard.cost && (!this.skipSpawnIfTooCheap || this.monsterCredit <= (float)this.currentMonsterCard.cost * num))
+				return num;
+			}
+		}
+
+		// Token: 0x17000136 RID: 310
+		// (get) Token: 0x06000931 RID: 2353 RVA: 0x00027C44 File Offset: 0x00025E44
+		public static float lowestEliteCostMultiplier
+		{
+			get
+			{
+				return CombatDirector.eliteTiers[1].costMultiplier;
+			}
+		}
+
+		// Token: 0x17000137 RID: 311
+		// (get) Token: 0x06000932 RID: 2354 RVA: 0x00027C54 File Offset: 0x00025E54
+		private int mostExpensiveMonsterCostInDeck
+		{
+			get
+			{
+				int num = 0;
+				for (int i = 0; i < this.monsterCards.Count; i++)
 				{
-					SpawnCard spawnCard = this.currentMonsterCard.spawnCard;
-					DirectorPlacementRule directorPlacementRule = new DirectorPlacementRule
+					DirectorCard value = this.monsterCards.GetChoice(i).value;
+					int num2 = value.cost;
+					if (!(value.spawnCard as CharacterSpawnCard).noElites)
 					{
-						placementMode = DirectorPlacementRule.PlacementMode.Approximate,
-						spawnOnTarget = spawnTarget.transform,
-						preventOverhead = this.currentMonsterCard.preventOverhead
-					};
-					DirectorCore.GetMonsterSpawnDistance(this.currentMonsterCard.spawnDistance, out directorPlacementRule.minDistance, out directorPlacementRule.maxDistance);
-					directorPlacementRule.minDistance *= this.spawnDistanceMultiplier;
-					directorPlacementRule.maxDistance *= this.spawnDistanceMultiplier;
-					GameObject gameObject = DirectorCore.instance.TrySpawnObject(spawnCard, directorPlacementRule, this.rng);
-					if (gameObject)
+						num2 = (int)((float)num2 * CombatDirector.highestEliteCostMultiplier);
+					}
+					num = Mathf.Max(num, num2);
+				}
+				return num;
+			}
+		}
+
+		// Token: 0x06000933 RID: 2355 RVA: 0x00027CB8 File Offset: 0x00025EB8
+		private unsafe void PrepareNewMonsterWave(DirectorCard monsterCard)
+		{
+			if (CombatDirector.cvDirectorCombatEnableInternalLogs.value)
+			{
+				Debug.LogFormat("Preparing monster wave {0}", new object[]
+				{
+					monsterCard.spawnCard
+				});
+			}
+			this.currentMonsterCard = monsterCard;
+			this.currentActiveEliteTier = CombatDirector.eliteTiers[0];
+			if (!(this.currentMonsterCard.spawnCard as CharacterSpawnCard).noElites)
+			{
+				for (int i = 1; i < CombatDirector.eliteTiers.Length; i++)
+				{
+					CombatDirector.EliteTierDef eliteTierDef = CombatDirector.eliteTiers[i];
+					if (!eliteTierDef.isAvailable())
 					{
-						int num2 = this.currentMonsterCard.cost;
-						float num3 = 1f;
-						float num4 = 1f;
-						CharacterMaster component = gameObject.GetComponent<CharacterMaster>();
-						GameObject bodyObject = component.GetBodyObject();
-						if (this.isBoss)
+						if (CombatDirector.cvDirectorCombatEnableInternalLogs.value)
 						{
-							if (!this.bossGroup)
+							Debug.LogFormat("Elite tier index {0} is unavailable", new object[]
 							{
-								GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkedObjects/BossGroup"));
-								NetworkServer.Spawn(gameObject2);
-								this.bossGroup = gameObject2.GetComponent<BossGroup>();
-								this.bossGroup.dropPosition = this.dropPosition;
+								i
+							});
+						}
+					}
+					else
+					{
+						float num = (float)this.currentMonsterCard.cost * eliteTierDef.costMultiplier * this.eliteBias;
+						if (num <= this.monsterCredit)
+						{
+							this.currentActiveEliteTier = eliteTierDef;
+							if (CombatDirector.cvDirectorCombatEnableInternalLogs.value)
+							{
+								Debug.LogFormat("Found valid elite tier index {0}", new object[]
+								{
+									i
+								});
 							}
-							this.bossGroup.AddMember(component);
 						}
-						if (flag && (float)num2 * CombatDirector.eliteMultiplierCost <= this.monsterCredit)
+						else if (CombatDirector.cvDirectorCombatEnableInternalLogs.value)
 						{
-							num3 = 4.7f;
-							num4 = 2f;
-							component.inventory.SetEquipmentIndex(EliteCatalog.GetEliteDef(this.currentActiveEliteIndex).eliteEquipmentIndex);
-							num2 = (int)((float)num2 * CombatDirector.eliteMultiplierCost);
-						}
-						int num5 = num2;
-						this.monsterCredit -= (float)num5;
-						if (this.isBoss)
-						{
-							int livingPlayerCount = Run.instance.livingPlayerCount;
-							num3 *= Mathf.Pow((float)livingPlayerCount, 1f);
-						}
-						component.inventory.GiveItem(ItemIndex.BoostHp, Mathf.RoundToInt((num3 - 1f) * 10f));
-						component.inventory.GiveItem(ItemIndex.BoostDamage, Mathf.RoundToInt((num4 - 1f) * 10f));
-						DeathRewards component2 = bodyObject.GetComponent<DeathRewards>();
-						if (component2)
-						{
-							component2.expReward = (uint)((float)num2 * this.expRewardCoefficient * Run.instance.compensatedDifficultyCoefficient);
-							component2.goldReward = (uint)((float)num2 * this.expRewardCoefficient * 2f * Run.instance.compensatedDifficultyCoefficient);
-						}
-						if (this.spawnEffectPrefab && NetworkServer.active)
-						{
-							Vector3 origin = gameObject.transform.position;
-							CharacterBody component3 = bodyObject.GetComponent<CharacterBody>();
-							if (component3)
+							Debug.LogFormat("Elite tier index {0} is too expensive ({1}/{2})", new object[]
 							{
-								origin = component3.corePosition;
-							}
-							EffectManager.instance.SpawnEffect(this.spawnEffectPrefab, new EffectData
-							{
-								origin = origin
-							}, true);
+								i,
+								num,
+								this.monsterCredit
+							});
 						}
-						return true;
 					}
 				}
 			}
-			return false;
+			else if (CombatDirector.cvDirectorCombatEnableInternalLogs.value)
+			{
+				Debug.LogFormat("Card {0} cannot be elite. Skipping elite procedure.", new object[]
+				{
+					this.currentMonsterCard.spawnCard
+				});
+			}
+			this.currentActiveEliteIndex = *this.rng.NextElementUniform<EliteIndex>(this.currentActiveEliteTier.eliteTypes);
+			if (CombatDirector.cvDirectorCombatEnableInternalLogs.value)
+			{
+				Debug.LogFormat("Assigned elite index {0}", new object[]
+				{
+					this.currentActiveEliteIndex
+				});
+			}
+			this.lastAttemptedMonsterCard = this.currentMonsterCard;
+			this.spawnCountInCurrentWave = 0;
 		}
 
-		// Token: 0x06000DC0 RID: 3520 RVA: 0x00043CFC File Offset: 0x00041EFC
+		// Token: 0x06000934 RID: 2356 RVA: 0x00027E88 File Offset: 0x00026088
+		private bool AttemptSpawnOnTarget(GameObject spawnTarget)
+		{
+			if (this.currentMonsterCard == null)
+			{
+				if (CombatDirector.cvDirectorCombatEnableInternalLogs.value)
+				{
+					Debug.Log("Current monster card is null, pick new one.");
+				}
+				this.PrepareNewMonsterWave(this.monsterCards.Evaluate(this.rng.nextNormalizedFloat));
+			}
+			if (!spawnTarget)
+			{
+				if (CombatDirector.cvDirectorCombatEnableInternalLogs.value)
+				{
+					Debug.LogFormat("Spawn target {0} is invalid.", new object[]
+					{
+						spawnTarget
+					});
+				}
+				return false;
+			}
+			if (this.spawnCountInCurrentWave >= this.maximumNumberToSpawnBeforeSkipping)
+			{
+				this.spawnCountInCurrentWave = 0;
+				if (CombatDirector.cvDirectorCombatEnableInternalLogs.value)
+				{
+					Debug.LogFormat("Spawn count has hit the max ({0}/{1}). Aborting spawn.", new object[]
+					{
+						this.spawnCountInCurrentWave,
+						this.maximumNumberToSpawnBeforeSkipping
+					});
+				}
+				return false;
+			}
+			int cost = this.currentMonsterCard.cost;
+			int num = this.currentMonsterCard.cost;
+			int num2 = this.currentMonsterCard.cost;
+			CombatDirector.EliteTierDef eliteTierDef = this.currentActiveEliteTier;
+			EliteIndex eliteIndex = this.currentActiveEliteIndex;
+			num2 = (int)((float)num * this.currentActiveEliteTier.costMultiplier);
+			if ((float)num2 <= this.monsterCredit)
+			{
+				num = num2;
+				eliteTierDef = this.currentActiveEliteTier;
+				eliteIndex = this.currentActiveEliteIndex;
+			}
+			else
+			{
+				eliteTierDef = CombatDirector.eliteTiers[0];
+				eliteIndex = EliteIndex.None;
+			}
+			if (!this.currentMonsterCard.CardIsValid())
+			{
+				if (CombatDirector.cvDirectorCombatEnableInternalLogs.value)
+				{
+					Debug.LogFormat("Spawn card {0} is invalid, aborting spawn.", new object[]
+					{
+						this.currentMonsterCard.spawnCard
+					});
+				}
+				return false;
+			}
+			if (this.monsterCredit < (float)num)
+			{
+				if (CombatDirector.cvDirectorCombatEnableInternalLogs.value)
+				{
+					Debug.LogFormat("Spawn card {0} is too expensive, aborting spawn.", new object[]
+					{
+						this.currentMonsterCard.spawnCard
+					});
+				}
+				return false;
+			}
+			if (this.skipSpawnIfTooCheap && (float)(num2 * this.maximumNumberToSpawnBeforeSkipping) < this.monsterCredit)
+			{
+				if (CombatDirector.cvDirectorCombatEnableInternalLogs.value)
+				{
+					Debug.LogFormat("Card {0} seems too cheap ({1}/{2}). Comparing against most expensive possible ({3})", new object[]
+					{
+						this.currentMonsterCard.spawnCard,
+						num * this.maximumNumberToSpawnBeforeSkipping,
+						this.monsterCredit,
+						this.mostExpensiveMonsterCostInDeck
+					});
+				}
+				if (this.mostExpensiveMonsterCostInDeck > num)
+				{
+					if (CombatDirector.cvDirectorCombatEnableInternalLogs.value)
+					{
+						Debug.LogFormat("Spawn card {0} is too cheap, aborting spawn.", new object[]
+						{
+							this.currentMonsterCard.spawnCard
+						});
+					}
+					return false;
+				}
+			}
+			SpawnCard spawnCard = this.currentMonsterCard.spawnCard;
+			DirectorPlacementRule directorPlacementRule = new DirectorPlacementRule
+			{
+				placementMode = DirectorPlacementRule.PlacementMode.Approximate,
+				spawnOnTarget = spawnTarget.transform,
+				preventOverhead = this.currentMonsterCard.preventOverhead
+			};
+			DirectorCore.GetMonsterSpawnDistance(this.currentMonsterCard.spawnDistance, out directorPlacementRule.minDistance, out directorPlacementRule.maxDistance);
+			directorPlacementRule.minDistance *= this.spawnDistanceMultiplier;
+			directorPlacementRule.maxDistance *= this.spawnDistanceMultiplier;
+			DirectorSpawnRequest directorSpawnRequest = new DirectorSpawnRequest(spawnCard, directorPlacementRule, this.rng);
+			directorSpawnRequest.ignoreTeamMemberLimit = true;
+			directorSpawnRequest.teamIndexOverride = new TeamIndex?(TeamIndex.Monster);
+			GameObject gameObject = DirectorCore.instance.TrySpawnObject(directorSpawnRequest);
+			if (!gameObject)
+			{
+				Debug.LogFormat("Spawn card {0} failed to spawn. Aborting cost procedures.", new object[]
+				{
+					spawnCard
+				});
+				return false;
+			}
+			this.monsterCredit -= (float)num;
+			this.spawnCountInCurrentWave++;
+			CharacterMaster component = gameObject.GetComponent<CharacterMaster>();
+			GameObject bodyObject = component.GetBodyObject();
+			if (this.combatSquad)
+			{
+				this.combatSquad.AddMember(component);
+			}
+			float num3 = eliteTierDef.healthBoostCoefficient;
+			float damageBoostCoefficient = eliteTierDef.damageBoostCoefficient;
+			EliteDef eliteDef = EliteCatalog.GetEliteDef(eliteIndex);
+			EquipmentIndex equipmentIndex = (eliteDef != null) ? eliteDef.eliteEquipmentIndex : EquipmentIndex.None;
+			if (equipmentIndex != EquipmentIndex.None)
+			{
+				component.inventory.SetEquipmentIndex(equipmentIndex);
+			}
+			if (this.combatSquad)
+			{
+				int livingPlayerCount = Run.instance.livingPlayerCount;
+				num3 *= Mathf.Pow((float)livingPlayerCount, 1f);
+			}
+			component.inventory.GiveItem(ItemIndex.BoostHp, Mathf.RoundToInt((num3 - 1f) * 10f));
+			component.inventory.GiveItem(ItemIndex.BoostDamage, Mathf.RoundToInt((damageBoostCoefficient - 1f) * 10f));
+			DeathRewards component2 = bodyObject.GetComponent<DeathRewards>();
+			if (component2)
+			{
+				component2.expReward = (uint)((float)num * this.expRewardCoefficient * Run.instance.compensatedDifficultyCoefficient);
+				component2.goldReward = (uint)((float)num * this.expRewardCoefficient * 2f * Run.instance.compensatedDifficultyCoefficient);
+			}
+			if (this.spawnEffectPrefab && NetworkServer.active)
+			{
+				Vector3 origin = gameObject.transform.position;
+				CharacterBody component3 = bodyObject.GetComponent<CharacterBody>();
+				if (component3)
+				{
+					origin = component3.corePosition;
+				}
+				EffectManager.SpawnEffect(this.spawnEffectPrefab, new EffectData
+				{
+					origin = origin
+				}, true);
+			}
+			CombatDirector.OnSpawnedServer onSpawnedServer = this.onSpawnedServer;
+			if (onSpawnedServer != null)
+			{
+				onSpawnedServer.Invoke(gameObject);
+			}
+			return true;
+		}
+
+		// Token: 0x06000935 RID: 2357 RVA: 0x00028358 File Offset: 0x00026558
 		private void FixedUpdate()
 		{
 			if (CombatDirector.cvDirectorCombatDisable.value)
@@ -319,100 +530,180 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x040011A9 RID: 4521
+		// Token: 0x0400097B RID: 2427
+		[Header("Core Director Values")]
+		public string customName;
+
+		// Token: 0x0400097C RID: 2428
 		public float monsterCredit;
 
-		// Token: 0x040011AA RID: 4522
-		[HideInInspector]
-		public float monsterSpawnTimer;
-
-		// Token: 0x040011AB RID: 4523
-		[HideInInspector]
-		public DirectorCard lastAttemptedMonsterCard;
-
-		// Token: 0x040011AC RID: 4524
-		private DirectorCard currentMonsterCard;
-
-		// Token: 0x040011AD RID: 4525
-		private EliteIndex currentActiveEliteIndex;
-
-		// Token: 0x040011AE RID: 4526
+		// Token: 0x0400097D RID: 2429
 		public float expRewardCoefficient = 0.2f;
 
-		// Token: 0x040011AF RID: 4527
+		// Token: 0x0400097E RID: 2430
 		public float minSeriesSpawnInterval = 0.1f;
 
-		// Token: 0x040011B0 RID: 4528
+		// Token: 0x0400097F RID: 2431
 		public float maxSeriesSpawnInterval = 1f;
 
-		// Token: 0x040011B1 RID: 4529
+		// Token: 0x04000980 RID: 2432
 		public float minRerollSpawnInterval = 2.3333333f;
 
-		// Token: 0x040011B2 RID: 4530
+		// Token: 0x04000981 RID: 2433
 		public float maxRerollSpawnInterval = 4.3333335f;
 
-		// Token: 0x040011B3 RID: 4531
-		public bool isBoss;
-
-		// Token: 0x040011B4 RID: 4532
-		public bool shouldSpawnOneWave;
-
-		// Token: 0x040011B5 RID: 4533
-		public bool targetPlayers = true;
-
-		// Token: 0x040011B6 RID: 4534
-		public bool skipSpawnIfTooCheap = true;
-
-		// Token: 0x040011B7 RID: 4535
-		private bool hasStartedWave;
-
-		// Token: 0x040011B8 RID: 4536
+		// Token: 0x04000982 RID: 2434
 		public RangeFloat[] moneyWaveIntervals;
 
-		// Token: 0x040011B9 RID: 4537
-		public static readonly List<CombatDirector> instancesList = new List<CombatDirector>();
-
-		// Token: 0x040011BA RID: 4538
+		// Token: 0x04000983 RID: 2435
 		[Tooltip("How much to multiply money wave yield by.")]
+		[Header("Optional Behaviors")]
 		public float creditMultiplier = 1f;
 
-		// Token: 0x040011BB RID: 4539
+		// Token: 0x04000984 RID: 2436
 		[Tooltip("The coefficient to multiply spawn distances. Used for combat shrines, to keep spawns nearby.")]
 		public float spawnDistanceMultiplier = 1f;
 
-		// Token: 0x040011BD RID: 4541
-		[Tooltip("The position from which a reward will be dropped when the associated BossGroup is defeated.")]
-		public Transform dropPosition;
+		// Token: 0x04000985 RID: 2437
+		public bool shouldSpawnOneWave;
 
-		// Token: 0x040011BE RID: 4542
+		// Token: 0x04000986 RID: 2438
+		public bool targetPlayers = true;
+
+		// Token: 0x04000987 RID: 2439
+		public bool skipSpawnIfTooCheap = true;
+
+		// Token: 0x04000988 RID: 2440
+		public bool resetMonsterCardIfFailed = true;
+
+		// Token: 0x04000989 RID: 2441
+		public int maximumNumberToSpawnBeforeSkipping = 6;
+
+		// Token: 0x0400098A RID: 2442
+		public float eliteBias = 1f;
+
+		// Token: 0x0400098B RID: 2443
+		public CombatDirector.OnSpawnedServer onSpawnedServer;
+
+		// Token: 0x0400098C RID: 2444
+		[FormerlySerializedAs("_combatSquad")]
+		public CombatSquad combatSquad;
+
+		// Token: 0x0400098D RID: 2445
 		[Tooltip("A special effect for when a monster appears will be instantiated at its position. Used for combat shrine.")]
 		public GameObject spawnEffectPrefab;
 
-		// Token: 0x040011BF RID: 4543
+		// Token: 0x0400098E RID: 2446
+		public bool ignoreTeamSizeLimit;
+
+		// Token: 0x04000991 RID: 2449
+		public static readonly List<CombatDirector> instancesList = new List<CombatDirector>();
+
+		// Token: 0x04000992 RID: 2450
+		private bool hasStartedWave;
+
+		// Token: 0x04000993 RID: 2451
 		private Xoroshiro128Plus rng;
 
-		// Token: 0x040011C0 RID: 4544
+		// Token: 0x04000994 RID: 2452
+		private DirectorCard currentMonsterCard;
+
+		// Token: 0x04000995 RID: 2453
+		private CombatDirector.EliteTierDef currentActiveEliteTier;
+
+		// Token: 0x04000996 RID: 2454
+		private EliteIndex currentActiveEliteIndex;
+
+		// Token: 0x04000997 RID: 2455
+		private int currentMonsterCardCost;
+
+		// Token: 0x04000998 RID: 2456
 		public GameObject currentSpawnTarget;
 
-		// Token: 0x040011C1 RID: 4545
+		// Token: 0x04000999 RID: 2457
 		private float playerRetargetTimer;
 
-		// Token: 0x040011C2 RID: 4546
-		public static float maximumNumberToSpawnBeforeSkipping = 4f;
+		// Token: 0x0400099A RID: 2458
+		private static readonly CombatDirector.EliteTierDef[] eliteTiers = new CombatDirector.EliteTierDef[]
+		{
+			new CombatDirector.EliteTierDef
+			{
+				costMultiplier = 1f,
+				damageBoostCoefficient = 1f,
+				healthBoostCoefficient = 1f,
+				eliteTypes = new EliteIndex[]
+				{
+					EliteIndex.None
+				}
+			},
+			new CombatDirector.EliteTierDef
+			{
+				costMultiplier = 6f,
+				damageBoostCoefficient = 2f,
+				healthBoostCoefficient = 4.7f,
+				eliteTypes = new EliteIndex[]
+				{
+					EliteIndex.Fire,
+					EliteIndex.Lightning,
+					EliteIndex.Ice
+				},
+				isAvailable = (() => true)
+			},
+			new CombatDirector.EliteTierDef
+			{
+				costMultiplier = 36f,
+				damageBoostCoefficient = 6f,
+				healthBoostCoefficient = 23.5f,
+				eliteTypes = new EliteIndex[]
+				{
+					EliteIndex.Poison,
+					EliteIndex.Haunted
+				},
+				isAvailable = (() => Run.instance.loopClearCount > 0)
+			}
+		};
 
-		// Token: 0x040011C3 RID: 4547
-		public static float eliteMultiplierCost = 6f;
+		// Token: 0x0400099B RID: 2459
+		private int spawnCountInCurrentWave;
 
-		// Token: 0x040011C4 RID: 4548
+		// Token: 0x0400099C RID: 2460
 		private static readonly BoolConVar cvDirectorCombatDisable = new BoolConVar("director_combat_disable", ConVarFlags.SenderMustBeServer | ConVarFlags.Cheat, "0", "Disables all combat directors.");
 
-		// Token: 0x040011C5 RID: 4549
+		// Token: 0x0400099D RID: 2461
+		private static readonly BoolConVar cvDirectorCombatEnableInternalLogs = new BoolConVar("director_combat_enable_internal_logs", ConVarFlags.None, "0", "Enables all combat directors to print internal logging.");
+
+		// Token: 0x0400099E RID: 2462
 		private CombatDirector.DirectorMoneyWave[] moneyWaves;
 
-		// Token: 0x020002A2 RID: 674
+		// Token: 0x020001AE RID: 430
+		[Serializable]
+		public class OnSpawnedServer : UnityEvent<GameObject>
+		{
+		}
+
+		// Token: 0x020001AF RID: 431
+		public class EliteTierDef
+		{
+			// Token: 0x0400099F RID: 2463
+			public float costMultiplier;
+
+			// Token: 0x040009A0 RID: 2464
+			public float damageBoostCoefficient;
+
+			// Token: 0x040009A1 RID: 2465
+			public float healthBoostCoefficient;
+
+			// Token: 0x040009A2 RID: 2466
+			public EliteIndex[] eliteTypes;
+
+			// Token: 0x040009A3 RID: 2467
+			public Func<bool> isAvailable = () => true;
+		}
+
+		// Token: 0x020001B1 RID: 433
 		private class DirectorMoneyWave
 		{
-			// Token: 0x06000DC3 RID: 3523 RVA: 0x00043E20 File Offset: 0x00042020
+			// Token: 0x0600093D RID: 2365 RVA: 0x000285D8 File Offset: 0x000267D8
 			public float Update(float deltaTime, float difficultyCoefficient)
 			{
 				this.timer += deltaTime;
@@ -429,16 +720,16 @@ namespace RoR2
 				return num4;
 			}
 
-			// Token: 0x040011C6 RID: 4550
+			// Token: 0x040009A6 RID: 2470
 			public float interval;
 
-			// Token: 0x040011C7 RID: 4551
+			// Token: 0x040009A7 RID: 2471
 			public float timer;
 
-			// Token: 0x040011C8 RID: 4552
+			// Token: 0x040009A8 RID: 2472
 			public float multiplier;
 
-			// Token: 0x040011C9 RID: 4553
+			// Token: 0x040009A9 RID: 2473
 			private float accumulatedAward;
 		}
 	}

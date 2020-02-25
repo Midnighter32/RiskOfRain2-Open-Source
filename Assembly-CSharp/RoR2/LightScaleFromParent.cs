@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000349 RID: 841
+	// Token: 0x02000271 RID: 625
 	public class LightScaleFromParent : MonoBehaviour
 	{
-		// Token: 0x0600116F RID: 4463 RVA: 0x00056A6C File Offset: 0x00054C6C
+		// Token: 0x06000DE9 RID: 3561 RVA: 0x0003E610 File Offset: 0x0003C810
 		private void Start()
 		{
 			Light component = base.GetComponent<Light>();

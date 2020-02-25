@@ -3,18 +3,18 @@ using RoR2.Stats;
 
 namespace RoR2.Achievements
 {
-	// Token: 0x0200068C RID: 1676
+	// Token: 0x02000692 RID: 1682
 	[RegisterAchievement("Complete20Stages", "Items.Clover", null, null)]
 	public class Complete20StagesAchievement : BaseAchievement
 	{
-		// Token: 0x06002566 RID: 9574 RVA: 0x000AF13F File Offset: 0x000AD33F
+		// Token: 0x06002769 RID: 10089 RVA: 0x000AA933 File Offset: 0x000A8B33
 		public override void OnInstall()
 		{
 			base.OnInstall();
 			Run.onRunStartGlobal += this.OnRunStart;
 		}
 
-		// Token: 0x06002567 RID: 9575 RVA: 0x000AF158 File Offset: 0x000AD358
+		// Token: 0x0600276A RID: 10090 RVA: 0x000AA94C File Offset: 0x000A8B4C
 		public override void OnUninstall()
 		{
 			Run.onRunStartGlobal -= this.OnRunStart;
@@ -22,13 +22,13 @@ namespace RoR2.Achievements
 			base.OnUninstall();
 		}
 
-		// Token: 0x06002568 RID: 9576 RVA: 0x000AF178 File Offset: 0x000AD378
+		// Token: 0x0600276B RID: 10091 RVA: 0x000AA96C File Offset: 0x000A8B6C
 		private void OnRunStart(Run run)
 		{
 			this.SetListeningForStats(true);
 		}
 
-		// Token: 0x06002569 RID: 9577 RVA: 0x000AF184 File Offset: 0x000AD384
+		// Token: 0x0600276C RID: 10092 RVA: 0x000AA978 File Offset: 0x000A8B78
 		private void SetListeningForStats(bool shouldListen)
 		{
 			if (this.listeningForStats == shouldListen)
@@ -38,7 +38,7 @@ namespace RoR2.Achievements
 			this.listeningForStats = shouldListen;
 			if (this.listeningForStats)
 			{
-				this.subscribedProfile = this.localUser.userProfile;
+				this.subscribedProfile = base.localUser.userProfile;
 				this.subscribedProfile.onStatsReceived += this.OnStatsReceived;
 				return;
 			}
@@ -46,26 +46,26 @@ namespace RoR2.Achievements
 			this.subscribedProfile = null;
 		}
 
-		// Token: 0x0600256A RID: 9578 RVA: 0x000AF1F4 File Offset: 0x000AD3F4
+		// Token: 0x0600276D RID: 10093 RVA: 0x000AA9E8 File Offset: 0x000A8BE8
 		private void OnStatsReceived()
 		{
-			PlayerStatsComponent playerStatsComponent = this.playerStatsComponentGetter.Get(this.localUser.cachedMasterObject);
+			PlayerStatsComponent playerStatsComponent = this.playerStatsComponentGetter.Get(base.localUser.cachedMasterObject);
 			if (playerStatsComponent && playerStatsComponent.currentStats.GetStatValueULong(StatDef.highestStagesCompleted) >= 20UL)
 			{
 				base.Grant();
 			}
 		}
 
-		// Token: 0x04002862 RID: 10338
+		// Token: 0x040024EE RID: 9454
 		private const int requirement = 20;
 
-		// Token: 0x04002863 RID: 10339
+		// Token: 0x040024EF RID: 9455
 		private bool listeningForStats;
 
-		// Token: 0x04002864 RID: 10340
+		// Token: 0x040024F0 RID: 9456
 		private UserProfile subscribedProfile;
 
-		// Token: 0x04002865 RID: 10341
+		// Token: 0x040024F1 RID: 9457
 		private MemoizedGetComponent<PlayerStatsComponent> playerStatsComponentGetter;
 	}
 }

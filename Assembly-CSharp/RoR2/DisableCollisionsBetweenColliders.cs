@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020002D5 RID: 725
+	// Token: 0x020001E7 RID: 487
 	public class DisableCollisionsBetweenColliders : MonoBehaviour
 	{
-		// Token: 0x06000E85 RID: 3717 RVA: 0x00047968 File Offset: 0x00045B68
+		// Token: 0x06000A31 RID: 2609 RVA: 0x0002C89C File Offset: 0x0002AA9C
 		public void Awake()
 		{
 			foreach (Collider collider in this.collidersA)
@@ -18,10 +18,10 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0400129C RID: 4764
+		// Token: 0x04000A91 RID: 2705
 		public Collider[] collidersA;
 
-		// Token: 0x0400129D RID: 4765
+		// Token: 0x04000A92 RID: 2706
 		public Collider[] collidersB;
 	}
 }

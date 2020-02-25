@@ -3,64 +3,74 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020004C6 RID: 1222
+	// Token: 0x0200045E RID: 1118
 	public struct Trajectory
 	{
-		// Token: 0x06001B71 RID: 7025 RVA: 0x0008038D File Offset: 0x0007E58D
-		public static float CalculateApex(float initialSpeed)
+		// Token: 0x17000313 RID: 787
+		// (get) Token: 0x06001B08 RID: 6920 RVA: 0x00072A89 File Offset: 0x00070C89
+		private static float defaultGravity
 		{
-			return Trajectory.CalculateApex(initialSpeed, Physics.gravity.y);
+			get
+			{
+				return Physics.gravity.y;
+			}
 		}
 
-		// Token: 0x06001B72 RID: 7026 RVA: 0x0008039F File Offset: 0x0007E59F
+		// Token: 0x06001B09 RID: 6921 RVA: 0x00072A95 File Offset: 0x00070C95
+		public static float CalculateApex(float initialSpeed)
+		{
+			return Trajectory.CalculateApex(initialSpeed, Trajectory.defaultGravity);
+		}
+
+		// Token: 0x06001B0A RID: 6922 RVA: 0x00072AA2 File Offset: 0x00070CA2
 		public static float CalculateApex(float initialSpeed, float gravity)
 		{
 			return initialSpeed * initialSpeed / (2f * -gravity);
 		}
 
-		// Token: 0x06001B73 RID: 7027 RVA: 0x000803AD File Offset: 0x0007E5AD
+		// Token: 0x06001B0B RID: 6923 RVA: 0x00072AB0 File Offset: 0x00070CB0
 		public static float CalculateGroundSpeed(float time, float distance)
 		{
 			return distance / time;
 		}
 
-		// Token: 0x06001B74 RID: 7028 RVA: 0x000803AD File Offset: 0x0007E5AD
+		// Token: 0x06001B0C RID: 6924 RVA: 0x00072AB0 File Offset: 0x00070CB0
 		public static float CalculateGroundTravelTime(float hSpeed, float hDistance)
 		{
 			return hDistance / hSpeed;
 		}
 
-		// Token: 0x06001B75 RID: 7029 RVA: 0x000803B2 File Offset: 0x0007E5B2
+		// Token: 0x06001B0D RID: 6925 RVA: 0x00072AB5 File Offset: 0x00070CB5
 		public static float CalculateInitialYSpeed(float timeToTarget, float destinationYOffset)
 		{
-			return Trajectory.CalculateInitialYSpeed(timeToTarget, destinationYOffset, Physics.gravity.y);
+			return Trajectory.CalculateInitialYSpeed(timeToTarget, destinationYOffset, Trajectory.defaultGravity);
 		}
 
-		// Token: 0x06001B76 RID: 7030 RVA: 0x000803C5 File Offset: 0x0007E5C5
+		// Token: 0x06001B0E RID: 6926 RVA: 0x00072AC3 File Offset: 0x00070CC3
 		public static float CalculateInitialYSpeed(float timeToTarget, float destinationYOffset, float gravity)
 		{
 			return (destinationYOffset + 0.5f * -gravity * timeToTarget * timeToTarget) / timeToTarget;
 		}
 
-		// Token: 0x06001B77 RID: 7031 RVA: 0x000803D7 File Offset: 0x0007E5D7
+		// Token: 0x06001B0F RID: 6927 RVA: 0x00072AD5 File Offset: 0x00070CD5
 		public static float CalculateInitialYSpeedForHeight(float height)
 		{
-			return Trajectory.CalculateInitialYSpeedForHeight(height, Physics.gravity.y);
+			return Trajectory.CalculateInitialYSpeedForHeight(height, Trajectory.defaultGravity);
 		}
 
-		// Token: 0x06001B78 RID: 7032 RVA: 0x000803E9 File Offset: 0x0007E5E9
+		// Token: 0x06001B10 RID: 6928 RVA: 0x00072AE2 File Offset: 0x00070CE2
 		public static float CalculateInitialYSpeedForHeight(float height, float gravity)
 		{
 			return Mathf.Sqrt(height * (2f * -gravity));
 		}
 
-		// Token: 0x06001B79 RID: 7033 RVA: 0x000803FA File Offset: 0x0007E5FA
+		// Token: 0x06001B11 RID: 6929 RVA: 0x00072AF3 File Offset: 0x00070CF3
 		public static Vector3 CalculatePositionAtTime(Vector3 origin, Vector3 initialVelocity, float t)
 		{
-			return Trajectory.CalculatePositionAtTime(origin, initialVelocity, t, Physics.gravity.y);
+			return Trajectory.CalculatePositionAtTime(origin, initialVelocity, t, Trajectory.defaultGravity);
 		}
 
-		// Token: 0x06001B7A RID: 7034 RVA: 0x00080410 File Offset: 0x0007E610
+		// Token: 0x06001B12 RID: 6930 RVA: 0x00072B04 File Offset: 0x00070D04
 		public static Vector3 CalculatePositionAtTime(Vector3 origin, Vector3 initialVelocity, float t, float gravity)
 		{
 			Vector3 result = origin + initialVelocity * t;
@@ -68,16 +78,52 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x06001B7B RID: 7035 RVA: 0x00080442 File Offset: 0x0007E642
-		public static float CalculateInitialYSpeedForFlightDuration(float duration)
+		// Token: 0x06001B13 RID: 6931 RVA: 0x00072B36 File Offset: 0x00070D36
+		public static float CalculatePositionYAtTime(float originY, float initialVelocityY, float t)
 		{
-			return Trajectory.CalculateInitialYSpeedForFlightDuration(duration, Physics.gravity.y);
+			return Trajectory.CalculatePositionYAtTime(originY, initialVelocityY, t, Trajectory.defaultGravity);
 		}
 
-		// Token: 0x06001B7C RID: 7036 RVA: 0x00080454 File Offset: 0x0007E654
+		// Token: 0x06001B14 RID: 6932 RVA: 0x00072B45 File Offset: 0x00070D45
+		public static float CalculatePositionYAtTime(float originY, float initialVelocityY, float t, float gravity)
+		{
+			return originY + initialVelocityY * t + 0.5f * gravity * t * t;
+		}
+
+		// Token: 0x06001B15 RID: 6933 RVA: 0x00072B58 File Offset: 0x00070D58
+		public static float CalculateInitialYSpeedForFlightDuration(float duration)
+		{
+			return Trajectory.CalculateInitialYSpeedForFlightDuration(duration, Trajectory.defaultGravity);
+		}
+
+		// Token: 0x06001B16 RID: 6934 RVA: 0x00072B65 File Offset: 0x00070D65
 		public static float CalculateInitialYSpeedForFlightDuration(float duration, float gravity)
 		{
 			return duration * gravity * -0.5f;
+		}
+
+		// Token: 0x06001B17 RID: 6935 RVA: 0x00072B70 File Offset: 0x00070D70
+		public static float CalculateFlightDuration(float vSpeed)
+		{
+			return Trajectory.CalculateFlightDuration(vSpeed, Trajectory.defaultGravity);
+		}
+
+		// Token: 0x06001B18 RID: 6936 RVA: 0x00072B7D File Offset: 0x00070D7D
+		public static float CalculateFlightDuration(float vSpeed, float gravity)
+		{
+			return 2f * vSpeed / -gravity;
+		}
+
+		// Token: 0x06001B19 RID: 6937 RVA: 0x00072B89 File Offset: 0x00070D89
+		public static float CalculateGroundSpeedToClearDistance(float vSpeed, float distance)
+		{
+			return Trajectory.CalculateGroundSpeedToClearDistance(vSpeed, distance, Trajectory.defaultGravity);
+		}
+
+		// Token: 0x06001B1A RID: 6938 RVA: 0x00072B97 File Offset: 0x00070D97
+		public static float CalculateGroundSpeedToClearDistance(float vSpeed, float distance, float gravity)
+		{
+			return distance / Trajectory.CalculateFlightDuration(vSpeed, gravity);
 		}
 	}
 }

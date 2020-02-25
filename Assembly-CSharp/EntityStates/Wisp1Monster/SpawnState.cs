@@ -3,10 +3,10 @@ using RoR2;
 
 namespace EntityStates.Wisp1Monster
 {
-	// Token: 0x020000CB RID: 203
+	// Token: 0x02000727 RID: 1831
 	public class SpawnState : BaseState
 	{
-		// Token: 0x060003F3 RID: 1011 RVA: 0x0001041E File Offset: 0x0000E61E
+		// Token: 0x06002A98 RID: 10904 RVA: 0x000B33FE File Offset: 0x000B15FE
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -14,7 +14,7 @@ namespace EntityStates.Wisp1Monster
 			Util.PlaySound(SpawnState.spawnSoundString, base.gameObject);
 		}
 
-		// Token: 0x060003F4 RID: 1012 RVA: 0x00010451 File Offset: 0x0000E651
+		// Token: 0x06002A99 RID: 10905 RVA: 0x000B3431 File Offset: 0x000B1631
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -24,16 +24,16 @@ namespace EntityStates.Wisp1Monster
 			}
 		}
 
-		// Token: 0x060003F5 RID: 1013 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x06002A9A RID: 10906 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Death;
 		}
 
-		// Token: 0x040003B6 RID: 950
+		// Token: 0x0400267A RID: 9850
 		public static float duration = 4f;
 
-		// Token: 0x040003B7 RID: 951
+		// Token: 0x0400267B RID: 9851
 		public static string spawnSoundString;
 	}
 }

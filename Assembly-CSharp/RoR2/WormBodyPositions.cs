@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000427 RID: 1063
+	// Token: 0x02000383 RID: 899
 	public class WormBodyPositions : MonoBehaviour
 	{
-		// Token: 0x060017A7 RID: 6055 RVA: 0x000701E8 File Offset: 0x0006E3E8
+		// Token: 0x060015E1 RID: 5601 RVA: 0x0005D504 File Offset: 0x0005B704
 		private void Start()
 		{
 			this.positionHistory.Add(new WormBodyPositions.Keyframe
@@ -19,7 +19,7 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x060017A8 RID: 6056 RVA: 0x0007024C File Offset: 0x0006E44C
+		// Token: 0x060015E2 RID: 5602 RVA: 0x0005D568 File Offset: 0x0005B768
 		private void FixedUpdate()
 		{
 			Vector3 position = this.segments[0].position;
@@ -82,31 +82,31 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001ADB RID: 6875
+		// Token: 0x04001471 RID: 5233
 		public Vector3 headVelocity = Vector3.zero;
 
-		// Token: 0x04001ADC RID: 6876
+		// Token: 0x04001472 RID: 5234
 		public Transform[] segments;
 
-		// Token: 0x04001ADD RID: 6877
+		// Token: 0x04001473 RID: 5235
 		public float segmentRadius = 1f;
 
-		// Token: 0x04001ADE RID: 6878
+		// Token: 0x04001474 RID: 5236
 		private List<WormBodyPositions.Keyframe> positionHistory = new List<WormBodyPositions.Keyframe>();
 
-		// Token: 0x02000428 RID: 1064
+		// Token: 0x02000384 RID: 900
 		private struct Keyframe
 		{
-			// Token: 0x04001ADF RID: 6879
+			// Token: 0x04001475 RID: 5237
 			public Vector3 position;
 
-			// Token: 0x04001AE0 RID: 6880
+			// Token: 0x04001476 RID: 5238
 			public Quaternion rotation;
 
-			// Token: 0x04001AE1 RID: 6881
+			// Token: 0x04001477 RID: 5239
 			public Vector3 fromPreviousNormal;
 
-			// Token: 0x04001AE2 RID: 6882
+			// Token: 0x04001478 RID: 5240
 			public float fromPreviousLength;
 		}
 	}

@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace RoR2.Hologram
 {
-	// Token: 0x0200056F RID: 1391
+	// Token: 0x02000538 RID: 1336
 	public class HologramProjector : MonoBehaviour
 	{
-		// Token: 0x06001EED RID: 7917 RVA: 0x00091DFF File Offset: 0x0008FFFF
+		// Token: 0x06001F79 RID: 8057 RVA: 0x00088904 File Offset: 0x00086B04
 		private void Awake()
 		{
 			this.contentProvider = base.GetComponent<IHologramContentProvider>();
 		}
 
-		// Token: 0x06001EEE RID: 7918 RVA: 0x00091E10 File Offset: 0x00090010
+		// Token: 0x06001F7A RID: 8058 RVA: 0x00088914 File Offset: 0x00086B14
 		private Transform FindViewer(Vector3 position)
 		{
 			if (this.viewerReselectTimer > 0f)
@@ -43,7 +43,7 @@ namespace RoR2.Hologram
 			return this.cachedViewer;
 		}
 
-		// Token: 0x06001EEF RID: 7919 RVA: 0x00091EB8 File Offset: 0x000900B8
+		// Token: 0x06001F7B RID: 8059 RVA: 0x000889BC File Offset: 0x00086BBC
 		private void Update()
 		{
 			this.viewerReselectTimer -= Time.deltaTime;
@@ -86,7 +86,7 @@ namespace RoR2.Hologram
 			}
 		}
 
-		// Token: 0x06001EF0 RID: 7920 RVA: 0x00092000 File Offset: 0x00090200
+		// Token: 0x06001F7C RID: 8060 RVA: 0x00088B04 File Offset: 0x00086D04
 		private void BuildHologram()
 		{
 			this.DestroyHologram();
@@ -112,7 +112,7 @@ namespace RoR2.Hologram
 			}
 		}
 
-		// Token: 0x06001EF1 RID: 7921 RVA: 0x00092129 File Offset: 0x00090329
+		// Token: 0x06001F7D RID: 8061 RVA: 0x00088C2D File Offset: 0x00086E2D
 		private void DestroyHologram()
 		{
 			if (this.hologramContentInstance)
@@ -122,37 +122,37 @@ namespace RoR2.Hologram
 			this.hologramContentInstance = null;
 		}
 
-		// Token: 0x040021A3 RID: 8611
+		// Token: 0x04001D2C RID: 7468
 		[Tooltip("The range in meters at which the hologram begins to display.")]
 		public float displayDistance = 15f;
 
-		// Token: 0x040021A4 RID: 8612
+		// Token: 0x04001D2D RID: 7469
 		[Tooltip("The position at which to display the hologram.")]
 		public Transform hologramPivot;
 
-		// Token: 0x040021A5 RID: 8613
+		// Token: 0x04001D2E RID: 7470
 		[Tooltip("Whether or not the hologram will pivot to the player")]
 		public bool disableHologramRotation;
 
-		// Token: 0x040021A6 RID: 8614
+		// Token: 0x04001D2F RID: 7471
 		private float transformDampVelocity;
 
-		// Token: 0x040021A7 RID: 8615
+		// Token: 0x04001D30 RID: 7472
 		private IHologramContentProvider contentProvider;
 
-		// Token: 0x040021A8 RID: 8616
+		// Token: 0x04001D31 RID: 7473
 		private float viewerReselectTimer;
 
-		// Token: 0x040021A9 RID: 8617
+		// Token: 0x04001D32 RID: 7474
 		private float viewerReselectInterval = 0.25f;
 
-		// Token: 0x040021AA RID: 8618
+		// Token: 0x04001D33 RID: 7475
 		private Transform cachedViewer;
 
-		// Token: 0x040021AB RID: 8619
+		// Token: 0x04001D34 RID: 7476
 		private Transform viewer;
 
-		// Token: 0x040021AC RID: 8620
+		// Token: 0x04001D35 RID: 7477
 		private GameObject hologramContentInstance;
 	}
 }

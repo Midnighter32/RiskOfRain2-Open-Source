@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005A6 RID: 1446
+	// Token: 0x02000579 RID: 1401
 	public class DebugStats : MonoBehaviour
 	{
-		// Token: 0x0600205E RID: 8286 RVA: 0x00098730 File Offset: 0x00096930
+		// Token: 0x0600214F RID: 8527 RVA: 0x000902FE File Offset: 0x0008E4FE
 		private void Awake()
 		{
 			DebugStats.fpsTimestamps = new Queue<float>();
@@ -17,7 +17,7 @@ namespace RoR2.UI
 			this.budgetTimestampCount = (int)(this.budgetAverageTime / this.budgetAverageFrequency);
 		}
 
-		// Token: 0x0600205F RID: 8287 RVA: 0x00098770 File Offset: 0x00096970
+		// Token: 0x06002150 RID: 8528 RVA: 0x0009033C File Offset: 0x0008E53C
 		private float GetAverageFPS()
 		{
 			if (DebugStats.fpsTimestamps.Count == 0)
@@ -33,7 +33,7 @@ namespace RoR2.UI
 			return Mathf.Round(num);
 		}
 
-		// Token: 0x06002060 RID: 8288 RVA: 0x000987EC File Offset: 0x000969EC
+		// Token: 0x06002151 RID: 8529 RVA: 0x000903B8 File Offset: 0x0008E5B8
 		private float GetAverageParticleCost()
 		{
 			if (DebugStats.budgetTimestamps.Count == 0)
@@ -49,19 +49,14 @@ namespace RoR2.UI
 			return Mathf.Round(num);
 		}
 
-		// Token: 0x06002061 RID: 8289 RVA: 0x00098868 File Offset: 0x00096A68
-		private void FixedUpdate()
-		{
-			if (Input.GetKeyDown(KeyCode.F1))
-			{
-				DebugStats.showStats = !DebugStats.showStats;
-			}
-			this.statsRoot.SetActive(DebugStats.showStats);
-		}
-
-		// Token: 0x06002062 RID: 8290 RVA: 0x00098894 File Offset: 0x00096A94
+		// Token: 0x06002152 RID: 8530 RVA: 0x00090434 File Offset: 0x0008E634
 		private void Update()
 		{
+			this.statsRoot.SetActive(DebugStats.showStats);
+			if (!DebugStats.showStats)
+			{
+				return;
+			}
 			this.fpsStopwatch += Time.unscaledDeltaTime;
 			this.fpsDisplayStopwatch += Time.unscaledDeltaTime;
 			float num = 1f / Time.unscaledDeltaTime;
@@ -160,61 +155,61 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x040022EA RID: 8938
+		// Token: 0x04001EBD RID: 7869
 		public GameObject statsRoot;
 
-		// Token: 0x040022EB RID: 8939
+		// Token: 0x04001EBE RID: 7870
 		public TextMeshProUGUI fpsAverageText;
 
-		// Token: 0x040022EC RID: 8940
+		// Token: 0x04001EBF RID: 7871
 		public float fpsAverageFrequency = 1f;
 
-		// Token: 0x040022ED RID: 8941
+		// Token: 0x04001EC0 RID: 7872
 		public float fpsAverageTime = 60f;
 
-		// Token: 0x040022EE RID: 8942
+		// Token: 0x04001EC1 RID: 7873
 		public float fpsAverageDisplayUpdateFrequency = 1f;
 
-		// Token: 0x040022EF RID: 8943
+		// Token: 0x04001EC2 RID: 7874
 		private float fpsStopwatch;
 
-		// Token: 0x040022F0 RID: 8944
+		// Token: 0x04001EC3 RID: 7875
 		private float fpsDisplayStopwatch;
 
-		// Token: 0x040022F1 RID: 8945
+		// Token: 0x04001EC4 RID: 7876
 		private static Queue<float> fpsTimestamps;
 
-		// Token: 0x040022F2 RID: 8946
+		// Token: 0x04001EC5 RID: 7877
 		private int fpsTimestampCount;
 
-		// Token: 0x040022F3 RID: 8947
+		// Token: 0x04001EC6 RID: 7878
 		public TextMeshProUGUI budgetAverageText;
 
-		// Token: 0x040022F4 RID: 8948
+		// Token: 0x04001EC7 RID: 7879
 		public float budgetAverageFrequency = 1f;
 
-		// Token: 0x040022F5 RID: 8949
+		// Token: 0x04001EC8 RID: 7880
 		public float budgetAverageTime = 60f;
 
-		// Token: 0x040022F6 RID: 8950
+		// Token: 0x04001EC9 RID: 7881
 		private const float budgetAverageDisplayUpdateFrequency = 1f;
 
-		// Token: 0x040022F7 RID: 8951
+		// Token: 0x04001ECA RID: 7882
 		private float budgetStopwatch;
 
-		// Token: 0x040022F8 RID: 8952
+		// Token: 0x04001ECB RID: 7883
 		private float budgetDisplayStopwatch;
 
-		// Token: 0x040022F9 RID: 8953
+		// Token: 0x04001ECC RID: 7884
 		private static Queue<float> budgetTimestamps;
 
-		// Token: 0x040022FA RID: 8954
+		// Token: 0x04001ECD RID: 7885
 		private int budgetTimestampCount;
 
-		// Token: 0x040022FB RID: 8955
+		// Token: 0x04001ECE RID: 7886
 		private static bool showStats;
 
-		// Token: 0x040022FC RID: 8956
+		// Token: 0x04001ECF RID: 7887
 		public TextMeshProUGUI teamText;
 	}
 }

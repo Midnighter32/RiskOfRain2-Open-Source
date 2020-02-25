@@ -5,31 +5,31 @@ using Facepunch.Steamworks;
 
 namespace RoR2
 {
-	// Token: 0x020002AA RID: 682
+	// Token: 0x020001B9 RID: 441
 	[Serializable]
 	public class ConCommandException : Exception
 	{
-		// Token: 0x06000DD7 RID: 3543 RVA: 0x000441CE File Offset: 0x000423CE
+		// Token: 0x06000975 RID: 2421 RVA: 0x0002922E File Offset: 0x0002742E
 		public ConCommandException()
 		{
 		}
 
-		// Token: 0x06000DD8 RID: 3544 RVA: 0x000441D6 File Offset: 0x000423D6
+		// Token: 0x06000976 RID: 2422 RVA: 0x00029236 File Offset: 0x00027436
 		public ConCommandException(string message) : base(message)
 		{
 		}
 
-		// Token: 0x06000DD9 RID: 3545 RVA: 0x000441DF File Offset: 0x000423DF
+		// Token: 0x06000977 RID: 2423 RVA: 0x0002923F File Offset: 0x0002743F
 		public ConCommandException(string message, Exception inner) : base(message, inner)
 		{
 		}
 
-		// Token: 0x06000DDA RID: 3546 RVA: 0x000441E9 File Offset: 0x000423E9
+		// Token: 0x06000978 RID: 2424 RVA: 0x00029249 File Offset: 0x00027449
 		protected ConCommandException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 		}
 
-		// Token: 0x06000DDB RID: 3547 RVA: 0x000441F3 File Offset: 0x000423F3
+		// Token: 0x06000979 RID: 2425 RVA: 0x00029253 File Offset: 0x00027453
 		public static void CheckSteamworks()
 		{
 			if (Client.Instance == null)
@@ -38,7 +38,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000DDC RID: 3548 RVA: 0x00044207 File Offset: 0x00042407
+		// Token: 0x0600097A RID: 2426 RVA: 0x00029267 File Offset: 0x00027467
 		public static void CheckArgumentCount(List<string> args, int requiredArgCount)
 		{
 			if (args.Count < requiredArgCount)

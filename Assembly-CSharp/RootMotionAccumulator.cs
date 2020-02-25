@@ -1,11 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x0200004F RID: 79
+// Token: 0x0200004B RID: 75
 [RequireComponent(typeof(Animator))]
 public class RootMotionAccumulator : MonoBehaviour
 {
-	// Token: 0x06000151 RID: 337 RVA: 0x00007E40 File Offset: 0x00006040
+	// Token: 0x06000136 RID: 310 RVA: 0x00007D54 File Offset: 0x00005F54
 	public Vector3 ExtractRootMotion()
 	{
 		Vector3 result = this.accumulatedRootMotion;
@@ -13,7 +13,7 @@ public class RootMotionAccumulator : MonoBehaviour
 		return result;
 	}
 
-	// Token: 0x06000152 RID: 338 RVA: 0x00007E53 File Offset: 0x00006053
+	// Token: 0x06000137 RID: 311 RVA: 0x00007D67 File Offset: 0x00005F67
 	public Quaternion ExtractRootRotation()
 	{
 		Quaternion result = this.accumulatedRootRotation;
@@ -21,14 +21,14 @@ public class RootMotionAccumulator : MonoBehaviour
 		return result;
 	}
 
-	// Token: 0x06000153 RID: 339 RVA: 0x00007E66 File Offset: 0x00006066
+	// Token: 0x06000138 RID: 312 RVA: 0x00007D7A File Offset: 0x00005F7A
 	private void Awake()
 	{
 		this.animator = base.GetComponent<Animator>();
 		this.accumulatedRootRotation = Quaternion.identity;
 	}
 
-	// Token: 0x06000154 RID: 340 RVA: 0x00007E80 File Offset: 0x00006080
+	// Token: 0x06000139 RID: 313 RVA: 0x00007D94 File Offset: 0x00005F94
 	private void OnAnimatorMove()
 	{
 		this.accumulatedRootMotion += this.animator.deltaPosition;

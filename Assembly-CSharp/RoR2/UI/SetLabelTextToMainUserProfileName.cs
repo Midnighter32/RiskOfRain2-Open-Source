@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000635 RID: 1589
+	// Token: 0x02000628 RID: 1576
 	[RequireComponent(typeof(TextMeshProUGUI))]
 	public class SetLabelTextToMainUserProfileName : MonoBehaviour
 	{
-		// Token: 0x060023A6 RID: 9126 RVA: 0x000A7AF9 File Offset: 0x000A5CF9
+		// Token: 0x06002540 RID: 9536 RVA: 0x000A2381 File Offset: 0x000A0581
 		private void Awake()
 		{
 			this.label = base.GetComponent<TextMeshProUGUI>();
 		}
 
-		// Token: 0x060023A7 RID: 9127 RVA: 0x000A7B08 File Offset: 0x000A5D08
+		// Token: 0x06002541 RID: 9537 RVA: 0x000A2390 File Offset: 0x000A0590
 		private void OnEnable()
 		{
 			LocalUser localUser = LocalUserManager.FindLocalUser(0);
@@ -27,7 +27,7 @@ namespace RoR2.UI
 			this.label.text = "NO USER";
 		}
 
-		// Token: 0x0400269A RID: 9882
+		// Token: 0x040022F7 RID: 8951
 		private TextMeshProUGUI label;
 	}
 }

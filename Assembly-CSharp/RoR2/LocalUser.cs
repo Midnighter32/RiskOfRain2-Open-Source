@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Rewired;
 using RoR2.UI;
 using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000452 RID: 1106
+	// Token: 0x020003C5 RID: 965
 	public class LocalUser
 	{
-		// Token: 0x17000241 RID: 577
-		// (get) Token: 0x06001896 RID: 6294 RVA: 0x00076841 File Offset: 0x00074A41
-		// (set) Token: 0x06001897 RID: 6295 RVA: 0x0007684C File Offset: 0x00074A4C
+		// Token: 0x170002B5 RID: 693
+		// (get) Token: 0x0600175C RID: 5980 RVA: 0x00065D85 File Offset: 0x00063F85
+		// (set) Token: 0x0600175D RID: 5981 RVA: 0x00065D90 File Offset: 0x00063F90
 		public Player inputPlayer
 		{
 			get
@@ -36,14 +37,14 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000242 RID: 578
-		// (get) Token: 0x06001898 RID: 6296 RVA: 0x000768A3 File Offset: 0x00074AA3
-		// (set) Token: 0x06001899 RID: 6297 RVA: 0x000768AB File Offset: 0x00074AAB
+		// Token: 0x170002B6 RID: 694
+		// (get) Token: 0x0600175E RID: 5982 RVA: 0x00065DE7 File Offset: 0x00063FE7
+		// (set) Token: 0x0600175F RID: 5983 RVA: 0x00065DEF File Offset: 0x00063FEF
 		public MPEventSystem eventSystem { get; private set; }
 
-		// Token: 0x17000243 RID: 579
-		// (get) Token: 0x0600189A RID: 6298 RVA: 0x000768B4 File Offset: 0x00074AB4
-		// (set) Token: 0x0600189B RID: 6299 RVA: 0x000768BC File Offset: 0x00074ABC
+		// Token: 0x170002B7 RID: 695
+		// (get) Token: 0x06001760 RID: 5984 RVA: 0x00065DF8 File Offset: 0x00063FF8
+		// (set) Token: 0x06001761 RID: 5985 RVA: 0x00065E00 File Offset: 0x00064000
 		public UserProfile userProfile
 		{
 			get
@@ -57,14 +58,14 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600189C RID: 6300 RVA: 0x000768CB File Offset: 0x00074ACB
+		// Token: 0x06001762 RID: 5986 RVA: 0x00065E0F File Offset: 0x0006400F
 		static LocalUser()
 		{
 			ReInput.ControllerConnectedEvent += LocalUser.OnControllerConnected;
 			ReInput.ControllerDisconnectedEvent += LocalUser.OnControllerDisconnected;
 		}
 
-		// Token: 0x0600189D RID: 6301 RVA: 0x000768F0 File Offset: 0x00074AF0
+		// Token: 0x06001763 RID: 5987 RVA: 0x00065E34 File Offset: 0x00064034
 		private static void OnControllerConnected(ControllerStatusChangedEventArgs args)
 		{
 			foreach (LocalUser localUser in LocalUserManager.readOnlyLocalUsersList)
@@ -76,7 +77,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600189E RID: 6302 RVA: 0x00076970 File Offset: 0x00074B70
+		// Token: 0x06001764 RID: 5988 RVA: 0x00065EB4 File Offset: 0x000640B4
 		private static void OnControllerDisconnected(ControllerStatusChangedEventArgs args)
 		{
 			foreach (LocalUser localUser in LocalUserManager.readOnlyLocalUsersList)
@@ -88,7 +89,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0600189F RID: 6303 RVA: 0x000769F0 File Offset: 0x00074BF0
+		// Token: 0x06001765 RID: 5989 RVA: 0x00065F34 File Offset: 0x00064134
 		private void OnRewiredPlayerDiscovered(Player player)
 		{
 			foreach (Controller controller in player.controllers.Controllers)
@@ -97,7 +98,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060018A0 RID: 6304 RVA: 0x00076A44 File Offset: 0x00074C44
+		// Token: 0x06001766 RID: 5990 RVA: 0x00065F88 File Offset: 0x00064188
 		private void OnRewiredPlayerLost(Player player)
 		{
 			foreach (Controller controller in player.controllers.Controllers)
@@ -106,18 +107,18 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060018A1 RID: 6305 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001767 RID: 5991 RVA: 0x0000409B File Offset: 0x0000229B
 		private void OnControllerDiscovered(Controller controller)
 		{
 		}
 
-		// Token: 0x060018A2 RID: 6306 RVA: 0x00076A98 File Offset: 0x00074C98
+		// Token: 0x06001768 RID: 5992 RVA: 0x00065FDC File Offset: 0x000641DC
 		private void OnControllerLost(Controller controller)
 		{
 			this.inputPlayer.controllers.maps.ClearMapsForController(controller.type, controller.id, true);
 		}
 
-		// Token: 0x060018A3 RID: 6307 RVA: 0x00076ABC File Offset: 0x00074CBC
+		// Token: 0x06001769 RID: 5993 RVA: 0x00066000 File Offset: 0x00064200
 		private void ApplyUserProfileBindingsToRewiredPlayer()
 		{
 			if (this.inputPlayer == null)
@@ -136,8 +137,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000244 RID: 580
-		// (get) Token: 0x060018A4 RID: 6308 RVA: 0x00076B78 File Offset: 0x00074D78
+		// Token: 0x170002B8 RID: 696
+		// (get) Token: 0x0600176A RID: 5994 RVA: 0x000660BC File Offset: 0x000642BC
 		public bool isUIFocused
 		{
 			get
@@ -146,38 +147,38 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000245 RID: 581
-		// (get) Token: 0x060018A5 RID: 6309 RVA: 0x00076B8A File Offset: 0x00074D8A
-		// (set) Token: 0x060018A6 RID: 6310 RVA: 0x00076B92 File Offset: 0x00074D92
+		// Token: 0x170002B9 RID: 697
+		// (get) Token: 0x0600176B RID: 5995 RVA: 0x000660CE File Offset: 0x000642CE
+		// (set) Token: 0x0600176C RID: 5996 RVA: 0x000660D6 File Offset: 0x000642D6
 		public NetworkUser currentNetworkUser { get; private set; }
 
-		// Token: 0x17000246 RID: 582
-		// (get) Token: 0x060018A7 RID: 6311 RVA: 0x00076B9B File Offset: 0x00074D9B
-		// (set) Token: 0x060018A8 RID: 6312 RVA: 0x00076BA3 File Offset: 0x00074DA3
+		// Token: 0x170002BA RID: 698
+		// (get) Token: 0x0600176D RID: 5997 RVA: 0x000660DF File Offset: 0x000642DF
+		// (set) Token: 0x0600176E RID: 5998 RVA: 0x000660E7 File Offset: 0x000642E7
 		public PlayerCharacterMasterController cachedMasterController { get; private set; }
 
-		// Token: 0x17000247 RID: 583
-		// (get) Token: 0x060018A9 RID: 6313 RVA: 0x00076BAC File Offset: 0x00074DAC
-		// (set) Token: 0x060018AA RID: 6314 RVA: 0x00076BB4 File Offset: 0x00074DB4
+		// Token: 0x170002BB RID: 699
+		// (get) Token: 0x0600176F RID: 5999 RVA: 0x000660F0 File Offset: 0x000642F0
+		// (set) Token: 0x06001770 RID: 6000 RVA: 0x000660F8 File Offset: 0x000642F8
 		public GameObject cachedMasterObject { get; private set; }
 
-		// Token: 0x17000248 RID: 584
-		// (get) Token: 0x060018AB RID: 6315 RVA: 0x00076BBD File Offset: 0x00074DBD
-		// (set) Token: 0x060018AC RID: 6316 RVA: 0x00076BC5 File Offset: 0x00074DC5
+		// Token: 0x170002BC RID: 700
+		// (get) Token: 0x06001771 RID: 6001 RVA: 0x00066101 File Offset: 0x00064301
+		// (set) Token: 0x06001772 RID: 6002 RVA: 0x00066109 File Offset: 0x00064309
 		public CharacterBody cachedBody { get; private set; }
 
-		// Token: 0x17000249 RID: 585
-		// (get) Token: 0x060018AD RID: 6317 RVA: 0x00076BCE File Offset: 0x00074DCE
-		// (set) Token: 0x060018AE RID: 6318 RVA: 0x00076BD6 File Offset: 0x00074DD6
+		// Token: 0x170002BD RID: 701
+		// (get) Token: 0x06001773 RID: 6003 RVA: 0x00066112 File Offset: 0x00064312
+		// (set) Token: 0x06001774 RID: 6004 RVA: 0x0006611A File Offset: 0x0006431A
 		public GameObject cachedBodyObject { get; private set; }
 
-		// Token: 0x060018AF RID: 6319 RVA: 0x00076BE0 File Offset: 0x00074DE0
+		// Token: 0x06001775 RID: 6005 RVA: 0x00066124 File Offset: 0x00064324
 		public void RebuildControlChain()
 		{
-			UnityEngine.Object cachedMasterController = this.cachedMasterController;
+			PlayerCharacterMasterController cachedMasterController = this.cachedMasterController;
 			this.cachedMasterController = null;
 			this.cachedMasterObject = null;
-			UnityEngine.Object cachedBody = this.cachedBody;
+			CharacterBody cachedBody = this.cachedBody;
 			this.cachedBody = null;
 			this.cachedBodyObject = null;
 			if (this.currentNetworkUser)
@@ -215,27 +216,27 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x14000034 RID: 52
-		// (add) Token: 0x060018B0 RID: 6320 RVA: 0x00076CD0 File Offset: 0x00074ED0
-		// (remove) Token: 0x060018B1 RID: 6321 RVA: 0x00076D08 File Offset: 0x00074F08
+		// Token: 0x14000050 RID: 80
+		// (add) Token: 0x06001776 RID: 6006 RVA: 0x00066208 File Offset: 0x00064408
+		// (remove) Token: 0x06001777 RID: 6007 RVA: 0x00066240 File Offset: 0x00064440
 		public event Action onBodyChanged;
 
-		// Token: 0x14000035 RID: 53
-		// (add) Token: 0x060018B2 RID: 6322 RVA: 0x00076D40 File Offset: 0x00074F40
-		// (remove) Token: 0x060018B3 RID: 6323 RVA: 0x00076D78 File Offset: 0x00074F78
+		// Token: 0x14000051 RID: 81
+		// (add) Token: 0x06001778 RID: 6008 RVA: 0x00066278 File Offset: 0x00064478
+		// (remove) Token: 0x06001779 RID: 6009 RVA: 0x000662B0 File Offset: 0x000644B0
 		public event Action onMasterChanged;
 
-		// Token: 0x14000036 RID: 54
-		// (add) Token: 0x060018B4 RID: 6324 RVA: 0x00076DB0 File Offset: 0x00074FB0
-		// (remove) Token: 0x060018B5 RID: 6325 RVA: 0x00076DE8 File Offset: 0x00074FE8
+		// Token: 0x14000052 RID: 82
+		// (add) Token: 0x0600177A RID: 6010 RVA: 0x000662E8 File Offset: 0x000644E8
+		// (remove) Token: 0x0600177B RID: 6011 RVA: 0x00066320 File Offset: 0x00064520
 		public event Action<NetworkUser> onNetworkUserFound;
 
-		// Token: 0x14000037 RID: 55
-		// (add) Token: 0x060018B6 RID: 6326 RVA: 0x00076E20 File Offset: 0x00075020
-		// (remove) Token: 0x060018B7 RID: 6327 RVA: 0x00076E58 File Offset: 0x00075058
+		// Token: 0x14000053 RID: 83
+		// (add) Token: 0x0600177C RID: 6012 RVA: 0x00066358 File Offset: 0x00064558
+		// (remove) Token: 0x0600177D RID: 6013 RVA: 0x00066390 File Offset: 0x00064590
 		public event Action<NetworkUser> onNetworkUserLost;
 
-		// Token: 0x060018B8 RID: 6328 RVA: 0x00076E8D File Offset: 0x0007508D
+		// Token: 0x0600177E RID: 6014 RVA: 0x000663C5 File Offset: 0x000645C5
 		public void LinkNetworkUser(NetworkUser newNetworkUser)
 		{
 			if (this.currentNetworkUser)
@@ -252,7 +253,7 @@ namespace RoR2
 			action(newNetworkUser);
 		}
 
-		// Token: 0x060018B9 RID: 6329 RVA: 0x00076EBC File Offset: 0x000750BC
+		// Token: 0x0600177F RID: 6015 RVA: 0x000663F4 File Offset: 0x000645F4
 		public void UnlinkNetworkUser()
 		{
 			Action<NetworkUser> action = this.onNetworkUserLost;
@@ -268,16 +269,43 @@ namespace RoR2
 			this.cachedBodyObject = null;
 		}
 
-		// Token: 0x04001C3B RID: 7227
+		// Token: 0x06001781 RID: 6017 RVA: 0x00066448 File Offset: 0x00064648
+		[CompilerGenerated]
+		private void <ApplyUserProfileBindingsToRewiredPlayer>g__ApplyUserProfileBindingstoRewiredController|20_0(Controller controller)
+		{
+			if (this.userProfile == null)
+			{
+				return;
+			}
+			ControllerMap controllerMap = null;
+			switch (controller.type)
+			{
+			case ControllerType.Keyboard:
+				controllerMap = this.userProfile.keyboardMap;
+				break;
+			case ControllerType.Mouse:
+				controllerMap = this.userProfile.mouseMap;
+				break;
+			case ControllerType.Joystick:
+				controllerMap = this.userProfile.joystickMap;
+				break;
+			}
+			if (controllerMap != null)
+			{
+				this.inputPlayer.controllers.maps.AddMap(controller, controllerMap);
+			}
+		}
+
+		// Token: 0x0400162E RID: 5678
 		private Player _inputPlayer;
 
-		// Token: 0x04001C3D RID: 7229
+		// Token: 0x04001630 RID: 5680
 		private UserProfile _userProfile;
 
-		// Token: 0x04001C3E RID: 7230
+		// Token: 0x04001631 RID: 5681
 		public int id;
 
-		// Token: 0x04001C44 RID: 7236
+		// Token: 0x04001637 RID: 5687
 		public CameraRigController cameraRigController;
 	}
 }

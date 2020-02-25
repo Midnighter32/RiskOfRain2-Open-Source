@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace RoR2.Orbs
 {
-	// Token: 0x0200051A RID: 1306
+	// Token: 0x020004D4 RID: 1236
 	public static class OrbCatalog
 	{
-		// Token: 0x06001D5A RID: 7514 RVA: 0x00088E40 File Offset: 0x00087040
+		// Token: 0x06001D8B RID: 7563 RVA: 0x0007E180 File Offset: 0x0007C380
 		private static void GenerateCatalog()
 		{
 			OrbCatalog.indexToType = (from t in typeof(Orb).Assembly.GetTypes()
@@ -21,13 +21,13 @@ namespace RoR2.Orbs
 			}
 		}
 
-		// Token: 0x06001D5B RID: 7515 RVA: 0x00088EEA File Offset: 0x000870EA
+		// Token: 0x06001D8C RID: 7564 RVA: 0x0007E22A File Offset: 0x0007C42A
 		static OrbCatalog()
 		{
 			OrbCatalog.GenerateCatalog();
 		}
 
-		// Token: 0x06001D5C RID: 7516 RVA: 0x00088F08 File Offset: 0x00087108
+		// Token: 0x06001D8D RID: 7565 RVA: 0x0007E248 File Offset: 0x0007C448
 		public static int FindIndex(Type type)
 		{
 			int result;
@@ -38,7 +38,7 @@ namespace RoR2.Orbs
 			return -1;
 		}
 
-		// Token: 0x06001D5D RID: 7517 RVA: 0x00088F27 File Offset: 0x00087127
+		// Token: 0x06001D8E RID: 7566 RVA: 0x0007E267 File Offset: 0x0007C467
 		public static Type FindType(int index)
 		{
 			if (index < 0 || index >= OrbCatalog.indexToType.Length)
@@ -48,13 +48,13 @@ namespace RoR2.Orbs
 			return OrbCatalog.indexToType[index];
 		}
 
-		// Token: 0x06001D5E RID: 7518 RVA: 0x00088F40 File Offset: 0x00087140
+		// Token: 0x06001D8F RID: 7567 RVA: 0x0007E280 File Offset: 0x0007C480
 		public static Orb Instantiate(int index)
 		{
 			return OrbCatalog.Instantiate(OrbCatalog.FindType(index));
 		}
 
-		// Token: 0x06001D5F RID: 7519 RVA: 0x00088F4D File Offset: 0x0008714D
+		// Token: 0x06001D90 RID: 7568 RVA: 0x0007E28D File Offset: 0x0007C48D
 		public static Orb Instantiate(Type type)
 		{
 			if (type == null)
@@ -64,10 +64,10 @@ namespace RoR2.Orbs
 			return (Orb)Activator.CreateInstance(type);
 		}
 
-		// Token: 0x04001FA5 RID: 8101
+		// Token: 0x04001ABD RID: 6845
 		private static readonly Dictionary<Type, int> typeToIndex = new Dictionary<Type, int>();
 
-		// Token: 0x04001FA6 RID: 8102
+		// Token: 0x04001ABE RID: 6846
 		private static Type[] indexToType = Array.Empty<Type>();
 	}
 }

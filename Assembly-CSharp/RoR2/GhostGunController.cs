@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000300 RID: 768
+	// Token: 0x02000214 RID: 532
 	public class GhostGunController : MonoBehaviour
 	{
-		// Token: 0x06000FB7 RID: 4023 RVA: 0x0004D0F2 File Offset: 0x0004B2F2
+		// Token: 0x06000BB1 RID: 2993 RVA: 0x00032B6B File Offset: 0x00030D6B
 		private void Start()
 		{
 			this.fireTimer = 0f;
@@ -17,7 +17,7 @@ namespace RoR2
 			this.timeoutTimer = this.timeout;
 		}
 
-		// Token: 0x06000FB8 RID: 4024 RVA: 0x0004D11C File Offset: 0x0004B31C
+		// Token: 0x06000BB2 RID: 2994 RVA: 0x00032B94 File Offset: 0x00030D94
 		private void Fire(Vector3 origin, Vector3 aimDirection)
 		{
 			CharacterBody component = this.owner.GetComponent<CharacterBody>();
@@ -25,7 +25,7 @@ namespace RoR2
 			new BulletAttack
 			{
 				aimVector = aimDirection,
-				bulletCount = 1u,
+				bulletCount = 1U,
 				damage = this.CalcDamage(),
 				force = 2400f,
 				maxSpread = 0f,
@@ -41,14 +41,14 @@ namespace RoR2
 			this.kills += component.killCount - killCount;
 		}
 
-		// Token: 0x06000FB9 RID: 4025 RVA: 0x0004D1E8 File Offset: 0x0004B3E8
+		// Token: 0x06000BB3 RID: 2995 RVA: 0x00032C60 File Offset: 0x00030E60
 		private float CalcDamage()
 		{
 			float damage = this.owner.GetComponent<CharacterBody>().damage;
 			return 5f * Mathf.Pow(2f, (float)this.kills) * damage;
 		}
 
-		// Token: 0x06000FBA RID: 4026 RVA: 0x0004D220 File Offset: 0x0004B420
+		// Token: 0x06000BB4 RID: 2996 RVA: 0x00032C98 File Offset: 0x00030E98
 		private bool HasLoS(GameObject target)
 		{
 			Ray ray = new Ray(base.transform.position, target.transform.position - base.transform.position);
@@ -56,7 +56,7 @@ namespace RoR2
 			return !Physics.Raycast(ray, out raycastHit, this.maxRange, LayerIndex.defaultLayer.mask | LayerIndex.world.mask, QueryTriggerInteraction.Ignore) || raycastHit.collider.gameObject == target;
 		}
 
-		// Token: 0x06000FBB RID: 4027 RVA: 0x0004D2AC File Offset: 0x0004B4AC
+		// Token: 0x06000BB5 RID: 2997 RVA: 0x00032D24 File Offset: 0x00030F24
 		private bool WillHit(GameObject target)
 		{
 			Ray ray = new Ray(base.transform.position, base.transform.forward);
@@ -76,7 +76,7 @@ namespace RoR2
 			return false;
 		}
 
-		// Token: 0x06000FBC RID: 4028 RVA: 0x0004D344 File Offset: 0x0004B544
+		// Token: 0x06000BB6 RID: 2998 RVA: 0x00032DBC File Offset: 0x00030FBC
 		private GameObject FindTarget()
 		{
 			TeamIndex teamA = TeamIndex.Neutral;
@@ -130,7 +130,7 @@ namespace RoR2
 			return gameObject;
 		}
 
-		// Token: 0x06000FBD RID: 4029 RVA: 0x0004D494 File Offset: 0x0004B694
+		// Token: 0x06000BB7 RID: 2999 RVA: 0x00032F0C File Offset: 0x0003110C
 		private void FixedUpdate()
 		{
 			if (!NetworkServer.active)
@@ -172,43 +172,43 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x040013BC RID: 5052
+		// Token: 0x04000BC6 RID: 3014
 		public GameObject owner;
 
-		// Token: 0x040013BD RID: 5053
+		// Token: 0x04000BC7 RID: 3015
 		public float interval;
 
-		// Token: 0x040013BE RID: 5054
+		// Token: 0x04000BC8 RID: 3016
 		public float maxRange = 20f;
 
-		// Token: 0x040013BF RID: 5055
+		// Token: 0x04000BC9 RID: 3017
 		public float turnSpeed = 180f;
 
-		// Token: 0x040013C0 RID: 5056
+		// Token: 0x04000BCA RID: 3018
 		public Vector3 localOffset = Vector3.zero;
 
-		// Token: 0x040013C1 RID: 5057
+		// Token: 0x04000BCB RID: 3019
 		public float positionSmoothTime = 0.05f;
 
-		// Token: 0x040013C2 RID: 5058
+		// Token: 0x04000BCC RID: 3020
 		public float timeout = 2f;
 
-		// Token: 0x040013C3 RID: 5059
+		// Token: 0x04000BCD RID: 3021
 		private float fireTimer;
 
-		// Token: 0x040013C4 RID: 5060
+		// Token: 0x04000BCE RID: 3022
 		private float timeoutTimer;
 
-		// Token: 0x040013C5 RID: 5061
+		// Token: 0x04000BCF RID: 3023
 		private int ammo;
 
-		// Token: 0x040013C6 RID: 5062
+		// Token: 0x04000BD0 RID: 3024
 		private int kills;
 
-		// Token: 0x040013C7 RID: 5063
+		// Token: 0x04000BD1 RID: 3025
 		private GameObject target;
 
-		// Token: 0x040013C8 RID: 5064
+		// Token: 0x04000BD2 RID: 3026
 		private Vector3 velocity;
 	}
 }

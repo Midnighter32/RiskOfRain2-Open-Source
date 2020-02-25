@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.SurvivorPod
 {
-	// Token: 0x020000EF RID: 239
+	// Token: 0x0200077C RID: 1916
 	public class PreRelease : SurvivorPodBaseState
 	{
-		// Token: 0x06000497 RID: 1175 RVA: 0x000132D0 File Offset: 0x000114D0
+		// Token: 0x06002C13 RID: 11283 RVA: 0x000BA348 File Offset: 0x000B8548
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -20,13 +20,13 @@ namespace EntityStates.SurvivorPod
 			}
 		}
 
-		// Token: 0x06000498 RID: 1176 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002C14 RID: 11284 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000499 RID: 1177 RVA: 0x00013330 File Offset: 0x00011530
+		// Token: 0x06002C15 RID: 11285 RVA: 0x000BA3A8 File Offset: 0x000B85A8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();

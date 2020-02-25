@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Merc
 {
-	// Token: 0x0200010A RID: 266
+	// Token: 0x020007C8 RID: 1992
 	public class WhirlwindBase : BaseState
 	{
-		// Token: 0x06000522 RID: 1314 RVA: 0x00016930 File Offset: 0x00014B30
+		// Token: 0x06002D77 RID: 11639 RVA: 0x000C0C58 File Offset: 0x000BEE58
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -22,18 +22,18 @@ namespace EntityStates.Merc
 			this.PlayAnim();
 		}
 
-		// Token: 0x06000523 RID: 1315 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06002D78 RID: 11640 RVA: 0x0000409B File Offset: 0x0000229B
 		protected virtual void PlayAnim()
 		{
 		}
 
-		// Token: 0x06000524 RID: 1316 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002D79 RID: 11641 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000525 RID: 1317 RVA: 0x000169D0 File Offset: 0x00014BD0
+		// Token: 0x06002D7A RID: 11642 RVA: 0x000C0CF8 File Offset: 0x000BEEF8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -45,13 +45,13 @@ namespace EntityStates.Merc
 					this.swingCount++;
 					this.overlapAttack.ResetIgnoredHealthComponents();
 					Util.PlayScaledSound(WhirlwindBase.attackSoundString, base.gameObject, WhirlwindBase.slashPitch);
-					EffectManager.instance.SimpleMuzzleFlash(WhirlwindBase.swingEffectPrefab, base.gameObject, this.slashChildName, true);
+					EffectManager.SimpleMuzzleFlash(WhirlwindBase.swingEffectPrefab, base.gameObject, this.slashChildName, true);
 					if (base.healthComponent)
 					{
-						base.healthComponent.TakeDamageForce(this.selfForceMagnitude * base.characterDirection.forward, true);
+						base.healthComponent.TakeDamageForce(this.selfForceMagnitude * base.characterDirection.forward, true, false);
 					}
 				}
-				if (base.FireMeleeOverlap(this.overlapAttack, this.animator, "Sword.active", 0f))
+				if (base.FireMeleeOverlap(this.overlapAttack, this.animator, "Sword.active", 0f, true))
 				{
 					Util.PlaySound(WhirlwindBase.hitSoundString, base.gameObject);
 					if (!this.isInHitPause)
@@ -83,79 +83,84 @@ namespace EntityStates.Merc
 				}
 				if (base.fixedAge >= this.duration)
 				{
+					while (this.swingCount < 2)
+					{
+						this.swingCount++;
+						this.overlapAttack.Fire(null);
+					}
 					this.outer.SetNextStateToMain();
 				}
 			}
 		}
 
-		// Token: 0x0400054C RID: 1356
+		// Token: 0x04002A06 RID: 10758
 		public static GameObject swingEffectPrefab;
 
-		// Token: 0x0400054D RID: 1357
+		// Token: 0x04002A07 RID: 10759
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x0400054E RID: 1358
+		// Token: 0x04002A08 RID: 10760
 		public static string attackSoundString;
 
-		// Token: 0x0400054F RID: 1359
+		// Token: 0x04002A09 RID: 10761
 		public static string hitSoundString;
 
-		// Token: 0x04000550 RID: 1360
+		// Token: 0x04002A0A RID: 10762
 		public static float slashPitch;
 
-		// Token: 0x04000551 RID: 1361
+		// Token: 0x04002A0B RID: 10763
 		public static float hitPauseDuration;
 
-		// Token: 0x04000552 RID: 1362
+		// Token: 0x04002A0C RID: 10764
 		[SerializeField]
 		public float baseDuration;
 
-		// Token: 0x04000553 RID: 1363
+		// Token: 0x04002A0D RID: 10765
 		[SerializeField]
 		public float baseDamageCoefficient;
 
-		// Token: 0x04000554 RID: 1364
+		// Token: 0x04002A0E RID: 10766
 		[SerializeField]
 		public string slashChildName;
 
-		// Token: 0x04000555 RID: 1365
+		// Token: 0x04002A0F RID: 10767
 		[SerializeField]
 		public float selfForceMagnitude;
 
-		// Token: 0x04000556 RID: 1366
+		// Token: 0x04002A10 RID: 10768
 		[SerializeField]
 		public float moveSpeedBonusCoefficient;
 
-		// Token: 0x04000557 RID: 1367
+		// Token: 0x04002A11 RID: 10769
 		[SerializeField]
 		public float smallHopVelocity;
 
-		// Token: 0x04000558 RID: 1368
+		// Token: 0x04002A12 RID: 10770
 		[SerializeField]
 		public string hitboxString;
 
-		// Token: 0x04000559 RID: 1369
+		// Token: 0x04002A13 RID: 10771
 		protected Animator animator;
 
-		// Token: 0x0400055A RID: 1370
+		// Token: 0x04002A14 RID: 10772
 		protected float duration;
 
-		// Token: 0x0400055B RID: 1371
+		// Token: 0x04002A15 RID: 10773
 		protected float hitInterval;
 
-		// Token: 0x0400055C RID: 1372
+		// Token: 0x04002A16 RID: 10774
 		protected int swingCount;
 
-		// Token: 0x0400055D RID: 1373
+		// Token: 0x04002A17 RID: 10775
 		protected float hitPauseTimer;
 
-		// Token: 0x0400055E RID: 1374
+		// Token: 0x04002A18 RID: 10776
 		protected bool isInHitPause;
 
-		// Token: 0x0400055F RID: 1375
+		// Token: 0x04002A19 RID: 10777
 		protected OverlapAttack overlapAttack;
 
-		// Token: 0x04000560 RID: 1376
+		// Token: 0x04002A1A RID: 10778
 		protected BaseState.HitStopCachedState hitStopCachedState;
 	}
 }

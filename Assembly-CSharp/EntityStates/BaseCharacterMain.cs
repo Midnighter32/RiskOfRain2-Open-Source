@@ -4,20 +4,20 @@ using UnityEngine;
 
 namespace EntityStates
 {
-	// Token: 0x020000A6 RID: 166
+	// Token: 0x020006F9 RID: 1785
 	public class BaseCharacterMain : BaseState
 	{
-		// Token: 0x17000078 RID: 120
-		// (get) Token: 0x0600031A RID: 794 RVA: 0x0000CA5F File Offset: 0x0000AC5F
-		// (set) Token: 0x0600031B RID: 795 RVA: 0x0000CA67 File Offset: 0x0000AC67
+		// Token: 0x170003FB RID: 1019
+		// (get) Token: 0x06002972 RID: 10610 RVA: 0x000AE63A File Offset: 0x000AC83A
+		// (set) Token: 0x06002973 RID: 10611 RVA: 0x000AE642 File Offset: 0x000AC842
 		private protected Animator modelAnimator { protected get; private set; }
 
-		// Token: 0x17000079 RID: 121
-		// (get) Token: 0x0600031C RID: 796 RVA: 0x0000CA70 File Offset: 0x0000AC70
-		// (set) Token: 0x0600031D RID: 797 RVA: 0x0000CA78 File Offset: 0x0000AC78
+		// Token: 0x170003FC RID: 1020
+		// (get) Token: 0x06002974 RID: 10612 RVA: 0x000AE64B File Offset: 0x000AC84B
+		// (set) Token: 0x06002975 RID: 10613 RVA: 0x000AE653 File Offset: 0x000AC853
 		private protected Vector3 estimatedVelocity { protected get; private set; }
 
-		// Token: 0x0600031E RID: 798 RVA: 0x0000CA84 File Offset: 0x0000AC84
+		// Token: 0x06002976 RID: 10614 RVA: 0x000AE65C File Offset: 0x000AC85C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -32,7 +32,14 @@ namespace EntityStates
 					this.wasGrounded = base.isGrounded;
 					this.modelAnimator.SetBool(AnimationParameters.isGrounded, this.wasGrounded);
 				}
-				this.modelAnimator.CrossFadeInFixedTime("Idle", 0.1f, layerIndex);
+				if (base.isGrounded)
+				{
+					this.modelAnimator.CrossFadeInFixedTime("Idle", 0.1f, layerIndex);
+				}
+				else
+				{
+					this.modelAnimator.CrossFadeInFixedTime("AscendDescend", 0.1f, layerIndex);
+				}
 				this.modelAnimator.Update(0f);
 			}
 			if (this.rootMotionAccumulator)
@@ -52,7 +59,7 @@ namespace EntityStates
 			this.hasRootMotionAccumulator = this.rootMotionAccumulator;
 		}
 
-		// Token: 0x0600031F RID: 799 RVA: 0x0000CC04 File Offset: 0x0000AE04
+		// Token: 0x06002977 RID: 10615 RVA: 0x000AE800 File Offset: 0x000ACA00
 		public override void OnExit()
 		{
 			if (this.rootMotionAccumulator)
@@ -73,7 +80,7 @@ namespace EntityStates
 			base.OnExit();
 		}
 
-		// Token: 0x06000320 RID: 800 RVA: 0x0000CC80 File Offset: 0x0000AE80
+		// Token: 0x06002978 RID: 10616 RVA: 0x000AE87C File Offset: 0x000ACA7C
 		public override void Update()
 		{
 			base.Update();
@@ -88,7 +95,7 @@ namespace EntityStates
 			this.UpdateAnimationParameters();
 		}
 
-		// Token: 0x06000321 RID: 801 RVA: 0x0000CD0C File Offset: 0x0000AF0C
+		// Token: 0x06002979 RID: 10617 RVA: 0x000AE908 File Offset: 0x000ACB08
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -129,7 +136,7 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x06000322 RID: 802 RVA: 0x0000CE54 File Offset: 0x0000B054
+		// Token: 0x0600297A RID: 10618 RVA: 0x000AEA50 File Offset: 0x000ACC50
 		protected virtual void UpdateAnimationParameters()
 		{
 			if (this.hasRailMotor || !this.hasModelAnimator)
@@ -186,55 +193,55 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x04000302 RID: 770
+		// Token: 0x04002573 RID: 9587
 		private RootMotionAccumulator rootMotionAccumulator;
 
-		// Token: 0x04000304 RID: 772
+		// Token: 0x04002575 RID: 9589
 		private Vector3 previousPosition;
 
-		// Token: 0x04000306 RID: 774
+		// Token: 0x04002577 RID: 9591
 		protected CharacterAnimParamAvailability characterAnimParamAvailability;
 
-		// Token: 0x04000307 RID: 775
+		// Token: 0x04002578 RID: 9592
 		private CharacterAnimatorWalkParamCalculator animatorWalkParamCalculator;
 
-		// Token: 0x04000308 RID: 776
+		// Token: 0x04002579 RID: 9593
 		protected BodyAnimatorSmoothingParameters.SmoothingParameters smoothingParameters;
 
-		// Token: 0x04000309 RID: 777
+		// Token: 0x0400257A RID: 9594
 		protected bool useRootMotion;
 
-		// Token: 0x0400030A RID: 778
+		// Token: 0x0400257B RID: 9595
 		private bool wasGrounded;
 
-		// Token: 0x0400030B RID: 779
+		// Token: 0x0400257C RID: 9596
 		private float lastYSpeed;
 
-		// Token: 0x0400030C RID: 780
+		// Token: 0x0400257D RID: 9597
 		protected bool hasCharacterMotor;
 
-		// Token: 0x0400030D RID: 781
+		// Token: 0x0400257E RID: 9598
 		protected bool hasCharacterDirection;
 
-		// Token: 0x0400030E RID: 782
+		// Token: 0x0400257F RID: 9599
 		protected bool hasCharacterBody;
 
-		// Token: 0x0400030F RID: 783
+		// Token: 0x04002580 RID: 9600
 		protected bool hasRailMotor;
 
-		// Token: 0x04000310 RID: 784
+		// Token: 0x04002581 RID: 9601
 		protected bool hasCameraTargetParams;
 
-		// Token: 0x04000311 RID: 785
+		// Token: 0x04002582 RID: 9602
 		protected bool hasSkillLocator;
 
-		// Token: 0x04000312 RID: 786
+		// Token: 0x04002583 RID: 9603
 		protected bool hasModelAnimator;
 
-		// Token: 0x04000313 RID: 787
+		// Token: 0x04002584 RID: 9604
 		protected bool hasInputBank;
 
-		// Token: 0x04000314 RID: 788
+		// Token: 0x04002585 RID: 9605
 		protected bool hasRootMotionAccumulator;
 	}
 }

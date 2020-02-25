@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Engi.EngiWeapon
 {
-	// Token: 0x02000185 RID: 389
-	internal class EngiTeamShield : BaseState
+	// Token: 0x02000884 RID: 2180
+	public class EngiTeamShield : BaseState
 	{
-		// Token: 0x0600077D RID: 1917 RVA: 0x00024DA4 File Offset: 0x00022FA4
+		// Token: 0x0600310D RID: 12557 RVA: 0x000D300C File Offset: 0x000D120C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -37,28 +37,28 @@ namespace EntityStates.Engi.EngiWeapon
 			}
 		}
 
-		// Token: 0x0600077E RID: 1918 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x0600310E RID: 12558 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x0600077F RID: 1919 RVA: 0x0000F633 File Offset: 0x0000D833
+		// Token: 0x0600310F RID: 12559 RVA: 0x000B23CF File Offset: 0x000B05CF
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
 		}
 
-		// Token: 0x06000780 RID: 1920 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06003110 RID: 12560 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x0400098F RID: 2447
+		// Token: 0x04002F3F RID: 12095
 		public static float duration = 3f;
 
-		// Token: 0x04000990 RID: 2448
+		// Token: 0x04002F40 RID: 12096
 		public static float radius;
 	}
 }

@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace EntityStates.Wisp1Monster
 {
-	// Token: 0x020000CA RID: 202
+	// Token: 0x02000726 RID: 1830
 	public class MainState : EntityState
 	{
-		// Token: 0x060003F0 RID: 1008 RVA: 0x000103D4 File Offset: 0x0000E5D4
+		// Token: 0x06002A95 RID: 10901 RVA: 0x000B33B4 File Offset: 0x000B15B4
 		public override void OnEnter()
 		{
 			base.OnEnter();
 			this.modelAnimator = base.GetModelAnimator();
 		}
 
-		// Token: 0x060003F1 RID: 1009 RVA: 0x000103E8 File Offset: 0x0000E5E8
+		// Token: 0x06002A96 RID: 10902 RVA: 0x000B33C8 File Offset: 0x000B15C8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -24,7 +24,7 @@ namespace EntityStates.Wisp1Monster
 			}
 		}
 
-		// Token: 0x040003B5 RID: 949
+		// Token: 0x04002679 RID: 9849
 		private Animator modelAnimator;
 	}
 }

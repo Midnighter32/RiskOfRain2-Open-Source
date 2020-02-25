@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.Commando.CommandoWeapon
 {
-	// Token: 0x020001AF RID: 431
-	internal class PaintMicroMissiles : BaseState
+	// Token: 0x020008C4 RID: 2244
+	public class PaintMicroMissiles : BaseState
 	{
-		// Token: 0x06000870 RID: 2160 RVA: 0x0002A552 File Offset: 0x00028752
+		// Token: 0x06003252 RID: 12882 RVA: 0x000D9AD2 File Offset: 0x000D7CD2
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -18,7 +18,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			this.lastTarget = null;
 		}
 
-		// Token: 0x06000871 RID: 2161 RVA: 0x0002A584 File Offset: 0x00028784
+		// Token: 0x06003253 RID: 12883 RVA: 0x000D9B04 File Offset: 0x000D7D04
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -32,7 +32,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			this.targetIndicators = null;
 		}
 
-		// Token: 0x06000872 RID: 2162 RVA: 0x0002A5F8 File Offset: 0x000287F8
+		// Token: 0x06003254 RID: 12884 RVA: 0x000D9B78 File Offset: 0x000D7D78
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -89,7 +89,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x06000873 RID: 2163 RVA: 0x0002A760 File Offset: 0x00028960
+		// Token: 0x06003255 RID: 12885 RVA: 0x000D9CE0 File Offset: 0x000D7EE0
 		private void AddTarget(GameObject target)
 		{
 			this.targetsList.Add(target);
@@ -101,25 +101,25 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x06000874 RID: 2164 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06003256 RID: 12886 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000B48 RID: 2888
+		// Token: 0x04003149 RID: 12617
 		private List<GameObject> targetsList;
 
-		// Token: 0x04000B49 RID: 2889
+		// Token: 0x0400314A RID: 12618
 		private Dictionary<GameObject, GameObject> targetIndicators;
 
-		// Token: 0x04000B4A RID: 2890
+		// Token: 0x0400314B RID: 12619
 		private GameObject lastTarget;
 
-		// Token: 0x04000B4B RID: 2891
+		// Token: 0x0400314C RID: 12620
 		private float retargetTimer;
 
-		// Token: 0x04000B4C RID: 2892
+		// Token: 0x0400314D RID: 12621
 		private float retargetInterval = 0.2f;
 	}
 }

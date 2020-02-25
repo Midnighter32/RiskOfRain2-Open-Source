@@ -3,25 +3,28 @@ using UnityEngine;
 
 namespace RoR2.Orbs
 {
-	// Token: 0x02000512 RID: 1298
+	// Token: 0x020004CC RID: 1228
 	public class HealOrb : Orb
 	{
-		// Token: 0x06001D42 RID: 7490 RVA: 0x00088674 File Offset: 0x00086874
+		// Token: 0x06001D73 RID: 7539 RVA: 0x0007D930 File Offset: 0x0007BB30
 		public override void Begin()
 		{
-			float scale = this.scaleOrb ? (this.healValue / 10f) : 1f;
-			base.duration = base.distanceToTarget / 20f;
-			EffectData effectData = new EffectData
+			if (this.target)
 			{
-				scale = scale,
-				origin = this.origin,
-				genericFloat = base.duration
-			};
-			effectData.SetHurtBoxReference(this.target);
-			EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/OrbEffects/HealthOrbEffect"), effectData, true);
+				base.duration = this.overrideDuration;
+				float scale = this.scaleOrb ? Mathf.Min(this.healValue / this.target.healthComponent.fullHealth, 1f) : 1f;
+				EffectData effectData = new EffectData
+				{
+					scale = scale,
+					origin = this.origin,
+					genericFloat = base.duration
+				};
+				effectData.SetHurtBoxReference(this.target);
+				EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/OrbEffects/HealthOrbEffect"), effectData, true);
+			}
 		}
 
-		// Token: 0x06001D43 RID: 7491 RVA: 0x000886F8 File Offset: 0x000868F8
+		// Token: 0x06001D74 RID: 7540 RVA: 0x0007D9CC File Offset: 0x0007BBCC
 		public override void OnArrival()
 		{
 			if (this.target)
@@ -34,13 +37,13 @@ namespace RoR2.Orbs
 			}
 		}
 
-		// Token: 0x04001F78 RID: 8056
-		private const float speed = 20f;
-
-		// Token: 0x04001F79 RID: 8057
+		// Token: 0x04001A8B RID: 6795
 		public float healValue;
 
-		// Token: 0x04001F7A RID: 8058
+		// Token: 0x04001A8C RID: 6796
 		public bool scaleOrb = true;
+
+		// Token: 0x04001A8D RID: 6797
+		public float overrideDuration = 0.3f;
 	}
 }

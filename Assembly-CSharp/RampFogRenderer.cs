@@ -2,10 +2,10 @@
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
-// Token: 0x02000026 RID: 38
+// Token: 0x0200001F RID: 31
 public sealed class RampFogRenderer : PostProcessEffectRenderer<RampFog>
 {
-	// Token: 0x060000B6 RID: 182 RVA: 0x00005020 File Offset: 0x00003220
+	// Token: 0x0600008F RID: 143 RVA: 0x00004C44 File Offset: 0x00002E44
 	public override void Render(PostProcessRenderContext context)
 	{
 		PropertySheet propertySheet = context.propertySheets.Get(Shader.Find("Hidden/PostProcess/RampFog"));

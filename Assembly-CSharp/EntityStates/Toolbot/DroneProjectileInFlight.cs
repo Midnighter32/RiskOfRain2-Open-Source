@@ -7,10 +7,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Toolbot
 {
-	// Token: 0x020000E0 RID: 224
+	// Token: 0x02000767 RID: 1895
 	public class DroneProjectileInFlight : BaseState
 	{
-		// Token: 0x06000462 RID: 1122 RVA: 0x0001270C File Offset: 0x0001090C
+		// Token: 0x06002BBD RID: 11197 RVA: 0x000B9004 File Offset: 0x000B7204
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -30,7 +30,7 @@ namespace EntityStates.Toolbot
 			}
 		}
 
-		// Token: 0x06000463 RID: 1123 RVA: 0x0001279C File Offset: 0x0001099C
+		// Token: 0x06002BBE RID: 11198 RVA: 0x000B9094 File Offset: 0x000B7294
 		public override void OnExit()
 		{
 			if (this.impactEventCaller)
@@ -44,19 +44,19 @@ namespace EntityStates.Toolbot
 			base.OnEnter();
 		}
 
-		// Token: 0x06000464 RID: 1124 RVA: 0x00012801 File Offset: 0x00010A01
+		// Token: 0x06002BBF RID: 11199 RVA: 0x000B90F9 File Offset: 0x000B72F9
 		private void OnImpact(ProjectileImpactInfo projectileImpactInfo)
 		{
 			this.Advance();
 		}
 
-		// Token: 0x06000465 RID: 1125 RVA: 0x00012801 File Offset: 0x00010A01
+		// Token: 0x06002BC0 RID: 11200 RVA: 0x000B90F9 File Offset: 0x000B72F9
 		private void OnFuse()
 		{
 			this.Advance();
 		}
 
-		// Token: 0x06000466 RID: 1126 RVA: 0x0001280C File Offset: 0x00010A0C
+		// Token: 0x06002BC1 RID: 11201 RVA: 0x000B9104 File Offset: 0x000B7304
 		private void Advance()
 		{
 			if (NetworkServer.active)
@@ -77,13 +77,13 @@ namespace EntityStates.Toolbot
 			}
 		}
 
-		// Token: 0x04000432 RID: 1074
+		// Token: 0x040027ED RID: 10221
 		private ProjectileImpactEventCaller impactEventCaller;
 
-		// Token: 0x04000433 RID: 1075
+		// Token: 0x040027EE RID: 10222
 		private ProjectileSimple projectileSimple;
 
-		// Token: 0x04000434 RID: 1076
+		// Token: 0x040027EF RID: 10223
 		private ProjectileFuse projectileFuse;
 	}
 }

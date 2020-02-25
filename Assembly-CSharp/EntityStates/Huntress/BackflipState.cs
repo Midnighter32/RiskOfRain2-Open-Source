@@ -4,13 +4,14 @@ using System.Linq;
 using RoR2;
 using RoR2.Orbs;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace EntityStates.Huntress
 {
-	// Token: 0x0200014E RID: 334
+	// Token: 0x0200082D RID: 2093
 	public class BackflipState : BaseState
 	{
-		// Token: 0x0600066B RID: 1643 RVA: 0x0001DF68 File Offset: 0x0001C168
+		// Token: 0x06002F65 RID: 12133 RVA: 0x000CA4C8 File Offset: 0x000C86C8
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -32,7 +33,7 @@ namespace EntityStates.Huntress
 			base.PlayAnimation("FullBody, Override", "Backflip", "Backflip.playbackRate", BackflipState.duration);
 		}
 
-		// Token: 0x0600066C RID: 1644 RVA: 0x0001E074 File Offset: 0x0001C274
+		// Token: 0x06002F66 RID: 12134 RVA: 0x000CA5D4 File Offset: 0x000C87D4
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -61,10 +62,10 @@ namespace EntityStates.Huntress
 			}
 		}
 
-		// Token: 0x0600066D RID: 1645 RVA: 0x0001E1D4 File Offset: 0x0001C3D4
+		// Token: 0x06002F67 RID: 12135 RVA: 0x000CA734 File Offset: 0x000C8934
 		private void FireOrbArrow()
 		{
-			if (!base.isServer)
+			if (!NetworkServer.active)
 			{
 				return;
 			}
@@ -91,7 +92,7 @@ namespace EntityStates.Huntress
 			if (hurtBox)
 			{
 				Transform transform = this.childLocator.FindChild(BackflipState.muzzleString).transform;
-				EffectManager.instance.SimpleMuzzleFlash(BackflipState.muzzleflashEffectPrefab, base.gameObject, BackflipState.muzzleString, true);
+				EffectManager.SimpleMuzzleFlash(BackflipState.muzzleflashEffectPrefab, base.gameObject, BackflipState.muzzleString, true);
 				arrowOrb.origin = transform.position;
 				arrowOrb.target = hurtBox;
 				base.PlayAnimation("Gesture, Override", "FireSeekingArrow");
@@ -100,7 +101,7 @@ namespace EntityStates.Huntress
 			}
 		}
 
-		// Token: 0x0600066E RID: 1646 RVA: 0x0001E370 File Offset: 0x0001C570
+		// Token: 0x06002F68 RID: 12136 RVA: 0x000CA8C8 File Offset: 0x000C8AC8
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -116,64 +117,64 @@ namespace EntityStates.Huntress
 			}
 		}
 
-		// Token: 0x040007A2 RID: 1954
+		// Token: 0x04002CE6 RID: 11494
 		public static float duration = 0.9f;
 
-		// Token: 0x040007A3 RID: 1955
+		// Token: 0x04002CE7 RID: 11495
 		public static float initialSpeedCoefficient;
 
-		// Token: 0x040007A4 RID: 1956
+		// Token: 0x04002CE8 RID: 11496
 		public static float finalSpeedCoefficient;
 
-		// Token: 0x040007A5 RID: 1957
+		// Token: 0x04002CE9 RID: 11497
 		public static string dodgeSoundString;
 
-		// Token: 0x040007A6 RID: 1958
+		// Token: 0x04002CEA RID: 11498
 		public static float dodgeFOV;
 
-		// Token: 0x040007A7 RID: 1959
+		// Token: 0x04002CEB RID: 11499
 		public static float orbDamageCoefficient;
 
-		// Token: 0x040007A8 RID: 1960
+		// Token: 0x04002CEC RID: 11500
 		public static float orbRange;
 
-		// Token: 0x040007A9 RID: 1961
+		// Token: 0x04002CED RID: 11501
 		public static int orbCountMax;
 
-		// Token: 0x040007AA RID: 1962
+		// Token: 0x04002CEE RID: 11502
 		public static float orbPrefireDuration;
 
-		// Token: 0x040007AB RID: 1963
+		// Token: 0x04002CEF RID: 11503
 		public static float orbFrequency;
 
-		// Token: 0x040007AC RID: 1964
+		// Token: 0x04002CF0 RID: 11504
 		public static float orbProcCoefficient;
 
-		// Token: 0x040007AD RID: 1965
+		// Token: 0x04002CF1 RID: 11505
 		public static string muzzleString;
 
-		// Token: 0x040007AE RID: 1966
+		// Token: 0x04002CF2 RID: 11506
 		public static float smallHopStrength;
 
-		// Token: 0x040007AF RID: 1967
+		// Token: 0x04002CF3 RID: 11507
 		public static GameObject muzzleflashEffectPrefab;
 
-		// Token: 0x040007B0 RID: 1968
+		// Token: 0x04002CF4 RID: 11508
 		private ChildLocator childLocator;
 
-		// Token: 0x040007B1 RID: 1969
+		// Token: 0x04002CF5 RID: 11509
 		private float stopwatch;
 
-		// Token: 0x040007B2 RID: 1970
+		// Token: 0x04002CF6 RID: 11510
 		private float orbStopwatch;
 
-		// Token: 0x040007B3 RID: 1971
+		// Token: 0x04002CF7 RID: 11511
 		private Vector3 forwardDirection;
 
-		// Token: 0x040007B4 RID: 1972
+		// Token: 0x04002CF8 RID: 11512
 		private Animator animator;
 
-		// Token: 0x040007B5 RID: 1973
+		// Token: 0x04002CF9 RID: 11513
 		private int orbCount;
 	}
 }

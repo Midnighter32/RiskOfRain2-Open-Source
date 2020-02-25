@@ -3,10 +3,10 @@ using RoR2;
 
 namespace EntityStates.JellyfishMonster
 {
-	// Token: 0x02000134 RID: 308
+	// Token: 0x0200080A RID: 2058
 	public class SpawnState : BaseState
 	{
-		// Token: 0x060005EF RID: 1519 RVA: 0x0001B546 File Offset: 0x00019746
+		// Token: 0x06002EC6 RID: 11974 RVA: 0x000C71F7 File Offset: 0x000C53F7
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -14,7 +14,7 @@ namespace EntityStates.JellyfishMonster
 			Util.PlaySound(SpawnState.spawnSoundString, base.gameObject);
 		}
 
-		// Token: 0x060005F0 RID: 1520 RVA: 0x0001B579 File Offset: 0x00019779
+		// Token: 0x06002EC7 RID: 11975 RVA: 0x000C722A File Offset: 0x000C542A
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -24,16 +24,16 @@ namespace EntityStates.JellyfishMonster
 			}
 		}
 
-		// Token: 0x060005F1 RID: 1521 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x06002EC8 RID: 11976 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Death;
 		}
 
-		// Token: 0x040006E4 RID: 1764
+		// Token: 0x04002C08 RID: 11272
 		public static float duration = 4f;
 
-		// Token: 0x040006E5 RID: 1765
+		// Token: 0x04002C09 RID: 11273
 		public static string spawnSoundString;
 	}
 }

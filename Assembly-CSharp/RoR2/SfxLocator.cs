@@ -3,20 +3,23 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003D8 RID: 984
+	// Token: 0x02000329 RID: 809
 	[DisallowMultipleComponent]
 	public class SfxLocator : MonoBehaviour
 	{
-		// Token: 0x040018A3 RID: 6307
+		// Token: 0x040011DE RID: 4574
 		public string deathSound;
 
-		// Token: 0x040018A4 RID: 6308
+		// Token: 0x040011DF RID: 4575
 		public string barkSound;
 
-		// Token: 0x040018A5 RID: 6309
+		// Token: 0x040011E0 RID: 4576
 		public string openSound;
 
-		// Token: 0x040018A6 RID: 6310
+		// Token: 0x040011E1 RID: 4577
 		public string landingSound;
+
+		// Token: 0x040011E2 RID: 4578
+		public string fallDamageSound;
 	}
 }

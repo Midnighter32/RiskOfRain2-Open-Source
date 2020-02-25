@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.LemurianBruiserMonster
 {
-	// Token: 0x0200011E RID: 286
-	internal class ChargeMegaFireball : BaseState
+	// Token: 0x020007ED RID: 2029
+	public class ChargeMegaFireball : BaseState
 	{
-		// Token: 0x06000581 RID: 1409 RVA: 0x00019200 File Offset: 0x00017400
+		// Token: 0x06002E27 RID: 11815 RVA: 0x000C4504 File Offset: 0x000C2704
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -39,7 +39,7 @@ namespace EntityStates.LemurianBruiserMonster
 			}
 		}
 
-		// Token: 0x06000582 RID: 1410 RVA: 0x000192F4 File Offset: 0x000174F4
+		// Token: 0x06002E28 RID: 11816 RVA: 0x000C45F8 File Offset: 0x000C27F8
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -49,13 +49,13 @@ namespace EntityStates.LemurianBruiserMonster
 			}
 		}
 
-		// Token: 0x06000583 RID: 1411 RVA: 0x0000DDD0 File Offset: 0x0000BFD0
+		// Token: 0x06002E29 RID: 11817 RVA: 0x000B02F8 File Offset: 0x000AE4F8
 		public override void Update()
 		{
 			base.Update();
 		}
 
-		// Token: 0x06000584 RID: 1412 RVA: 0x00019314 File Offset: 0x00017514
+		// Token: 0x06002E2A RID: 11818 RVA: 0x000C4618 File Offset: 0x000C2818
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -67,25 +67,25 @@ namespace EntityStates.LemurianBruiserMonster
 			}
 		}
 
-		// Token: 0x06000585 RID: 1413 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002E2B RID: 11819 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000631 RID: 1585
+		// Token: 0x04002B32 RID: 11058
 		public static float baseDuration = 1f;
 
-		// Token: 0x04000632 RID: 1586
+		// Token: 0x04002B33 RID: 11059
 		public static GameObject chargeEffectPrefab;
 
-		// Token: 0x04000633 RID: 1587
+		// Token: 0x04002B34 RID: 11060
 		public static string attackString;
 
-		// Token: 0x04000634 RID: 1588
+		// Token: 0x04002B35 RID: 11061
 		private float duration;
 
-		// Token: 0x04000635 RID: 1589
+		// Token: 0x04002B36 RID: 11062
 		private GameObject chargeInstance;
 	}
 }

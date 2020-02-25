@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.BeetleGuardMonster
 {
-	// Token: 0x020001D7 RID: 471
+	// Token: 0x020008F2 RID: 2290
 	public class DefenseUp : BaseState
 	{
-		// Token: 0x06000931 RID: 2353 RVA: 0x0002E458 File Offset: 0x0002C658
+		// Token: 0x06003331 RID: 13105 RVA: 0x000DE0C4 File Offset: 0x000DC2C4
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -20,7 +20,7 @@ namespace EntityStates.BeetleGuardMonster
 			}
 		}
 
-		// Token: 0x06000932 RID: 2354 RVA: 0x0002E4B8 File Offset: 0x0002C6B8
+		// Token: 0x06003332 RID: 13106 RVA: 0x000DE124 File Offset: 0x000DC324
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -44,28 +44,28 @@ namespace EntityStates.BeetleGuardMonster
 			}
 		}
 
-		// Token: 0x06000933 RID: 2355 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06003333 RID: 13107 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000C7D RID: 3197
+		// Token: 0x040032A5 RID: 12965
 		public static float baseDuration = 3.5f;
 
-		// Token: 0x04000C7E RID: 3198
+		// Token: 0x040032A6 RID: 12966
 		public static float buffDuration = 8f;
 
-		// Token: 0x04000C7F RID: 3199
+		// Token: 0x040032A7 RID: 12967
 		public static GameObject defenseUpPrefab;
 
-		// Token: 0x04000C80 RID: 3200
+		// Token: 0x040032A8 RID: 12968
 		private Animator modelAnimator;
 
-		// Token: 0x04000C81 RID: 3201
+		// Token: 0x040032A9 RID: 12969
 		private float duration;
 
-		// Token: 0x04000C82 RID: 3202
+		// Token: 0x040032AA RID: 12970
 		private bool hasCastBuff;
 	}
 }

@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020002DE RID: 734
+	// Token: 0x020001F0 RID: 496
 	[DisallowMultipleComponent]
 	public class EffectComponent : MonoBehaviour
 	{
-		// Token: 0x06000EAE RID: 3758 RVA: 0x000485F8 File Offset: 0x000467F8
+		// Token: 0x06000A61 RID: 2657 RVA: 0x0002D910 File Offset: 0x0002BB10
 		private void Start()
 		{
 			if (this.effectData == null)
@@ -17,43 +17,62 @@ namespace RoR2
 					base.gameObject
 				});
 			}
-			if (this.positionAtReferencedTransform)
+			Transform transform = null;
+			if (this.positionAtReferencedTransform | this.parentToReferencedTransform)
 			{
-				Transform transform = this.effectData.ResolveChildLocatorTransformReference();
-				if (transform)
+				transform = this.effectData.ResolveChildLocatorTransformReference();
+			}
+			if (transform)
+			{
+				if (this.positionAtReferencedTransform)
 				{
 					base.transform.position = transform.position;
 					base.transform.rotation = transform.rotation;
 				}
-			}
-			if (this.parentToReferencedTransform)
-			{
-				Transform transform2 = this.effectData.ResolveChildLocatorTransformReference();
-				if (transform2)
+				if (this.parentToReferencedTransform)
 				{
-					base.transform.parent = transform2;
+					base.transform.SetParent(transform, true);
 				}
 			}
 			if (this.applyScale)
 			{
-				base.transform.localScale = new Vector3(this.effectData.scale, this.effectData.scale, this.effectData.scale);
+				float scale = this.effectData.scale;
+				base.transform.localScale = new Vector3(scale, scale, scale);
 			}
 		}
 
-		// Token: 0x040012C5 RID: 4805
+		// Token: 0x06000A62 RID: 2658 RVA: 0x0002D9CF File Offset: 0x0002BBCF
+		private void OnValidate()
+		{
+			if (!Application.isPlaying && this.effectIndex != EffectIndex.Invalid)
+			{
+				this.effectIndex = EffectIndex.Invalid;
+			}
+		}
+
+		// Token: 0x04000ABF RID: 2751
+		[HideInInspector]
+		[Tooltip("This is assigned to the prefab automatically by EffectCatalog at runtime. Do not set this value manually.")]
+		public EffectIndex effectIndex = EffectIndex.Invalid;
+
+		// Token: 0x04000AC0 RID: 2752
 		[NonSerialized]
 		public EffectData effectData;
 
-		// Token: 0x040012C6 RID: 4806
+		// Token: 0x04000AC1 RID: 2753
 		[Tooltip("Positions the effect at the transform referenced by the effect data if available.")]
 		public bool positionAtReferencedTransform;
 
-		// Token: 0x040012C7 RID: 4807
+		// Token: 0x04000AC2 RID: 2754
 		[Tooltip("Parents the effect to the transform object referenced by the effect data if available.")]
 		public bool parentToReferencedTransform;
 
-		// Token: 0x040012C8 RID: 4808
+		// Token: 0x04000AC3 RID: 2755
 		[Tooltip("Causes this object to adopt the scale received in the effectdata.")]
 		public bool applyScale;
+
+		// Token: 0x04000AC4 RID: 2756
+		[Tooltip("The sound to play whenever this effect is dispatched, regardless of whether or not it actually ends up spawning.")]
+		public string soundName;
 	}
 }

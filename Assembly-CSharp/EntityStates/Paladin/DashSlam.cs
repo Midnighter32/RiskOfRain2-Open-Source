@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Paladin
 {
-	// Token: 0x020000F9 RID: 249
+	// Token: 0x020007AA RID: 1962
 	public class DashSlam : BaseState
 	{
-		// Token: 0x060004C8 RID: 1224 RVA: 0x00014178 File Offset: 0x00012378
+		// Token: 0x06002CDC RID: 11484 RVA: 0x000BD3BC File Offset: 0x000BB5BC
 		private void EnableIndicator(string childLocatorName, ChildLocator childLocator = null)
 		{
 			if (!childLocator)
@@ -27,7 +27,7 @@ namespace EntityStates.Paladin
 			}
 		}
 
-		// Token: 0x060004C9 RID: 1225 RVA: 0x000141D8 File Offset: 0x000123D8
+		// Token: 0x06002CDD RID: 11485 RVA: 0x000BD41C File Offset: 0x000BB61C
 		private void DisableIndicator(string childLocatorName, ChildLocator childLocator = null)
 		{
 			if (!childLocator)
@@ -41,7 +41,7 @@ namespace EntityStates.Paladin
 			}
 		}
 
-		// Token: 0x060004CA RID: 1226 RVA: 0x00014218 File Offset: 0x00012418
+		// Token: 0x06002CDE RID: 11486 RVA: 0x000BD45C File Offset: 0x000BB65C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -80,7 +80,7 @@ namespace EntityStates.Paladin
 			}
 		}
 
-		// Token: 0x060004CB RID: 1227 RVA: 0x000143C4 File Offset: 0x000125C4
+		// Token: 0x06002CDF RID: 11487 RVA: 0x000BD608 File Offset: 0x000BB808
 		public override void OnExit()
 		{
 			if (NetworkServer.active)
@@ -91,7 +91,7 @@ namespace EntityStates.Paladin
 			}
 			if (base.isAuthority && this.modelTransform)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(DashSlam.slamEffectPrefab, base.gameObject, "SlamZone", true);
+				EffectManager.SimpleMuzzleFlash(DashSlam.slamEffectPrefab, base.gameObject, "SlamZone", true);
 			}
 			EntityState.Destroy(this.leftHandChargeEffect);
 			EntityState.Destroy(this.rightHandChargeEffect);
@@ -99,7 +99,7 @@ namespace EntityStates.Paladin
 			base.OnExit();
 		}
 
-		// Token: 0x060004CC RID: 1228 RVA: 0x00014488 File Offset: 0x00012688
+		// Token: 0x06002CE0 RID: 11488 RVA: 0x000BD6C8 File Offset: 0x000BB8C8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -131,67 +131,67 @@ namespace EntityStates.Paladin
 			}
 		}
 
-		// Token: 0x060004CD RID: 1229 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06002CE1 RID: 11489 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000495 RID: 1173
+		// Token: 0x040028FE RID: 10494
 		private float stopwatch;
 
-		// Token: 0x04000496 RID: 1174
+		// Token: 0x040028FF RID: 10495
 		public static float damageCoefficient = 4f;
 
-		// Token: 0x04000497 RID: 1175
+		// Token: 0x04002900 RID: 10496
 		public static float baseForceMagnitude = 16f;
 
-		// Token: 0x04000498 RID: 1176
+		// Token: 0x04002901 RID: 10497
 		public static float bonusImpactForce;
 
-		// Token: 0x04000499 RID: 1177
+		// Token: 0x04002902 RID: 10498
 		public static string initialAttackSoundString;
 
-		// Token: 0x0400049A RID: 1178
+		// Token: 0x04002903 RID: 10499
 		public static GameObject chargeEffectPrefab;
 
-		// Token: 0x0400049B RID: 1179
+		// Token: 0x04002904 RID: 10500
 		public static GameObject slamEffectPrefab;
 
-		// Token: 0x0400049C RID: 1180
+		// Token: 0x04002905 RID: 10501
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x0400049D RID: 1181
+		// Token: 0x04002906 RID: 10502
 		public static float initialSpeedCoefficient;
 
-		// Token: 0x0400049E RID: 1182
+		// Token: 0x04002907 RID: 10503
 		public static float finalSpeedCoefficient;
 
-		// Token: 0x0400049F RID: 1183
+		// Token: 0x04002908 RID: 10504
 		public static float duration;
 
-		// Token: 0x040004A0 RID: 1184
+		// Token: 0x04002909 RID: 10505
 		public static float overlapSphereRadius;
 
-		// Token: 0x040004A1 RID: 1185
+		// Token: 0x0400290A RID: 10506
 		public static float blastAttackRadius;
 
-		// Token: 0x040004A2 RID: 1186
+		// Token: 0x0400290B RID: 10507
 		private BlastAttack attack;
 
-		// Token: 0x040004A3 RID: 1187
+		// Token: 0x0400290C RID: 10508
 		private Transform modelTransform;
 
-		// Token: 0x040004A4 RID: 1188
+		// Token: 0x0400290D RID: 10509
 		private GameObject leftHandChargeEffect;
 
-		// Token: 0x040004A5 RID: 1189
+		// Token: 0x0400290E RID: 10510
 		private GameObject rightHandChargeEffect;
 
-		// Token: 0x040004A6 RID: 1190
+		// Token: 0x0400290F RID: 10511
 		private ChildLocator modelChildLocator;
 
-		// Token: 0x040004A7 RID: 1191
+		// Token: 0x04002910 RID: 10512
 		private Vector3 initialAimVector;
 	}
 }

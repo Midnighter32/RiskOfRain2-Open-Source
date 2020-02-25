@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Sniper.SniperWeapon
 {
-	// Token: 0x020000F6 RID: 246
+	// Token: 0x02000788 RID: 1928
 	public class Reload : BaseState
 	{
-		// Token: 0x060004B5 RID: 1205 RVA: 0x00013AD0 File Offset: 0x00011CD0
+		// Token: 0x06002C45 RID: 11333 RVA: 0x000BAE08 File Offset: 0x000B9008
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -26,13 +26,13 @@ namespace EntityStates.Sniper.SniperWeapon
 					this.scopeStateMachine = secondary.stateMachine;
 				}
 			}
-			if (base.hasAuthority && this.scopeStateMachine)
+			if (base.isAuthority && this.scopeStateMachine)
 			{
 				this.scopeStateMachine.SetNextState(new LockSkill());
 			}
 		}
 
-		// Token: 0x060004B6 RID: 1206 RVA: 0x00013B90 File Offset: 0x00011D90
+		// Token: 0x06002C46 RID: 11334 RVA: 0x000BAEC8 File Offset: 0x000B90C8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -56,44 +56,44 @@ namespace EntityStates.Sniper.SniperWeapon
 			}
 		}
 
-		// Token: 0x060004B7 RID: 1207 RVA: 0x00013C1A File Offset: 0x00011E1A
+		// Token: 0x06002C47 RID: 11335 RVA: 0x000BAF52 File Offset: 0x000B9152
 		public override void OnExit()
 		{
-			if (base.hasAuthority && this.scopeStateMachine)
+			if (base.isAuthority && this.scopeStateMachine)
 			{
 				this.scopeStateMachine.SetNextStateToMain();
 			}
 			base.OnExit();
 		}
 
-		// Token: 0x060004B8 RID: 1208 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06002C48 RID: 11336 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000478 RID: 1144
+		// Token: 0x0400284B RID: 10315
 		public static float baseDuration = 1f;
 
-		// Token: 0x04000479 RID: 1145
+		// Token: 0x0400284C RID: 10316
 		public static float reloadTimeFraction = 0.75f;
 
-		// Token: 0x0400047A RID: 1146
+		// Token: 0x0400284D RID: 10317
 		public static string soundString = "";
 
-		// Token: 0x0400047B RID: 1147
+		// Token: 0x0400284E RID: 10318
 		private float duration;
 
-		// Token: 0x0400047C RID: 1148
+		// Token: 0x0400284F RID: 10319
 		private float reloadTime;
 
-		// Token: 0x0400047D RID: 1149
+		// Token: 0x04002850 RID: 10320
 		private Animator modelAnimator;
 
-		// Token: 0x0400047E RID: 1150
+		// Token: 0x04002851 RID: 10321
 		private bool reloaded;
 
-		// Token: 0x0400047F RID: 1151
+		// Token: 0x04002852 RID: 10322
 		private EntityStateMachine scopeStateMachine;
 	}
 }

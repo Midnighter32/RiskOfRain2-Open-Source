@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Merc
 {
-	// Token: 0x02000107 RID: 263
-	internal class GroundLight : BaseState
+	// Token: 0x020007C4 RID: 1988
+	public class GroundLight : BaseState
 	{
-		// Token: 0x0600051B RID: 1307 RVA: 0x00016400 File Offset: 0x00014600
+		// Token: 0x06002D6B RID: 11627 RVA: 0x000C03D0 File Offset: 0x000BE5D0
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -75,20 +75,20 @@ namespace EntityStates.Merc
 			this.overlapAttack.hitEffectPrefab = this.hitEffectPrefab;
 		}
 
-		// Token: 0x0600051C RID: 1308 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002D6C RID: 11628 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x0600051D RID: 1309 RVA: 0x000166DC File Offset: 0x000148DC
+		// Token: 0x06002D6D RID: 11629 RVA: 0x000C06AC File Offset: 0x000BE8AC
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
 			this.hitPauseTimer -= Time.fixedDeltaTime;
 			if (base.isAuthority)
 			{
-				bool flag = base.FireMeleeOverlap(this.overlapAttack, this.animator, "Sword.active", GroundLight.forceMagnitude);
+				bool flag = base.FireMeleeOverlap(this.overlapAttack, this.animator, "Sword.active", GroundLight.forceMagnitude, true);
 				this.hasHit = (this.hasHit || flag);
 				if (flag)
 				{
@@ -113,10 +113,10 @@ namespace EntityStates.Merc
 				CharacterDirection component = base.characterBody.GetComponent<CharacterDirection>();
 				if (healthComponent)
 				{
-					healthComponent.TakeDamageForce(GroundLight.selfForceMagnitude * component.forward, true);
+					healthComponent.TakeDamageForce(GroundLight.selfForceMagnitude * component.forward, true, false);
 				}
 				this.hasSwung = true;
-				EffectManager.instance.SimpleMuzzleFlash(this.swingEffectPrefab, base.gameObject, this.slashChildName, false);
+				EffectManager.SimpleMuzzleFlash(this.swingEffectPrefab, base.gameObject, this.slashChildName, false);
 			}
 			if (!this.isInHitPause)
 			{
@@ -129,6 +129,10 @@ namespace EntityStates.Merc
 			}
 			if (base.isAuthority && this.stopwatch >= this.attackDuration - this.earlyExitDuration)
 			{
+				if (!this.hasSwung)
+				{
+					this.overlapAttack.Fire(null);
+				}
 				if (base.inputBank.skill1.down && this.comboState != GroundLight.ComboState.GroundLight3)
 				{
 					GroundLight groundLight = new GroundLight();
@@ -144,143 +148,143 @@ namespace EntityStates.Merc
 			}
 		}
 
-		// Token: 0x0600051E RID: 1310 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002D6E RID: 11630 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x0600051F RID: 1311 RVA: 0x00016902 File Offset: 0x00014B02
+		// Token: 0x06002D6F RID: 11631 RVA: 0x000C08E7 File Offset: 0x000BEAE7
 		public override void OnSerialize(NetworkWriter writer)
 		{
 			base.OnSerialize(writer);
 			writer.Write((byte)this.comboState);
 		}
 
-		// Token: 0x06000520 RID: 1312 RVA: 0x00016918 File Offset: 0x00014B18
+		// Token: 0x06002D70 RID: 11632 RVA: 0x000C08FD File Offset: 0x000BEAFD
 		public override void OnDeserialize(NetworkReader reader)
 		{
 			base.OnDeserialize(reader);
 			this.comboState = (GroundLight.ComboState)reader.ReadByte();
 		}
 
-		// Token: 0x04000525 RID: 1317
+		// Token: 0x040029C9 RID: 10697
 		public static float baseComboAttackDuration;
 
-		// Token: 0x04000526 RID: 1318
+		// Token: 0x040029CA RID: 10698
 		public static float baseFinisherAttackDuration;
 
-		// Token: 0x04000527 RID: 1319
+		// Token: 0x040029CB RID: 10699
 		public static float baseEarlyExitDuration;
 
-		// Token: 0x04000528 RID: 1320
+		// Token: 0x040029CC RID: 10700
 		public static string comboAttackSoundString;
 
-		// Token: 0x04000529 RID: 1321
+		// Token: 0x040029CD RID: 10701
 		public static string finisherAttackSoundString;
 
-		// Token: 0x0400052A RID: 1322
+		// Token: 0x040029CE RID: 10702
 		public static float comboDamageCoefficient;
 
-		// Token: 0x0400052B RID: 1323
+		// Token: 0x040029CF RID: 10703
 		public static float finisherDamageCoefficient;
 
-		// Token: 0x0400052C RID: 1324
+		// Token: 0x040029D0 RID: 10704
 		public static float forceMagnitude;
 
-		// Token: 0x0400052D RID: 1325
+		// Token: 0x040029D1 RID: 10705
 		public static GameObject comboHitEffectPrefab;
 
-		// Token: 0x0400052E RID: 1326
+		// Token: 0x040029D2 RID: 10706
 		public static GameObject finisherHitEffectPrefab;
 
-		// Token: 0x0400052F RID: 1327
+		// Token: 0x040029D3 RID: 10707
 		public static GameObject comboSwingEffectPrefab;
 
-		// Token: 0x04000530 RID: 1328
+		// Token: 0x040029D4 RID: 10708
 		public static GameObject finisherSwingEffectPrefab;
 
-		// Token: 0x04000531 RID: 1329
+		// Token: 0x040029D5 RID: 10709
 		public static float hitPauseDuration;
 
-		// Token: 0x04000532 RID: 1330
+		// Token: 0x040029D6 RID: 10710
 		public static float selfForceMagnitude;
 
-		// Token: 0x04000533 RID: 1331
+		// Token: 0x040029D7 RID: 10711
 		public static string hitSoundString;
 
-		// Token: 0x04000534 RID: 1332
+		// Token: 0x040029D8 RID: 10712
 		public static float slashPitch;
 
-		// Token: 0x04000535 RID: 1333
+		// Token: 0x040029D9 RID: 10713
 		private float stopwatch;
 
-		// Token: 0x04000536 RID: 1334
+		// Token: 0x040029DA RID: 10714
 		private float attackDuration;
 
-		// Token: 0x04000537 RID: 1335
+		// Token: 0x040029DB RID: 10715
 		private float earlyExitDuration;
 
-		// Token: 0x04000538 RID: 1336
+		// Token: 0x040029DC RID: 10716
 		private Animator animator;
 
-		// Token: 0x04000539 RID: 1337
+		// Token: 0x040029DD RID: 10717
 		private OverlapAttack overlapAttack;
 
-		// Token: 0x0400053A RID: 1338
+		// Token: 0x040029DE RID: 10718
 		private float hitPauseTimer;
 
-		// Token: 0x0400053B RID: 1339
+		// Token: 0x040029DF RID: 10719
 		private bool isInHitPause;
 
-		// Token: 0x0400053C RID: 1340
+		// Token: 0x040029E0 RID: 10720
 		private bool hasSwung;
 
-		// Token: 0x0400053D RID: 1341
+		// Token: 0x040029E1 RID: 10721
 		private bool hasHit;
 
-		// Token: 0x0400053E RID: 1342
+		// Token: 0x040029E2 RID: 10722
 		private GameObject swingEffectInstance;
 
-		// Token: 0x0400053F RID: 1343
+		// Token: 0x040029E3 RID: 10723
 		public GroundLight.ComboState comboState;
 
-		// Token: 0x04000540 RID: 1344
+		// Token: 0x040029E4 RID: 10724
 		private Vector3 characterForward;
 
-		// Token: 0x04000541 RID: 1345
+		// Token: 0x040029E5 RID: 10725
 		private string slashChildName;
 
-		// Token: 0x04000542 RID: 1346
+		// Token: 0x040029E6 RID: 10726
 		private BaseState.HitStopCachedState hitStopCachedState;
 
-		// Token: 0x04000543 RID: 1347
+		// Token: 0x040029E7 RID: 10727
 		private GameObject swingEffectPrefab;
 
-		// Token: 0x04000544 RID: 1348
+		// Token: 0x040029E8 RID: 10728
 		private GameObject hitEffectPrefab;
 
-		// Token: 0x04000545 RID: 1349
+		// Token: 0x040029E9 RID: 10729
 		private string attackSoundString;
 
-		// Token: 0x02000108 RID: 264
+		// Token: 0x020007C5 RID: 1989
 		public enum ComboState
 		{
-			// Token: 0x04000547 RID: 1351
+			// Token: 0x040029EB RID: 10731
 			GroundLight1,
-			// Token: 0x04000548 RID: 1352
+			// Token: 0x040029EC RID: 10732
 			GroundLight2,
-			// Token: 0x04000549 RID: 1353
+			// Token: 0x040029ED RID: 10733
 			GroundLight3
 		}
 
-		// Token: 0x02000109 RID: 265
+		// Token: 0x020007C6 RID: 1990
 		private struct ComboStateInfo
 		{
-			// Token: 0x0400054A RID: 1354
+			// Token: 0x040029EE RID: 10734
 			private string mecanimStateName;
 
-			// Token: 0x0400054B RID: 1355
+			// Token: 0x040029EF RID: 10735
 			private string mecanimPlaybackRateName;
 		}
 	}

@@ -5,14 +5,14 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Fauna
 {
-	// Token: 0x0200017E RID: 382
+	// Token: 0x02000865 RID: 2149
 	public class BirdsharkDeathState : BaseState
 	{
-		// Token: 0x06000759 RID: 1881 RVA: 0x00023F88 File Offset: 0x00022188
+		// Token: 0x0600307A RID: 12410 RVA: 0x000D0FB8 File Offset: 0x000CF1B8
 		public override void OnEnter()
 		{
 			base.OnEnter();
-			Util.PlaySound(BirdsharkDeathState.deathString, base.gameObject);
+			Util.PlaySound(this.deathSoundString, base.gameObject);
 			if (base.modelLocator)
 			{
 				if (base.modelLocator.modelBaseTransform)
@@ -24,23 +24,25 @@ namespace EntityStates.Fauna
 					EntityState.Destroy(base.modelLocator.modelTransform.gameObject);
 				}
 			}
-			if (BirdsharkDeathState.initialExplosion && NetworkServer.active)
+			if (this.initialExplosion && NetworkServer.active)
 			{
-				EffectManager.instance.SimpleImpactEffect(BirdsharkDeathState.initialExplosion, base.transform.position, Vector3.up, true);
+				EffectManager.SimpleImpactEffect(this.initialExplosion, base.transform.position, Vector3.up, true);
 			}
 			EntityState.Destroy(base.gameObject);
 		}
 
-		// Token: 0x0600075A RID: 1882 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x0600307B RID: 12411 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Death;
 		}
 
-		// Token: 0x04000954 RID: 2388
-		public static GameObject initialExplosion;
+		// Token: 0x04002ECB RID: 11979
+		[SerializeField]
+		public GameObject initialExplosion;
 
-		// Token: 0x04000955 RID: 2389
-		public static string deathString;
+		// Token: 0x04002ECC RID: 11980
+		[SerializeField]
+		public string deathSoundString;
 	}
 }

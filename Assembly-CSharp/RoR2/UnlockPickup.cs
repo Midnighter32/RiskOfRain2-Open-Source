@@ -4,16 +4,16 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x0200040F RID: 1039
+	// Token: 0x02000368 RID: 872
 	public class UnlockPickup : MonoBehaviour
 	{
-		// Token: 0x0600172F RID: 5935 RVA: 0x0006E209 File Offset: 0x0006C409
+		// Token: 0x06001536 RID: 5430 RVA: 0x0005A5DD File Offset: 0x000587DD
 		private void FixedUpdate()
 		{
 			this.stopWatch += Time.fixedDeltaTime;
 		}
 
-		// Token: 0x06001730 RID: 5936 RVA: 0x0006E220 File Offset: 0x0006C420
+		// Token: 0x06001537 RID: 5431 RVA: 0x0005A5F4 File Offset: 0x000587F4
 		private void GrantPickup(GameObject activator)
 		{
 			if (Run.instance)
@@ -28,24 +28,24 @@ namespace RoR2
 				}
 				Chat.SendBroadcastChat(new Chat.PlayerPickupChatMessage
 				{
-					subjectCharacterBodyGameObject = activator,
+					subjectAsCharacterBody = activator.GetComponent<CharacterBody>(),
 					baseToken = "PLAYER_PICKUP",
 					pickupToken = pickupToken,
 					pickupColor = ColorCatalog.GetColor(ColorCatalog.ColorIndex.Unlockable),
-					pickupQuantity = 1u
+					pickupQuantity = 1U
 				});
 				this.consumed = true;
 				UnityEngine.Object.Destroy(base.transform.root.gameObject);
 			}
 		}
 
-		// Token: 0x06001731 RID: 5937 RVA: 0x0004C6D5 File Offset: 0x0004A8D5
+		// Token: 0x06001538 RID: 5432 RVA: 0x00031DC1 File Offset: 0x0002FFC1
 		private static bool BodyHasPickupPermission(CharacterBody body)
 		{
 			return (body.masterObject ? body.masterObject.GetComponent<PlayerCharacterMasterController>() : null) && body.inventory;
 		}
 
-		// Token: 0x06001732 RID: 5938 RVA: 0x0006E2C8 File Offset: 0x0006C4C8
+		// Token: 0x06001539 RID: 5433 RVA: 0x0005A6A0 File Offset: 0x000588A0
 		private void OnTriggerStay(Collider other)
 		{
 			if (NetworkServer.active && this.stopWatch >= this.waitDuration && !this.consumed)
@@ -62,22 +62,22 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001A56 RID: 6742
+		// Token: 0x040013C7 RID: 5063
 		public static string itemPickupSoundString = "Play_UI_item_pickup";
 
-		// Token: 0x04001A57 RID: 6743
+		// Token: 0x040013C8 RID: 5064
 		private bool consumed;
 
-		// Token: 0x04001A58 RID: 6744
+		// Token: 0x040013C9 RID: 5065
 		private float stopWatch;
 
-		// Token: 0x04001A59 RID: 6745
+		// Token: 0x040013CA RID: 5066
 		public float waitDuration = 0.5f;
 
-		// Token: 0x04001A5A RID: 6746
+		// Token: 0x040013CB RID: 5067
 		public string displayNameToken;
 
-		// Token: 0x04001A5B RID: 6747
+		// Token: 0x040013CC RID: 5068
 		public string unlockableName;
 	}
 }

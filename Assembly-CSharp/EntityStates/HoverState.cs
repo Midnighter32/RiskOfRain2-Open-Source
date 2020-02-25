@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace EntityStates
 {
-	// Token: 0x020000B8 RID: 184
-	internal class HoverState : BaseState
+	// Token: 0x02000712 RID: 1810
+	public class HoverState : BaseState
 	{
-		// Token: 0x060003A4 RID: 932 RVA: 0x0000F098 File Offset: 0x0000D298
+		// Token: 0x06002A42 RID: 10818 RVA: 0x000B1E45 File Offset: 0x000B0045
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -14,7 +14,7 @@ namespace EntityStates
 			base.PlayAnimation("Body", "Idle");
 		}
 
-		// Token: 0x060003A5 RID: 933 RVA: 0x0000F0BC File Offset: 0x0000D2BC
+		// Token: 0x06002A43 RID: 10819 RVA: 0x000B1E6C File Offset: 0x000B006C
 		public override void Update()
 		{
 			base.Update();
@@ -27,7 +27,7 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x060003A6 RID: 934 RVA: 0x0000F134 File Offset: 0x0000D334
+		// Token: 0x06002A44 RID: 10820 RVA: 0x000B1EE4 File Offset: 0x000B00E4
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -70,19 +70,19 @@ namespace EntityStates
 			}
 		}
 
-		// Token: 0x04000364 RID: 868
+		// Token: 0x0400261E RID: 9758
 		private Animator modelAnimator;
 
-		// Token: 0x04000365 RID: 869
+		// Token: 0x0400261F RID: 9759
 		private bool skill1InputReceived;
 
-		// Token: 0x04000366 RID: 870
+		// Token: 0x04002620 RID: 9760
 		private bool skill2InputReceived;
 
-		// Token: 0x04000367 RID: 871
+		// Token: 0x04002621 RID: 9761
 		private bool skill3InputReceived;
 
-		// Token: 0x04000368 RID: 872
+		// Token: 0x04002622 RID: 9762
 		private bool skill4InputReceived;
 	}
 }

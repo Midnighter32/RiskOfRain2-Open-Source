@@ -3,23 +3,23 @@ using UnityEngine;
 
 namespace RoR2.PostProcessing
 {
-	// Token: 0x02000564 RID: 1380
+	// Token: 0x0200052E RID: 1326
 	[ExecuteInEditMode]
 	public class HopooPostProcess : MonoBehaviour
 	{
-		// Token: 0x06001ECE RID: 7886 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001F5C RID: 8028 RVA: 0x0000409B File Offset: 0x0000229B
 		private void Start()
 		{
 		}
 
-		// Token: 0x06001ECF RID: 7887 RVA: 0x00091751 File Offset: 0x0008F951
+		// Token: 0x06001F5D RID: 8029 RVA: 0x00088321 File Offset: 0x00086521
 		[ImageEffectOpaque]
 		private void OnRenderImage(RenderTexture source, RenderTexture destination)
 		{
 			Graphics.Blit(source, destination, this.mat);
 		}
 
-		// Token: 0x0400217B RID: 8571
+		// Token: 0x04001D05 RID: 7429
 		public Material mat;
 	}
 }

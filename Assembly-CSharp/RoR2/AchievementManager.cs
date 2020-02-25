@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using RoR2.Achievements;
@@ -9,10 +10,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020001F0 RID: 496
+	// Token: 0x020000B1 RID: 177
 	public static class AchievementManager
 	{
-		// Token: 0x060009C0 RID: 2496 RVA: 0x00030D60 File Offset: 0x0002EF60
+		// Token: 0x06000385 RID: 901 RVA: 0x0000D9E0 File Offset: 0x0000BBE0
 		public static UserAchievementManager GetUserAchievementManager([NotNull] LocalUser user)
 		{
 			UserAchievementManager result;
@@ -20,7 +21,7 @@ namespace RoR2
 			return result;
 		}
 
-		// Token: 0x060009C1 RID: 2497 RVA: 0x00030D7C File Offset: 0x0002EF7C
+		// Token: 0x06000386 RID: 902 RVA: 0x0000D9FC File Offset: 0x0000BBFC
 		[SystemInitializer(new Type[]
 		{
 			typeof(UnlockableCatalog)
@@ -57,13 +58,13 @@ namespace RoR2
 			AchievementManager.availability.MakeAvailable();
 		}
 
-		// Token: 0x060009C2 RID: 2498 RVA: 0x00030E09 File Offset: 0x0002F009
+		// Token: 0x06000387 RID: 903 RVA: 0x0000DA89 File Offset: 0x0000BC89
 		public static void AddTask(Action action)
 		{
 			AchievementManager.taskQueue.Enqueue(action);
 		}
 
-		// Token: 0x060009C3 RID: 2499 RVA: 0x00030E16 File Offset: 0x0002F016
+		// Token: 0x06000388 RID: 904 RVA: 0x0000DA96 File Offset: 0x0000BC96
 		public static void ProcessTasks()
 		{
 			while (AchievementManager.taskQueue.Count > 0)
@@ -72,7 +73,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060009C4 RID: 2500 RVA: 0x00030E38 File Offset: 0x0002F038
+		// Token: 0x06000389 RID: 905 RVA: 0x0000DAB8 File Offset: 0x0000BCB8
 		public static AchievementDef GetAchievementDef(string achievementIdentifier)
 		{
 			AchievementDef result;
@@ -83,7 +84,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x060009C5 RID: 2501 RVA: 0x00030E57 File Offset: 0x0002F057
+		// Token: 0x0600038A RID: 906 RVA: 0x0000DAD7 File Offset: 0x0000BCD7
 		public static AchievementDef GetAchievementDef(AchievementIndex index)
 		{
 			if (index.intValue >= 0 && index.intValue < AchievementManager.achievementDefs.Length)
@@ -93,7 +94,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x060009C6 RID: 2502 RVA: 0x00030E7F File Offset: 0x0002F07F
+		// Token: 0x0600038B RID: 907 RVA: 0x0000DAFF File Offset: 0x0000BCFF
 		public static AchievementDef GetAchievementDef(ServerAchievementIndex index)
 		{
 			if (index.intValue >= 0 && index.intValue < AchievementManager.serverAchievementDefs.Length)
@@ -103,7 +104,7 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x060009C7 RID: 2503 RVA: 0x00030EA8 File Offset: 0x0002F0A8
+		// Token: 0x0600038C RID: 908 RVA: 0x0000DB28 File Offset: 0x0000BD28
 		public static AchievementDef GetAchievementDefFromUnlockable(string unlockableRewardIdentifier)
 		{
 			for (int i = 0; i < AchievementManager.achievementDefs.Length; i++)
@@ -116,8 +117,8 @@ namespace RoR2
 			return null;
 		}
 
-		// Token: 0x170000A5 RID: 165
-		// (get) Token: 0x060009C8 RID: 2504 RVA: 0x00030EE4 File Offset: 0x0002F0E4
+		// Token: 0x1700007D RID: 125
+		// (get) Token: 0x0600038D RID: 909 RVA: 0x0000DB64 File Offset: 0x0000BD64
 		public static int achievementCount
 		{
 			get
@@ -126,8 +127,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x170000A6 RID: 166
-		// (get) Token: 0x060009C9 RID: 2505 RVA: 0x00030EED File Offset: 0x0002F0ED
+		// Token: 0x1700007E RID: 126
+		// (get) Token: 0x0600038E RID: 910 RVA: 0x0000DB6D File Offset: 0x0000BD6D
 		public static int serverAchievementCount
 		{
 			get
@@ -136,7 +137,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060009CA RID: 2506 RVA: 0x00030EF8 File Offset: 0x0002F0F8
+		// Token: 0x0600038F RID: 911 RVA: 0x0000DB78 File Offset: 0x0000BD78
 		public static void CollectAchievementDefs(Dictionary<string, AchievementDef> map)
 		{
 			List<AchievementDef> list = new List<AchievementDef>();
@@ -165,8 +166,8 @@ namespace RoR2
 							identifier = registerAchievementAttribute.identifier,
 							unlockableRewardIdentifier = registerAchievementAttribute.unlockableRewardIdentifier,
 							prerequisiteAchievementIdentifier = registerAchievementAttribute.prerequisiteAchievementIdentifier,
-							nameToken = "ACHIEVEMENT_" + registerAchievementAttribute.identifier.ToUpper() + "_NAME",
-							descriptionToken = "ACHIEVEMENT_" + registerAchievementAttribute.identifier.ToUpper() + "_DESCRIPTION",
+							nameToken = "ACHIEVEMENT_" + registerAchievementAttribute.identifier.ToUpper(CultureInfo.InvariantCulture) + "_NAME",
+							descriptionToken = "ACHIEVEMENT_" + registerAchievementAttribute.identifier.ToUpper(CultureInfo.InvariantCulture) + "_DESCRIPTION",
 							iconPath = "Textures/AchievementIcons/tex" + registerAchievementAttribute.identifier + "Icon",
 							type = type2,
 							serverTrackerType = registerAchievementAttribute.serverTrackerType
@@ -224,7 +225,7 @@ namespace RoR2
 			action();
 		}
 
-		// Token: 0x060009CB RID: 2507 RVA: 0x000312C4 File Offset: 0x0002F4C4
+		// Token: 0x06000390 RID: 912 RVA: 0x0000DF50 File Offset: 0x0000C150
 		private static void SortAchievements(AchievementDef[] achievementDefsArray)
 		{
 			AchievementManager.AchievementSortPair[] array = new AchievementManager.AchievementSortPair[achievementDefsArray.Length];
@@ -243,72 +244,72 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x14000005 RID: 5
-		// (add) Token: 0x060009CC RID: 2508 RVA: 0x00031358 File Offset: 0x0002F558
-		// (remove) Token: 0x060009CD RID: 2509 RVA: 0x0003138C File Offset: 0x0002F58C
+		// Token: 0x14000002 RID: 2
+		// (add) Token: 0x06000391 RID: 913 RVA: 0x0000DFE4 File Offset: 0x0000C1E4
+		// (remove) Token: 0x06000392 RID: 914 RVA: 0x0000E018 File Offset: 0x0000C218
 		public static event Action onAchievementsRegistered;
 
-		// Token: 0x060009CE RID: 2510 RVA: 0x000313C0 File Offset: 0x0002F5C0
+		// Token: 0x06000393 RID: 915 RVA: 0x0000E04C File Offset: 0x0000C24C
 		public static AchievementManager.Enumerator GetEnumerator()
 		{
 			return default(AchievementManager.Enumerator);
 		}
 
-		// Token: 0x04000CF7 RID: 3319
+		// Token: 0x04000306 RID: 774
 		private static readonly Dictionary<LocalUser, UserAchievementManager> userToManagerMap = new Dictionary<LocalUser, UserAchievementManager>();
 
-		// Token: 0x04000CF8 RID: 3320
+		// Token: 0x04000307 RID: 775
 		public static ResourceAvailability availability;
 
-		// Token: 0x04000CF9 RID: 3321
+		// Token: 0x04000308 RID: 776
 		private static readonly Queue<Action> taskQueue = new Queue<Action>();
 
-		// Token: 0x04000CFA RID: 3322
+		// Token: 0x04000309 RID: 777
 		private static readonly Dictionary<string, AchievementDef> achievementNamesToDefs = new Dictionary<string, AchievementDef>();
 
-		// Token: 0x04000CFB RID: 3323
+		// Token: 0x0400030A RID: 778
 		private static readonly List<string> achievementIdentifiers = new List<string>();
 
-		// Token: 0x04000CFC RID: 3324
+		// Token: 0x0400030B RID: 779
 		public static readonly ReadOnlyCollection<string> readOnlyAchievementIdentifiers = AchievementManager.achievementIdentifiers.AsReadOnly();
 
-		// Token: 0x04000CFD RID: 3325
+		// Token: 0x0400030C RID: 780
 		private static AchievementDef[] achievementDefs;
 
-		// Token: 0x04000CFE RID: 3326
+		// Token: 0x0400030D RID: 781
 		private static AchievementDef[] serverAchievementDefs;
 
-		// Token: 0x04000D00 RID: 3328
+		// Token: 0x0400030F RID: 783
 		public static readonly GenericStaticEnumerable<AchievementDef, AchievementManager.Enumerator> allAchievementDefs;
 
-		// Token: 0x020001F1 RID: 497
+		// Token: 0x020000B2 RID: 178
 		private struct AchievementSortPair
 		{
-			// Token: 0x04000D01 RID: 3329
+			// Token: 0x04000310 RID: 784
 			public int score;
 
-			// Token: 0x04000D02 RID: 3330
+			// Token: 0x04000311 RID: 785
 			public AchievementDef achievementDef;
 		}
 
-		// Token: 0x020001F2 RID: 498
+		// Token: 0x020000B3 RID: 179
 		public struct Enumerator : IEnumerator<AchievementDef>, IEnumerator, IDisposable
 		{
-			// Token: 0x060009D0 RID: 2512 RVA: 0x0003140F File Offset: 0x0002F60F
+			// Token: 0x06000395 RID: 917 RVA: 0x0000E09B File Offset: 0x0000C29B
 			public bool MoveNext()
 			{
 				this.position++;
 				return this.position < AchievementManager.achievementDefs.Length;
 			}
 
-			// Token: 0x060009D1 RID: 2513 RVA: 0x0003142E File Offset: 0x0002F62E
+			// Token: 0x06000396 RID: 918 RVA: 0x0000E0BA File Offset: 0x0000C2BA
 			public void Reset()
 			{
 				this.position = -1;
 			}
 
-			// Token: 0x170000A7 RID: 167
-			// (get) Token: 0x060009D2 RID: 2514 RVA: 0x00031437 File Offset: 0x0002F637
+			// Token: 0x1700007F RID: 127
+			// (get) Token: 0x06000397 RID: 919 RVA: 0x0000E0C3 File Offset: 0x0000C2C3
 			public AchievementDef Current
 			{
 				get
@@ -317,8 +318,8 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x170000A8 RID: 168
-			// (get) Token: 0x060009D3 RID: 2515 RVA: 0x00031445 File Offset: 0x0002F645
+			// Token: 0x17000080 RID: 128
+			// (get) Token: 0x06000398 RID: 920 RVA: 0x0000E0D1 File Offset: 0x0000C2D1
 			object IEnumerator.Current
 			{
 				get
@@ -327,12 +328,12 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x060009D4 RID: 2516 RVA: 0x00004507 File Offset: 0x00002707
+			// Token: 0x06000399 RID: 921 RVA: 0x0000409B File Offset: 0x0000229B
 			void IDisposable.Dispose()
 			{
 			}
 
-			// Token: 0x04000D03 RID: 3331
+			// Token: 0x04000312 RID: 786
 			private int position;
 		}
 	}

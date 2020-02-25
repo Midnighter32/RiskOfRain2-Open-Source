@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200046F RID: 1135
+	// Token: 0x020003EE RID: 1006
 	public class ProjectIssueChecker
 	{
-		// Token: 0x06001955 RID: 6485 RVA: 0x0007938A File Offset: 0x0007758A
+		// Token: 0x06001870 RID: 6256 RVA: 0x00069525 File Offset: 0x00067725
 		private static IEnumerable<Assembly> GetAssemblies()
 		{
 			List<string> list = new List<string>();
@@ -32,15 +35,21 @@ namespace RoR2
 			yield break;
 		}
 
-		// Token: 0x06001956 RID: 6486 RVA: 0x00079394 File Offset: 0x00077594
+		// Token: 0x06001871 RID: 6257 RVA: 0x00069530 File Offset: 0x00067730
 		private ProjectIssueChecker()
 		{
 			this.assetCheckMethods = new Dictionary<Type, List<MethodInfo>>();
 			this.allChecks = new List<MethodInfo>();
 			this.enabledChecks = new Dictionary<MethodInfo, bool>();
-			Assembly assembly = typeof(RoR2Application).Assembly;
-			ProjectIssueChecker.<>c__DisplayClass7_0 CS$<>8__locals1;
-			CS$<>8__locals1.types = assembly.GetTypes();
+			Assembly[] source = new Assembly[]
+			{
+				typeof(GameObject).Assembly,
+				typeof(Canvas).Assembly,
+				typeof(RoR2Application).Assembly,
+				typeof(TMP_Text).Assembly
+			};
+			ProjectIssueChecker.<>c__DisplayClass6_0 CS$<>8__locals1;
+			CS$<>8__locals1.types = source.SelectMany((Assembly a) => a.GetTypes()).ToArray<Type>();
 			Type[] types = CS$<>8__locals1.types;
 			for (int i = 0; i < types.Length; i++)
 			{
@@ -51,7 +60,7 @@ namespace RoR2
 						if (obj is AssetCheckAttribute)
 						{
 							Type assetType = ((AssetCheckAttribute)obj).assetType;
-							this.<.ctor>g__AddMethodForTypeDescending|7_1(assetType, methodInfo, ref CS$<>8__locals1);
+							this.<.ctor>g__AddMethodForTypeDescending|6_1(assetType, methodInfo, ref CS$<>8__locals1);
 							this.allChecks.Add(methodInfo);
 							this.enabledChecks.Add(methodInfo, true);
 						}
@@ -60,7 +69,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001957 RID: 6487 RVA: 0x000794C8 File Offset: 0x000776C8
+		// Token: 0x06001872 RID: 6258 RVA: 0x000696C8 File Offset: 0x000678C8
 		private string GetCurrentAssetFullPath()
 		{
 			GameObject gameObject = null;
@@ -82,7 +91,7 @@ namespace RoR2
 			return string.Format("{0}:{1}({2})", arg, arg2, arg3);
 		}
 
-		// Token: 0x06001958 RID: 6488 RVA: 0x00079578 File Offset: 0x00077778
+		// Token: 0x06001873 RID: 6259 RVA: 0x00069778 File Offset: 0x00067978
 		public void Log(string message, UnityEngine.Object context = null)
 		{
 			this.log.Add(new ProjectIssueChecker.LogMessage
@@ -94,7 +103,7 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x06001959 RID: 6489 RVA: 0x000795C0 File Offset: 0x000777C0
+		// Token: 0x06001874 RID: 6260 RVA: 0x000697C0 File Offset: 0x000679C0
 		public void LogError(string message, UnityEngine.Object context = null)
 		{
 			this.log.Add(new ProjectIssueChecker.LogMessage
@@ -106,7 +115,7 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x0600195A RID: 6490 RVA: 0x00079608 File Offset: 0x00077808
+		// Token: 0x06001875 RID: 6261 RVA: 0x00069808 File Offset: 0x00067A08
 		public void LogFormat(UnityEngine.Object context, string format, params object[] args)
 		{
 			this.log.Add(new ProjectIssueChecker.LogMessage
@@ -118,7 +127,7 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x0600195B RID: 6491 RVA: 0x00079654 File Offset: 0x00077854
+		// Token: 0x06001876 RID: 6262 RVA: 0x00069854 File Offset: 0x00067A54
 		public void LogErrorFormat(UnityEngine.Object context, string format, params object[] args)
 		{
 			this.log.Add(new ProjectIssueChecker.LogMessage
@@ -130,7 +139,7 @@ namespace RoR2
 			});
 		}
 
-		// Token: 0x0600195C RID: 6492 RVA: 0x000796A0 File Offset: 0x000778A0
+		// Token: 0x06001877 RID: 6263 RVA: 0x000698A0 File Offset: 0x00067AA0
 		private void FlushLog()
 		{
 			bool flag = false;
@@ -167,53 +176,73 @@ namespace RoR2
 			this.log.Clear();
 		}
 
-		// Token: 0x04001CD0 RID: 7376
+		// Token: 0x06001878 RID: 6264 RVA: 0x00069988 File Offset: 0x00067B88
+		[CompilerGenerated]
+		private void <.ctor>g__AddMethodForType|6_0(Type t, MethodInfo methodInfo)
+		{
+			List<MethodInfo> list = null;
+			this.assetCheckMethods.TryGetValue(t, out list);
+			if (list == null)
+			{
+				list = new List<MethodInfo>();
+				this.assetCheckMethods[t] = list;
+			}
+			list.Add(methodInfo);
+		}
+
+		// Token: 0x06001879 RID: 6265 RVA: 0x000699C4 File Offset: 0x00067BC4
+		[CompilerGenerated]
+		private void <.ctor>g__AddMethodForTypeDescending|6_1(Type t, MethodInfo methodInfo, ref ProjectIssueChecker.<>c__DisplayClass6_0 A_3)
+		{
+			foreach (Type t2 in A_3.types.Where(new Func<Type, bool>(t.IsAssignableFrom)))
+			{
+				this.<.ctor>g__AddMethodForType|6_0(t2, methodInfo);
+			}
+		}
+
+		// Token: 0x040016EE RID: 5870
 		private Dictionary<Type, List<MethodInfo>> assetCheckMethods;
 
-		// Token: 0x04001CD1 RID: 7377
+		// Token: 0x040016EF RID: 5871
 		private List<MethodInfo> allChecks;
 
-		// Token: 0x04001CD2 RID: 7378
+		// Token: 0x040016F0 RID: 5872
 		private Dictionary<MethodInfo, bool> enabledChecks;
 
-		// Token: 0x04001CD3 RID: 7379
+		// Token: 0x040016F1 RID: 5873
 		private bool checkScenes = true;
 
-		// Token: 0x04001CD4 RID: 7380
+		// Token: 0x040016F2 RID: 5874
 		private List<string> scenesToCheck = new List<string>();
 
-		// Token: 0x04001CD5 RID: 7381
+		// Token: 0x040016F3 RID: 5875
 		private string currentAssetPath = "";
 
-		// Token: 0x04001CD6 RID: 7382
+		// Token: 0x040016F4 RID: 5876
 		private readonly Stack<UnityEngine.Object> assetStack = new Stack<UnityEngine.Object>();
 
-		// Token: 0x04001CD7 RID: 7383
+		// Token: 0x040016F5 RID: 5877
 		private UnityEngine.Object currentAsset;
 
-		// Token: 0x04001CD8 RID: 7384
+		// Token: 0x040016F6 RID: 5878
 		private List<ProjectIssueChecker.LogMessage> log = new List<ProjectIssueChecker.LogMessage>();
 
-		// Token: 0x04001CD9 RID: 7385
+		// Token: 0x040016F7 RID: 5879
 		private string currentSceneName = "";
 
-		// Token: 0x02000470 RID: 1136
-		// (Invoke) Token: 0x06001960 RID: 6496
-		private delegate void ObjectCheckDelegate(ProjectIssueChecker issueChecker, UnityEngine.Object obj);
-
-		// Token: 0x02000471 RID: 1137
+		// Token: 0x020003EF RID: 1007
 		private struct LogMessage
 		{
-			// Token: 0x04001CDA RID: 7386
+			// Token: 0x040016F8 RID: 5880
 			public bool error;
 
-			// Token: 0x04001CDB RID: 7387
+			// Token: 0x040016F9 RID: 5881
 			public string message;
 
-			// Token: 0x04001CDC RID: 7388
+			// Token: 0x040016FA RID: 5882
 			public UnityEngine.Object context;
 
-			// Token: 0x04001CDD RID: 7389
+			// Token: 0x040016FB RID: 5883
 			public string assetPath;
 		}
 	}

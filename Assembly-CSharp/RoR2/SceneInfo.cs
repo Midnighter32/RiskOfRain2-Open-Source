@@ -5,11 +5,11 @@ using UnityEngine.Serialization;
 
 namespace RoR2
 {
-	// Token: 0x020003CE RID: 974
+	// Token: 0x0200031C RID: 796
 	public class SceneInfo : MonoBehaviour
 	{
-		// Token: 0x170001E9 RID: 489
-		// (get) Token: 0x0600151F RID: 5407 RVA: 0x000658CE File Offset: 0x00063ACE
+		// Token: 0x17000245 RID: 581
+		// (get) Token: 0x060012B1 RID: 4785 RVA: 0x000506CA File Offset: 0x0004E8CA
 		public static SceneInfo instance
 		{
 			get
@@ -18,13 +18,28 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x170001EA RID: 490
-		// (get) Token: 0x06001520 RID: 5408 RVA: 0x000658D5 File Offset: 0x00063AD5
-		// (set) Token: 0x06001521 RID: 5409 RVA: 0x000658DD File Offset: 0x00063ADD
+		// Token: 0x17000246 RID: 582
+		// (get) Token: 0x060012B2 RID: 4786 RVA: 0x000506D1 File Offset: 0x0004E8D1
+		// (set) Token: 0x060012B3 RID: 4787 RVA: 0x000506D9 File Offset: 0x0004E8D9
+		public NodeGraph groundNodes { get; private set; }
+
+		// Token: 0x17000247 RID: 583
+		// (get) Token: 0x060012B4 RID: 4788 RVA: 0x000506E2 File Offset: 0x0004E8E2
+		// (set) Token: 0x060012B5 RID: 4789 RVA: 0x000506EA File Offset: 0x0004E8EA
+		public NodeGraph airNodes { get; private set; }
+
+		// Token: 0x17000248 RID: 584
+		// (get) Token: 0x060012B6 RID: 4790 RVA: 0x000506F3 File Offset: 0x0004E8F3
+		// (set) Token: 0x060012B7 RID: 4791 RVA: 0x000506FB File Offset: 0x0004E8FB
+		public NodeGraph railNodes { get; private set; }
+
+		// Token: 0x17000249 RID: 585
+		// (get) Token: 0x060012B8 RID: 4792 RVA: 0x00050704 File Offset: 0x0004E904
+		// (set) Token: 0x060012B9 RID: 4793 RVA: 0x0005070C File Offset: 0x0004E90C
 		public SceneDef sceneDef { get; private set; }
 
-		// Token: 0x170001EB RID: 491
-		// (get) Token: 0x06001522 RID: 5410 RVA: 0x000658E6 File Offset: 0x00063AE6
+		// Token: 0x1700024A RID: 586
+		// (get) Token: 0x060012BA RID: 4794 RVA: 0x00050715 File Offset: 0x0004E915
 		public bool countsAsStage
 		{
 			get
@@ -33,25 +48,21 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001523 RID: 5411 RVA: 0x00065908 File Offset: 0x00063B08
+		// Token: 0x060012BB RID: 4795 RVA: 0x00050734 File Offset: 0x0004E934
 		private void Awake()
 		{
-			if (this.groundNodeGroup)
+			if (this.groundNodesAsset)
 			{
-				this.groundNodes = UnityEngine.Object.Instantiate<NodeGraph>(this.groundNodeGroup.nodeGraph);
+				this.groundNodes = UnityEngine.Object.Instantiate<NodeGraph>(this.groundNodesAsset);
 			}
-			if (this.airNodeGroup)
+			if (this.airNodesAsset)
 			{
-				this.airNodes = UnityEngine.Object.Instantiate<NodeGraph>(this.airNodeGroup.nodeGraph);
-			}
-			if (this.railNodeGroup)
-			{
-				this.railNodes = UnityEngine.Object.Instantiate<NodeGraph>(this.railNodeGroup.nodeGraph);
+				this.airNodes = UnityEngine.Object.Instantiate<NodeGraph>(this.airNodesAsset);
 			}
 			this.sceneDef = SceneCatalog.GetSceneDefFromSceneName(base.gameObject.scene.name);
 		}
 
-		// Token: 0x06001524 RID: 5412 RVA: 0x0006599C File Offset: 0x00063B9C
+		// Token: 0x060012BC RID: 4796 RVA: 0x0005079B File Offset: 0x0004E99B
 		private void OnDestroy()
 		{
 			UnityEngine.Object.Destroy(this.groundNodes);
@@ -59,7 +70,7 @@ namespace RoR2
 			UnityEngine.Object.Destroy(this.railNodes);
 		}
 
-		// Token: 0x06001525 RID: 5413 RVA: 0x000659BF File Offset: 0x00063BBF
+		// Token: 0x060012BD RID: 4797 RVA: 0x000507BE File Offset: 0x0004E9BE
 		public MapNodeGroup GetNodeGroup(MapNodeGroup.GraphType nodeGraphType)
 		{
 			switch (nodeGraphType)
@@ -75,7 +86,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001526 RID: 5414 RVA: 0x000659EB File Offset: 0x00063BEB
+		// Token: 0x060012BE RID: 4798 RVA: 0x000507EA File Offset: 0x0004E9EA
 		public NodeGraph GetNodeGraph(MapNodeGroup.GraphType nodeGraphType)
 		{
 			switch (nodeGraphType)
@@ -91,7 +102,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001527 RID: 5415 RVA: 0x00065A17 File Offset: 0x00063C17
+		// Token: 0x060012BF RID: 4799 RVA: 0x00050816 File Offset: 0x0004EA16
 		public void SetGateState(string gateName, bool gateEnabled)
 		{
 			this.groundNodes.SetGateState(gateName, gateEnabled);
@@ -102,7 +113,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001528 RID: 5416 RVA: 0x00065A4D File Offset: 0x00063C4D
+		// Token: 0x060012C0 RID: 4800 RVA: 0x0005084C File Offset: 0x0004EA4C
 		private void OnEnable()
 		{
 			if (!SceneInfo._instance)
@@ -111,7 +122,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06001529 RID: 5417 RVA: 0x00065A61 File Offset: 0x00063C61
+		// Token: 0x060012C1 RID: 4801 RVA: 0x00050860 File Offset: 0x0004EA60
 		private void OnDisable()
 		{
 			if (SceneInfo._instance == this)
@@ -120,31 +131,40 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0400186E RID: 6254
+		// Token: 0x060012C2 RID: 4802 RVA: 0x00050875 File Offset: 0x0004EA75
+		private void OnValidate()
+		{
+			if (this.groundNodeGroup)
+			{
+				this.groundNodesAsset = this.groundNodeGroup.nodeGraph;
+			}
+			if (this.airNodeGroup)
+			{
+				this.airNodesAsset = this.airNodeGroup.nodeGraph;
+			}
+		}
+
+		// Token: 0x0400118F RID: 4495
 		private static SceneInfo _instance;
 
-		// Token: 0x0400186F RID: 6255
+		// Token: 0x04001190 RID: 4496
 		[FormerlySerializedAs("groundNodes")]
 		public MapNodeGroup groundNodeGroup;
 
-		// Token: 0x04001870 RID: 6256
+		// Token: 0x04001191 RID: 4497
 		[FormerlySerializedAs("airNodes")]
 		public MapNodeGroup airNodeGroup;
 
-		// Token: 0x04001871 RID: 6257
+		// Token: 0x04001192 RID: 4498
 		[FormerlySerializedAs("railNodes")]
 		public MapNodeGroup railNodeGroup;
 
-		// Token: 0x04001872 RID: 6258
-		[NonSerialized]
-		public NodeGraph groundNodes;
+		// Token: 0x04001193 RID: 4499
+		[SerializeField]
+		private NodeGraph groundNodesAsset;
 
-		// Token: 0x04001873 RID: 6259
-		[NonSerialized]
-		public NodeGraph airNodes;
-
-		// Token: 0x04001874 RID: 6260
-		[NonSerialized]
-		public NodeGraph railNodes;
+		// Token: 0x04001194 RID: 4500
+		[SerializeField]
+		private NodeGraph airNodesAsset;
 	}
 }

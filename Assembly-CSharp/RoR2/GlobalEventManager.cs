@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using RoR2.Orbs;
 using RoR2.Projectile;
 using UnityEngine;
@@ -8,10 +11,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x02000302 RID: 770
+	// Token: 0x02000218 RID: 536
 	public class GlobalEventManager : MonoBehaviour
 	{
-		// Token: 0x06000FC3 RID: 4035 RVA: 0x0004D7D2 File Offset: 0x0004B9D2
+		// Token: 0x06000BBF RID: 3007 RVA: 0x000332AE File Offset: 0x000314AE
 		private void OnEnable()
 		{
 			if (GlobalEventManager.instance)
@@ -22,7 +25,7 @@ namespace RoR2
 			GlobalEventManager.instance = this;
 		}
 
-		// Token: 0x06000FC4 RID: 4036 RVA: 0x0004D7F1 File Offset: 0x0004B9F1
+		// Token: 0x06000BC0 RID: 3008 RVA: 0x000332CD File Offset: 0x000314CD
 		private void OnDisable()
 		{
 			if (GlobalEventManager.instance == this)
@@ -31,25 +34,25 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000FC5 RID: 4037 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000BC1 RID: 3009 RVA: 0x0000409B File Offset: 0x0000229B
 		public void OnLocalPlayerBodySpawn(CharacterBody body)
 		{
 		}
 
-		// Token: 0x06000FC6 RID: 4038 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000BC2 RID: 3010 RVA: 0x0000409B File Offset: 0x0000229B
 		public void OnCharacterBodySpawn(CharacterBody body)
 		{
 		}
 
-		// Token: 0x06000FC7 RID: 4039 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06000BC3 RID: 3011 RVA: 0x0000409B File Offset: 0x0000229B
 		public void OnCharacterBodyStart(CharacterBody body)
 		{
 		}
 
-		// Token: 0x06000FC8 RID: 4040 RVA: 0x0004D808 File Offset: 0x0004BA08
+		// Token: 0x06000BC4 RID: 3012 RVA: 0x000332E4 File Offset: 0x000314E4
 		public void OnHitEnemy(DamageInfo damageInfo, GameObject victim)
 		{
-			if (damageInfo.procCoefficient == 0f)
+			if (damageInfo.procCoefficient == 0f || damageInfo.rejected)
 			{
 				return;
 			}
@@ -89,7 +92,7 @@ namespace RoR2
 							}
 						}
 						int itemCount2 = inventory.GetItemCount(ItemIndex.StunChanceOnHit);
-						if (itemCount2 > 0 && Util.CheckRoll((1f - 1f / (damageInfo.procCoefficient * 0.05f * (float)itemCount2 + 1f)) * 100f, master))
+						if (itemCount2 > 0 && Util.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(5f * (float)itemCount2), master))
 						{
 							SetStateOnHurt component4 = victim.GetComponent<SetStateOnHurt>();
 							if (component4)
@@ -108,39 +111,57 @@ namespace RoR2
 								DotController.InflictDot(victim, damageInfo.attacker, DotController.DotIndex.Bleed, 3f * damageInfo.procCoefficient, 1f);
 							}
 						}
-						if ((component.HasBuff(BuffIndex.AffixRed) ? 1 : 0) > 0 || (damageInfo.damageType & DamageType.IgniteOnHit) != DamageType.Generic)
+						bool flag2 = (damageInfo.damageType & DamageType.PoisonOnHit) > DamageType.Generic;
+						if (flag2 && flag2)
 						{
-							DotController.InflictDot(victim, damageInfo.attacker, DotController.DotIndex.Burn, 4f * damageInfo.procCoefficient, 1f);
+							ProcChainMask procChainMask3 = damageInfo.procChainMask;
+							DotController.InflictDot(victim, damageInfo.attacker, DotController.DotIndex.Poison, 10f * damageInfo.procCoefficient, 1f);
 						}
-						if ((component.HasBuff(BuffIndex.AffixWhite) ? 1 : 0) > 0 && characterBody)
+						bool flag3 = (damageInfo.damageType & DamageType.WeakOnHit) > DamageType.Generic;
+						if (flag3 && flag3)
 						{
-							characterBody.AddTimedBuff(BuffIndex.Slow80, 1.5f * damageInfo.procCoefficient);
+							characterBody.AddTimedBuff(BuffIndex.Weak, 6f * damageInfo.procCoefficient);
+						}
+						bool flag4 = (damageInfo.damageType & DamageType.IgniteOnHit) > DamageType.Generic;
+						bool flag5 = (damageInfo.damageType & DamageType.PercentIgniteOnHit) != DamageType.Generic || component.HasBuff(BuffIndex.AffixRed);
+						if (flag4 || flag5)
+						{
+							DotController.InflictDot(victim, damageInfo.attacker, flag5 ? DotController.DotIndex.PercentBurn : DotController.DotIndex.Burn, 4f * damageInfo.procCoefficient, 1f);
+						}
+						int num = component.HasBuff(BuffIndex.AffixWhite) ? 1 : 0;
+						num += (component.HasBuff(BuffIndex.AffixHaunted) ? 2 : 0);
+						if (num > 0 && characterBody)
+						{
+							characterBody.AddTimedBuff(BuffIndex.Slow80, 1.5f * damageInfo.procCoefficient * (float)num);
 						}
 						int itemCount4 = master.inventory.GetItemCount(ItemIndex.SlowOnHit);
 						if (itemCount4 > 0 && characterBody)
 						{
-							characterBody.AddTimedBuff(BuffIndex.Slow60, 1f * (float)itemCount4);
+							characterBody.AddTimedBuff(BuffIndex.Slow60, 2f * (float)itemCount4);
+						}
+						if ((component.HasBuff(BuffIndex.AffixPoison) ? 1 : 0) > 0 && characterBody)
+						{
+							characterBody.AddTimedBuff(BuffIndex.HealingDisabled, 8f * damageInfo.procCoefficient);
 						}
 						int itemCount5 = inventory.GetItemCount(ItemIndex.GoldOnHit);
 						if (itemCount5 > 0 && Util.CheckRoll(30f * damageInfo.procCoefficient, master))
 						{
 							master.GiveMoney((uint)((float)itemCount5 * 2f * Run.instance.difficultyCoefficient));
-							EffectManager.instance.SimpleImpactEffect(Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/CoinImpact"), damageInfo.position, Vector3.up, true);
+							EffectManager.SimpleImpactEffect(Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/CoinImpact"), damageInfo.position, Vector3.up, true);
 						}
 						if (!damageInfo.procChainMask.HasProc(ProcType.Missile))
 						{
 							this.ProcMissile(inventory.GetItemCount(ItemIndex.Missile), component, master, teamIndex, damageInfo.procChainMask, victim, damageInfo);
 						}
-						int itemCount6 = inventory.GetItemCount(ItemIndex.ChainLightning);
-						if (itemCount6 > 0 && !damageInfo.procChainMask.HasProc(ProcType.ChainLightning) && Util.CheckRoll(25f * damageInfo.procCoefficient, master))
+						if (component.HasBuff(BuffIndex.LoaderPylonPowered) && !damageInfo.procChainMask.HasProc(ProcType.LoaderLightning))
 						{
-							float damageCoefficient = 0.8f;
+							float damageCoefficient = 0.3f;
 							float damageValue = Util.OnHitProcDamage(damageInfo.damage, component.damage, damageCoefficient);
 							LightningOrb lightningOrb = new LightningOrb();
 							lightningOrb.origin = damageInfo.position;
 							lightningOrb.damageValue = damageValue;
 							lightningOrb.isCrit = damageInfo.crit;
-							lightningOrb.bouncesRemaining = 2 * itemCount6;
+							lightningOrb.bouncesRemaining = 3;
 							lightningOrb.teamIndex = teamIndex;
 							lightningOrb.attacker = damageInfo.attacker;
 							lightningOrb.bouncedObjects = new List<HealthComponent>
@@ -148,11 +169,11 @@ namespace RoR2
 								victim.GetComponent<HealthComponent>()
 							};
 							lightningOrb.procChainMask = damageInfo.procChainMask;
-							lightningOrb.procChainMask.AddProc(ProcType.ChainLightning);
-							lightningOrb.procCoefficient = 0.2f;
-							lightningOrb.lightningType = LightningOrb.LightningType.Ukulele;
+							lightningOrb.procChainMask.AddProc(ProcType.LoaderLightning);
+							lightningOrb.procCoefficient = 0f;
+							lightningOrb.lightningType = LightningOrb.LightningType.Loader;
 							lightningOrb.damageColorIndex = DamageColorIndex.Item;
-							lightningOrb.range += (float)(2 * itemCount6);
+							lightningOrb.range = 20f;
 							HurtBox hurtBox = lightningOrb.PickNextTarget(damageInfo.position);
 							if (hurtBox)
 							{
@@ -160,21 +181,51 @@ namespace RoR2
 								OrbManager.instance.AddOrb(lightningOrb);
 							}
 						}
+						int itemCount6 = inventory.GetItemCount(ItemIndex.ChainLightning);
+						float num2 = 25f;
+						if (itemCount6 > 0 && !damageInfo.procChainMask.HasProc(ProcType.ChainLightning) && Util.CheckRoll(num2 * damageInfo.procCoefficient, master))
+						{
+							float damageCoefficient2 = 0.8f;
+							float damageValue2 = Util.OnHitProcDamage(damageInfo.damage, component.damage, damageCoefficient2);
+							LightningOrb lightningOrb2 = new LightningOrb();
+							lightningOrb2.origin = damageInfo.position;
+							lightningOrb2.damageValue = damageValue2;
+							lightningOrb2.isCrit = damageInfo.crit;
+							lightningOrb2.bouncesRemaining = 2 * itemCount6;
+							lightningOrb2.teamIndex = teamIndex;
+							lightningOrb2.attacker = damageInfo.attacker;
+							lightningOrb2.bouncedObjects = new List<HealthComponent>
+							{
+								victim.GetComponent<HealthComponent>()
+							};
+							lightningOrb2.procChainMask = damageInfo.procChainMask;
+							lightningOrb2.procChainMask.AddProc(ProcType.ChainLightning);
+							lightningOrb2.procCoefficient = 0.2f;
+							lightningOrb2.lightningType = LightningOrb.LightningType.Ukulele;
+							lightningOrb2.damageColorIndex = DamageColorIndex.Item;
+							lightningOrb2.range += (float)(2 * itemCount6);
+							HurtBox hurtBox2 = lightningOrb2.PickNextTarget(damageInfo.position);
+							if (hurtBox2)
+							{
+								lightningOrb2.target = hurtBox2;
+								OrbManager.instance.AddOrb(lightningOrb2);
+							}
+						}
 						int itemCount7 = inventory.GetItemCount(ItemIndex.BounceNearby);
-						float num = (1f - 100f / (100f + 20f * (float)itemCount7)) * 100f;
-						if (itemCount7 > 0 && !damageInfo.procChainMask.HasProc(ProcType.BounceNearby) && Util.CheckRoll(num * damageInfo.procCoefficient, master))
+						float num3 = (1f - 100f / (100f + 20f * (float)itemCount7)) * 100f;
+						if (itemCount7 > 0 && !damageInfo.procChainMask.HasProc(ProcType.BounceNearby) && Util.CheckRoll(num3 * damageInfo.procCoefficient, master))
 						{
 							List<HealthComponent> bouncedObjects = new List<HealthComponent>
 							{
 								victim.GetComponent<HealthComponent>()
 							};
-							float damageCoefficient2 = 1f;
-							float damageValue2 = Util.OnHitProcDamage(damageInfo.damage, component.damage, damageCoefficient2);
+							float damageCoefficient3 = 1f;
+							float damageValue3 = Util.OnHitProcDamage(damageInfo.damage, component.damage, damageCoefficient3);
 							for (int i = 0; i < 5 + itemCount7 * 5; i++)
 							{
 								BounceOrb bounceOrb = new BounceOrb();
 								bounceOrb.origin = damageInfo.position;
-								bounceOrb.damageValue = damageValue2;
+								bounceOrb.damageValue = damageValue3;
 								bounceOrb.isCrit = damageInfo.crit;
 								bounceOrb.teamIndex = teamIndex;
 								bounceOrb.attacker = damageInfo.attacker;
@@ -183,22 +234,22 @@ namespace RoR2
 								bounceOrb.procCoefficient = 0.33f;
 								bounceOrb.damageColorIndex = DamageColorIndex.Item;
 								bounceOrb.bouncedObjects = bouncedObjects;
-								HurtBox hurtBox2 = bounceOrb.PickNextTarget(victim.transform.position, 30f);
-								if (hurtBox2)
+								HurtBox hurtBox3 = bounceOrb.PickNextTarget(victim.transform.position, 30f);
+								if (hurtBox3)
 								{
-									bounceOrb.target = hurtBox2;
+									bounceOrb.target = hurtBox3;
 									OrbManager.instance.AddOrb(bounceOrb);
 								}
 							}
 						}
 						int itemCount8 = inventory.GetItemCount(ItemIndex.StickyBomb);
-						if (itemCount8 > 0 && Util.CheckRoll((2.5f + 2.5f * (float)itemCount8) * damageInfo.procCoefficient, master) && characterBody)
+						if (itemCount8 > 0 && Util.CheckRoll(5f * (float)itemCount8 * damageInfo.procCoefficient, master) && characterBody)
 						{
 							Vector3 position = damageInfo.position;
 							Vector3 forward = characterBody.corePosition - position;
 							Quaternion rotation = (forward.magnitude != 0f) ? Util.QuaternionSafeLookRotation(forward) : UnityEngine.Random.rotationUniform;
-							float damageCoefficient3 = 1.25f + 1.25f * (float)itemCount8;
-							float damage = Util.OnHitProcDamage(damageInfo.damage, component.damage, damageCoefficient3);
+							float damageCoefficient4 = 1.8f;
+							float damage = Util.OnHitProcDamage(damageInfo.damage, component.damage, damageCoefficient4);
 							ProjectileManager.instance.FireProjectile(Resources.Load<GameObject>("Prefabs/Projectiles/StickyBomb"), position, rotation, damageInfo.attacker, damage, 100f, damageInfo.crit, DamageColorIndex.Item, null, forward.magnitude * 60f);
 						}
 						int itemCount9 = inventory.GetItemCount(ItemIndex.IceRing);
@@ -208,12 +259,12 @@ namespace RoR2
 							Vector3 position2 = damageInfo.position;
 							if (Util.CheckRoll(8f * damageInfo.procCoefficient, master))
 							{
-								ProcChainMask procChainMask3 = damageInfo.procChainMask;
-								procChainMask3.AddProc(ProcType.Rings);
+								ProcChainMask procChainMask4 = damageInfo.procChainMask;
+								procChainMask4.AddProc(ProcType.Rings);
 								if (itemCount9 > 0)
 								{
-									float damageCoefficient4 = 1.25f + 1.25f * (float)itemCount9;
-									float damage2 = Util.OnHitProcDamage(damageInfo.damage, component.damage, damageCoefficient4);
+									float damageCoefficient5 = 1.25f + 1.25f * (float)itemCount9;
+									float damage2 = Util.OnHitProcDamage(damageInfo.damage, component.damage, damageCoefficient5);
 									DamageInfo damageInfo2 = new DamageInfo
 									{
 										damage = damage2,
@@ -224,10 +275,10 @@ namespace RoR2
 										force = Vector3.zero,
 										inflictor = null,
 										position = position2,
-										procChainMask = procChainMask3,
+										procChainMask = procChainMask4,
 										procCoefficient = 1f
 									};
-									EffectManager.instance.SimpleImpactEffect(Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/IceRingExplosion"), position2, Vector3.up, true);
+									EffectManager.SimpleImpactEffect(Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/IceRingExplosion"), position2, Vector3.up, true);
 									characterBody.AddTimedBuff(BuffIndex.Slow80, 3f);
 									HealthComponent component5 = victim.GetComponent<HealthComponent>();
 									if (component5 != null)
@@ -240,8 +291,8 @@ namespace RoR2
 									GameObject gameObject = Resources.Load<GameObject>("Prefabs/Projectiles/FireTornado");
 									float resetInterval = gameObject.GetComponent<ProjectileOverlapAttack>().resetInterval;
 									float lifetime = gameObject.GetComponent<ProjectileSimple>().lifetime;
-									float damageCoefficient5 = 2.5f + 2.5f * (float)itemCount10;
-									float damage3 = Util.OnHitProcDamage(damageInfo.damage, component.damage, damageCoefficient5) / lifetime * resetInterval;
+									float damageCoefficient6 = 2.5f + 2.5f * (float)itemCount10;
+									float damage3 = Util.OnHitProcDamage(damageInfo.damage, component.damage, damageCoefficient6) / lifetime * resetInterval;
 									float speedOverride = 0f;
 									Quaternion rotation2 = Quaternion.identity;
 									Vector3 vector = position2 - aimOrigin;
@@ -257,7 +308,7 @@ namespace RoR2
 										crit = damageInfo.crit,
 										damageColorIndex = DamageColorIndex.Item,
 										position = position2,
-										procChainMask = procChainMask3,
+										procChainMask = procChainMask4,
 										force = 0f,
 										owner = damageInfo.attacker,
 										projectilePrefab = gameObject,
@@ -273,93 +324,59 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000FC9 RID: 4041 RVA: 0x0004E0B0 File Offset: 0x0004C2B0
+		// Token: 0x06000BC5 RID: 3013 RVA: 0x00033D38 File Offset: 0x00031F38
 		private void ProcMissile(int stack, CharacterBody attackerBody, CharacterMaster attackerMaster, TeamIndex attackerTeamIndex, ProcChainMask procChainMask, GameObject victim, DamageInfo damageInfo)
 		{
 			if (stack > 0)
 			{
 				GameObject gameObject = attackerBody.gameObject;
 				InputBankTest component = gameObject.GetComponent<InputBankTest>();
-				Vector3 position = component ? component.aimOrigin : base.transform.position;
-				Vector3 vector = component ? component.aimDirection : base.transform.forward;
+				Vector3 position = component ? component.aimOrigin : gameObject.transform.position;
+				Vector3 vector = component ? component.aimDirection : gameObject.transform.forward;
 				Vector3 up = Vector3.up;
 				if (Util.CheckRoll(10f * damageInfo.procCoefficient, attackerMaster))
 				{
-					GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.missilePrefab, position, Util.QuaternionSafeLookRotation(up + UnityEngine.Random.insideUnitSphere * 0f));
-					ProjectileController component2 = gameObject2.GetComponent<ProjectileController>();
-					component2.Networkowner = gameObject.gameObject;
-					component2.procChainMask = procChainMask;
-					component2.procChainMask.AddProc(ProcType.Missile);
-					gameObject2.GetComponent<TeamFilter>().teamIndex = attackerTeamIndex;
-					gameObject2.GetComponent<MissileController>().target = victim.transform;
 					float damageCoefficient = 3f * (float)stack;
 					float damage = Util.OnHitProcDamage(damageInfo.damage, attackerBody.damage, damageCoefficient);
-					ProjectileDamage component3 = gameObject2.GetComponent<ProjectileDamage>();
-					component3.damage = damage;
-					component3.crit = damageInfo.crit;
-					component3.force = 200f;
-					component3.damageColorIndex = DamageColorIndex.Item;
-					NetworkServer.Spawn(gameObject2);
+					ProcChainMask procChainMask2 = procChainMask;
+					procChainMask2.AddProc(ProcType.Missile);
+					FireProjectileInfo fireProjectileInfo = new FireProjectileInfo
+					{
+						projectilePrefab = this.missilePrefab,
+						position = position,
+						rotation = Util.QuaternionSafeLookRotation(up),
+						procChainMask = procChainMask2,
+						target = victim,
+						owner = gameObject,
+						damage = damage,
+						crit = damageInfo.crit,
+						force = 200f,
+						damageColorIndex = DamageColorIndex.Item
+					};
+					ProjectileManager.instance.FireProjectile(fireProjectileInfo);
 				}
 			}
 		}
 
-		// Token: 0x06000FCA RID: 4042 RVA: 0x0004E1E4 File Offset: 0x0004C3E4
+		// Token: 0x06000BC6 RID: 3014 RVA: 0x00033E5C File Offset: 0x0003205C
 		public void OnCharacterHitGround(CharacterBody characterBody, Vector3 impactVelocity)
 		{
 			float num = Mathf.Abs(impactVelocity.y);
 			Inventory inventory = characterBody.inventory;
 			CharacterMaster master = characterBody.master;
-			if (num >= characterBody.jumpPower - 1f)
-			{
-				Vector3 footPosition = characterBody.footPosition;
-				float radius = characterBody.radius;
-				RaycastHit raycastHit;
-				if (Physics.Raycast(new Ray(footPosition + Vector3.up * 1.5f, Vector3.down), out raycastHit, 4f, LayerIndex.world.mask | LayerIndex.water.mask, QueryTriggerInteraction.Collide))
-				{
-					SurfaceDef objectSurfaceDef = SurfaceDefProvider.GetObjectSurfaceDef(raycastHit.collider, raycastHit.point);
-					if (objectSurfaceDef)
-					{
-						EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/CharacterLandImpact"), new EffectData
-						{
-							origin = footPosition,
-							scale = radius,
-							color = objectSurfaceDef.approximateColor
-						}, true);
-						if (objectSurfaceDef.footstepEffectPrefab)
-						{
-							EffectManager.instance.SpawnEffect(objectSurfaceDef.footstepEffectPrefab, new EffectData
-							{
-								origin = raycastHit.point,
-								scale = radius * 3f
-							}, false);
-						}
-						SfxLocator component = characterBody.GetComponent<SfxLocator>();
-						if (component)
-						{
-							if (objectSurfaceDef.materialSwitchString != null && objectSurfaceDef.materialSwitchString.Length > 0)
-							{
-								AkSoundEngine.SetSwitch("material", objectSurfaceDef.materialSwitchString, characterBody.gameObject);
-							}
-							else
-							{
-								AkSoundEngine.SetSwitch("material", "dirt", characterBody.gameObject);
-							}
-							Util.PlaySound(component.landingSound, characterBody.gameObject);
-						}
-					}
-				}
-			}
+			CharacterMotor characterMotor = characterBody.characterMotor;
+			bool flag = false;
 			if ((inventory ? inventory.GetItemCount(ItemIndex.FallBoots) : 0) <= 0 && (characterBody.bodyFlags & CharacterBody.BodyFlags.IgnoreFallDamage) == CharacterBody.BodyFlags.None)
 			{
 				float num2 = Mathf.Max(num - (characterBody.jumpPower + 20f), 0f);
 				if (num2 > 0f)
 				{
+					flag = true;
 					float num3 = num2 / 60f;
-					HealthComponent component2 = characterBody.GetComponent<HealthComponent>();
-					if (component2)
+					HealthComponent component = characterBody.GetComponent<HealthComponent>();
+					if (component)
 					{
-						component2.TakeDamage(new DamageInfo
+						component.TakeDamage(new DamageInfo
 						{
 							attacker = null,
 							inflictor = null,
@@ -373,320 +390,365 @@ namespace RoR2
 					}
 				}
 			}
-		}
-
-		// Token: 0x06000FCB RID: 4043 RVA: 0x0004E458 File Offset: 0x0004C658
-		private void OnPlayerCharacterDeath(DamageInfo damageInfo, GameObject victim, NetworkUser victimNetworkUser)
-		{
-			CharacterBody component = victim.GetComponent<CharacterBody>();
-			int num = UnityEngine.Random.Range(0, 37);
-			string baseToken = "PLAYER_DEATH_QUOTE_" + num;
-			NetworkUser networkUser = Util.LookUpBodyNetworkUser(component);
-			if (networkUser)
+			if (characterMotor && Run.FixedTimeStamp.now - characterMotor.lastGroundedTime > 0.2f)
 			{
-				Chat.SendBroadcastChat(new Chat.PlayerDeathChatMessage
+				Vector3 footPosition = characterBody.footPosition;
+				float radius = characterBody.radius;
+				RaycastHit raycastHit;
+				if (Physics.Raycast(new Ray(footPosition + Vector3.up * 1.5f, Vector3.down), out raycastHit, 4f, LayerIndex.world.mask | LayerIndex.water.mask, QueryTriggerInteraction.Collide))
 				{
-					subjectNetworkUser = networkUser,
-					baseToken = baseToken,
-					paramTokens = new string[]
+					SurfaceDef objectSurfaceDef = SurfaceDefProvider.GetObjectSurfaceDef(raycastHit.collider, raycastHit.point);
+					if (objectSurfaceDef)
 					{
-						networkUser.userName
+						EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/CharacterLandImpact"), new EffectData
+						{
+							origin = footPosition,
+							scale = radius,
+							color = objectSurfaceDef.approximateColor
+						}, true);
+						if (objectSurfaceDef.footstepEffectPrefab)
+						{
+							EffectManager.SpawnEffect(objectSurfaceDef.footstepEffectPrefab, new EffectData
+							{
+								origin = raycastHit.point,
+								scale = radius * 3f
+							}, false);
+						}
+						SfxLocator component2 = characterBody.GetComponent<SfxLocator>();
+						if (component2)
+						{
+							if (objectSurfaceDef.materialSwitchString != null && objectSurfaceDef.materialSwitchString.Length > 0)
+							{
+								AkSoundEngine.SetSwitch("material", objectSurfaceDef.materialSwitchString, characterBody.gameObject);
+							}
+							else
+							{
+								AkSoundEngine.SetSwitch("material", "dirt", characterBody.gameObject);
+							}
+							Util.PlaySound(component2.landingSound, characterBody.gameObject);
+							if (flag)
+							{
+								Util.PlaySound(component2.fallDamageSound, characterBody.gameObject);
+							}
+						}
 					}
-				});
+				}
 			}
 		}
 
-		// Token: 0x1400000F RID: 15
-		// (add) Token: 0x06000FCC RID: 4044 RVA: 0x0004E4C4 File Offset: 0x0004C6C4
-		// (remove) Token: 0x06000FCD RID: 4045 RVA: 0x0004E4F8 File Offset: 0x0004C6F8
+		// Token: 0x06000BC7 RID: 3015 RVA: 0x00034100 File Offset: 0x00032300
+		private void OnPlayerCharacterDeath(DamageReport damageReport, NetworkUser victimNetworkUser)
+		{
+			if (!victimNetworkUser)
+			{
+				return;
+			}
+			CharacterBody victimBody = damageReport.victimBody;
+			string baseToken;
+			if ((damageReport.damageInfo.damageType & DamageType.VoidDeath) != DamageType.Generic)
+			{
+				baseToken = "PLAYER_DEATH_QUOTE_VOIDDEATH";
+			}
+			else if (victimBody && victimBody.inventory && victimBody.inventory.GetItemCount(ItemIndex.LunarDagger) > 0)
+			{
+				baseToken = "PLAYER_DEATH_QUOTE_BRITTLEDEATH";
+			}
+			else
+			{
+				baseToken = GlobalEventManager.standardDeathQuoteTokens[UnityEngine.Random.Range(0, GlobalEventManager.standardDeathQuoteTokens.Length)];
+			}
+			Chat.SendBroadcastChat(new Chat.PlayerDeathChatMessage
+			{
+				subjectAsNetworkUser = victimNetworkUser,
+				baseToken = baseToken
+			});
+		}
+
+		// Token: 0x14000019 RID: 25
+		// (add) Token: 0x06000BC8 RID: 3016 RVA: 0x00034194 File Offset: 0x00032394
+		// (remove) Token: 0x06000BC9 RID: 3017 RVA: 0x000341C8 File Offset: 0x000323C8
 		public static event Action<DamageReport> onCharacterDeathGlobal;
 
-		// Token: 0x06000FCE RID: 4046 RVA: 0x0004E52C File Offset: 0x0004C72C
+		// Token: 0x06000BCA RID: 3018 RVA: 0x000341FC File Offset: 0x000323FC
 		public void OnCharacterDeath(DamageReport damageReport)
 		{
 			if (!NetworkServer.active)
 			{
 				return;
 			}
-			GameObject gameObject = damageReport.victim.gameObject;
 			DamageInfo damageInfo = damageReport.damageInfo;
-			TeamComponent component = gameObject.GetComponent<TeamComponent>();
-			TeamIndex teamIndex = TeamIndex.Neutral;
-			CharacterBody component2 = gameObject.GetComponent<CharacterBody>();
-			EquipmentIndex equipmentIndex = component2.equipmentSlot ? component2.equipmentSlot.equipmentIndex : EquipmentIndex.None;
-			if (component)
+			GameObject gameObject = damageReport.victim.gameObject;
+			CharacterBody victimBody = damageReport.victimBody;
+			TeamComponent teamComponent = victimBody.teamComponent;
+			CharacterMaster victimMaster = damageReport.victimMaster;
+			TeamIndex teamIndex = damageReport.victimTeamIndex;
+			Transform transform = gameObject.transform;
+			Vector3 position = transform.position;
+			Quaternion rotation = transform.rotation;
+			Vector3 vector = position;
+			InputBankTest inputBankTest = null;
+			EquipmentIndex equipmentIndex = EquipmentIndex.None;
+			if (victimBody)
 			{
-				teamIndex = component.teamIndex;
+				inputBankTest = victimBody.inputBank;
+				vector = victimBody.corePosition;
+				if (victimBody.equipmentSlot)
+				{
+					equipmentIndex = victimBody.equipmentSlot.equipmentIndex;
+				}
+			}
+			Ray ray = inputBankTest ? inputBankTest.GetAimRay() : new Ray(position, rotation * Vector3.forward);
+			CharacterBody attackerBody = damageReport.attackerBody;
+			CharacterMaster attackerMaster = damageReport.attackerMaster;
+			Inventory inventory = attackerMaster ? attackerMaster.inventory : null;
+			TeamIndex attackerTeamIndex = damageReport.attackerTeamIndex;
+			if (teamComponent)
+			{
+				teamIndex = teamComponent.teamIndex;
 				if (teamIndex == TeamIndex.Monster && Run.instance.enabledArtifacts.HasArtifact(ArtifactIndex.Bomb))
 				{
 					Debug.Log("team and artifact OK");
-					ModelLocator component3 = gameObject.GetComponent<ModelLocator>();
-					if (component3)
+					HurtBoxGroup hurtBoxGroup = victimBody.hurtBoxGroup;
+					if (hurtBoxGroup)
 					{
-						Debug.Log("victimModelLocator OK");
-						Transform modelTransform = component3.modelTransform;
-						if (modelTransform)
+						Debug.Log("victimHurtBoxGroup OK");
+						float damage = 0f;
+						if (victimBody)
 						{
-							Debug.Log("victimModelTransform OK");
-							HurtBoxGroup component4 = modelTransform.GetComponent<HurtBoxGroup>();
-							if (component4)
-							{
-								Debug.Log("victimHurtBoxGroup OK");
-								float damage = 0f;
-								if (component2)
-								{
-									damage = component2.damage;
-								}
-								HurtBoxGroup.VolumeDistribution volumeDistribution = component4.GetVolumeDistribution();
-								int num = Mathf.CeilToInt(volumeDistribution.totalVolume / 10f);
-								Debug.LogFormat("bombCount={0}", new object[]
-								{
-									num
-								});
-								for (int i = 0; i < num; i++)
-								{
-									ProjectileManager.instance.FireProjectile(Resources.Load<GameObject>("Prefabs/Projectiles/Funball"), volumeDistribution.randomVolumePoint, Quaternion.identity, gameObject, damage, 700f, false, DamageColorIndex.Default, null, -1f);
-								}
-							}
+							damage = victimBody.damage;
+						}
+						HurtBoxGroup.VolumeDistribution volumeDistribution = hurtBoxGroup.GetVolumeDistribution();
+						int num = Mathf.CeilToInt(volumeDistribution.totalVolume / 10f);
+						Debug.LogFormat("bombCount={0}", new object[]
+						{
+							num
+						});
+						for (int i = 0; i < num; i++)
+						{
+							ProjectileManager.instance.FireProjectile(Resources.Load<GameObject>("Prefabs/Projectiles/Funball"), volumeDistribution.randomVolumePoint, Quaternion.identity, gameObject, damage, 700f, false, DamageColorIndex.Default, null, -1f);
 						}
 					}
 				}
 			}
-			if (component2)
+			if (victimBody && victimMaster)
 			{
-				CharacterMaster master = component2.master;
-				if (master)
+				PlayerCharacterMasterController playerCharacterMasterController = victimMaster.playerCharacterMasterController;
+				if (playerCharacterMasterController)
 				{
-					PlayerCharacterMasterController component5 = master.GetComponent<PlayerCharacterMasterController>();
-					if (component5)
+					NetworkUser networkUser = playerCharacterMasterController.networkUser;
+					if (networkUser)
 					{
-						GameObject networkUserObject = component5.networkUserObject;
-						if (networkUserObject)
-						{
-							NetworkUser component6 = networkUserObject.GetComponent<NetworkUser>();
-							if (component6)
-							{
-								this.OnPlayerCharacterDeath(damageInfo, gameObject, component6);
-							}
-						}
-					}
-					if (component2.HasBuff(BuffIndex.AffixWhite))
-					{
-						Vector3 corePosition = Util.GetCorePosition(gameObject);
-						GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkedObjects/GenericDelayBlast"), corePosition, Quaternion.identity);
-						float num2 = 12f + component2.radius;
-						gameObject2.transform.localScale = new Vector3(num2, num2, num2);
-						DelayBlast component7 = gameObject2.GetComponent<DelayBlast>();
-						component7.position = corePosition;
-						component7.baseDamage = component2.damage * 3.5f;
-						component7.baseForce = 2300f;
-						component7.attacker = component2.gameObject;
-						component7.radius = num2;
-						component7.crit = Util.CheckRoll(component2.crit, master);
-						component7.maxTimer = 2f;
-						component7.falloffModel = BlastAttack.FalloffModel.SweetSpot;
-						component7.explosionEffect = Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/AffixWhiteExplosion");
-						component7.delayEffect = Resources.Load<GameObject>("Prefabs/Effects/AffixWhiteDelayEffect");
-						gameObject2.GetComponent<TeamFilter>().teamIndex = TeamComponent.GetObjectTeam(component7.attacker);
+						this.OnPlayerCharacterDeath(damageReport, networkUser);
 					}
 				}
-			}
-			if (damageInfo.attacker)
-			{
-				CharacterBody component8 = damageInfo.attacker.GetComponent<CharacterBody>();
-				if (component8)
+				if (victimBody.HasBuff(BuffIndex.AffixWhite))
 				{
-					CharacterMaster master2 = component8.master;
-					if (master2)
+					Vector3 corePosition = Util.GetCorePosition(gameObject);
+					GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkedObjects/GenericDelayBlast"), corePosition, Quaternion.identity);
+					float num2 = 12f + victimBody.radius;
+					gameObject2.transform.localScale = new Vector3(num2, num2, num2);
+					DelayBlast component = gameObject2.GetComponent<DelayBlast>();
+					component.position = corePosition;
+					component.baseDamage = victimBody.damage * 1.5f;
+					component.baseForce = 2300f;
+					component.attacker = victimBody.gameObject;
+					component.radius = num2;
+					component.crit = Util.CheckRoll(victimBody.crit, victimMaster);
+					component.procCoefficient = 0.75f;
+					component.maxTimer = 2f;
+					component.falloffModel = BlastAttack.FalloffModel.None;
+					component.explosionEffect = Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/AffixWhiteExplosion");
+					component.delayEffect = Resources.Load<GameObject>("Prefabs/Effects/AffixWhiteDelayEffect");
+					component.damageType = DamageType.Freeze2s;
+					gameObject2.GetComponent<TeamFilter>().teamIndex = TeamComponent.GetObjectTeam(component.attacker);
+				}
+				if (victimBody.HasBuff(BuffIndex.AffixPoison))
+				{
+					Vector3 position2 = vector;
+					Quaternion rotation2 = Quaternion.LookRotation(ray.direction);
+					GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/CharacterMasters/UrchinTurretMaster"), position2, rotation2);
+					CharacterMaster component2 = gameObject3.GetComponent<CharacterMaster>();
+					component2.teamIndex = teamIndex;
+					NetworkServer.Spawn(gameObject3);
+					component2.SpawnBodyHere();
+				}
+			}
+			if (attackerBody && attackerMaster)
+			{
+				int itemCount = inventory.GetItemCount(ItemIndex.IgniteOnKill);
+				if (itemCount > 0)
+				{
+					ReadOnlyCollection<CharacterBody> readOnlyInstancesList = CharacterBody.readOnlyInstancesList;
+					float num3 = 8f + 4f * (float)itemCount;
+					float radius = victimBody.radius;
+					float num4 = num3 + radius;
+					float num5 = num4 * num4;
+					Vector3 corePosition2 = Util.GetCorePosition(gameObject);
+					EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/IgniteExplosionVFX"), new EffectData
 					{
-						Inventory inventory = master2.inventory;
-						TeamComponent component9 = component8.GetComponent<TeamComponent>();
-						TeamIndex teamIndex2 = component9 ? component9.teamIndex : TeamIndex.Neutral;
-						int itemCount = inventory.GetItemCount(ItemIndex.IgniteOnKill);
-						if (itemCount > 0)
+						origin = corePosition2,
+						scale = num4,
+						rotation = Util.QuaternionSafeLookRotation(damageInfo.force)
+					}, true);
+					for (int j = 0; j < readOnlyInstancesList.Count; j++)
+					{
+						CharacterBody characterBody = readOnlyInstancesList[j];
+						if (characterBody.teamComponent.teamIndex != attackerTeamIndex && (readOnlyInstancesList[j].transform.position - corePosition2).sqrMagnitude <= num5)
 						{
-							ReadOnlyCollection<TeamComponent> teamMembers = TeamComponent.GetTeamMembers(teamIndex);
-							float num3 = 8f + 4f * (float)itemCount;
-							float radius = component2.radius;
-							float num4 = num3 + radius;
-							float num5 = num4 * num4;
-							Vector3 corePosition2 = Util.GetCorePosition(gameObject);
-							EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/IgniteExplosionVFX"), new EffectData
-							{
-								origin = corePosition2,
-								scale = num4,
-								rotation = Util.QuaternionSafeLookRotation(damageInfo.force)
-							}, true);
-							for (int j = 0; j < teamMembers.Count; j++)
-							{
-								if ((teamMembers[j].transform.position - corePosition2).sqrMagnitude <= num5)
-								{
-									DotController.InflictDot(teamMembers[j].gameObject, damageInfo.attacker, DotController.DotIndex.Burn, 1.5f + 1.5f * (float)itemCount, 1f);
-								}
-							}
-						}
-						int itemCount2 = inventory.GetItemCount(ItemIndex.ExplodeOnDeath);
-						if (itemCount2 > 0)
-						{
-							Vector3 corePosition3 = Util.GetCorePosition(gameObject);
-							float damageCoefficient = 3.5f * (1f + (float)(itemCount2 - 1) * 0.8f);
-							float baseDamage = Util.OnKillProcDamage(component8.damage, damageCoefficient);
-							GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.explodeOnDeathPrefab, corePosition3, Quaternion.identity);
-							DelayBlast component10 = gameObject3.GetComponent<DelayBlast>();
-							component10.position = corePosition3;
-							component10.baseDamage = baseDamage;
-							component10.baseForce = 2000f;
-							component10.bonusForce = Vector3.up * 1000f;
-							component10.radius = 12f + 2.4f * ((float)itemCount2 - 1f);
-							component10.attacker = damageInfo.attacker;
-							component10.inflictor = null;
-							component10.crit = Util.CheckRoll(component8.crit, master2);
-							component10.maxTimer = 0.5f;
-							component10.damageColorIndex = DamageColorIndex.Item;
-							component10.falloffModel = BlastAttack.FalloffModel.SweetSpot;
-							gameObject3.GetComponent<TeamFilter>().teamIndex = TeamComponent.GetObjectTeam(component10.attacker);
-							NetworkServer.Spawn(gameObject3);
-						}
-						int itemCount3 = inventory.GetItemCount(ItemIndex.Dagger);
-						if (itemCount3 > 0)
-						{
-							for (int k = 0; k < itemCount3 * 3; k++)
-							{
-								GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.daggerPrefab, gameObject.transform.position + Vector3.up * 1.8f + UnityEngine.Random.insideUnitSphere * 0.5f, Util.QuaternionSafeLookRotation(Vector3.up + UnityEngine.Random.insideUnitSphere * 0.1f));
-								gameObject4.GetComponent<ProjectileController>().Networkowner = component8.gameObject;
-								gameObject4.GetComponent<TeamFilter>().teamIndex = teamIndex2;
-								gameObject4.GetComponent<DaggerController>().delayTimer += (float)k * 0.05f;
-								float damageCoefficient2 = 1.5f;
-								float damage2 = Util.OnKillProcDamage(component8.damage, damageCoefficient2);
-								ProjectileDamage component11 = gameObject4.GetComponent<ProjectileDamage>();
-								component11.damage = damage2;
-								component11.crit = Util.CheckRoll(component8.crit, master2);
-								component11.force = 200f;
-								component11.damageColorIndex = DamageColorIndex.Item;
-								NetworkServer.Spawn(gameObject4);
-							}
-						}
-						int itemCount4 = inventory.GetItemCount(ItemIndex.Tooth);
-						if (itemCount4 > 0)
-						{
-							float num6 = Mathf.Pow((float)itemCount4, 0.25f);
-							GameObject gameObject5 = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkedObjects/HealPack"), gameObject.transform.position, UnityEngine.Random.rotation);
-							gameObject5.GetComponent<TeamFilter>().teamIndex = teamIndex2;
-							gameObject5.GetComponentInChildren<HealthPickup>().flatHealing = 4f * (float)itemCount4;
-							gameObject5.transform.localScale = new Vector3(num6, num6, num6);
-							NetworkServer.Spawn(gameObject5);
-						}
-						int itemCount5 = inventory.GetItemCount(ItemIndex.Infusion);
-						if (itemCount5 > 0)
-						{
-							int num7 = itemCount5 * 100;
-							if ((ulong)inventory.infusionBonus < (ulong)((long)num7))
-							{
-								InfusionOrb infusionOrb = new InfusionOrb();
-								infusionOrb.origin = gameObject.transform.position;
-								infusionOrb.target = Util.FindBodyMainHurtBox(component8);
-								infusionOrb.maxHpValue = 1;
-								OrbManager.instance.AddOrb(infusionOrb);
-							}
-						}
-						if ((damageInfo.damageType & DamageType.ResetCooldownsOnKill) == DamageType.ResetCooldownsOnKill)
-						{
-							SkillLocator component12 = component8.GetComponent<SkillLocator>();
-							if (component12)
-							{
-								component12.ResetSkills();
-							}
-						}
-						if (inventory)
-						{
-							int itemCount6 = inventory.GetItemCount(ItemIndex.Talisman);
-							if (itemCount6 > 0 && component8.GetComponent<EquipmentSlot>())
-							{
-								inventory.DeductActiveEquipmentCooldown(2f + (float)itemCount6 * 2f);
-							}
-						}
-						int itemCount7 = inventory.GetItemCount(ItemIndex.TempestOnKill);
-						if (itemCount7 > 0 && Util.CheckRoll(25f, master2))
-						{
-							GameObject gameObject6 = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkedObjects/TempestWard"), component2.footPosition, Quaternion.identity);
-							gameObject6.GetComponent<TeamFilter>().teamIndex = component9.teamIndex;
-							gameObject6.GetComponent<BuffWard>().expireDuration = 2f + 6f * (float)itemCount7;
-							NetworkServer.Spawn(gameObject6);
-						}
-						int itemCount8 = inventory.GetItemCount(ItemIndex.Bandolier);
-						if (itemCount8 > 0 && Util.CheckRoll((1f - 1f / Mathf.Pow((float)(itemCount8 + 1), 0.33f)) * 100f, master2))
-						{
-							GameObject gameObject7 = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkedObjects/AmmoPack"), gameObject.transform.position, UnityEngine.Random.rotation);
-							gameObject7.GetComponent<TeamFilter>().teamIndex = teamIndex2;
-							NetworkServer.Spawn(gameObject7);
-						}
-						if (component2 && component2.isElite)
-						{
-							int itemCount9 = inventory.GetItemCount(ItemIndex.HeadHunter);
-							int itemCount10 = inventory.GetItemCount(ItemIndex.KillEliteFrenzy);
-							if (itemCount9 > 0)
-							{
-								float duration = 3f + 5f * (float)itemCount9;
-								for (int l = 0; l < BuffCatalog.eliteBuffIndices.Length; l++)
-								{
-									BuffIndex buffType = BuffCatalog.eliteBuffIndices[l];
-									if (component2.HasBuff(buffType))
-									{
-										component8.AddTimedBuff(buffType, duration);
-									}
-								}
-							}
-							if (itemCount10 > 0)
-							{
-								component8.AddTimedBuff(BuffIndex.NoCooldowns, 1f + (float)itemCount10 * 2f);
-							}
-						}
-						int itemCount11 = inventory.GetItemCount(ItemIndex.GhostOnKill);
-						if (itemCount11 > 0 && component2 && Util.CheckRoll(10f, master2))
-						{
-							Util.TryToCreateGhost(component2, component8, itemCount11 * 30);
-						}
-						DeathRewards component13 = component2.GetComponent<DeathRewards>();
-						if (Run.instance.enabledArtifacts.HasArtifact(ArtifactIndex.Sacrifice) && component13)
-						{
-							float num8 = component13.expReward;
-							if (Util.CheckRoll(3f * Mathf.Log(num8 + 1f, 3f), master2))
-							{
-								List<PickupIndex> list = Run.instance.smallChestDropTierSelector.Evaluate(UnityEngine.Random.value);
-								PickupIndex pickupIndex = PickupIndex.none;
-								if (list.Count > 0)
-								{
-									pickupIndex = list[UnityEngine.Random.Range(0, list.Count - 1)];
-								}
-								PickupDropletController.CreatePickupDroplet(pickupIndex, gameObject.transform.position, Vector3.up * 20f);
-							}
-						}
-						if (Util.CheckRoll(0.025f, master2) && component2 && component2.isElite)
-						{
-							PickupDropletController.CreatePickupDroplet(new PickupIndex(equipmentIndex), component2.transform.position + Vector3.up * 1.5f, Vector3.up * 20f + base.transform.forward * 2f);
+							DotController.InflictDot(characterBody.gameObject, damageInfo.attacker, DotController.DotIndex.Burn, 1.5f + 1.5f * (float)itemCount, 1f);
 						}
 					}
 				}
-			}
-			int num9 = (equipmentIndex == EquipmentIndex.AffixGreen) ? 1 : 0;
-			if (num9 > 0)
-			{
-				float num10 = 0.25f * component2.maxHealth;
-				float num11 = 900f + component2.radius * component2.radius;
-				Vector3 position = gameObject.transform.position;
-				ReadOnlyCollection<TeamComponent> teamMembers2 = TeamComponent.GetTeamMembers(teamIndex);
-				for (int m = 0; m < teamMembers2.Count; m++)
+				int itemCount2 = inventory.GetItemCount(ItemIndex.ExplodeOnDeath);
+				if (itemCount2 > 0)
 				{
-					Vector3 position2 = teamMembers2[m].transform.position;
-					if (Vector3.SqrMagnitude(position - position2) < num11)
+					Vector3 corePosition3 = Util.GetCorePosition(gameObject);
+					float damageCoefficient = 3.5f * (1f + (float)(itemCount2 - 1) * 0.8f);
+					float baseDamage = Util.OnKillProcDamage(attackerBody.damage, damageCoefficient);
+					GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.explodeOnDeathPrefab, corePosition3, Quaternion.identity);
+					DelayBlast component3 = gameObject4.GetComponent<DelayBlast>();
+					component3.position = corePosition3;
+					component3.baseDamage = baseDamage;
+					component3.baseForce = 2000f;
+					component3.bonusForce = Vector3.up * 1000f;
+					component3.radius = 12f + 2.4f * ((float)itemCount2 - 1f);
+					component3.attacker = damageInfo.attacker;
+					component3.inflictor = null;
+					component3.crit = Util.CheckRoll(attackerBody.crit, attackerMaster);
+					component3.maxTimer = 0.5f;
+					component3.damageColorIndex = DamageColorIndex.Item;
+					component3.falloffModel = BlastAttack.FalloffModel.SweetSpot;
+					gameObject4.GetComponent<TeamFilter>().teamIndex = attackerTeamIndex;
+					NetworkServer.Spawn(gameObject4);
+				}
+				int itemCount3 = inventory.GetItemCount(ItemIndex.Dagger);
+				if (itemCount3 > 0)
+				{
+					float damageCoefficient2 = 1.5f * (float)itemCount3;
+					Vector3 a = gameObject.transform.position + Vector3.up * 1.8f;
+					for (int k = 0; k < 3; k++)
 					{
-						HealOrb healOrb = new HealOrb();
-						healOrb.origin = position;
-						healOrb.target = Util.FindBodyMainHurtBox(teamMembers2[m].gameObject);
-						healOrb.healValue = num10 * (float)num9;
-						healOrb.scaleOrb = false;
-						OrbManager.instance.AddOrb(healOrb);
+						ProjectileManager.instance.FireProjectile(this.daggerPrefab, a + UnityEngine.Random.insideUnitSphere * 0.5f, Util.QuaternionSafeLookRotation(Vector3.up + UnityEngine.Random.insideUnitSphere * 0.1f), attackerBody.gameObject, Util.OnKillProcDamage(attackerBody.damage, damageCoefficient2), 200f, Util.CheckRoll(attackerBody.crit, attackerMaster), DamageColorIndex.Item, null, -1f);
 					}
+				}
+				int itemCount4 = inventory.GetItemCount(ItemIndex.Tooth);
+				if (itemCount4 > 0)
+				{
+					float num6 = Mathf.Pow((float)itemCount4, 0.25f);
+					GameObject gameObject5 = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkedObjects/HealPack"), gameObject.transform.position, UnityEngine.Random.rotation);
+					gameObject5.GetComponent<TeamFilter>().teamIndex = attackerTeamIndex;
+					gameObject5.GetComponentInChildren<HealthPickup>().flatHealing = 8f * (float)itemCount4;
+					gameObject5.transform.localScale = new Vector3(num6, num6, num6);
+					NetworkServer.Spawn(gameObject5);
+				}
+				int itemCount5 = inventory.GetItemCount(ItemIndex.Infusion);
+				if (itemCount5 > 0)
+				{
+					int num7 = itemCount5 * 100;
+					if ((ulong)inventory.infusionBonus < (ulong)((long)num7))
+					{
+						InfusionOrb infusionOrb = new InfusionOrb();
+						infusionOrb.origin = gameObject.transform.position;
+						infusionOrb.target = Util.FindBodyMainHurtBox(attackerBody);
+						infusionOrb.maxHpValue = 1;
+						OrbManager.instance.AddOrb(infusionOrb);
+					}
+				}
+				if ((damageInfo.damageType & DamageType.ResetCooldownsOnKill) == DamageType.ResetCooldownsOnKill)
+				{
+					SkillLocator skillLocator = attackerBody.skillLocator;
+					if (skillLocator)
+					{
+						skillLocator.ResetSkills();
+					}
+				}
+				if (inventory)
+				{
+					int itemCount6 = inventory.GetItemCount(ItemIndex.Talisman);
+					if (itemCount6 > 0 && attackerBody.equipmentSlot)
+					{
+						inventory.DeductActiveEquipmentCooldown(2f + (float)itemCount6 * 2f);
+					}
+				}
+				int itemCount7 = inventory.GetItemCount(ItemIndex.TempestOnKill);
+				if (itemCount7 > 0 && Util.CheckRoll(25f, attackerMaster))
+				{
+					GameObject gameObject6 = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkedObjects/TempestWard"), victimBody.footPosition, Quaternion.identity);
+					gameObject6.GetComponent<TeamFilter>().teamIndex = attackerTeamIndex;
+					gameObject6.GetComponent<BuffWard>().expireDuration = 2f + 6f * (float)itemCount7;
+					NetworkServer.Spawn(gameObject6);
+				}
+				int itemCount8 = inventory.GetItemCount(ItemIndex.Bandolier);
+				if (itemCount8 > 0 && Util.CheckRoll((1f - 1f / Mathf.Pow((float)(itemCount8 + 1), 0.33f)) * 100f, attackerMaster))
+				{
+					GameObject gameObject7 = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkedObjects/AmmoPack"), gameObject.transform.position, UnityEngine.Random.rotation);
+					gameObject7.GetComponent<TeamFilter>().teamIndex = attackerTeamIndex;
+					NetworkServer.Spawn(gameObject7);
+				}
+				if (victimBody && damageReport.victimIsElite)
+				{
+					int itemCount9 = inventory.GetItemCount(ItemIndex.HeadHunter);
+					int itemCount10 = inventory.GetItemCount(ItemIndex.KillEliteFrenzy);
+					if (itemCount9 > 0)
+					{
+						float duration = 3f + 5f * (float)itemCount9;
+						for (int l = 0; l < BuffCatalog.eliteBuffIndices.Length; l++)
+						{
+							BuffIndex buffType = BuffCatalog.eliteBuffIndices[l];
+							if (victimBody.HasBuff(buffType))
+							{
+								attackerBody.AddTimedBuff(buffType, duration);
+							}
+						}
+					}
+					if (itemCount10 > 0)
+					{
+						attackerBody.AddTimedBuff(BuffIndex.NoCooldowns, (float)itemCount10 * 4f);
+					}
+				}
+				int itemCount11 = inventory.GetItemCount(ItemIndex.GhostOnKill);
+				if (itemCount11 > 0 && victimBody && Util.CheckRoll(7f, attackerMaster))
+				{
+					Util.TryToCreateGhost(victimBody, attackerBody, itemCount11 * 30);
+				}
+				if (Run.instance.enabledArtifacts.HasArtifact(ArtifactIndex.Sacrifice))
+				{
+					DeathRewards component4 = victimBody.GetComponent<DeathRewards>();
+					if (component4)
+					{
+						float num8 = component4.expReward;
+						if (Util.CheckRoll(3f * Mathf.Log(num8 + 1f, 3f), attackerMaster))
+						{
+							List<PickupIndex> list = Run.instance.smallChestDropTierSelector.Evaluate(UnityEngine.Random.value);
+							PickupIndex pickupIndex = PickupIndex.none;
+							if (list.Count > 0)
+							{
+								pickupIndex = list[UnityEngine.Random.Range(0, list.Count - 1)];
+							}
+							PickupDropletController.CreatePickupDroplet(pickupIndex, gameObject.transform.position, Vector3.up * 20f);
+						}
+					}
+				}
+				if (Util.CheckRoll(0.025f, attackerMaster) && victimBody && victimBody.isElite)
+				{
+					PickupDropletController.CreatePickupDroplet(new PickupIndex(equipmentIndex), victimBody.transform.position + Vector3.up * 1.5f, Vector3.up * 20f + ray.direction * 2f);
+				}
+				int itemCount12 = inventory.GetItemCount(ItemIndex.BarrierOnKill);
+				if (itemCount12 > 0)
+				{
+					attackerBody.healthComponent.AddBarrier(15f * (float)itemCount12);
+				}
+				int itemCount13 = inventory.GetItemCount(ItemIndex.BonusGoldPackOnKill);
+				if (itemCount13 > 0 && Util.CheckRoll(4f * (float)itemCount13, attackerMaster))
+				{
+					GameObject gameObject8 = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkedObjects/BonusMoneyPack"), gameObject.transform.position, UnityEngine.Random.rotation);
+					gameObject8.GetComponent<TeamFilter>().teamIndex = attackerTeamIndex;
+					NetworkServer.Spawn(gameObject8);
+				}
+				int itemCount14 = inventory.GetItemCount(ItemIndex.RegenOnKill);
+				if (itemCount14 > 0)
+				{
+					attackerBody.AddTimedBuff(BuffIndex.MeatRegenBoost, 3f * (float)itemCount14);
 				}
 			}
 			Action<DamageReport> action = GlobalEventManager.onCharacterDeathGlobal;
@@ -697,10 +759,10 @@ namespace RoR2
 			action(damageReport);
 		}
 
-		// Token: 0x06000FCF RID: 4047 RVA: 0x0004F064 File Offset: 0x0004D264
+		// Token: 0x06000BCB RID: 3019 RVA: 0x00034CCC File Offset: 0x00032ECC
 		public void OnHitAll(DamageInfo damageInfo, GameObject hitObject)
 		{
-			if (damageInfo.procCoefficient == 0f)
+			if (damageInfo.procCoefficient == 0f || damageInfo.rejected)
 			{
 				return;
 			}
@@ -724,7 +786,7 @@ namespace RoR2
 									float num = (1.5f + 2.5f * (float)itemCount) * damageInfo.procCoefficient;
 									float damageCoefficient = 0.6f;
 									float baseDamage = Util.OnHitProcDamage(damageInfo.damage, component.damage, damageCoefficient);
-									EffectManager.instance.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/OmniEffect/OmniExplosionVFXQuick"), new EffectData
+									EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/OmniEffect/OmniExplosionVFXQuick"), new EffectData
 									{
 										origin = damageInfo.position,
 										scale = num,
@@ -749,8 +811,8 @@ namespace RoR2
 							}
 							if ((component.HasBuff(BuffIndex.AffixBlue) ? 1 : 0) > 0)
 							{
-								float damageCoefficient2 = 1f;
-								float damage = Util.OnHitProcDamage(damageInfo.damage, component.baseDamage, damageCoefficient2);
+								float damageCoefficient2 = 0.5f;
+								float damage = Util.OnHitProcDamage(damageInfo.damage, component.damage, damageCoefficient2);
 								float force = 0f;
 								Vector3 position = damageInfo.position;
 								ProjectileManager.instance.FireProjectile(Resources.Load<GameObject>("Prefabs/Projectiles/LightningStake"), position, Quaternion.identity, damageInfo.attacker, damage, force, damageInfo.crit, DamageColorIndex.Item, null, -1f);
@@ -761,7 +823,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000FD0 RID: 4048 RVA: 0x0004F278 File Offset: 0x0004D478
+		// Token: 0x06000BCC RID: 3020 RVA: 0x00034EE4 File Offset: 0x000330E4
 		public void OnCrit(CharacterBody body, CharacterMaster master, float procCoefficient, ProcChainMask procChainMask)
 		{
 			if (body && procCoefficient > 0f && body && master && master.inventory)
@@ -782,7 +844,7 @@ namespace RoR2
 				}
 				if (inventory.GetItemCount(ItemIndex.AttackSpeedOnCrit) > 0)
 				{
-					body.AddTimedBuff(BuffIndex.AttackSpeedOnCrit, 2f * procCoefficient);
+					body.AddTimedBuff(BuffIndex.AttackSpeedOnCrit, 3f * procCoefficient);
 				}
 				int itemCount2 = inventory.GetItemCount(ItemIndex.CooldownOnCrit);
 				if (itemCount2 > 0)
@@ -813,10 +875,19 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000FD1 RID: 4049 RVA: 0x0004F3E4 File Offset: 0x0004D5E4
+		// Token: 0x06000BCD RID: 3021 RVA: 0x0003504E File Offset: 0x0003324E
+		public IEnumerator CreateLevelUpEffect(float delay, GameObject levelUpEffect, EffectData effectData)
+		{
+			yield return new WaitForSeconds(delay);
+			EffectManager.SpawnEffect(levelUpEffect, effectData, false);
+			yield break;
+		}
+
+		// Token: 0x06000BCE RID: 3022 RVA: 0x0003506C File Offset: 0x0003326C
 		public static void OnTeamLevelUp(TeamIndex teamIndex)
 		{
 			GameObject teamLevelUpEffect = TeamManager.GetTeamLevelUpEffect(teamIndex);
+			string teamLevelUpSoundString = TeamManager.GetTeamLevelUpSoundString(teamIndex);
 			ReadOnlyCollection<TeamComponent> teamMembers = TeamComponent.GetTeamMembers(teamIndex);
 			for (int i = 0; i < teamMembers.Count; i++)
 			{
@@ -826,21 +897,17 @@ namespace RoR2
 					CharacterBody component = teamComponent.GetComponent<CharacterBody>();
 					if (component)
 					{
-						if (NetworkServer.active)
-						{
-							HealthComponent component2 = component.GetComponent<HealthComponent>();
-							if (component2 && component)
-							{
-								HealthComponent healthComponent = component2;
-								healthComponent.Networkhealth = healthComponent.health + component.levelMaxHealth * (component2.health / component2.fullHealth);
-							}
-						}
 						Transform transform = component.mainHurtBox ? component.mainHurtBox.transform : component.transform;
 						EffectData effectData = new EffectData
 						{
 							origin = transform.position
 						};
-						EffectManager.instance.SpawnEffect(teamLevelUpEffect, effectData, false);
+						if (component.mainHurtBox)
+						{
+							effectData.SetHurtBoxReference(component.gameObject);
+							effectData.scale = component.radius;
+						}
+						GlobalEventManager.instance.StartCoroutine(GlobalEventManager.instance.CreateLevelUpEffect(UnityEngine.Random.Range(0f, 0.5f), teamLevelUpEffect, effectData));
 					}
 					if (NetworkServer.active)
 					{
@@ -858,6 +925,10 @@ namespace RoR2
 						}
 					}
 				}
+			}
+			if (teamMembers.Count > 0)
+			{
+				Util.PlaySound(teamLevelUpSoundString, RoR2Application.instance.gameObject);
 			}
 			if (NetworkServer.active)
 			{
@@ -881,7 +952,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000FD2 RID: 4050 RVA: 0x0004F610 File Offset: 0x0004D810
+		// Token: 0x06000BCF RID: 3023 RVA: 0x000352BC File Offset: 0x000334BC
 		public void OnInteractionBegin(Interactor interactor, IInteractable interactable, GameObject interactableObject)
 		{
 			CharacterBody component = interactor.GetComponent<CharacterBody>();
@@ -891,7 +962,7 @@ namespace RoR2
 				if (inventory)
 				{
 					int itemCount = inventory.GetItemCount(ItemIndex.Firework);
-					if (itemCount > 0 && !((MonoBehaviour)interactable).GetComponent<GenericPickupController>())
+					if (itemCount > 0 && GlobalEventManager.<OnInteractionBegin>g__InteractableIsPermittedForFireworks|29_0((MonoBehaviour)interactable))
 					{
 						ModelLocator component2 = interactableObject.GetComponent<ModelLocator>();
 						Transform transform;
@@ -924,12 +995,12 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x14000010 RID: 16
-		// (add) Token: 0x06000FD3 RID: 4051 RVA: 0x0004F714 File Offset: 0x0004D914
-		// (remove) Token: 0x06000FD4 RID: 4052 RVA: 0x0004F748 File Offset: 0x0004D948
+		// Token: 0x1400001A RID: 26
+		// (add) Token: 0x06000BD0 RID: 3024 RVA: 0x000353BC File Offset: 0x000335BC
+		// (remove) Token: 0x06000BD1 RID: 3025 RVA: 0x000353F0 File Offset: 0x000335F0
 		public static event Action<DamageDealtMessage> onClientDamageNotified;
 
-		// Token: 0x06000FD5 RID: 4053 RVA: 0x0004F77B File Offset: 0x0004D97B
+		// Token: 0x06000BD2 RID: 3026 RVA: 0x00035423 File Offset: 0x00033623
 		public static void ClientDamageNotified(DamageDealtMessage damageDealtMessage)
 		{
 			Action<DamageDealtMessage> action = GlobalEventManager.onClientDamageNotified;
@@ -940,12 +1011,12 @@ namespace RoR2
 			action(damageDealtMessage);
 		}
 
-		// Token: 0x14000011 RID: 17
-		// (add) Token: 0x06000FD6 RID: 4054 RVA: 0x0004F790 File Offset: 0x0004D990
-		// (remove) Token: 0x06000FD7 RID: 4055 RVA: 0x0004F7C4 File Offset: 0x0004D9C4
+		// Token: 0x1400001B RID: 27
+		// (add) Token: 0x06000BD3 RID: 3027 RVA: 0x00035438 File Offset: 0x00033638
+		// (remove) Token: 0x06000BD4 RID: 3028 RVA: 0x0003546C File Offset: 0x0003366C
 		public static event Action<DamageReport> onServerDamageDealt;
 
-		// Token: 0x06000FD8 RID: 4056 RVA: 0x0004F7F7 File Offset: 0x0004D9F7
+		// Token: 0x06000BD5 RID: 3029 RVA: 0x0003549F File Offset: 0x0003369F
 		public static void ServerDamageDealt(DamageReport damageReport)
 		{
 			Action<DamageReport> action = GlobalEventManager.onServerDamageDealt;
@@ -956,37 +1027,65 @@ namespace RoR2
 			action(damageReport);
 		}
 
-		// Token: 0x040013CE RID: 5070
+		// Token: 0x1400001C RID: 28
+		// (add) Token: 0x06000BD6 RID: 3030 RVA: 0x000354B4 File Offset: 0x000336B4
+		// (remove) Token: 0x06000BD7 RID: 3031 RVA: 0x000354E8 File Offset: 0x000336E8
+		public static event Action<DamageReport, float> onServerCharacterExecuted;
+
+		// Token: 0x06000BD8 RID: 3032 RVA: 0x0003551B File Offset: 0x0003371B
+		public static void ServerCharacterExecuted(DamageReport damageReport, float executionHealthLost)
+		{
+			Action<DamageReport, float> action = GlobalEventManager.onServerCharacterExecuted;
+			if (action == null)
+			{
+				return;
+			}
+			action(damageReport, executionHealthLost);
+		}
+
+		// Token: 0x06000BDB RID: 3035 RVA: 0x00035557 File Offset: 0x00033757
+		[CompilerGenerated]
+		internal static bool <OnInteractionBegin>g__InteractableIsPermittedForFireworks|29_0(MonoBehaviour interactableAsMonoBehaviour)
+		{
+			return !interactableAsMonoBehaviour.GetComponent<GenericPickupController>() && !interactableAsMonoBehaviour.GetComponent<VehicleSeat>();
+		}
+
+		// Token: 0x04000BDD RID: 3037
 		public static GlobalEventManager instance;
 
-		// Token: 0x040013CF RID: 5071
+		// Token: 0x04000BDE RID: 3038
+		[Obsolete("Transform of the global event manager should not be used! You probably meant something else instead.")]
+		private new object transform;
+
+		// Token: 0x04000BDF RID: 3039
 		public GameObject missilePrefab;
 
-		// Token: 0x040013D0 RID: 5072
+		// Token: 0x04000BE0 RID: 3040
 		public GameObject explodeOnDeathPrefab;
 
-		// Token: 0x040013D1 RID: 5073
+		// Token: 0x04000BE1 RID: 3041
 		public GameObject daggerPrefab;
 
-		// Token: 0x040013D2 RID: 5074
+		// Token: 0x04000BE2 RID: 3042
 		public GameObject healthOrbPrefab;
 
-		// Token: 0x040013D3 RID: 5075
+		// Token: 0x04000BE3 RID: 3043
 		public GameObject AACannonPrefab;
 
-		// Token: 0x040013D4 RID: 5076
+		// Token: 0x04000BE4 RID: 3044
 		public GameObject AACannonMuzzleEffect;
 
-		// Token: 0x040013D5 RID: 5077
+		// Token: 0x04000BE5 RID: 3045
 		public GameObject chainLightingPrefab;
 
-		// Token: 0x040013D6 RID: 5078
+		// Token: 0x04000BE6 RID: 3046
 		public GameObject plasmaCorePrefab;
 
-		// Token: 0x040013D7 RID: 5079
+		// Token: 0x04000BE7 RID: 3047
 		public const float bootTriggerSpeed = 20f;
 
-		// Token: 0x040013D8 RID: 5080
-		private const int deathQuoteCount = 37;
+		// Token: 0x04000BE8 RID: 3048
+		private static readonly string[] standardDeathQuoteTokens = (from i in Enumerable.Range(0, 37)
+		select "PLAYER_DEATH_QUOTE_" + i).ToArray<string>();
 	}
 }

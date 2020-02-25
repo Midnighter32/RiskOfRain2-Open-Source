@@ -4,10 +4,10 @@ using UnityEngine.Networking;
 
 namespace RoR2
 {
-	// Token: 0x0200030B RID: 779
+	// Token: 0x0200022C RID: 556
 	public class HealthPickup : MonoBehaviour
 	{
-		// Token: 0x0600102C RID: 4140 RVA: 0x000513EC File Offset: 0x0004F5EC
+		// Token: 0x06000C72 RID: 3186 RVA: 0x0003822C File Offset: 0x0003642C
 		private void OnTriggerStay(Collider other)
 		{
 			if (NetworkServer.active && this.alive && TeamComponent.GetObjectTeam(other.gameObject) == this.teamFilter.teamIndex)
@@ -19,7 +19,7 @@ namespace RoR2
 					if (healthComponent)
 					{
 						component.healthComponent.Heal(this.flatHealing + healthComponent.fullHealth * this.fractionalHealing, default(ProcChainMask), true);
-						EffectManager.instance.SpawnEffect(this.pickupEffect, new EffectData
+						EffectManager.SpawnEffect(this.pickupEffect, new EffectData
 						{
 							origin = base.transform.position
 						}, true);
@@ -29,24 +29,24 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x0400141D RID: 5149
+		// Token: 0x04000C5F RID: 3167
 		[Tooltip("The base object to destroy when this pickup is consumed.")]
 		public GameObject baseObject;
 
-		// Token: 0x0400141E RID: 5150
+		// Token: 0x04000C60 RID: 3168
 		[Tooltip("The team filter object which determines who can pick up this pack.")]
 		public TeamFilter teamFilter;
 
-		// Token: 0x0400141F RID: 5151
+		// Token: 0x04000C61 RID: 3169
 		public GameObject pickupEffect;
 
-		// Token: 0x04001420 RID: 5152
+		// Token: 0x04000C62 RID: 3170
 		public float flatHealing;
 
-		// Token: 0x04001421 RID: 5153
+		// Token: 0x04000C63 RID: 3171
 		public float fractionalHealing;
 
-		// Token: 0x04001422 RID: 5154
+		// Token: 0x04000C64 RID: 3172
 		private bool alive = true;
 	}
 }

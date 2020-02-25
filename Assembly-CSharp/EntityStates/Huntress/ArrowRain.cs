@@ -5,25 +5,22 @@ using UnityEngine;
 
 namespace EntityStates.Huntress
 {
-	// Token: 0x0200014D RID: 333
-	public class ArrowRain : BaseState
+	// Token: 0x0200082B RID: 2091
+	public class ArrowRain : BaseArrowBarrage
 	{
-		// Token: 0x06000664 RID: 1636 RVA: 0x0001DC68 File Offset: 0x0001BE68
+		// Token: 0x06002F58 RID: 12120 RVA: 0x000CA178 File Offset: 0x000C8378
 		public override void OnEnter()
 		{
 			base.OnEnter();
 			base.PlayAnimation("FullBody, Override", "LoopArrowRain");
-			Util.PlaySound(ArrowRain.beginLoopSoundString, base.gameObject);
-			this.huntressTracker = base.GetComponent<HuntressTracker>();
-			this.areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(ArrowRain.areaIndicatorPrefab);
-			this.areaIndicatorInstance.transform.localScale = new Vector3(ArrowRain.arrowRainRadius, ArrowRain.arrowRainRadius, ArrowRain.arrowRainRadius);
-			if (this.huntressTracker)
+			if (ArrowRain.areaIndicatorPrefab)
 			{
-				this.huntressTracker.enabled = false;
+				this.areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(ArrowRain.areaIndicatorPrefab);
+				this.areaIndicatorInstance.transform.localScale = new Vector3(ArrowRain.arrowRainRadius, ArrowRain.arrowRainRadius, ArrowRain.arrowRainRadius);
 			}
 		}
 
-		// Token: 0x06000665 RID: 1637 RVA: 0x0001DCF8 File Offset: 0x0001BEF8
+		// Token: 0x06002F59 RID: 12121 RVA: 0x000CA1DC File Offset: 0x000C83DC
 		private void UpdateAreaIndicator()
 		{
 			if (this.areaIndicatorInstance)
@@ -38,96 +35,64 @@ namespace EntityStates.Huntress
 			}
 		}
 
-		// Token: 0x06000666 RID: 1638 RVA: 0x0001DD68 File Offset: 0x0001BF68
+		// Token: 0x06002F5A RID: 12122 RVA: 0x000CA24C File Offset: 0x000C844C
 		public override void Update()
 		{
 			base.Update();
 			this.UpdateAreaIndicator();
 		}
 
-		// Token: 0x06000667 RID: 1639 RVA: 0x0001DD78 File Offset: 0x0001BF78
-		public override void FixedUpdate()
+		// Token: 0x06002F5B RID: 12123 RVA: 0x000CA25A File Offset: 0x000C845A
+		protected override void HandlePrimaryAttack()
 		{
-			base.FixedUpdate();
-			this.stopwatch += Time.fixedDeltaTime;
-			if (base.characterMotor)
+			base.HandlePrimaryAttack();
+			this.shouldFireArrowRain = true;
+			this.outer.SetNextStateToMain();
+		}
+
+		// Token: 0x06002F5C RID: 12124 RVA: 0x000CA274 File Offset: 0x000C8474
+		protected void DoFireArrowRain()
+		{
+			EffectManager.SimpleMuzzleFlash(ArrowRain.muzzleFlashEffect, base.gameObject, "Muzzle", false);
+			if (this.areaIndicatorInstance && this.shouldFireArrowRain)
 			{
-				base.characterMotor.velocity = Vector3.zero;
-			}
-			if (base.skillLocator && base.skillLocator.utility.CanExecute() && base.inputBank.skill3.justPressed && base.isAuthority)
-			{
-				this.outer.SetNextStateToMain();
-			}
-			if ((this.stopwatch >= ArrowRain.maxDuration || base.inputBank.skill1.justPressed || base.inputBank.skill4.justPressed) && base.isAuthority)
-			{
-				this.fireArrowRain = true;
-				this.outer.SetNextStateToMain();
+				ProjectileManager.instance.FireProjectile(ArrowRain.projectilePrefab, this.areaIndicatorInstance.transform.position, this.areaIndicatorInstance.transform.rotation, base.gameObject, this.damageStat * ArrowRain.damageCoefficient, 0f, Util.CheckRoll(this.critStat, base.characterBody.master), DamageColorIndex.Default, null, -1f);
 			}
 		}
 
-		// Token: 0x06000668 RID: 1640 RVA: 0x0001DE4C File Offset: 0x0001C04C
+		// Token: 0x06002F5D RID: 12125 RVA: 0x000CA30F File Offset: 0x000C850F
 		public override void OnExit()
 		{
-			base.PlayAnimation("FullBody, Override", "FireArrowRain");
-			Util.PlaySound(ArrowRain.endLoopSoundString, base.gameObject);
-			Util.PlaySound(ArrowRain.fireSoundString, base.gameObject);
-			EffectManager.instance.SimpleMuzzleFlash(ArrowRain.muzzleflashEffect, base.gameObject, "Muzzle", false);
-			if (base.cameraTargetParams)
+			if (this.shouldFireArrowRain && !this.outer.destroying)
 			{
-				base.cameraTargetParams.aimMode = CameraTargetParams.AimType.Standard;
-			}
-			if (this.huntressTracker)
-			{
-				this.huntressTracker.enabled = true;
+				this.DoFireArrowRain();
 			}
 			if (this.areaIndicatorInstance)
 			{
-				if (this.fireArrowRain)
-				{
-					ProjectileManager.instance.FireProjectile(ArrowRain.projectilePrefab, this.areaIndicatorInstance.transform.position, this.areaIndicatorInstance.transform.rotation, base.gameObject, this.damageStat * ArrowRain.damageCoefficient, 0f, Util.CheckRoll(this.critStat, base.characterBody.master), DamageColorIndex.Default, null, -1f);
-				}
 				EntityState.Destroy(this.areaIndicatorInstance.gameObject);
 			}
 			base.OnExit();
 		}
 
-		// Token: 0x04000795 RID: 1941
-		public static float maxDuration;
-
-		// Token: 0x04000796 RID: 1942
-		public static GameObject areaIndicatorPrefab;
-
-		// Token: 0x04000797 RID: 1943
+		// Token: 0x04002CDA RID: 11482
 		public static float arrowRainRadius;
 
-		// Token: 0x04000798 RID: 1944
-		public static GameObject projectilePrefab;
-
-		// Token: 0x04000799 RID: 1945
+		// Token: 0x04002CDB RID: 11483
 		public static float damageCoefficient;
 
-		// Token: 0x0400079A RID: 1946
-		public static GameObject muzzleflashEffect;
+		// Token: 0x04002CDC RID: 11484
+		public static GameObject projectilePrefab;
 
-		// Token: 0x0400079B RID: 1947
-		public static string beginLoopSoundString;
+		// Token: 0x04002CDD RID: 11485
+		public static GameObject areaIndicatorPrefab;
 
-		// Token: 0x0400079C RID: 1948
-		public static string endLoopSoundString;
+		// Token: 0x04002CDE RID: 11486
+		public static GameObject muzzleFlashEffect;
 
-		// Token: 0x0400079D RID: 1949
-		public static string fireSoundString;
-
-		// Token: 0x0400079E RID: 1950
-		private float stopwatch;
-
-		// Token: 0x0400079F RID: 1951
-		private HuntressTracker huntressTracker;
-
-		// Token: 0x040007A0 RID: 1952
+		// Token: 0x04002CDF RID: 11487
 		private GameObject areaIndicatorInstance;
 
-		// Token: 0x040007A1 RID: 1953
-		private bool fireArrowRain;
+		// Token: 0x04002CE0 RID: 11488
+		private bool shouldFireArrowRain;
 	}
 }

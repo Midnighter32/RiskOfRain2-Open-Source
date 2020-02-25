@@ -4,54 +4,54 @@ using UnityEngine.Networking;
 
 namespace KinematicCharacterController
 {
-	// Token: 0x020006C0 RID: 1728
+	// Token: 0x0200090B RID: 2315
 	public abstract class BaseCharacterController : NetworkBehaviour
 	{
-		// Token: 0x1700033A RID: 826
-		// (get) Token: 0x06002674 RID: 9844 RVA: 0x000B165D File Offset: 0x000AF85D
-		// (set) Token: 0x06002675 RID: 9845 RVA: 0x000B1665 File Offset: 0x000AF865
+		// Token: 0x17000477 RID: 1143
+		// (get) Token: 0x060033BE RID: 13246 RVA: 0x000E0AA5 File Offset: 0x000DECA5
+		// (set) Token: 0x060033BF RID: 13247 RVA: 0x000E0AAD File Offset: 0x000DECAD
 		public KinematicCharacterMotor Motor { get; private set; }
 
-		// Token: 0x06002676 RID: 9846 RVA: 0x000B166E File Offset: 0x000AF86E
+		// Token: 0x060033C0 RID: 13248 RVA: 0x000E0AB6 File Offset: 0x000DECB6
 		public void SetupCharacterMotor(KinematicCharacterMotor motor)
 		{
 			this.Motor = motor;
 			motor.CharacterController = this;
 		}
 
-		// Token: 0x06002677 RID: 9847
+		// Token: 0x060033C1 RID: 13249
 		public abstract void UpdateRotation(ref Quaternion currentRotation, float deltaTime);
 
-		// Token: 0x06002678 RID: 9848
+		// Token: 0x060033C2 RID: 13250
 		public abstract void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime);
 
-		// Token: 0x06002679 RID: 9849
+		// Token: 0x060033C3 RID: 13251
 		public abstract void BeforeCharacterUpdate(float deltaTime);
 
-		// Token: 0x0600267A RID: 9850
+		// Token: 0x060033C4 RID: 13252
 		public abstract void PostGroundingUpdate(float deltaTime);
 
-		// Token: 0x0600267B RID: 9851
+		// Token: 0x060033C5 RID: 13253
 		public abstract void AfterCharacterUpdate(float deltaTime);
 
-		// Token: 0x0600267C RID: 9852
+		// Token: 0x060033C6 RID: 13254
 		public abstract bool IsColliderValidForCollisions(Collider coll);
 
-		// Token: 0x0600267D RID: 9853
+		// Token: 0x060033C7 RID: 13255
 		public abstract void OnGroundHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport);
 
-		// Token: 0x0600267E RID: 9854
+		// Token: 0x060033C8 RID: 13256
 		public abstract void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport);
 
-		// Token: 0x0600267F RID: 9855
+		// Token: 0x060033C9 RID: 13257
 		public abstract void ProcessHitStabilityReport(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, Vector3 atCharacterPosition, Quaternion atCharacterRotation, ref HitStabilityReport hitStabilityReport);
 
-		// Token: 0x06002680 RID: 9856 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060033CA RID: 13258 RVA: 0x0000409B File Offset: 0x0000229B
 		public virtual void OnDiscreteCollisionDetected(Collider hitCollider)
 		{
 		}
 
-		// Token: 0x06002681 RID: 9857 RVA: 0x000B1680 File Offset: 0x000AF880
+		// Token: 0x060033CB RID: 13259 RVA: 0x000E0AC8 File Offset: 0x000DECC8
 		public virtual void HandleMovementProjection(ref Vector3 movement, Vector3 obstructionNormal, bool stableOnHit)
 		{
 			if (this.Motor.GroundingStatus.IsStableOnGround && !this.Motor.MustUnground)
@@ -79,7 +79,7 @@ namespace KinematicCharacterController
 			}
 		}
 
-		// Token: 0x06002682 RID: 9858 RVA: 0x000B1794 File Offset: 0x000AF994
+		// Token: 0x060033CC RID: 13260 RVA: 0x000E0BDC File Offset: 0x000DEDDC
 		public virtual void HandleSimulatedRigidbodyInteraction(ref Vector3 processedVelocity, RigidbodyProjectionHit hit, float deltaTime)
 		{
 			float num = 0.2f;
@@ -98,19 +98,19 @@ namespace KinematicCharacterController
 			}
 		}
 
-		// Token: 0x06002684 RID: 9860 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060033CE RID: 13262 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x06002685 RID: 9861 RVA: 0x000B1878 File Offset: 0x000AFA78
+		// Token: 0x060033CF RID: 13263 RVA: 0x000E0CC0 File Offset: 0x000DEEC0
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			bool result;
 			return result;
 		}
 
-		// Token: 0x06002686 RID: 9862 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060033D0 RID: 13264 RVA: 0x0000409B File Offset: 0x0000229B
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 		}

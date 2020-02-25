@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000266 RID: 614
+	// Token: 0x0200015C RID: 348
 	public class Billboard : MonoBehaviour
 	{
-		// Token: 0x06000B8A RID: 2954 RVA: 0x00038795 File Offset: 0x00036995
+		// Token: 0x06000668 RID: 1640 RVA: 0x0001A49D File Offset: 0x0001869D
 		static Billboard()
 		{
 			SceneCamera.onSceneCameraPreCull += Billboard.OnSceneCameraPreCull;
 		}
 
-		// Token: 0x06000B8B RID: 2955 RVA: 0x000387B4 File Offset: 0x000369B4
+		// Token: 0x06000669 RID: 1641 RVA: 0x0001A4BC File Offset: 0x000186BC
 		private static void OnSceneCameraPreCull(SceneCamera sceneCamera)
 		{
 			Quaternion rotation = sceneCamera.transform.rotation;
@@ -23,19 +23,19 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000B8C RID: 2956 RVA: 0x000387F3 File Offset: 0x000369F3
+		// Token: 0x0600066A RID: 1642 RVA: 0x0001A4FB File Offset: 0x000186FB
 		private void OnEnable()
 		{
 			Billboard.instanceTransformsList.Add(base.transform);
 		}
 
-		// Token: 0x06000B8D RID: 2957 RVA: 0x00038805 File Offset: 0x00036A05
+		// Token: 0x0600066B RID: 1643 RVA: 0x0001A50D File Offset: 0x0001870D
 		private void OnDisable()
 		{
 			Billboard.instanceTransformsList.Remove(base.transform);
 		}
 
-		// Token: 0x04000F75 RID: 3957
+		// Token: 0x040006BD RID: 1725
 		private static List<Transform> instanceTransformsList = new List<Transform>();
 	}
 }

@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace EntityStates.MagmaWorm
 {
-	// Token: 0x0200010F RID: 271
+	// Token: 0x02000816 RID: 2070
 	public class Leap : BaseState
 	{
-		// Token: 0x06000532 RID: 1330 RVA: 0x00016ECD File Offset: 0x000150CD
+		// Token: 0x06002EF1 RID: 12017 RVA: 0x000C7CE8 File Offset: 0x000C5EE8
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -14,7 +14,7 @@ namespace EntityStates.MagmaWorm
 			this.leapState = Leap.LeapState.Burrow;
 		}
 
-		// Token: 0x06000533 RID: 1331 RVA: 0x00016EE8 File Offset: 0x000150E8
+		// Token: 0x06002EF2 RID: 12018 RVA: 0x000C7D04 File Offset: 0x000C5F04
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -72,46 +72,46 @@ namespace EntityStates.MagmaWorm
 			}
 		}
 
-		// Token: 0x06000534 RID: 1332 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06002EF3 RID: 12019 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000565 RID: 1381
+		// Token: 0x04002C33 RID: 11315
 		private Transform modelBaseTransform;
 
-		// Token: 0x04000566 RID: 1382
+		// Token: 0x04002C34 RID: 11316
 		private readonly float diveDepth = 200f;
 
-		// Token: 0x04000567 RID: 1383
+		// Token: 0x04002C35 RID: 11317
 		private readonly Vector3 idealDiveVelocity = Vector3.down * 90f;
 
-		// Token: 0x04000568 RID: 1384
+		// Token: 0x04002C36 RID: 11318
 		private readonly Vector3 idealLeapVelocity = Vector3.up * 90f;
 
-		// Token: 0x04000569 RID: 1385
+		// Token: 0x04002C37 RID: 11319
 		private float leapAcceleration = 80f;
 
-		// Token: 0x0400056A RID: 1386
+		// Token: 0x04002C38 RID: 11320
 		private float resurfaceSpeed = 60f;
 
-		// Token: 0x0400056B RID: 1387
+		// Token: 0x04002C39 RID: 11321
 		private Vector3 velocity;
 
-		// Token: 0x0400056C RID: 1388
+		// Token: 0x04002C3A RID: 11322
 		private Leap.LeapState leapState;
 
-		// Token: 0x02000110 RID: 272
+		// Token: 0x02000817 RID: 2071
 		private enum LeapState
 		{
-			// Token: 0x0400056E RID: 1390
+			// Token: 0x04002C3C RID: 11324
 			Burrow,
-			// Token: 0x0400056F RID: 1391
+			// Token: 0x04002C3D RID: 11325
 			Ascend,
-			// Token: 0x04000570 RID: 1392
+			// Token: 0x04002C3E RID: 11326
 			Fall,
-			// Token: 0x04000571 RID: 1393
+			// Token: 0x04002C3F RID: 11327
 			Resurface
 		}
 	}

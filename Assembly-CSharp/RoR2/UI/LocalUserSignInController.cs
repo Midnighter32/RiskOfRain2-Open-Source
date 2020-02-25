@@ -7,10 +7,10 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005FD RID: 1533
+	// Token: 0x020005EB RID: 1515
 	public class LocalUserSignInController : MonoBehaviour
 	{
-		// Token: 0x06002256 RID: 8790 RVA: 0x000A2354 File Offset: 0x000A0554
+		// Token: 0x060023C1 RID: 9153 RVA: 0x0009C2B0 File Offset: 0x0009A4B0
 		private void Start()
 		{
 			LocalUserSignInCardController[] componentsInChildren = base.GetComponentsInChildren<LocalUserSignInCardController>();
@@ -20,13 +20,13 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x06002257 RID: 8791 RVA: 0x000A2384 File Offset: 0x000A0584
+		// Token: 0x060023C2 RID: 9154 RVA: 0x0009C2E0 File Offset: 0x0009A4E0
 		public bool AreAllCardsReady()
 		{
 			return this.cards.Any((LocalUserSignInCardController v) => v.rewiredPlayer != null && v.requestedUserProfile == null);
 		}
 
-		// Token: 0x06002258 RID: 8792 RVA: 0x000A23B0 File Offset: 0x000A05B0
+		// Token: 0x060023C3 RID: 9155 RVA: 0x0009C30C File Offset: 0x0009A50C
 		private void DoSignIn()
 		{
 			LocalUserManager.LocalUserInitializationInfo[] array = new LocalUserManager.LocalUserInitializationInfo[this.cards.Count((LocalUserSignInCardController v) => v.rewiredPlayer != null)];
@@ -45,7 +45,7 @@ namespace RoR2.UI
 			LocalUserManager.SetLocalUsers(array);
 		}
 
-		// Token: 0x06002259 RID: 8793 RVA: 0x000A2464 File Offset: 0x000A0664
+		// Token: 0x060023C4 RID: 9156 RVA: 0x0009C3C0 File Offset: 0x0009A5C0
 		private LocalUserSignInCardController FindCardAssociatedWithRewiredPlayer(Player rewiredPlayer)
 		{
 			for (int i = 0; i < this.cards.Count; i++)
@@ -58,7 +58,7 @@ namespace RoR2.UI
 			return null;
 		}
 
-		// Token: 0x0600225A RID: 8794 RVA: 0x000A24AC File Offset: 0x000A06AC
+		// Token: 0x060023C5 RID: 9157 RVA: 0x0009C408 File Offset: 0x0009A608
 		private LocalUserSignInCardController FindCardWithoutRewiredPlayer()
 		{
 			for (int i = 0; i < this.cards.Count; i++)
@@ -71,7 +71,7 @@ namespace RoR2.UI
 			return null;
 		}
 
-		// Token: 0x0600225B RID: 8795 RVA: 0x000A24F0 File Offset: 0x000A06F0
+		// Token: 0x060023C6 RID: 9158 RVA: 0x0009C44C File Offset: 0x0009A64C
 		private void Update()
 		{
 			IList<Player> players = ReInput.players.Players;
@@ -111,7 +111,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600225C RID: 8796 RVA: 0x000A2610 File Offset: 0x000A0810
+		// Token: 0x060023C7 RID: 9159 RVA: 0x0009C56C File Offset: 0x0009A76C
 		private static bool PlayerHasControllerConnected(Player player)
 		{
 			using (IEnumerator<Controller> enumerator = player.controllers.Controllers.GetEnumerator())
@@ -125,10 +125,10 @@ namespace RoR2.UI
 			return false;
 		}
 
-		// Token: 0x04002575 RID: 9589
+		// Token: 0x040021BB RID: 8635
 		public GameObject localUserCardPrefab;
 
-		// Token: 0x04002576 RID: 9590
+		// Token: 0x040021BC RID: 8636
 		private readonly List<LocalUserSignInCardController> cards = new List<LocalUserSignInCardController>();
 	}
 }

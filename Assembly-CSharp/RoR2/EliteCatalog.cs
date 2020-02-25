@@ -4,44 +4,72 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000240 RID: 576
+	// Token: 0x0200012D RID: 301
 	public static class EliteCatalog
 	{
-		// Token: 0x06000ADC RID: 2780 RVA: 0x0003599C File Offset: 0x00033B9C
-		static EliteCatalog()
+		// Token: 0x0600056C RID: 1388 RVA: 0x00015FA0 File Offset: 0x000141A0
+		[SystemInitializer(new Type[]
 		{
+
+		})]
+		private static void Init()
+		{
+			EliteCatalog.eliteDefs = new EliteDef[6];
 			EliteCatalog.RegisterElite(EliteIndex.Fire, new EliteDef
 			{
 				eliteEquipmentIndex = EquipmentIndex.AffixRed,
 				color = Color.red,
-				prefix = "Blazing "
+				modifierToken = "ELITE_MODIFIER_FIRE"
 			});
 			EliteCatalog.RegisterElite(EliteIndex.Lightning, new EliteDef
 			{
 				eliteEquipmentIndex = EquipmentIndex.AffixBlue,
 				color = Color.blue,
-				prefix = "Overloading "
+				modifierToken = "ELITE_MODIFIER_LIGHTNING"
 			});
 			EliteCatalog.RegisterElite(EliteIndex.Ice, new EliteDef
 			{
 				eliteEquipmentIndex = EquipmentIndex.AffixWhite,
 				color = Color.white,
-				prefix = "Glacial "
+				modifierToken = "ELITE_MODIFIER_ICE"
 			});
+			EliteCatalog.RegisterElite(EliteIndex.Poison, new EliteDef
+			{
+				eliteEquipmentIndex = EquipmentIndex.AffixPoison,
+				color = Color.black,
+				modifierToken = "ELITE_MODIFIER_POISON"
+			});
+			EliteCatalog.RegisterElite(EliteIndex.Haunted, new EliteDef
+			{
+				eliteEquipmentIndex = EquipmentIndex.AffixHaunted,
+				color = Color.white,
+				modifierToken = "ELITE_MODIFIER_HAUNTED"
+			});
+			EliteCatalog.RegisterElite(EliteIndex.Gold, new EliteDef
+			{
+				eliteEquipmentIndex = EquipmentIndex.AffixGold,
+				color = Color.yellow,
+				modifierToken = "ELITE_MODIFIER_GOLD"
+			});
+			EliteCatalog.modHelper.CollectAndRegisterAdditionalEntries(ref EliteCatalog.eliteDefs);
 		}
 
-		// Token: 0x06000ADD RID: 2781 RVA: 0x00035A46 File Offset: 0x00033C46
+		// Token: 0x0600056D RID: 1389 RVA: 0x000160D8 File Offset: 0x000142D8
 		private static void RegisterElite(EliteIndex eliteIndex, EliteDef eliteDef)
 		{
+			if (eliteIndex < EliteIndex.Count)
+			{
+				eliteDef.name = eliteIndex.ToString();
+			}
 			eliteDef.eliteIndex = eliteIndex;
 			EliteCatalog.eliteList.Add(eliteIndex);
 			EliteCatalog.eliteDefs[(int)eliteIndex] = eliteDef;
 		}
 
-		// Token: 0x06000ADE RID: 2782 RVA: 0x00035A64 File Offset: 0x00033C64
-		public static EliteIndex IsEquipmentElite(EquipmentIndex equipmentIndex)
+		// Token: 0x0600056E RID: 1390 RVA: 0x0001610C File Offset: 0x0001430C
+		public static EliteIndex GetEquipmentEliteIndex(EquipmentIndex equipmentIndex)
 		{
-			if (equipmentIndex < EquipmentIndex.CommandMissile || equipmentIndex >= EquipmentIndex.Count)
+			if (!EquipmentCatalog.IsIndexValid(equipmentIndex))
 			{
 				return EliteIndex.None;
 			}
@@ -55,20 +83,22 @@ namespace RoR2
 			return EliteIndex.None;
 		}
 
-		// Token: 0x06000ADF RID: 2783 RVA: 0x00035AA5 File Offset: 0x00033CA5
+		// Token: 0x0600056F RID: 1391 RVA: 0x0001614D File Offset: 0x0001434D
 		public static EliteDef GetEliteDef(EliteIndex eliteIndex)
 		{
-			if (eliteIndex < EliteIndex.Fire || eliteIndex >= EliteIndex.Count)
-			{
-				return null;
-			}
-			return EliteCatalog.eliteDefs[(int)eliteIndex];
+			return HGArrayUtilities.GetSafe<EliteDef>(EliteCatalog.eliteDefs, (int)eliteIndex);
 		}
 
-		// Token: 0x04000EA8 RID: 3752
+		// Token: 0x040005B1 RID: 1457
 		public static List<EliteIndex> eliteList = new List<EliteIndex>();
 
-		// Token: 0x04000EA9 RID: 3753
-		private static EliteDef[] eliteDefs = new EliteDef[3];
+		// Token: 0x040005B2 RID: 1458
+		private static EliteDef[] eliteDefs;
+
+		// Token: 0x040005B3 RID: 1459
+		public static readonly CatalogModHelper<EliteDef> modHelper = new CatalogModHelper<EliteDef>(delegate(int i, EliteDef def)
+		{
+			EliteCatalog.RegisterElite((EliteIndex)i, def);
+		}, (EliteDef v) => v.name);
 	}
 }

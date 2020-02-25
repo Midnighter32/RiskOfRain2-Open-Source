@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x02000223 RID: 547
+	// Token: 0x02000103 RID: 259
 	[CreateAssetMenu]
 	public class DirectorCardCategorySelection : ScriptableObject
 	{
-		// Token: 0x06000AA3 RID: 2723 RVA: 0x00034A54 File Offset: 0x00032C54
+		// Token: 0x060004EA RID: 1258 RVA: 0x00013BDC File Offset: 0x00011DDC
 		public float SumAllWeightsInCategory(DirectorCardCategorySelection.Category category)
 		{
 			float num = 0f;
@@ -18,21 +18,21 @@ namespace RoR2
 			return num;
 		}
 
-		// Token: 0x04000E0A RID: 3594
+		// Token: 0x040004B3 RID: 1203
 		public DirectorCardCategorySelection.Category[] categories;
 
-		// Token: 0x02000224 RID: 548
+		// Token: 0x02000104 RID: 260
 		[Serializable]
 		public struct Category
 		{
-			// Token: 0x04000E0B RID: 3595
+			// Token: 0x040004B4 RID: 1204
 			[Tooltip("A name to help identify this category")]
 			public string name;
 
-			// Token: 0x04000E0C RID: 3596
+			// Token: 0x040004B5 RID: 1205
 			public DirectorCard[] cards;
 
-			// Token: 0x04000E0D RID: 3597
+			// Token: 0x040004B6 RID: 1206
 			public float selectionWeight;
 		}
 	}

@@ -1,9 +1,9 @@
 ﻿using System;
 
-// Token: 0x02000072 RID: 114
+// Token: 0x02000076 RID: 118
 public class SplitMix64
 {
-	// Token: 0x060001B6 RID: 438 RVA: 0x00009534 File Offset: 0x00007734
+	// Token: 0x060001E4 RID: 484 RVA: 0x00009E40 File Offset: 0x00008040
 	public ulong Next()
 	{
 		ulong num = this.x += 11400714819323198485UL;
@@ -12,6 +12,6 @@ public class SplitMix64
 		return num3 ^ num3 >> 31;
 	}
 
-	// Token: 0x040001F0 RID: 496
+	// Token: 0x040001F7 RID: 503
 	public ulong x;
 }

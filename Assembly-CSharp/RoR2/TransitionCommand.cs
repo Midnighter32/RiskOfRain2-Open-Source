@@ -2,15 +2,15 @@
 
 namespace RoR2
 {
-	// Token: 0x0200045C RID: 1116
+	// Token: 0x020003D3 RID: 979
 	public static class TransitionCommand
 	{
-		// Token: 0x1700024C RID: 588
-		// (get) Token: 0x060018F2 RID: 6386 RVA: 0x000779D0 File Offset: 0x00075BD0
-		// (set) Token: 0x060018F3 RID: 6387 RVA: 0x000779D7 File Offset: 0x00075BD7
+		// Token: 0x170002C3 RID: 707
+		// (get) Token: 0x060017CB RID: 6091 RVA: 0x000672D9 File Offset: 0x000654D9
+		// (set) Token: 0x060017CC RID: 6092 RVA: 0x000672E0 File Offset: 0x000654E0
 		public static bool requestPending { get; private set; }
 
-		// Token: 0x060018F4 RID: 6388 RVA: 0x000779E0 File Offset: 0x00075BE0
+		// Token: 0x060017CD RID: 6093 RVA: 0x000672E8 File Offset: 0x000654E8
 		private static void Update()
 		{
 			if (FadeToBlackManager.fullyFaded)
@@ -24,7 +24,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060018F5 RID: 6389 RVA: 0x00077A30 File Offset: 0x00075C30
+		// Token: 0x060017CE RID: 6094 RVA: 0x00067338 File Offset: 0x00065538
 		[ConCommand(commandName = "transition_command", flags = ConVarFlags.None, helpText = "Fade out and execute a command at the end of the fadeout.")]
 		private static void CCTransitionCommand(ConCommandArgs args)
 		{
@@ -39,10 +39,10 @@ namespace RoR2
 			RoR2Application.onUpdate += TransitionCommand.Update;
 		}
 
-		// Token: 0x04001C66 RID: 7270
+		// Token: 0x04001668 RID: 5736
 		private static float timer;
 
-		// Token: 0x04001C67 RID: 7271
+		// Token: 0x04001669 RID: 5737
 		private static string commandString;
 	}
 }

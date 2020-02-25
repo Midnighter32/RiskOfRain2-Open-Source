@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using RoR2.WwiseUtils;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
@@ -7,27 +8,43 @@ using UnityEngine.SceneManagement;
 
 namespace RoR2
 {
-	// Token: 0x02000363 RID: 867
+	// Token: 0x02000294 RID: 660
 	public class MusicController : MonoBehaviour
 	{
-		// Token: 0x060011D5 RID: 4565 RVA: 0x000583AE File Offset: 0x000565AE
+		// Token: 0x06000EAF RID: 3759 RVA: 0x000411E0 File Offset: 0x0003F3E0
+		private void InitializeEngineDependentValues()
+		{
+			this.rtpcPlayerHealthValue = new RtpcSetter("playerHealth", null);
+			this.rtpcEnemyValue = new RtpcSetter("enemyValue", null);
+			this.rtpcTeleporterProximityValue = new RtpcSetter("teleporterProximity", null);
+			this.rtpcTeleporterDirectionValue = new RtpcSetter("teleporterDirection", null);
+			this.rtpcTeleporterCharged = new RtpcSetter("", null);
+			this.rtpcTeleporterPlayerStatus = new RtpcSetter("teleporterPlayerStatus", null);
+			this.stMusicSystem = new StateSetter("Music_system");
+			this.stGameplaySongChoice = new StateSetter("gameplaySongChoice");
+			this.stMusicMenu = new StateSetter("Music_menu");
+			this.stBossStatus = new StateSetter("bossStatus");
+		}
+
+		// Token: 0x06000EB0 RID: 3760 RVA: 0x00041293 File Offset: 0x0003F493
 		private void RefreshStageInfo(Scene a, Scene b)
 		{
 			this.stageInfo = default(MusicController.StageInfo);
 		}
 
-		// Token: 0x060011D6 RID: 4566 RVA: 0x000583BC File Offset: 0x000565BC
+		// Token: 0x06000EB1 RID: 3761 RVA: 0x000412A4 File Offset: 0x0003F4A4
 		private void Start()
 		{
 			this.enemyInfoBuffer = new NativeArray<MusicController.EnemyInfo>(64, Allocator.Persistent, NativeArrayOptions.ClearMemory);
 			SceneManager.activeSceneChanged += this.RefreshStageInfo;
+			this.InitializeEngineDependentValues();
 			if (this.enableMusicSystem)
 			{
 				AkSoundEngine.PostEvent("Play_Music_System", base.gameObject);
 			}
 		}
 
-		// Token: 0x060011D7 RID: 4567 RVA: 0x000583F8 File Offset: 0x000565F8
+		// Token: 0x06000EB2 RID: 3762 RVA: 0x000412F0 File Offset: 0x0003F4F0
 		private void Update()
 		{
 			this.UpdateState();
@@ -36,27 +53,36 @@ namespace RoR2
 			this.ScheduleIntensityCalculation(this.target);
 		}
 
-		// Token: 0x060011D8 RID: 4568 RVA: 0x0005845C File Offset: 0x0005665C
+		// Token: 0x06000EB3 RID: 3763 RVA: 0x00041354 File Offset: 0x0003F554
 		private void RecalculateHealth(GameObject playerObject)
 		{
-			this.rtpcPlayerHealthValue = 1f;
+			this.rtpcPlayerHealthValue.value = 100f;
 			if (this.target)
 			{
-				HealthComponent component = this.target.GetComponent<HealthComponent>();
+				CharacterBody component = this.target.GetComponent<CharacterBody>();
 				if (component)
 				{
-					this.rtpcPlayerHealthValue = component.combinedHealthFraction;
+					if (component.HasBuff(BuffIndex.Deafened))
+					{
+						this.rtpcPlayerHealthValue.value = -100f;
+						return;
+					}
+					HealthComponent healthComponent = component.healthComponent;
+					if (healthComponent)
+					{
+						this.rtpcPlayerHealthValue.value = healthComponent.combinedHealthFraction * 100f;
+					}
 				}
 			}
 		}
 
-		// Token: 0x060011D9 RID: 4569 RVA: 0x000584A4 File Offset: 0x000566A4
+		// Token: 0x06000EB4 RID: 3764 RVA: 0x000413D4 File Offset: 0x0003F5D4
 		private void UpdateTeleporterParameters(TeleporterInteraction teleporter)
 		{
 			float num = 0.5f;
-			this.rtpcTeleporterProximityValue = float.PositiveInfinity;
-			this.rtpcTeleporterDirectionValue = 0f;
-			this.rtpcTeleporterCharged = 100f;
+			this.rtpcTeleporterProximityValue.value = float.PositiveInfinity;
+			this.rtpcTeleporterDirectionValue.value = 0f;
+			this.rtpcTeleporterCharged.value = 100f;
 			if (teleporter)
 			{
 				if (this.targetCamera)
@@ -69,15 +95,16 @@ namespace RoR2
 					{
 						num2 += 360f;
 					}
-					this.rtpcTeleporterProximityValue = vector.magnitude;
-					this.rtpcTeleporterDirectionValue = num2;
+					this.rtpcTeleporterProximityValue.value = vector.magnitude;
+					this.rtpcTeleporterDirectionValue.value = num2;
 				}
-				this.rtpcTeleporterProximityValue /= num;
-				this.rtpcTeleporterCharged = teleporter.chargeFraction * 90f / num;
+				this.rtpcTeleporterProximityValue.value = Mathf.Clamp(this.rtpcTeleporterProximityValue.value, 20f, 250f);
+				this.rtpcTeleporterProximityValue.value = Util.Remap(this.rtpcTeleporterProximityValue.value, 20f, 250f, 0f, 10000f);
+				this.rtpcTeleporterCharged.value = teleporter.chargeFraction * 90f / num;
 			}
 		}
 
-		// Token: 0x060011DA RID: 4570 RVA: 0x0005859C File Offset: 0x0005679C
+		// Token: 0x06000EB5 RID: 3765 RVA: 0x00041530 File Offset: 0x0003F730
 		private void LateUpdate()
 		{
 			bool flag = Time.timeScale == 0f;
@@ -93,107 +120,98 @@ namespace RoR2
 			float num2;
 			this.calculateIntensityJob.CalculateSum(out num, out num2);
 			float num3 = 0.025f;
-			Mathf.Clamp(1f - this.rtpcPlayerHealthValue, 0.25f, 0.75f);
-			float num4 = (num * 0.75f + num2 * 0.25f) * num3;
-			this.rtpcEnemyValue = num4;
-			this.UpdateRTPCValues();
+			Mathf.Clamp(1f - this.rtpcPlayerHealthValue.value * 0.01f, 0.25f, 0.75f);
+			float value = (num * 0.75f + num2 * 0.25f) * num3;
+			this.rtpcEnemyValue.value = value;
+			this.FlushValuesToEngine();
 		}
 
-		// Token: 0x060011DB RID: 4571 RVA: 0x00058658 File Offset: 0x00056858
-		private void UpdateRTPCValues()
+		// Token: 0x06000EB6 RID: 3766 RVA: 0x000415FC File Offset: 0x0003F7FC
+		private void FlushValuesToEngine()
 		{
-			AkSoundEngine.SetRTPCValue("playerHealth", this.rtpcPlayerHealthValue * 100f);
-			AkSoundEngine.SetRTPCValue("teleporterProximity", this.rtpcTeleporterProximityValue);
-			AkSoundEngine.SetRTPCValue("teleporterDirection", this.rtpcTeleporterDirectionValue);
-			AkSoundEngine.SetRTPCValue("teleporterPlayerStatus", this.rtpcTeleporterPlayerStatus);
-			AkSoundEngine.SetRTPCValue("enemyValue", this.rtpcEnemyValue);
+			this.stMusicSystem.FlushIfChanged();
+			this.stGameplaySongChoice.FlushIfChanged();
+			this.stMusicMenu.FlushIfChanged();
+			this.stBossStatus.FlushIfChanged();
+			this.rtpcPlayerHealthValue.FlushIfChanged();
+			this.rtpcTeleporterProximityValue.FlushIfChanged();
+			this.rtpcTeleporterDirectionValue.FlushIfChanged();
+			this.rtpcTeleporterPlayerStatus.FlushIfChanged();
+			this.rtpcEnemyValue.FlushIfChanged();
 		}
 
-		// Token: 0x060011DC RID: 4572 RVA: 0x000586C0 File Offset: 0x000568C0
+		// Token: 0x06000EB7 RID: 3767 RVA: 0x0004166C File Offset: 0x0003F86C
 		private void UpdateState()
 		{
-			string in_pszState = "None";
-			string in_pszState2 = "None";
-			string in_pszState3 = "None";
-			string in_pszState4 = "None";
-			this.rtpcTeleporterPlayerStatus = 1f;
+			this.stGameplaySongChoice.valueId = CommonWwiseIds.none;
+			this.stMusicSystem.valueId = CommonWwiseIds.none;
+			this.stMusicMenu.valueId = CommonWwiseIds.none;
+			this.stBossStatus.valueId = CommonWwiseIds.none;
+			this.rtpcTeleporterPlayerStatus.value = 1f;
 			SceneDef mostRecentSceneDef = SceneCatalog.mostRecentSceneDef;
 			if (mostRecentSceneDef)
 			{
-				string sceneName = mostRecentSceneDef.sceneName;
-				if (!(sceneName == "title"))
+				string baseSceneName = mostRecentSceneDef.baseSceneName;
+				if (baseSceneName == "title")
 				{
-					if (!(sceneName == "lobby"))
-					{
-						if (!(sceneName == "logbook"))
-						{
-							if (!(sceneName == "crystalworld"))
-							{
-								if (!(sceneName == "bazaar"))
-								{
-									in_pszState2 = "Gameplay";
-									if (mostRecentSceneDef)
-									{
-										in_pszState = mostRecentSceneDef.songName;
-									}
-									if (TeleporterInteraction.instance && !TeleporterInteraction.instance.isIdle)
-									{
-										in_pszState = mostRecentSceneDef.bossSongName;
-										in_pszState4 = "alive";
-										in_pszState2 = "Bossfight";
-										if (TeleporterInteraction.instance.isIdleToCharging || TeleporterInteraction.instance.isCharging)
-										{
-											if (this.target)
-											{
-												this.rtpcTeleporterPlayerStatus = 0f;
-												if (TeleporterInteraction.instance.IsInChargingRange(this.target))
-												{
-													this.rtpcTeleporterPlayerStatus = 1f;
-												}
-											}
-										}
-										else if (TeleporterInteraction.instance.isCharged)
-										{
-											in_pszState4 = "dead";
-										}
-									}
-								}
-								else
-								{
-									in_pszState2 = "SecretLevel";
-								}
-							}
-							else
-							{
-								in_pszState2 = "Menu";
-								in_pszState3 = "Logbook";
-							}
-						}
-						else
-						{
-							in_pszState2 = "Menu";
-							in_pszState3 = "Logbook";
-						}
-					}
-					else
-					{
-						in_pszState2 = "Menu";
-						in_pszState3 = "Main";
-					}
+					this.stMusicSystem.valueId = CommonWwiseIds.menu;
+					this.stMusicMenu.valueId = CommonWwiseIds.main;
+					return;
 				}
-				else
+				if (baseSceneName == "lobby")
 				{
-					in_pszState2 = "Menu";
-					in_pszState3 = "Main";
+					this.stMusicSystem.valueId = CommonWwiseIds.menu;
+					this.stMusicMenu.valueId = CommonWwiseIds.main;
+					return;
+				}
+				if (baseSceneName == "logbook")
+				{
+					this.stMusicSystem.valueId = CommonWwiseIds.menu;
+					this.stMusicMenu.valueId = CommonWwiseIds.logbook;
+					return;
+				}
+				if (baseSceneName == "crystalworld")
+				{
+					this.stMusicSystem.valueId = CommonWwiseIds.menu;
+					this.stMusicMenu.valueId = CommonWwiseIds.logbook;
+					return;
+				}
+				if (baseSceneName == "bazaar")
+				{
+					this.stMusicSystem.valueId = CommonWwiseIds.secretLevel;
+					return;
+				}
+				this.stMusicSystem.valueId = CommonWwiseIds.gameplay;
+				if (mostRecentSceneDef)
+				{
+					this.stGameplaySongChoice.valueId = AkSoundEngine.GetIDFromString(mostRecentSceneDef.songName);
+				}
+				if (TeleporterInteraction.instance && !TeleporterInteraction.instance.isIdle)
+				{
+					this.stGameplaySongChoice.valueId = AkSoundEngine.GetIDFromString(mostRecentSceneDef.bossSongName);
+					this.stBossStatus.valueId = CommonWwiseIds.alive;
+					this.stMusicSystem.valueId = CommonWwiseIds.bossfight;
+					if (TeleporterInteraction.instance.isIdleToCharging || TeleporterInteraction.instance.isCharging)
+					{
+						if (this.target)
+						{
+							this.rtpcTeleporterPlayerStatus.value = 0f;
+							if (TeleporterInteraction.instance.IsInChargingRange(this.target))
+							{
+								this.rtpcTeleporterPlayerStatus.value = 1f;
+								return;
+							}
+						}
+					}
+					else if (TeleporterInteraction.instance.isCharged)
+					{
+						this.stBossStatus.valueId = CommonWwiseIds.dead;
+					}
 				}
 			}
-			AkSoundEngine.SetState("Music_system", in_pszState2);
-			AkSoundEngine.SetState("gameplaySongChoice", in_pszState);
-			AkSoundEngine.SetState("Music_menu", in_pszState3);
-			AkSoundEngine.SetState("bossStatus", in_pszState4);
 		}
 
-		// Token: 0x060011DD RID: 4573 RVA: 0x0005887A File Offset: 0x00056A7A
+		// Token: 0x06000EB8 RID: 3768 RVA: 0x000418B5 File Offset: 0x0003FAB5
 		private void EnsureEnemyBufferSize(int requiredSize)
 		{
 			if (this.enemyInfoBuffer.Length < requiredSize)
@@ -206,14 +224,14 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060011DE RID: 4574 RVA: 0x000588B0 File Offset: 0x00056AB0
+		// Token: 0x06000EB9 RID: 3769 RVA: 0x000418EB File Offset: 0x0003FAEB
 		private void OnDestroy()
 		{
 			SceneManager.activeSceneChanged -= this.RefreshStageInfo;
 			this.enemyInfoBuffer.Dispose();
 		}
 
-		// Token: 0x060011DF RID: 4575 RVA: 0x000588D0 File Offset: 0x00056AD0
+		// Token: 0x06000EBA RID: 3770 RVA: 0x0004190C File Offset: 0x0003FB0C
 		private void ScheduleIntensityCalculation(GameObject targetBodyObject)
 		{
 			if (!targetBodyObject)
@@ -252,7 +270,7 @@ namespace RoR2
 			this.calculateIntensityJobHandle = this.calculateIntensityJob.Schedule(num, 32, default(JobHandle));
 		}
 
-		// Token: 0x060011E0 RID: 4576 RVA: 0x000589F0 File Offset: 0x00056BF0
+		// Token: 0x06000EBB RID: 3771 RVA: 0x00041A2C File Offset: 0x0003FC2C
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void Init()
 		{
@@ -262,78 +280,90 @@ namespace RoR2
 			}));
 		}
 
-		// Token: 0x040015EB RID: 5611
+		// Token: 0x04000E93 RID: 3731
 		public GameObject target;
 
-		// Token: 0x040015EC RID: 5612
+		// Token: 0x04000E94 RID: 3732
 		public bool enableMusicSystem = true;
 
-		// Token: 0x040015ED RID: 5613
+		// Token: 0x04000E95 RID: 3733
 		private CameraRigController targetCamera;
 
-		// Token: 0x040015EE RID: 5614
-		private float rtpcPlayerHealthValue;
+		// Token: 0x04000E96 RID: 3734
+		private RtpcSetter rtpcPlayerHealthValue;
 
-		// Token: 0x040015EF RID: 5615
-		private float rtpcEnemyValue;
+		// Token: 0x04000E97 RID: 3735
+		private RtpcSetter rtpcEnemyValue;
 
-		// Token: 0x040015F0 RID: 5616
-		private float rtpcTeleporterProximityValue;
+		// Token: 0x04000E98 RID: 3736
+		private RtpcSetter rtpcTeleporterProximityValue;
 
-		// Token: 0x040015F1 RID: 5617
-		private float rtpcTeleporterDirectionValue;
+		// Token: 0x04000E99 RID: 3737
+		private RtpcSetter rtpcTeleporterDirectionValue;
 
-		// Token: 0x040015F2 RID: 5618
-		private float rtpcTeleporterCharged;
+		// Token: 0x04000E9A RID: 3738
+		private RtpcSetter rtpcTeleporterCharged;
 
-		// Token: 0x040015F3 RID: 5619
-		private float rtpcTeleporterPlayerStatus;
+		// Token: 0x04000E9B RID: 3739
+		private RtpcSetter rtpcTeleporterPlayerStatus;
 
-		// Token: 0x040015F4 RID: 5620
+		// Token: 0x04000E9C RID: 3740
+		private StateSetter stMusicSystem;
+
+		// Token: 0x04000E9D RID: 3741
+		private StateSetter stGameplaySongChoice;
+
+		// Token: 0x04000E9E RID: 3742
+		private StateSetter stMusicMenu;
+
+		// Token: 0x04000E9F RID: 3743
+		private StateSetter stBossStatus;
+
+		// Token: 0x04000EA0 RID: 3744
 		private MusicController.StageInfo stageInfo;
 
-		// Token: 0x040015F5 RID: 5621
+		// Token: 0x04000EA1 RID: 3745
 		private bool wasPaused;
 
-		// Token: 0x040015F6 RID: 5622
+		// Token: 0x04000EA2 RID: 3746
 		private NativeArray<MusicController.EnemyInfo> enemyInfoBuffer;
 
-		// Token: 0x040015F7 RID: 5623
+		// Token: 0x04000EA3 RID: 3747
 		private MusicController.CalculateIntensityJob calculateIntensityJob;
 
-		// Token: 0x040015F8 RID: 5624
+		// Token: 0x04000EA4 RID: 3748
 		private JobHandle calculateIntensityJobHandle;
 
-		// Token: 0x02000364 RID: 868
+		// Token: 0x02000295 RID: 661
 		private struct StageInfo
 		{
-			// Token: 0x040015F9 RID: 5625
+			// Token: 0x04000EA5 RID: 3749
 			public bool inAction;
 
-			// Token: 0x040015FA RID: 5626
+			// Token: 0x04000EA6 RID: 3750
 			public bool inIntro;
 		}
 
-		// Token: 0x02000365 RID: 869
+		// Token: 0x02000296 RID: 662
 		private struct EnemyInfo
 		{
-			// Token: 0x040015FB RID: 5627
+			// Token: 0x04000EA7 RID: 3751
 			public Ray aimRay;
 
-			// Token: 0x040015FC RID: 5628
+			// Token: 0x04000EA8 RID: 3752
 			public float lookScore;
 
-			// Token: 0x040015FD RID: 5629
+			// Token: 0x04000EA9 RID: 3753
 			public float proximityScore;
 
-			// Token: 0x040015FE RID: 5630
+			// Token: 0x04000EAA RID: 3754
 			public float threatScore;
 		}
 
-		// Token: 0x02000366 RID: 870
+		// Token: 0x02000297 RID: 663
 		private struct CalculateIntensityJob : IJobParallelFor
 		{
-			// Token: 0x060011E2 RID: 4578 RVA: 0x00058A34 File Offset: 0x00056C34
+			// Token: 0x06000EBD RID: 3773 RVA: 0x00041A70 File Offset: 0x0003FC70
 			public void Execute(int i)
 			{
 				MusicController.EnemyInfo enemyInfo = this.enemyInfoBuffer[i];
@@ -346,7 +376,7 @@ namespace RoR2
 				this.enemyInfoBuffer[i] = enemyInfo;
 			}
 
-			// Token: 0x060011E3 RID: 4579 RVA: 0x00058AD4 File Offset: 0x00056CD4
+			// Token: 0x06000EBE RID: 3774 RVA: 0x00041B10 File Offset: 0x0003FD10
 			public void CalculateSum(out float proximityScore, out float lookScore)
 			{
 				proximityScore = 0f;
@@ -358,22 +388,22 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x040015FF RID: 5631
+			// Token: 0x04000EAB RID: 3755
 			[ReadOnly]
 			public Vector3 targetPosition;
 
-			// Token: 0x04001600 RID: 5632
+			// Token: 0x04000EAC RID: 3756
 			[ReadOnly]
 			public int elementCount;
 
-			// Token: 0x04001601 RID: 5633
+			// Token: 0x04000EAD RID: 3757
 			public NativeArray<MusicController.EnemyInfo> enemyInfoBuffer;
 
-			// Token: 0x04001602 RID: 5634
+			// Token: 0x04000EAE RID: 3758
 			[ReadOnly]
 			public float nearDistance;
 
-			// Token: 0x04001603 RID: 5635
+			// Token: 0x04000EAF RID: 3759
 			[ReadOnly]
 			public float farDistance;
 		}

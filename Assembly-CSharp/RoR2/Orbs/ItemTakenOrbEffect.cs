@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace RoR2.Orbs
 {
-	// Token: 0x02000515 RID: 1301
+	// Token: 0x020004CF RID: 1231
 	[RequireComponent(typeof(EffectComponent))]
 	public class ItemTakenOrbEffect : MonoBehaviour
 	{
-		// Token: 0x06001D49 RID: 7497 RVA: 0x00088840 File Offset: 0x00086A40
+		// Token: 0x06001D7A RID: 7546 RVA: 0x0007DAD8 File Offset: 0x0007BCD8
 		private void Start()
 		{
-			ItemDef itemDef = ItemCatalog.GetItemDef((ItemIndex)(base.GetComponent<EffectComponent>().effectData.genericUInt - 1u));
+			ItemDef itemDef = ItemCatalog.GetItemDef((ItemIndex)(base.GetComponent<EffectComponent>().effectData.genericUInt - 1U));
 			ColorCatalog.ColorIndex colorIndex = ColorCatalog.ColorIndex.Error;
 			Sprite sprite = null;
 			if (itemDef != null)
@@ -22,10 +22,10 @@ namespace RoR2.Orbs
 			this.iconSpriteRenderer.sprite = sprite;
 		}
 
-		// Token: 0x04001F7E RID: 8062
+		// Token: 0x04001A91 RID: 6801
 		public TrailRenderer trailToColor;
 
-		// Token: 0x04001F7F RID: 8063
+		// Token: 0x04001A92 RID: 6802
 		public SpriteRenderer iconSpriteRenderer;
 	}
 }

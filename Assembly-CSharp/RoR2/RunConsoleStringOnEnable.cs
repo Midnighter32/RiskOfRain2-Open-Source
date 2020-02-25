@@ -3,16 +3,16 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003C2 RID: 962
+	// Token: 0x0200030B RID: 779
 	public class RunConsoleStringOnEnable : MonoBehaviour
 	{
-		// Token: 0x060014EA RID: 5354 RVA: 0x00064A45 File Offset: 0x00062C45
+		// Token: 0x06001253 RID: 4691 RVA: 0x0004F199 File Offset: 0x0004D399
 		private void OnEnable()
 		{
 			Console.instance.SubmitCmd(null, this.consoleString, false);
 		}
 
-		// Token: 0x04001843 RID: 6211
+		// Token: 0x04001148 RID: 4424
 		public string consoleString;
 	}
 }

@@ -5,12 +5,12 @@ using UnityEngine.Serialization;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005B2 RID: 1458
+	// Token: 0x0200058C RID: 1420
 	[RequireComponent(typeof(MPEventSystemLocator))]
 	public class BaseSettingsControl : MonoBehaviour
 	{
-		// Token: 0x170002E0 RID: 736
-		// (get) Token: 0x060020A7 RID: 8359 RVA: 0x00099A26 File Offset: 0x00097C26
+		// Token: 0x17000394 RID: 916
+		// (get) Token: 0x060021C9 RID: 8649 RVA: 0x00092202 File Offset: 0x00090402
 		public bool hasBeenChanged
 		{
 			get
@@ -19,7 +19,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060020A8 RID: 8360 RVA: 0x00099A34 File Offset: 0x00097C34
+		// Token: 0x060021CA RID: 8650 RVA: 0x00092210 File Offset: 0x00090410
 		protected void Awake()
 		{
 			this.eventSystemLocator = base.GetComponent<MPEventSystemLocator>();
@@ -36,24 +36,24 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060020A9 RID: 8361 RVA: 0x00099AA1 File Offset: 0x00097CA1
+		// Token: 0x060021CB RID: 8651 RVA: 0x0009227D File Offset: 0x0009047D
 		protected void Start()
 		{
 			this.Initialize();
 		}
 
-		// Token: 0x060020AA RID: 8362 RVA: 0x00099AA9 File Offset: 0x00097CA9
+		// Token: 0x060021CC RID: 8652 RVA: 0x00092285 File Offset: 0x00090485
 		protected void OnEnable()
 		{
 			this.UpdateControls();
 		}
 
-		// Token: 0x060020AB RID: 8363 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060021CD RID: 8653 RVA: 0x0000409B File Offset: 0x0000229B
 		public virtual void Initialize()
 		{
 		}
 
-		// Token: 0x060020AC RID: 8364 RVA: 0x00099AB1 File Offset: 0x00097CB1
+		// Token: 0x060021CE RID: 8654 RVA: 0x0009228D File Offset: 0x0009048D
 		public void SubmitSetting(string newValue)
 		{
 			if (this.useConfirmationDialog)
@@ -64,7 +64,7 @@ namespace RoR2.UI
 			this.SubmitSettingInternal(newValue);
 		}
 
-		// Token: 0x060020AD RID: 8365 RVA: 0x00099ACC File Offset: 0x00097CCC
+		// Token: 0x060021CF RID: 8655 RVA: 0x000922A8 File Offset: 0x000904A8
 		private void SubmitSettingInternal(string newValue)
 		{
 			if (this.originalValue == null)
@@ -97,13 +97,13 @@ namespace RoR2.UI
 				BaseConVar conVar = this.GetConVar();
 				if (conVar != null)
 				{
-					conVar.SetString(newValue);
+					conVar.AttemptSetString(newValue);
 				}
 			}
 			RoR2Application.onNextUpdate += this.UpdateControls;
 		}
 
-		// Token: 0x060020AE RID: 8366 RVA: 0x00099B64 File Offset: 0x00097D64
+		// Token: 0x060021D0 RID: 8656 RVA: 0x00092340 File Offset: 0x00090540
 		private void SubmitSettingTemporary(string newValue)
 		{
 			string oldValue = this.GetCurrentValue();
@@ -163,7 +163,7 @@ namespace RoR2.UI
 			});
 		}
 
-		// Token: 0x060020AF RID: 8367 RVA: 0x00099C6C File Offset: 0x00097E6C
+		// Token: 0x060021D1 RID: 8657 RVA: 0x00092448 File Offset: 0x00090648
 		public string GetCurrentValue()
 		{
 			BaseSettingsControl.SettingSource settingSource = this.settingSource;
@@ -187,13 +187,13 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x060020B0 RID: 8368 RVA: 0x00099CC2 File Offset: 0x00097EC2
+		// Token: 0x060021D2 RID: 8658 RVA: 0x0009249E File Offset: 0x0009069E
 		protected BaseConVar GetConVar()
 		{
 			return Console.instance.FindConVar(this.settingName);
 		}
 
-		// Token: 0x060020B1 RID: 8369 RVA: 0x00099CD4 File Offset: 0x00097ED4
+		// Token: 0x060021D3 RID: 8659 RVA: 0x000924B0 File Offset: 0x000906B0
 		public UserProfile GetCurrentUserProfile()
 		{
 			MPEventSystem eventSystem = this.eventSystemLocator.eventSystem;
@@ -209,7 +209,7 @@ namespace RoR2.UI
 			return localUser.userProfile;
 		}
 
-		// Token: 0x060020B2 RID: 8370 RVA: 0x00099CF7 File Offset: 0x00097EF7
+		// Token: 0x060021D4 RID: 8660 RVA: 0x000924D3 File Offset: 0x000906D3
 		public void Revert()
 		{
 			if (this.hasBeenChanged)
@@ -219,12 +219,12 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x170002E1 RID: 737
-		// (get) Token: 0x060020B3 RID: 8371 RVA: 0x00099D14 File Offset: 0x00097F14
-		// (set) Token: 0x060020B4 RID: 8372 RVA: 0x00099D1C File Offset: 0x00097F1C
+		// Token: 0x17000395 RID: 917
+		// (get) Token: 0x060021D5 RID: 8661 RVA: 0x000924F0 File Offset: 0x000906F0
+		// (set) Token: 0x060021D6 RID: 8662 RVA: 0x000924F8 File Offset: 0x000906F8
 		private protected bool inUpdateControls { protected get; private set; }
 
-		// Token: 0x060020B5 RID: 8373 RVA: 0x00099D25 File Offset: 0x00097F25
+		// Token: 0x060021D7 RID: 8663 RVA: 0x00092501 File Offset: 0x00090701
 		protected void UpdateControls()
 		{
 			if (!this)
@@ -240,40 +240,40 @@ namespace RoR2.UI
 			this.inUpdateControls = false;
 		}
 
-		// Token: 0x060020B6 RID: 8374 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x060021D8 RID: 8664 RVA: 0x0000409B File Offset: 0x0000229B
 		protected virtual void OnUpdateControls()
 		{
 		}
 
-		// Token: 0x04002332 RID: 9010
+		// Token: 0x04001F28 RID: 7976
 		public BaseSettingsControl.SettingSource settingSource;
 
-		// Token: 0x04002333 RID: 9011
+		// Token: 0x04001F29 RID: 7977
 		[FormerlySerializedAs("convarName")]
 		public string settingName;
 
-		// Token: 0x04002334 RID: 9012
+		// Token: 0x04001F2A RID: 7978
 		public string nameToken;
 
-		// Token: 0x04002335 RID: 9013
+		// Token: 0x04001F2B RID: 7979
 		public LanguageTextMeshController nameLabel;
 
-		// Token: 0x04002336 RID: 9014
+		// Token: 0x04001F2C RID: 7980
 		[Tooltip("Whether or not this setting requires a confirmation dialog. This is mainly for video options.")]
 		public bool useConfirmationDialog;
 
-		// Token: 0x04002337 RID: 9015
+		// Token: 0x04001F2D RID: 7981
 		private MPEventSystemLocator eventSystemLocator;
 
-		// Token: 0x04002338 RID: 9016
+		// Token: 0x04001F2E RID: 7982
 		private string originalValue;
 
-		// Token: 0x020005B3 RID: 1459
+		// Token: 0x0200058D RID: 1421
 		public enum SettingSource
 		{
-			// Token: 0x0400233B RID: 9019
+			// Token: 0x04001F31 RID: 7985
 			ConVar,
-			// Token: 0x0400233C RID: 9020
+			// Token: 0x04001F32 RID: 7986
 			UserProfilePref
 		}
 	}

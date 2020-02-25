@@ -3,11 +3,11 @@ using UnityEngine.Networking;
 
 namespace RoR2.Networking
 {
-	// Token: 0x02000592 RID: 1426
+	// Token: 0x02000563 RID: 1379
 	public class SteamNetworkClient : NetworkClient
 	{
-		// Token: 0x170002D1 RID: 721
-		// (get) Token: 0x06002024 RID: 8228 RVA: 0x00096EE8 File Offset: 0x000950E8
+		// Token: 0x17000374 RID: 884
+		// (get) Token: 0x060020EE RID: 8430 RVA: 0x0008E4AC File Offset: 0x0008C6AC
 		public SteamNetworkConnection steamConnection
 		{
 			get
@@ -16,8 +16,8 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x170002D2 RID: 722
-		// (get) Token: 0x06002025 RID: 8229 RVA: 0x00096EF5 File Offset: 0x000950F5
+		// Token: 0x17000375 RID: 885
+		// (get) Token: 0x060020EF RID: 8431 RVA: 0x0008E4B9 File Offset: 0x0008C6B9
 		public string status
 		{
 			get
@@ -26,7 +26,7 @@ namespace RoR2.Networking
 			}
 		}
 
-		// Token: 0x06002026 RID: 8230 RVA: 0x00096F08 File Offset: 0x00095108
+		// Token: 0x060020F0 RID: 8432 RVA: 0x0008E4CC File Offset: 0x0008C6CC
 		public void Connect()
 		{
 			base.Connect("localhost", 0);
@@ -34,7 +34,7 @@ namespace RoR2.Networking
 			base.connection.ForceInitialize(base.hostTopology);
 		}
 
-		// Token: 0x06002027 RID: 8231 RVA: 0x00096F2E File Offset: 0x0009512E
+		// Token: 0x060020F1 RID: 8433 RVA: 0x0008E4F2 File Offset: 0x0008C6F2
 		public SteamNetworkClient(NetworkConnection conn) : base(conn)
 		{
 			base.SetNetworkConnectionClass<SteamNetworkConnection>();

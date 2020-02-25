@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Mage.Weapon
 {
-	// Token: 0x02000117 RID: 279
-	internal class FireLaserbolt : BaseState
+	// Token: 0x020007D8 RID: 2008
+	public class FireLaserbolt : BaseState
 	{
-		// Token: 0x06000556 RID: 1366 RVA: 0x00017E38 File Offset: 0x00016038
+		// Token: 0x06002DB7 RID: 11703 RVA: 0x000C2170 File Offset: 0x000C0370
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -33,20 +33,20 @@ namespace EntityStates.Mage.Weapon
 			this.FireGauntlet();
 		}
 
-		// Token: 0x06000557 RID: 1367 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002DB8 RID: 11704 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000558 RID: 1368 RVA: 0x00017F0C File Offset: 0x0001610C
+		// Token: 0x06002DB9 RID: 11705 RVA: 0x000C2244 File Offset: 0x000C0444
 		private void FireGauntlet()
 		{
 			this.hasFiredGauntlet = true;
 			Ray aimRay = base.GetAimRay();
 			if (FireLaserbolt.muzzleEffectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireLaserbolt.muzzleEffectPrefab, base.gameObject, this.muzzleString, false);
+				EffectManager.SimpleMuzzleFlash(FireLaserbolt.muzzleEffectPrefab, base.gameObject, this.muzzleString, false);
 			}
 			if (base.isAuthority)
 			{
@@ -70,7 +70,7 @@ namespace EntityStates.Mage.Weapon
 			}
 		}
 
-		// Token: 0x06000559 RID: 1369 RVA: 0x00018020 File Offset: 0x00016220
+		// Token: 0x06002DBA RID: 11706 RVA: 0x000C2354 File Offset: 0x000C0554
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -92,54 +92,54 @@ namespace EntityStates.Mage.Weapon
 			this.outer.SetNextStateToMain();
 		}
 
-		// Token: 0x0600055A RID: 1370 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002DBB RID: 11707 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x040005BD RID: 1469
+		// Token: 0x04002A7A RID: 10874
 		public static GameObject muzzleEffectPrefab;
 
-		// Token: 0x040005BE RID: 1470
+		// Token: 0x04002A7B RID: 10875
 		public static GameObject tracerEffectPrefab;
 
-		// Token: 0x040005BF RID: 1471
+		// Token: 0x04002A7C RID: 10876
 		public static GameObject impactEffectPrefab;
 
-		// Token: 0x040005C0 RID: 1472
+		// Token: 0x04002A7D RID: 10877
 		public static float baseDuration = 2f;
 
-		// Token: 0x040005C1 RID: 1473
+		// Token: 0x04002A7E RID: 10878
 		public static float damageCoefficient = 1.2f;
 
-		// Token: 0x040005C2 RID: 1474
+		// Token: 0x04002A7F RID: 10879
 		public static float force = 20f;
 
-		// Token: 0x040005C3 RID: 1475
+		// Token: 0x04002A80 RID: 10880
 		public static string attackString;
 
-		// Token: 0x040005C4 RID: 1476
+		// Token: 0x04002A81 RID: 10881
 		private float duration;
 
-		// Token: 0x040005C5 RID: 1477
+		// Token: 0x04002A82 RID: 10882
 		private bool hasFiredGauntlet;
 
-		// Token: 0x040005C6 RID: 1478
+		// Token: 0x04002A83 RID: 10883
 		private string muzzleString;
 
-		// Token: 0x040005C7 RID: 1479
+		// Token: 0x04002A84 RID: 10884
 		private Animator animator;
 
-		// Token: 0x040005C8 RID: 1480
+		// Token: 0x04002A85 RID: 10885
 		public FireLaserbolt.Gauntlet gauntlet;
 
-		// Token: 0x02000118 RID: 280
+		// Token: 0x020007D9 RID: 2009
 		public enum Gauntlet
 		{
-			// Token: 0x040005CA RID: 1482
+			// Token: 0x04002A87 RID: 10887
 			Left,
-			// Token: 0x040005CB RID: 1483
+			// Token: 0x04002A88 RID: 10888
 			Right
 		}
 	}

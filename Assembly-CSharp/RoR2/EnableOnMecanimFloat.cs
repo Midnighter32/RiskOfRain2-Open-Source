@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020002E1 RID: 737
+	// Token: 0x020001F1 RID: 497
 	public class EnableOnMecanimFloat : MonoBehaviour
 	{
-		// Token: 0x06000EC7 RID: 3783 RVA: 0x00048B60 File Offset: 0x00046D60
+		// Token: 0x06000A64 RID: 2660 RVA: 0x0002D9F8 File Offset: 0x0002BBF8
 		private void Update()
 		{
 			if (this.animator)
@@ -30,28 +30,28 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x040012D0 RID: 4816
+		// Token: 0x04000AC5 RID: 2757
 		public Animator animator;
 
-		// Token: 0x040012D1 RID: 4817
+		// Token: 0x04000AC6 RID: 2758
 		[Tooltip("The name of the mecanim variable to compare against")]
 		public string animatorString;
 
-		// Token: 0x040012D2 RID: 4818
+		// Token: 0x04000AC7 RID: 2759
 		[Tooltip("The minimum value at which the objects are enabled")]
 		public float minFloatValue;
 
-		// Token: 0x040012D3 RID: 4819
+		// Token: 0x04000AC8 RID: 2760
 		[Tooltip("The maximum value at which the objects are enabled")]
 		public float maxFloatValue;
 
-		// Token: 0x040012D4 RID: 4820
+		// Token: 0x04000AC9 RID: 2761
 		public GameObject[] objectsToEnable;
 
-		// Token: 0x040012D5 RID: 4821
+		// Token: 0x04000ACA RID: 2762
 		public GameObject[] objectsToDisable;
 
-		// Token: 0x040012D6 RID: 4822
+		// Token: 0x04000ACB RID: 2763
 		private bool wasWithinRange;
 	}
 }

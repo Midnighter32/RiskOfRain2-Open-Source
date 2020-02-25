@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 
 namespace RoR2.UI.MainMenu
 {
-	// Token: 0x02000666 RID: 1638
+	// Token: 0x0200065B RID: 1627
 	public sealed class MainMenuController : MonoBehaviour
 	{
-		// Token: 0x06002484 RID: 9348 RVA: 0x000AB0CC File Offset: 0x000A92CC
+		// Token: 0x06002628 RID: 9768 RVA: 0x000A5C08 File Offset: 0x000A3E08
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void Init()
 		{
@@ -22,7 +22,7 @@ namespace RoR2.UI.MainMenu
 			};
 		}
 
-		// Token: 0x06002485 RID: 9349 RVA: 0x000AB0F4 File Offset: 0x000A92F4
+		// Token: 0x06002629 RID: 9769 RVA: 0x000A5C30 File Offset: 0x000A3E30
 		private void Start()
 		{
 			MainMenuController.wasInMultiplayer = false;
@@ -49,19 +49,19 @@ namespace RoR2.UI.MainMenu
 			}
 		}
 
-		// Token: 0x06002486 RID: 9350 RVA: 0x000AB1FE File Offset: 0x000A93FE
+		// Token: 0x0600262A RID: 9770 RVA: 0x000A5D3A File Offset: 0x000A3F3A
 		private static bool IsMainUserSignedIn()
 		{
 			return LocalUserManager.FindLocalUser(0) != null;
 		}
 
-		// Token: 0x06002487 RID: 9351 RVA: 0x000AB209 File Offset: 0x000A9409
+		// Token: 0x0600262B RID: 9771 RVA: 0x000A5D45 File Offset: 0x000A3F45
 		private bool IsInLobby()
 		{
 			return SteamworksLobbyManager.isInLobby;
 		}
 
-		// Token: 0x06002488 RID: 9352 RVA: 0x000AB210 File Offset: 0x000A9410
+		// Token: 0x0600262C RID: 9772 RVA: 0x000A5D4C File Offset: 0x000A3F4C
 		private void Update()
 		{
 			if (this.IsInLobby() && this.currentMenuScreen != this.multiplayerMenuScreen)
@@ -103,65 +103,65 @@ namespace RoR2.UI.MainMenu
 			}
 		}
 
-		// Token: 0x06002489 RID: 9353 RVA: 0x000AB410 File Offset: 0x000A9610
+		// Token: 0x0600262D RID: 9773 RVA: 0x000A5F4C File Offset: 0x000A414C
 		public void SetDesiredMenuScreen(BaseMainMenuScreen newDesiredMenuScreen)
 		{
 			this.desiredMenuScreen = newDesiredMenuScreen;
 		}
 
-		// Token: 0x04002784 RID: 10116
+		// Token: 0x040023EB RID: 9195
 		[NonSerialized]
 		public BaseMainMenuScreen desiredMenuScreen;
 
-		// Token: 0x04002785 RID: 10117
+		// Token: 0x040023EC RID: 9196
 		public BaseMainMenuScreen profileMenuScreen;
 
-		// Token: 0x04002786 RID: 10118
+		// Token: 0x040023ED RID: 9197
 		public BaseMainMenuScreen EAwarningProfileMenu;
 
-		// Token: 0x04002787 RID: 10119
+		// Token: 0x040023EE RID: 9198
 		public BaseMainMenuScreen multiplayerMenuScreen;
 
-		// Token: 0x04002788 RID: 10120
+		// Token: 0x040023EF RID: 9199
 		public BaseMainMenuScreen titleMenuScreen;
 
-		// Token: 0x04002789 RID: 10121
+		// Token: 0x040023F0 RID: 9200
 		public BaseMainMenuScreen settingsMenuScreen;
 
-		// Token: 0x0400278A RID: 10122
+		// Token: 0x040023F1 RID: 9201
 		public BaseMainMenuScreen moreMenuScreen;
 
-		// Token: 0x0400278B RID: 10123
+		// Token: 0x040023F2 RID: 9202
 		private BaseMainMenuScreen currentMenuScreen;
 
-		// Token: 0x0400278C RID: 10124
+		// Token: 0x040023F3 RID: 9203
 		public Transform cameraTransform;
 
-		// Token: 0x0400278D RID: 10125
+		// Token: 0x040023F4 RID: 9204
 		public float camRotationSmoothDampTime;
 
-		// Token: 0x0400278E RID: 10126
+		// Token: 0x040023F5 RID: 9205
 		public float camTranslationSmoothDampTime;
 
-		// Token: 0x0400278F RID: 10127
+		// Token: 0x040023F6 RID: 9206
 		private Vector3 camSmoothDampPositionVelocity;
 
-		// Token: 0x04002790 RID: 10128
+		// Token: 0x040023F7 RID: 9207
 		private Vector3 camSmoothDampRotationVelocity;
 
-		// Token: 0x04002791 RID: 10129
+		// Token: 0x040023F8 RID: 9208
 		public float camTransitionDuration;
 
-		// Token: 0x04002792 RID: 10130
+		// Token: 0x040023F9 RID: 9209
 		private float camTransitionTimer;
 
-		// Token: 0x04002793 RID: 10131
+		// Token: 0x040023FA RID: 9210
 		private static bool wasInMultiplayer = false;
 
-		// Token: 0x04002794 RID: 10132
+		// Token: 0x040023FB RID: 9211
 		private static bool eaWarningShown = false;
 
-		// Token: 0x04002795 RID: 10133
+		// Token: 0x040023FC RID: 9212
 		private static BoolConVar eaMessageSkipConVar = new BoolConVar("ea_message_skip", ConVarFlags.None, "0", "Whether or not to skip the early access splash screen.");
 	}
 }

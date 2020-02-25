@@ -4,24 +4,24 @@ using UnityEngine.Serialization;
 
 namespace RoR2.UI.MainMenu
 {
-	// Token: 0x02000669 RID: 1641
+	// Token: 0x0200065E RID: 1630
 	public class SubmenuMainMenuScreen : BaseMainMenuScreen
 	{
-		// Token: 0x0600249B RID: 9371 RVA: 0x000AB7AC File Offset: 0x000A99AC
+		// Token: 0x0600263F RID: 9791 RVA: 0x000A62E8 File Offset: 0x000A44E8
 		public override void OnEnter(MainMenuController mainMenuController)
 		{
 			base.OnEnter(mainMenuController);
 			this.submenuPanelInstance = UnityEngine.Object.Instantiate<GameObject>(this.submenuPanelPrefab, base.transform);
 		}
 
-		// Token: 0x0600249C RID: 9372 RVA: 0x000AB7CC File Offset: 0x000A99CC
+		// Token: 0x06002640 RID: 9792 RVA: 0x000A6308 File Offset: 0x000A4508
 		public override void OnExit(MainMenuController mainMenuController)
 		{
 			UnityEngine.Object.Destroy(this.submenuPanelInstance);
 			base.OnExit(mainMenuController);
 		}
 
-		// Token: 0x0600249D RID: 9373 RVA: 0x000AB7E0 File Offset: 0x000A99E0
+		// Token: 0x06002641 RID: 9793 RVA: 0x000A631C File Offset: 0x000A451C
 		public void Update()
 		{
 			if (!this.submenuPanelInstance && this.myMainMenuController)
@@ -30,11 +30,11 @@ namespace RoR2.UI.MainMenu
 			}
 		}
 
-		// Token: 0x040027A2 RID: 10146
+		// Token: 0x04002409 RID: 9225
 		[FormerlySerializedAs("settingsPanelPrefab")]
 		public GameObject submenuPanelPrefab;
 
-		// Token: 0x040027A3 RID: 10147
+		// Token: 0x0400240A RID: 9226
 		private GameObject submenuPanelInstance;
 	}
 }

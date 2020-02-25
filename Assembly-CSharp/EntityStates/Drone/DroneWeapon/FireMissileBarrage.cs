@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.Drone.DroneWeapon
 {
-	// Token: 0x02000197 RID: 407
-	internal class FireMissileBarrage : BaseState
+	// Token: 0x0200089C RID: 2204
+	public class FireMissileBarrage : BaseState
 	{
-		// Token: 0x060007D5 RID: 2005 RVA: 0x00026CD4 File Offset: 0x00024ED4
+		// Token: 0x0600316A RID: 12650 RVA: 0x000D4CB0 File Offset: 0x000D2EB0
 		private void FireMissile(string targetMuzzle)
 		{
 			this.missileCount++;
@@ -28,7 +28,7 @@ namespace EntityStates.Drone.DroneWeapon
 			}
 			if (FireMissileBarrage.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireMissileBarrage.effectPrefab, base.gameObject, targetMuzzle, false);
+				EffectManager.SimpleMuzzleFlash(FireMissileBarrage.effectPrefab, base.gameObject, targetMuzzle, false);
 			}
 			if (base.characterBody)
 			{
@@ -50,7 +50,7 @@ namespace EntityStates.Drone.DroneWeapon
 			}
 		}
 
-		// Token: 0x060007D6 RID: 2006 RVA: 0x00026EB7 File Offset: 0x000250B7
+		// Token: 0x0600316B RID: 12651 RVA: 0x000D4E8E File Offset: 0x000D308E
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -58,13 +58,13 @@ namespace EntityStates.Drone.DroneWeapon
 			this.fireInterval = FireMissileBarrage.baseFireInterval / this.attackSpeedStat;
 		}
 
-		// Token: 0x060007D7 RID: 2007 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x0600316C RID: 12652 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x060007D8 RID: 2008 RVA: 0x00026EE0 File Offset: 0x000250E0
+		// Token: 0x0600316D RID: 12653 RVA: 0x000D4EB4 File Offset: 0x000D30B4
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -81,46 +81,46 @@ namespace EntityStates.Drone.DroneWeapon
 			}
 		}
 
-		// Token: 0x060007D9 RID: 2009 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x0600316E RID: 12654 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000A35 RID: 2613
+		// Token: 0x04002FD4 RID: 12244
 		public static GameObject effectPrefab;
 
-		// Token: 0x04000A36 RID: 2614
+		// Token: 0x04002FD5 RID: 12245
 		public static GameObject projectilePrefab;
 
-		// Token: 0x04000A37 RID: 2615
+		// Token: 0x04002FD6 RID: 12246
 		public static float damageCoefficient = 1f;
 
-		// Token: 0x04000A38 RID: 2616
+		// Token: 0x04002FD7 RID: 12247
 		public static float baseFireInterval = 0.1f;
 
-		// Token: 0x04000A39 RID: 2617
+		// Token: 0x04002FD8 RID: 12248
 		public static float minSpread = 0f;
 
-		// Token: 0x04000A3A RID: 2618
+		// Token: 0x04002FD9 RID: 12249
 		public static float maxSpread = 5f;
 
-		// Token: 0x04000A3B RID: 2619
+		// Token: 0x04002FDA RID: 12250
 		public static int maxMissileCount;
 
-		// Token: 0x04000A3C RID: 2620
+		// Token: 0x04002FDB RID: 12251
 		private float fireTimer;
 
-		// Token: 0x04000A3D RID: 2621
+		// Token: 0x04002FDC RID: 12252
 		private float fireInterval;
 
-		// Token: 0x04000A3E RID: 2622
+		// Token: 0x04002FDD RID: 12253
 		private Transform modelTransform;
 
-		// Token: 0x04000A3F RID: 2623
+		// Token: 0x04002FDE RID: 12254
 		private AimAnimator aimAnimator;
 
-		// Token: 0x04000A40 RID: 2624
+		// Token: 0x04002FDF RID: 12255
 		private int missileCount;
 	}
 }

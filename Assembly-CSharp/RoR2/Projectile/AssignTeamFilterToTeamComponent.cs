@@ -4,11 +4,11 @@ using UnityEngine.Networking;
 
 namespace RoR2.Projectile
 {
-	// Token: 0x02000534 RID: 1332
+	// Token: 0x020004EE RID: 1262
 	[RequireComponent(typeof(HealthComponent))]
 	public class AssignTeamFilterToTeamComponent : MonoBehaviour
 	{
-		// Token: 0x06001DD5 RID: 7637 RVA: 0x0008C20C File Offset: 0x0008A40C
+		// Token: 0x06001E0A RID: 7690 RVA: 0x000814FC File Offset: 0x0007F6FC
 		private void Start()
 		{
 			if (NetworkServer.active)

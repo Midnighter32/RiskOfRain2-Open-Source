@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RoR2.Projectile
 {
-	// Token: 0x02000535 RID: 1333
+	// Token: 0x020004EF RID: 1263
 	[RequireComponent(typeof(ProjectileController))]
 	public class BoomerangProjectile : NetworkBehaviour, IProjectileImpactBehavior
 	{
-		// Token: 0x06001DD7 RID: 7639 RVA: 0x0008C24C File Offset: 0x0008A44C
+		// Token: 0x06001E0C RID: 7692 RVA: 0x0008153C File Offset: 0x0007F73C
 		private void Awake()
 		{
 			this.rigidbody = base.GetComponent<Rigidbody>();
@@ -20,7 +21,7 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001DD8 RID: 7640 RVA: 0x0008C2B4 File Offset: 0x0008A4B4
+		// Token: 0x06001E0D RID: 7693 RVA: 0x000815A4 File Offset: 0x0007F7A4
 		public void OnProjectileImpact(ProjectileImpactInfo impactInfo)
 		{
 			HurtBox component = impactInfo.collider.GetComponent<HurtBox>();
@@ -64,10 +65,10 @@ namespace RoR2.Projectile
 				return;
 			}
 			this.NetworkboomerangState = BoomerangProjectile.BoomerangState.FlyBack;
-			EffectManager.instance.SimpleImpactEffect(this.impactSpark, impactInfo.estimatedPointOfImpact, -base.transform.forward, true);
+			EffectManager.SimpleImpactEffect(this.impactSpark, impactInfo.estimatedPointOfImpact, -base.transform.forward, true);
 		}
 
-		// Token: 0x06001DD9 RID: 7641 RVA: 0x0008C47C File Offset: 0x0008A67C
+		// Token: 0x06001E0E RID: 7694 RVA: 0x00081764 File Offset: 0x0007F964
 		private bool Reel()
 		{
 			Vector3 vector = this.projectileController.owner.transform.position - base.transform.position;
@@ -75,7 +76,7 @@ namespace RoR2.Projectile
 			return vector.magnitude <= 2f;
 		}
 
-		// Token: 0x06001DDA RID: 7642 RVA: 0x0008C4C8 File Offset: 0x0008A6C8
+		// Token: 0x06001E0F RID: 7695 RVA: 0x000817B0 File Offset: 0x0007F9B0
 		public void FixedUpdate()
 		{
 			if (NetworkServer.active && !this.projectileController.owner)
@@ -130,7 +131,7 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001DDB RID: 7643 RVA: 0x0008C61C File Offset: 0x0008A81C
+		// Token: 0x06001E10 RID: 7696 RVA: 0x00081904 File Offset: 0x0007FB04
 		private Vector3 CalculatePullDirection()
 		{
 			if (this.projectileController.owner)
@@ -140,27 +141,28 @@ namespace RoR2.Projectile
 			return base.transform.forward;
 		}
 
-		// Token: 0x06001DDD RID: 7645 RVA: 0x00004507 File Offset: 0x00002707
+		// Token: 0x06001E12 RID: 7698 RVA: 0x0000409B File Offset: 0x0000229B
 		private void UNetVersion()
 		{
 		}
 
-		// Token: 0x1700029E RID: 670
-		// (get) Token: 0x06001DDE RID: 7646 RVA: 0x0008C688 File Offset: 0x0008A888
-		// (set) Token: 0x06001DDF RID: 7647 RVA: 0x0008C69B File Offset: 0x0008A89B
+		// Token: 0x17000334 RID: 820
+		// (get) Token: 0x06001E13 RID: 7699 RVA: 0x00081970 File Offset: 0x0007FB70
+		// (set) Token: 0x06001E14 RID: 7700 RVA: 0x00081983 File Offset: 0x0007FB83
 		public BoomerangProjectile.BoomerangState NetworkboomerangState
 		{
 			get
 			{
 				return this.boomerangState;
 			}
+			[param: In]
 			set
 			{
-				base.SetSyncVar<BoomerangProjectile.BoomerangState>(value, ref this.boomerangState, 1u);
+				base.SetSyncVar<BoomerangProjectile.BoomerangState>(value, ref this.boomerangState, 1U);
 			}
 		}
 
-		// Token: 0x06001DE0 RID: 7648 RVA: 0x0008C6B0 File Offset: 0x0008A8B0
+		// Token: 0x06001E15 RID: 7701 RVA: 0x00081998 File Offset: 0x0007FB98
 		public override bool OnSerialize(NetworkWriter writer, bool forceAll)
 		{
 			if (forceAll)
@@ -169,7 +171,7 @@ namespace RoR2.Projectile
 				return true;
 			}
 			bool flag = false;
-			if ((base.syncVarDirtyBits & 1u) != 0u)
+			if ((base.syncVarDirtyBits & 1U) != 0U)
 			{
 				if (!flag)
 				{
@@ -185,7 +187,7 @@ namespace RoR2.Projectile
 			return flag;
 		}
 
-		// Token: 0x06001DE1 RID: 7649 RVA: 0x0008C71C File Offset: 0x0008A91C
+		// Token: 0x06001E16 RID: 7702 RVA: 0x00081A04 File Offset: 0x0007FC04
 		public override void OnDeserialize(NetworkReader reader, bool initialState)
 		{
 			if (initialState)
@@ -200,54 +202,54 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x0400201D RID: 8221
+		// Token: 0x04001B36 RID: 6966
 		public float travelSpeed = 40f;
 
-		// Token: 0x0400201E RID: 8222
+		// Token: 0x04001B37 RID: 6967
 		public float transitionDuration;
 
-		// Token: 0x0400201F RID: 8223
+		// Token: 0x04001B38 RID: 6968
 		public float maxFlyStopwatch;
 
-		// Token: 0x04002020 RID: 8224
+		// Token: 0x04001B39 RID: 6969
 		public GameObject impactSpark;
 
-		// Token: 0x04002021 RID: 8225
+		// Token: 0x04001B3A RID: 6970
 		public float damageCoefficient;
 
-		// Token: 0x04002022 RID: 8226
+		// Token: 0x04001B3B RID: 6971
 		public bool canHitCharacters;
 
-		// Token: 0x04002023 RID: 8227
+		// Token: 0x04001B3C RID: 6972
 		public bool canHitWorld;
 
-		// Token: 0x04002024 RID: 8228
+		// Token: 0x04001B3D RID: 6973
 		private ProjectileController projectileController;
 
-		// Token: 0x04002025 RID: 8229
+		// Token: 0x04001B3E RID: 6974
 		[SyncVar]
 		private BoomerangProjectile.BoomerangState boomerangState;
 
-		// Token: 0x04002026 RID: 8230
+		// Token: 0x04001B3F RID: 6975
 		private Transform ownerTransform;
 
-		// Token: 0x04002027 RID: 8231
+		// Token: 0x04001B40 RID: 6976
 		private ProjectileDamage projectileDamage;
 
-		// Token: 0x04002028 RID: 8232
+		// Token: 0x04001B41 RID: 6977
 		private Rigidbody rigidbody;
 
-		// Token: 0x04002029 RID: 8233
+		// Token: 0x04001B42 RID: 6978
 		private float stopwatch;
 
-		// Token: 0x02000536 RID: 1334
+		// Token: 0x020004F0 RID: 1264
 		private enum BoomerangState
 		{
-			// Token: 0x0400202B RID: 8235
+			// Token: 0x04001B44 RID: 6980
 			FlyOut,
-			// Token: 0x0400202C RID: 8236
+			// Token: 0x04001B45 RID: 6981
 			Transition,
-			// Token: 0x0400202D RID: 8237
+			// Token: 0x04001B46 RID: 6982
 			FlyBack
 		}
 	}

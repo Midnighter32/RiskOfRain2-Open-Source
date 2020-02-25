@@ -2,10 +2,10 @@
 
 namespace EntityStates.AncientWispMonster
 {
-	// Token: 0x020000D5 RID: 213
+	// Token: 0x02000734 RID: 1844
 	public class FireBomb : BaseState
 	{
-		// Token: 0x06000432 RID: 1074 RVA: 0x00011607 File Offset: 0x0000F807
+		// Token: 0x06002ADB RID: 10971 RVA: 0x000B4650 File Offset: 0x000B2850
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -13,7 +13,7 @@ namespace EntityStates.AncientWispMonster
 			base.PlayAnimation("Gesture", "FireBomb", "FireBomb.playbackRate", this.duration);
 		}
 
-		// Token: 0x06000433 RID: 1075 RVA: 0x0001163C File Offset: 0x0000F83C
+		// Token: 0x06002ADC RID: 10972 RVA: 0x000B4685 File Offset: 0x000B2885
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -23,16 +23,16 @@ namespace EntityStates.AncientWispMonster
 			}
 		}
 
-		// Token: 0x06000434 RID: 1076 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x06002ADD RID: 10973 RVA: 0x0000C68F File Offset: 0x0000A88F
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
-			return InterruptPriority.Death;
+			return InterruptPriority.Frozen;
 		}
 
-		// Token: 0x040003EE RID: 1006
+		// Token: 0x040026B4 RID: 9908
 		public static float baseDuration = 4f;
 
-		// Token: 0x040003EF RID: 1007
+		// Token: 0x040026B5 RID: 9909
 		private float duration;
 	}
 }

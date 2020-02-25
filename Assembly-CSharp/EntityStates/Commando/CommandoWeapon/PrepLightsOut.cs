@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Commando.CommandoWeapon
 {
-	// Token: 0x020001B1 RID: 433
-	internal class PrepLightsOut : BaseState
+	// Token: 0x020008C6 RID: 2246
+	public class PrepLightsOut : BaseState
 	{
-		// Token: 0x0600087B RID: 2171 RVA: 0x0002A8A4 File Offset: 0x00028AA4
+		// Token: 0x0600325D RID: 12893 RVA: 0x000D9E24 File Offset: 0x000D8024
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -42,7 +42,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x0600087C RID: 2172 RVA: 0x0002A9EC File Offset: 0x00028BEC
+		// Token: 0x0600325E RID: 12894 RVA: 0x000D9F6C File Offset: 0x000D816C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -53,7 +53,7 @@ namespace EntityStates.Commando.CommandoWeapon
 			}
 		}
 
-		// Token: 0x0600087D RID: 2173 RVA: 0x0002AA1B File Offset: 0x00028C1B
+		// Token: 0x0600325F RID: 12895 RVA: 0x000D9F9B File Offset: 0x000D819B
 		public override void OnExit()
 		{
 			EntityState.Destroy(this.chargeEffect);
@@ -61,34 +61,34 @@ namespace EntityStates.Commando.CommandoWeapon
 			base.OnExit();
 		}
 
-		// Token: 0x0600087E RID: 2174 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x06003260 RID: 12896 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x04000B51 RID: 2897
+		// Token: 0x04003152 RID: 12626
 		public static float baseDuration = 3f;
 
-		// Token: 0x04000B52 RID: 2898
+		// Token: 0x04003153 RID: 12627
 		public static GameObject chargePrefab;
 
-		// Token: 0x04000B53 RID: 2899
+		// Token: 0x04003154 RID: 12628
 		public static GameObject specialCrosshairPrefab;
 
-		// Token: 0x04000B54 RID: 2900
+		// Token: 0x04003155 RID: 12629
 		public static string prepSoundString;
 
-		// Token: 0x04000B55 RID: 2901
+		// Token: 0x04003156 RID: 12630
 		private GameObject chargeEffect;
 
-		// Token: 0x04000B56 RID: 2902
+		// Token: 0x04003157 RID: 12631
 		private float duration;
 
-		// Token: 0x04000B57 RID: 2903
+		// Token: 0x04003158 RID: 12632
 		private ChildLocator childLocator;
 
-		// Token: 0x04000B58 RID: 2904
+		// Token: 0x04003159 RID: 12633
 		private GameObject defaultCrosshairPrefab;
 	}
 }

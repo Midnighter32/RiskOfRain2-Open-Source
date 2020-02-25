@@ -1,58 +1,41 @@
 ﻿using System;
+using System.Text;
 using TMPro;
 using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020002BE RID: 702
+	// Token: 0x020001CD RID: 461
 	public class CostHologramContent : MonoBehaviour
 	{
-		// Token: 0x06000E3F RID: 3647 RVA: 0x00046090 File Offset: 0x00044290
+		// Token: 0x060009DE RID: 2526 RVA: 0x0002B010 File Offset: 0x00029210
 		private void FixedUpdate()
 		{
 			if (this.targetTextMesh)
 			{
-				switch (this.costType)
+				CostHologramContent.sharedStringBuilder.Clear();
+				Color color = Color.white;
+				CostTypeDef costTypeDef = CostTypeCatalog.GetCostTypeDef(this.costType);
+				if (costTypeDef != null)
 				{
-				case CostType.Money:
-					this.targetTextMesh.text = string.Format("${0}", this.displayValue);
-					this.targetTextMesh.color = ColorCatalog.GetColor(ColorCatalog.ColorIndex.Money);
-					return;
-				case CostType.PercentHealth:
-					this.targetTextMesh.text = string.Format("{0}% HP", this.displayValue);
-					this.targetTextMesh.color = ColorCatalog.GetColor(ColorCatalog.ColorIndex.Teleporter);
-					return;
-				case CostType.Lunar:
-					this.targetTextMesh.text = string.Format("{0} Lunar", this.displayValue);
-					this.targetTextMesh.color = ColorCatalog.GetColor(ColorCatalog.ColorIndex.LunarCoin);
-					return;
-				case CostType.WhiteItem:
-					this.targetTextMesh.text = string.Format("{0} Items", this.displayValue);
-					this.targetTextMesh.color = ColorCatalog.GetColor(PurchaseInteraction.CostTypeToColorIndex(this.costType));
-					return;
-				case CostType.GreenItem:
-					this.targetTextMesh.text = string.Format("{0} Items", this.displayValue);
-					this.targetTextMesh.color = ColorCatalog.GetColor(PurchaseInteraction.CostTypeToColorIndex(this.costType));
-					return;
-				case CostType.RedItem:
-					this.targetTextMesh.text = string.Format("{0} Items", this.displayValue);
-					this.targetTextMesh.color = ColorCatalog.GetColor(PurchaseInteraction.CostTypeToColorIndex(this.costType));
-					return;
-				default:
-					this.targetTextMesh.text = string.Format("${0}", this.displayValue);
-					this.targetTextMesh.color = ColorCatalog.GetColor(ColorCatalog.ColorIndex.Error);
-					break;
+					costTypeDef.BuildCostStringStyled(this.displayValue, CostHologramContent.sharedStringBuilder, true, false);
+					color = costTypeDef.GetCostColor(true);
 				}
+				this.targetTextMesh.SetText(CostHologramContent.sharedStringBuilder);
+				this.targetTextMesh.color = color;
 			}
 		}
 
-		// Token: 0x04001222 RID: 4642
+		// Token: 0x04000A0A RID: 2570
 		public int displayValue;
 
-		// Token: 0x04001223 RID: 4643
+		// Token: 0x04000A0B RID: 2571
 		public TextMeshPro targetTextMesh;
 
-		// Token: 0x04001224 RID: 4644
-		public CostType costType;
+		// Token: 0x04000A0C RID: 2572
+		public CostTypeIndex costType;
+
+		// Token: 0x04000A0D RID: 2573
+		private static readonly StringBuilder sharedStringBuilder = new StringBuilder();
 	}
 }

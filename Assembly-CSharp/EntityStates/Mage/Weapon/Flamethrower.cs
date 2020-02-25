@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Mage.Weapon
 {
-	// Token: 0x0200011A RID: 282
-	internal class Flamethrower : BaseState
+	// Token: 0x020007DB RID: 2011
+	public class Flamethrower : BaseState
 	{
-		// Token: 0x06000567 RID: 1383 RVA: 0x00018648 File Offset: 0x00016848
+		// Token: 0x06002DC8 RID: 11720 RVA: 0x000C2978 File Offset: 0x000C0B78
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -15,11 +15,6 @@ namespace EntityStates.Mage.Weapon
 			this.entryDuration = Flamethrower.baseEntryDuration / this.attackSpeedStat;
 			this.flamethrowerDuration = Flamethrower.baseFlamethrowerDuration;
 			Transform modelTransform = base.GetModelTransform();
-			MageLastElementTracker component = base.GetComponent<MageLastElementTracker>();
-			if (component)
-			{
-				component.ApplyElement(MageElement.Fire);
-			}
 			if (base.characterBody)
 			{
 				base.characterBody.SetAimTimer(this.entryDuration + this.flamethrowerDuration + 1f);
@@ -39,7 +34,7 @@ namespace EntityStates.Mage.Weapon
 			base.PlayAnimation("Gesture, Additive", "PrepFlamethrower", "Flamethrower.playbackRate", this.entryDuration);
 		}
 
-		// Token: 0x06000568 RID: 1384 RVA: 0x00018774 File Offset: 0x00016974
+		// Token: 0x06002DC9 RID: 11721 RVA: 0x000C2A8C File Offset: 0x000C0C8C
 		public override void OnExit()
 		{
 			Util.PlaySound(Flamethrower.endAttackSoundString, base.gameObject);
@@ -55,7 +50,7 @@ namespace EntityStates.Mage.Weapon
 			base.OnExit();
 		}
 
-		// Token: 0x06000569 RID: 1385 RVA: 0x000187E8 File Offset: 0x000169E8
+		// Token: 0x06002DCA RID: 11722 RVA: 0x000C2B00 File Offset: 0x000C0D00
 		private void FireGauntlet(string muzzleString)
 		{
 			Ray aimRay = base.GetAimRay();
@@ -77,18 +72,18 @@ namespace EntityStates.Mage.Weapon
 					falloffModel = BulletAttack.FalloffModel.None,
 					stopperMask = LayerIndex.world.mask,
 					procCoefficient = Flamethrower.procCoefficientPerTick,
-					maxDistance = Flamethrower.maxDistance,
+					maxDistance = this.maxDistance,
 					smartCollision = true,
 					damageType = (Util.CheckRoll(Flamethrower.ignitePercentChance, base.characterBody.master) ? DamageType.IgniteOnHit : DamageType.Generic)
 				}.Fire();
 				if (base.characterMotor)
 				{
-					base.characterMotor.ApplyForce(aimRay.direction * -Flamethrower.recoilForce, false);
+					base.characterMotor.ApplyForce(aimRay.direction * -Flamethrower.recoilForce, false, false);
 				}
 			}
 		}
 
-		// Token: 0x0600056A RID: 1386 RVA: 0x0001891C File Offset: 0x00016B1C
+		// Token: 0x06002DCB RID: 11723 RVA: 0x000C2C38 File Offset: 0x000C0E38
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -100,12 +95,24 @@ namespace EntityStates.Mage.Weapon
 				base.PlayAnimation("Gesture, Additive", "Flamethrower", "Flamethrower.playbackRate", this.flamethrowerDuration);
 				if (this.childLocator)
 				{
-					Transform parent = this.childLocator.FindChild("MuzzleLeft");
-					Transform parent2 = this.childLocator.FindChild("MuzzleRight");
-					this.leftFlamethrowerTransform = UnityEngine.Object.Instantiate<GameObject>(Flamethrower.flamethrowerEffectPrefab, parent).transform;
-					this.rightFlamethrowerTransform = UnityEngine.Object.Instantiate<GameObject>(Flamethrower.flamethrowerEffectPrefab, parent2).transform;
-					this.leftFlamethrowerTransform.GetComponent<ScaleParticleSystemDuration>().newDuration = this.flamethrowerDuration;
-					this.rightFlamethrowerTransform.GetComponent<ScaleParticleSystemDuration>().newDuration = this.flamethrowerDuration;
+					Transform transform = this.childLocator.FindChild("MuzzleLeft");
+					Transform transform2 = this.childLocator.FindChild("MuzzleRight");
+					if (transform)
+					{
+						this.leftFlamethrowerTransform = UnityEngine.Object.Instantiate<GameObject>(this.flamethrowerEffectPrefab, transform).transform;
+					}
+					if (transform2)
+					{
+						this.rightFlamethrowerTransform = UnityEngine.Object.Instantiate<GameObject>(this.flamethrowerEffectPrefab, transform2).transform;
+					}
+					if (this.leftFlamethrowerTransform)
+					{
+						this.leftFlamethrowerTransform.GetComponent<ScaleParticleSystemDuration>().newDuration = this.flamethrowerDuration;
+					}
+					if (this.rightFlamethrowerTransform)
+					{
+						this.rightFlamethrowerTransform.GetComponent<ScaleParticleSystemDuration>().newDuration = this.flamethrowerDuration;
+					}
 				}
 				this.FireGauntlet("MuzzleCenter");
 			}
@@ -126,106 +133,112 @@ namespace EntityStates.Mage.Weapon
 			}
 		}
 
-		// Token: 0x0600056B RID: 1387 RVA: 0x00018AA4 File Offset: 0x00016CA4
+		// Token: 0x06002DCC RID: 11724 RVA: 0x000C2DEC File Offset: 0x000C0FEC
 		private void UpdateFlamethrowerEffect()
 		{
-			float num = Flamethrower.maxDistance;
 			Ray aimRay = base.GetAimRay();
 			Vector3 direction = aimRay.direction;
 			Vector3 direction2 = aimRay.direction;
-			float num2 = Flamethrower.maxDistance;
-			this.leftFlamethrowerTransform.forward = direction;
-			this.rightFlamethrowerTransform.forward = direction2;
+			if (this.leftFlamethrowerTransform)
+			{
+				this.leftFlamethrowerTransform.forward = direction;
+			}
+			if (this.rightFlamethrowerTransform)
+			{
+				this.rightFlamethrowerTransform.forward = direction2;
+			}
 		}
 
-		// Token: 0x0600056C RID: 1388 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002DCD RID: 11725 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x040005EF RID: 1519
-		public static GameObject flamethrowerEffectPrefab;
+		// Token: 0x04002AAC RID: 10924
+		[SerializeField]
+		public GameObject flamethrowerEffectPrefab;
 
-		// Token: 0x040005F0 RID: 1520
+		// Token: 0x04002AAD RID: 10925
 		public static GameObject impactEffectPrefab;
 
-		// Token: 0x040005F1 RID: 1521
+		// Token: 0x04002AAE RID: 10926
 		public static GameObject tracerEffectPrefab;
 
-		// Token: 0x040005F2 RID: 1522
-		public static float maxDistance;
+		// Token: 0x04002AAF RID: 10927
+		[SerializeField]
+		public float maxDistance;
 
-		// Token: 0x040005F3 RID: 1523
+		// Token: 0x04002AB0 RID: 10928
 		public static float radius;
 
-		// Token: 0x040005F4 RID: 1524
+		// Token: 0x04002AB1 RID: 10929
 		public static float baseEntryDuration = 1f;
 
-		// Token: 0x040005F5 RID: 1525
+		// Token: 0x04002AB2 RID: 10930
 		public static float baseFlamethrowerDuration = 2f;
 
-		// Token: 0x040005F6 RID: 1526
+		// Token: 0x04002AB3 RID: 10931
 		public static float totalDamageCoefficient = 1.2f;
 
-		// Token: 0x040005F7 RID: 1527
+		// Token: 0x04002AB4 RID: 10932
 		public static float procCoefficientPerTick;
 
-		// Token: 0x040005F8 RID: 1528
+		// Token: 0x04002AB5 RID: 10933
 		public static float tickFrequency;
 
-		// Token: 0x040005F9 RID: 1529
+		// Token: 0x04002AB6 RID: 10934
 		public static float force = 20f;
 
-		// Token: 0x040005FA RID: 1530
+		// Token: 0x04002AB7 RID: 10935
 		public static string startAttackSoundString;
 
-		// Token: 0x040005FB RID: 1531
+		// Token: 0x04002AB8 RID: 10936
 		public static string endAttackSoundString;
 
-		// Token: 0x040005FC RID: 1532
+		// Token: 0x04002AB9 RID: 10937
 		public static float ignitePercentChance;
 
-		// Token: 0x040005FD RID: 1533
+		// Token: 0x04002ABA RID: 10938
 		public static float recoilForce;
 
-		// Token: 0x040005FE RID: 1534
+		// Token: 0x04002ABB RID: 10939
 		private float tickDamageCoefficient;
 
-		// Token: 0x040005FF RID: 1535
+		// Token: 0x04002ABC RID: 10940
 		private float flamethrowerStopwatch;
 
-		// Token: 0x04000600 RID: 1536
+		// Token: 0x04002ABD RID: 10941
 		private float stopwatch;
 
-		// Token: 0x04000601 RID: 1537
+		// Token: 0x04002ABE RID: 10942
 		private float entryDuration;
 
-		// Token: 0x04000602 RID: 1538
+		// Token: 0x04002ABF RID: 10943
 		private float flamethrowerDuration;
 
-		// Token: 0x04000603 RID: 1539
+		// Token: 0x04002AC0 RID: 10944
 		private bool hasBegunFlamethrower;
 
-		// Token: 0x04000604 RID: 1540
+		// Token: 0x04002AC1 RID: 10945
 		private ChildLocator childLocator;
 
-		// Token: 0x04000605 RID: 1541
+		// Token: 0x04002AC2 RID: 10946
 		private Transform leftFlamethrowerTransform;
 
-		// Token: 0x04000606 RID: 1542
+		// Token: 0x04002AC3 RID: 10947
 		private Transform rightFlamethrowerTransform;
 
-		// Token: 0x04000607 RID: 1543
+		// Token: 0x04002AC4 RID: 10948
 		private Transform leftMuzzleTransform;
 
-		// Token: 0x04000608 RID: 1544
+		// Token: 0x04002AC5 RID: 10949
 		private Transform rightMuzzleTransform;
 
-		// Token: 0x04000609 RID: 1545
+		// Token: 0x04002AC6 RID: 10950
 		private bool isCrit;
 
-		// Token: 0x0400060A RID: 1546
+		// Token: 0x04002AC7 RID: 10951
 		private const float flamethrowerEffectBaseDistance = 16f;
 	}
 }

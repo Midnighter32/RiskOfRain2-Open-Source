@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace Generics.Dynamics
 {
-	// Token: 0x020006D2 RID: 1746
+	// Token: 0x0200091D RID: 2333
 	public static class ChainKinematicSolver
 	{
-		// Token: 0x06002728 RID: 10024 RVA: 0x000B5390 File Offset: 0x000B3590
+		// Token: 0x06003472 RID: 13426 RVA: 0x000E47D8 File Offset: 0x000E29D8
 		public static void Process(Core.KinematicChain chain)
 		{
 			if (!chain.initiated)
@@ -18,7 +18,7 @@ namespace Generics.Dynamics
 			ChainKinematicSolver.MapSolverOutput(chain);
 		}
 
-		// Token: 0x06002729 RID: 10025 RVA: 0x000B53B4 File Offset: 0x000B35B4
+		// Token: 0x06003473 RID: 13427 RVA: 0x000E47FC File Offset: 0x000E29FC
 		private static void FollowParent(Core.KinematicChain chain)
 		{
 			for (int i = 1; i < chain.joints.Count; i++)
@@ -49,7 +49,7 @@ namespace Generics.Dynamics
 			}
 		}
 
-		// Token: 0x0600272A RID: 10026 RVA: 0x000B5748 File Offset: 0x000B3948
+		// Token: 0x06003474 RID: 13428 RVA: 0x000E4B90 File Offset: 0x000E2D90
 		private static void MapSolverOutput(Core.KinematicChain chain)
 		{
 			for (int i = 1; i < chain.joints.Count; i++)

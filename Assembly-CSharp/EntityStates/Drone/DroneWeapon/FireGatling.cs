@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Drone.DroneWeapon
 {
-	// Token: 0x02000195 RID: 405
-	internal class FireGatling : BaseState
+	// Token: 0x0200089A RID: 2202
+	public class FireGatling : BaseState
 	{
-		// Token: 0x060007C9 RID: 1993 RVA: 0x000268A4 File Offset: 0x00024AA4
+		// Token: 0x0600315E RID: 12638 RVA: 0x000D4890 File Offset: 0x000D2A90
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -17,7 +17,7 @@ namespace EntityStates.Drone.DroneWeapon
 			base.PlayAnimation("Gesture", "FireGatling");
 			if (FireGatling.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireGatling.effectPrefab, base.gameObject, muzzleName, false);
+				EffectManager.SimpleMuzzleFlash(FireGatling.effectPrefab, base.gameObject, muzzleName, false);
 			}
 			if (base.isAuthority)
 			{
@@ -40,13 +40,13 @@ namespace EntityStates.Drone.DroneWeapon
 			}
 		}
 
-		// Token: 0x060007CA RID: 1994 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x0600315F RID: 12639 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x060007CB RID: 1995 RVA: 0x000269D0 File Offset: 0x00024BD0
+		// Token: 0x06003160 RID: 12640 RVA: 0x000D49B4 File Offset: 0x000D2BB4
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -64,49 +64,49 @@ namespace EntityStates.Drone.DroneWeapon
 			}
 		}
 
-		// Token: 0x060007CC RID: 1996 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06003161 RID: 12641 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000A16 RID: 2582
+		// Token: 0x04002FB5 RID: 12213
 		public static GameObject effectPrefab;
 
-		// Token: 0x04000A17 RID: 2583
+		// Token: 0x04002FB6 RID: 12214
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x04000A18 RID: 2584
+		// Token: 0x04002FB7 RID: 12215
 		public static GameObject tracerEffectPrefab;
 
-		// Token: 0x04000A19 RID: 2585
+		// Token: 0x04002FB8 RID: 12216
 		public static float damageCoefficient;
 
-		// Token: 0x04000A1A RID: 2586
+		// Token: 0x04002FB9 RID: 12217
 		public static float force;
 
-		// Token: 0x04000A1B RID: 2587
+		// Token: 0x04002FBA RID: 12218
 		public static float minSpread;
 
-		// Token: 0x04000A1C RID: 2588
+		// Token: 0x04002FBB RID: 12219
 		public static float maxSpread;
 
-		// Token: 0x04000A1D RID: 2589
+		// Token: 0x04002FBC RID: 12220
 		public static int bulletCount;
 
-		// Token: 0x04000A1E RID: 2590
+		// Token: 0x04002FBD RID: 12221
 		public static float durationBetweenShots = 1f;
 
-		// Token: 0x04000A1F RID: 2591
+		// Token: 0x04002FBE RID: 12222
 		public static float baseDuration = 2f;
 
-		// Token: 0x04000A20 RID: 2592
+		// Token: 0x04002FBF RID: 12223
 		public static string fireGatlingSoundString;
 
-		// Token: 0x04000A21 RID: 2593
+		// Token: 0x04002FC0 RID: 12224
 		public int bulletCountCurrent = 1;
 
-		// Token: 0x04000A22 RID: 2594
+		// Token: 0x04002FC1 RID: 12225
 		private float duration;
 	}
 }

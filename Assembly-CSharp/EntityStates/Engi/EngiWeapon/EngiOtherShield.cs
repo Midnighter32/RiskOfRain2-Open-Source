@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 namespace EntityStates.Engi.EngiWeapon
 {
-	// Token: 0x02000183 RID: 387
-	internal class EngiOtherShield : BaseState
+	// Token: 0x02000882 RID: 2178
+	public class EngiOtherShield : BaseState
 	{
-		// Token: 0x06000770 RID: 1904 RVA: 0x00024924 File Offset: 0x00022B24
+		// Token: 0x06003100 RID: 12544 RVA: 0x000D2B8C File Offset: 0x000D0D8C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -27,7 +27,7 @@ namespace EntityStates.Engi.EngiWeapon
 			}
 		}
 
-		// Token: 0x06000771 RID: 1905 RVA: 0x000249B8 File Offset: 0x00022BB8
+		// Token: 0x06003101 RID: 12545 RVA: 0x000D2C20 File Offset: 0x000D0E20
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -37,7 +37,7 @@ namespace EntityStates.Engi.EngiWeapon
 			}
 		}
 
-		// Token: 0x06000772 RID: 1906 RVA: 0x000249EC File Offset: 0x00022BEC
+		// Token: 0x06003102 RID: 12546 RVA: 0x000D2C54 File Offset: 0x000D0E54
 		public override void OnExit()
 		{
 			base.skillLocator.utility = base.skillLocator.FindSkill("GiveShield");
@@ -56,7 +56,7 @@ namespace EntityStates.Engi.EngiWeapon
 			base.OnExit();
 		}
 
-		// Token: 0x06000773 RID: 1907 RVA: 0x00024A67 File Offset: 0x00022C67
+		// Token: 0x06003103 RID: 12547 RVA: 0x000D2CCF File Offset: 0x000D0ECF
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			if (base.fixedAge < this.minimumDuration)
@@ -66,14 +66,14 @@ namespace EntityStates.Engi.EngiWeapon
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x06000774 RID: 1908 RVA: 0x00024A7A File Offset: 0x00022C7A
+		// Token: 0x06003104 RID: 12548 RVA: 0x000D2CE2 File Offset: 0x000D0EE2
 		public override void OnSerialize(NetworkWriter writer)
 		{
 			base.OnSerialize(writer);
 			writer.Write(this.target.gameObject);
 		}
 
-		// Token: 0x06000775 RID: 1909 RVA: 0x00024A94 File Offset: 0x00022C94
+		// Token: 0x06003105 RID: 12549 RVA: 0x000D2CFC File Offset: 0x000D0EFC
 		public override void OnDeserialize(NetworkReader reader)
 		{
 			base.OnDeserialize(reader);
@@ -84,13 +84,13 @@ namespace EntityStates.Engi.EngiWeapon
 			}
 		}
 
-		// Token: 0x04000988 RID: 2440
+		// Token: 0x04002F38 RID: 12088
 		public CharacterBody target;
 
-		// Token: 0x04000989 RID: 2441
+		// Token: 0x04002F39 RID: 12089
 		public float minimumDuration;
 
-		// Token: 0x0400098A RID: 2442
+		// Token: 0x04002F3A RID: 12090
 		private Indicator indicator;
 	}
 }

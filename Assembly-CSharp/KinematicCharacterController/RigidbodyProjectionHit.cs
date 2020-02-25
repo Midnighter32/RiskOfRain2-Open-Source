@@ -3,22 +3,22 @@ using UnityEngine;
 
 namespace KinematicCharacterController
 {
-	// Token: 0x020006CB RID: 1739
+	// Token: 0x02000916 RID: 2326
 	public struct RigidbodyProjectionHit
 	{
-		// Token: 0x040028DB RID: 10459
+		// Token: 0x04003374 RID: 13172
 		public Rigidbody Rigidbody;
 
-		// Token: 0x040028DC RID: 10460
+		// Token: 0x04003375 RID: 13173
 		public Vector3 HitPoint;
 
-		// Token: 0x040028DD RID: 10461
+		// Token: 0x04003376 RID: 13174
 		public Vector3 EffectiveHitNormal;
 
-		// Token: 0x040028DE RID: 10462
+		// Token: 0x04003377 RID: 13175
 		public Vector3 HitVelocity;
 
-		// Token: 0x040028DF RID: 10463
+		// Token: 0x04003378 RID: 13176
 		public bool StableOnHit;
 	}
 }

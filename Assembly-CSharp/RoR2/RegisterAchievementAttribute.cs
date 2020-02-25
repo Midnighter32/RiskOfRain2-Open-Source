@@ -3,11 +3,11 @@ using JetBrains.Annotations;
 
 namespace RoR2
 {
-	// Token: 0x020001F8 RID: 504
+	// Token: 0x020000B9 RID: 185
 	[MeansImplicitUse]
 	public class RegisterAchievementAttribute : Attribute
 	{
-		// Token: 0x060009EA RID: 2538 RVA: 0x00031699 File Offset: 0x0002F899
+		// Token: 0x060003AF RID: 943 RVA: 0x0000E359 File Offset: 0x0000C559
 		public RegisterAchievementAttribute([NotNull] string identifier, string unlockableRewardIdentifier, string prerequisiteAchievementIdentifier, Type serverTrackerType = null)
 		{
 			this.identifier = identifier;
@@ -16,16 +16,16 @@ namespace RoR2
 			this.serverTrackerType = serverTrackerType;
 		}
 
-		// Token: 0x04000D20 RID: 3360
+		// Token: 0x0400032F RID: 815
 		public readonly string identifier;
 
-		// Token: 0x04000D21 RID: 3361
+		// Token: 0x04000330 RID: 816
 		public readonly string unlockableRewardIdentifier;
 
-		// Token: 0x04000D22 RID: 3362
+		// Token: 0x04000331 RID: 817
 		public readonly string prerequisiteAchievementIdentifier;
 
-		// Token: 0x04000D23 RID: 3363
+		// Token: 0x04000332 RID: 818
 		public readonly Type serverTrackerType;
 	}
 }

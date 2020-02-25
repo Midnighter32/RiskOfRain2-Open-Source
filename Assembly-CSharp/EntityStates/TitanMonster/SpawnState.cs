@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.TitanMonster
 {
-	// Token: 0x02000175 RID: 373
+	// Token: 0x0200085B RID: 2139
 	public class SpawnState : BaseState
 	{
-		// Token: 0x06000731 RID: 1841 RVA: 0x00023024 File Offset: 0x00021224
+		// Token: 0x0600304C RID: 12364 RVA: 0x000CFE24 File Offset: 0x000CE024
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -22,7 +22,7 @@ namespace EntityStates.TitanMonster
 			}
 		}
 
-		// Token: 0x06000732 RID: 1842 RVA: 0x00023098 File Offset: 0x00021298
+		// Token: 0x0600304D RID: 12365 RVA: 0x000CFE98 File Offset: 0x000CE098
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -33,19 +33,19 @@ namespace EntityStates.TitanMonster
 			}
 		}
 
-		// Token: 0x06000733 RID: 1843 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x0600304E RID: 12366 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Death;
 		}
 
-		// Token: 0x04000909 RID: 2313
+		// Token: 0x04002E76 RID: 11894
 		public static float duration = 4f;
 
-		// Token: 0x0400090A RID: 2314
+		// Token: 0x04002E77 RID: 11895
 		public static GameObject burrowPrefab;
 
-		// Token: 0x0400090B RID: 2315
+		// Token: 0x04002E78 RID: 11896
 		public static string spawnSoundString;
 	}
 }

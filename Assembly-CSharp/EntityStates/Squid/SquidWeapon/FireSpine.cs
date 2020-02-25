@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Squid.SquidWeapon
 {
-	// Token: 0x020000F4 RID: 244
-	internal class FireSpine : BaseState
+	// Token: 0x02000785 RID: 1925
+	public class FireSpine : BaseState
 	{
-		// Token: 0x060004A9 RID: 1193 RVA: 0x000135D8 File Offset: 0x000117D8
+		// Token: 0x06002C33 RID: 11315 RVA: 0x000BA810 File Offset: 0x000B8A10
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -17,7 +17,7 @@ namespace EntityStates.Squid.SquidWeapon
 			string muzzleName = "Muzzle";
 			if (FireSpine.effectPrefab)
 			{
-				EffectManager.instance.SimpleMuzzleFlash(FireSpine.effectPrefab, base.gameObject, muzzleName, false);
+				EffectManager.SimpleMuzzleFlash(FireSpine.effectPrefab, base.gameObject, muzzleName, false);
 			}
 			if (base.isAuthority)
 			{
@@ -39,13 +39,13 @@ namespace EntityStates.Squid.SquidWeapon
 			}
 		}
 
-		// Token: 0x060004AA RID: 1194 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002C34 RID: 11316 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x060004AB RID: 1195 RVA: 0x000136F0 File Offset: 0x000118F0
+		// Token: 0x06002C35 RID: 11317 RVA: 0x000BA924 File Offset: 0x000B8B24
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -63,46 +63,46 @@ namespace EntityStates.Squid.SquidWeapon
 			}
 		}
 
-		// Token: 0x060004AC RID: 1196 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002C36 RID: 11318 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x0400045D RID: 1117
+		// Token: 0x0400282F RID: 10287
 		public static GameObject effectPrefab;
 
-		// Token: 0x0400045E RID: 1118
+		// Token: 0x04002830 RID: 10288
 		public static GameObject hitEffectPrefab;
 
-		// Token: 0x0400045F RID: 1119
+		// Token: 0x04002831 RID: 10289
 		public static GameObject tracerEffectPrefab;
 
-		// Token: 0x04000460 RID: 1120
+		// Token: 0x04002832 RID: 10290
 		public static float damageCoefficient;
 
-		// Token: 0x04000461 RID: 1121
+		// Token: 0x04002833 RID: 10291
 		public static float force;
 
-		// Token: 0x04000462 RID: 1122
+		// Token: 0x04002834 RID: 10292
 		public static float minSpread;
 
-		// Token: 0x04000463 RID: 1123
+		// Token: 0x04002835 RID: 10293
 		public static float maxSpread;
 
-		// Token: 0x04000464 RID: 1124
+		// Token: 0x04002836 RID: 10294
 		public static int bulletCount;
 
-		// Token: 0x04000465 RID: 1125
+		// Token: 0x04002837 RID: 10295
 		public static float durationBetweenShots = 1f;
 
-		// Token: 0x04000466 RID: 1126
+		// Token: 0x04002838 RID: 10296
 		public static float baseDuration = 2f;
 
-		// Token: 0x04000467 RID: 1127
+		// Token: 0x04002839 RID: 10297
 		public int bulletCountCurrent = 1;
 
-		// Token: 0x04000468 RID: 1128
+		// Token: 0x0400283A RID: 10298
 		private float duration;
 	}
 }

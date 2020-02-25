@@ -3,18 +3,18 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003A7 RID: 935
+	// Token: 0x020002E7 RID: 743
 	[RequireComponent(typeof(Rigidbody))]
 	[RequireComponent(typeof(Collider))]
 	public class RigidbodyStickOnImpact : MonoBehaviour
 	{
-		// Token: 0x060013CD RID: 5069 RVA: 0x00061017 File Offset: 0x0005F217
+		// Token: 0x060010FE RID: 4350 RVA: 0x0004ACCC File Offset: 0x00048ECC
 		private void Start()
 		{
 			this.rb = base.GetComponent<Rigidbody>();
 		}
 
-		// Token: 0x060013CE RID: 5070 RVA: 0x00061028 File Offset: 0x0005F228
+		// Token: 0x060010FF RID: 4351 RVA: 0x0004ACDC File Offset: 0x00048EDC
 		private void Update()
 		{
 			if (this.stuck)
@@ -24,7 +24,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x060013CF RID: 5071 RVA: 0x00061084 File Offset: 0x0005F284
+		// Token: 0x06001100 RID: 4352 RVA: 0x0004AD38 File Offset: 0x00048F38
 		private void OnCollisionEnter(Collision collision)
 		{
 			if (this.stuck || this.rb.isKinematic)
@@ -42,7 +42,7 @@ namespace RoR2
 				this.contactNormal = contact.normal;
 				this.contactPosition = contact.point;
 				this.transformPositionWhenContacted = base.transform.position;
-				EffectManager.instance.SpawnEffect(this.stickEffectPrefab, new EffectData
+				EffectManager.SpawnEffect(this.stickEffectPrefab, new EffectData
 				{
 					origin = this.contactPosition,
 					rotation = Util.QuaternionSafeLookRotation(this.contactNormal)
@@ -53,34 +53,34 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001795 RID: 6037
+		// Token: 0x04001072 RID: 4210
 		private Rigidbody rb;
 
-		// Token: 0x04001796 RID: 6038
+		// Token: 0x04001073 RID: 4211
 		public string stickSoundString;
 
-		// Token: 0x04001797 RID: 6039
+		// Token: 0x04001074 RID: 4212
 		public GameObject stickEffectPrefab;
 
-		// Token: 0x04001798 RID: 6040
+		// Token: 0x04001075 RID: 4213
 		public float minimumRelativeVelocityMagnitude;
 
-		// Token: 0x04001799 RID: 6041
+		// Token: 0x04001076 RID: 4214
 		public AnimationCurve embedDistanceCurve;
 
-		// Token: 0x0400179A RID: 6042
+		// Token: 0x04001077 RID: 4215
 		private bool stuck;
 
-		// Token: 0x0400179B RID: 6043
+		// Token: 0x04001078 RID: 4216
 		private float stopwatchSinceStuck;
 
-		// Token: 0x0400179C RID: 6044
+		// Token: 0x04001079 RID: 4217
 		private Vector3 contactNormal;
 
-		// Token: 0x0400179D RID: 6045
+		// Token: 0x0400107A RID: 4218
 		private Vector3 contactPosition;
 
-		// Token: 0x0400179E RID: 6046
+		// Token: 0x0400107B RID: 4219
 		private Vector3 transformPositionWhenContacted;
 	}
 }

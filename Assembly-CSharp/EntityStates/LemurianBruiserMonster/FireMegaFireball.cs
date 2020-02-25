@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace EntityStates.LemurianBruiserMonster
 {
-	// Token: 0x0200011F RID: 287
-	internal class FireMegaFireball : BaseState
+	// Token: 0x020007EE RID: 2030
+	public class FireMegaFireball : BaseState
 	{
-		// Token: 0x06000588 RID: 1416 RVA: 0x0001935C File Offset: 0x0001755C
+		// Token: 0x06002E2E RID: 11822 RVA: 0x000C4660 File Offset: 0x000C2860
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -18,13 +18,13 @@ namespace EntityStates.LemurianBruiserMonster
 			Util.PlaySound(FireMegaFireball.attackString, base.gameObject);
 		}
 
-		// Token: 0x06000589 RID: 1417 RVA: 0x00010288 File Offset: 0x0000E488
+		// Token: 0x06002E2F RID: 11823 RVA: 0x000B1899 File Offset: 0x000AFA99
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x0600058A RID: 1418 RVA: 0x000193C0 File Offset: 0x000175C0
+		// Token: 0x06002E30 RID: 11824 RVA: 0x000C46C4 File Offset: 0x000C28C4
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -36,7 +36,7 @@ namespace EntityStates.LemurianBruiserMonster
 				{
 					if (FireMegaFireball.muzzleflashEffectPrefab)
 					{
-						EffectManager.instance.SimpleMuzzleFlash(FireMegaFireball.muzzleflashEffectPrefab, base.gameObject, muzzleName, false);
+						EffectManager.SimpleMuzzleFlash(FireMegaFireball.muzzleflashEffectPrefab, base.gameObject, muzzleName, false);
 					}
 					Ray aimRay = base.GetAimRay();
 					float speedOverride = FireMegaFireball.projectileSpeed;
@@ -53,49 +53,49 @@ namespace EntityStates.LemurianBruiserMonster
 			}
 		}
 
-		// Token: 0x0600058B RID: 1419 RVA: 0x0000AE8B File Offset: 0x0000908B
+		// Token: 0x06002E31 RID: 11825 RVA: 0x0000B933 File Offset: 0x00009B33
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Skill;
 		}
 
-		// Token: 0x04000636 RID: 1590
+		// Token: 0x04002B37 RID: 11063
 		public static GameObject projectilePrefab;
 
-		// Token: 0x04000637 RID: 1591
+		// Token: 0x04002B38 RID: 11064
 		public static GameObject muzzleflashEffectPrefab;
 
-		// Token: 0x04000638 RID: 1592
+		// Token: 0x04002B39 RID: 11065
 		public static int projectileCount = 3;
 
-		// Token: 0x04000639 RID: 1593
+		// Token: 0x04002B3A RID: 11066
 		public static float totalYawSpread = 5f;
 
-		// Token: 0x0400063A RID: 1594
+		// Token: 0x04002B3B RID: 11067
 		public static float baseDuration = 2f;
 
-		// Token: 0x0400063B RID: 1595
+		// Token: 0x04002B3C RID: 11068
 		public static float baseFireDuration = 0.2f;
 
-		// Token: 0x0400063C RID: 1596
+		// Token: 0x04002B3D RID: 11069
 		public static float damageCoefficient = 1.2f;
 
-		// Token: 0x0400063D RID: 1597
+		// Token: 0x04002B3E RID: 11070
 		public static float projectileSpeed;
 
-		// Token: 0x0400063E RID: 1598
+		// Token: 0x04002B3F RID: 11071
 		public static float force = 20f;
 
-		// Token: 0x0400063F RID: 1599
+		// Token: 0x04002B40 RID: 11072
 		public static string attackString;
 
-		// Token: 0x04000640 RID: 1600
+		// Token: 0x04002B41 RID: 11073
 		private float duration;
 
-		// Token: 0x04000641 RID: 1601
+		// Token: 0x04002B42 RID: 11074
 		private float fireDuration;
 
-		// Token: 0x04000642 RID: 1602
+		// Token: 0x04002B43 RID: 11075
 		private int projectilesFired;
 	}
 }

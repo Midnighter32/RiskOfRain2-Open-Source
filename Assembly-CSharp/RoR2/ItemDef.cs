@@ -3,11 +3,16 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200044A RID: 1098
+	// Token: 0x020003B0 RID: 944
 	public class ItemDef
 	{
-		// Token: 0x17000235 RID: 565
-		// (get) Token: 0x06001862 RID: 6242 RVA: 0x000741AC File Offset: 0x000723AC
+		// Token: 0x170002A4 RID: 676
+		// (get) Token: 0x060016CD RID: 5837 RVA: 0x00061D25 File Offset: 0x0005FF25
+		// (set) Token: 0x060016CE RID: 5838 RVA: 0x00061D2D File Offset: 0x0005FF2D
+		public ItemIndex itemIndex { get; set; } = ItemIndex.None;
+
+		// Token: 0x170002A5 RID: 677
+		// (get) Token: 0x060016CF RID: 5839 RVA: 0x00061D36 File Offset: 0x0005FF36
 		public bool inDroppableTier
 		{
 			get
@@ -16,8 +21,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000236 RID: 566
-		// (get) Token: 0x06001863 RID: 6243 RVA: 0x000741BA File Offset: 0x000723BA
+		// Token: 0x170002A6 RID: 678
+		// (get) Token: 0x060016D0 RID: 5840 RVA: 0x00061D44 File Offset: 0x0005FF44
 		public Texture pickupIconTexture
 		{
 			get
@@ -26,8 +31,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000237 RID: 567
-		// (get) Token: 0x06001864 RID: 6244 RVA: 0x000741C8 File Offset: 0x000723C8
+		// Token: 0x170002A7 RID: 679
+		// (get) Token: 0x060016D1 RID: 5841 RVA: 0x00061D54 File Offset: 0x0005FF54
 		public Texture bgIconTexture
 		{
 			get
@@ -50,8 +55,8 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000238 RID: 568
-		// (get) Token: 0x06001865 RID: 6245 RVA: 0x00074230 File Offset: 0x00072430
+		// Token: 0x170002A8 RID: 680
+		// (get) Token: 0x060016D2 RID: 5842 RVA: 0x00061DBC File Offset: 0x0005FFBC
 		public Sprite pickupIconSprite
 		{
 			get
@@ -60,8 +65,20 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x17000239 RID: 569
-		// (get) Token: 0x06001866 RID: 6246 RVA: 0x00074240 File Offset: 0x00072440
+		// Token: 0x060016D3 RID: 5843 RVA: 0x00061DC9 File Offset: 0x0005FFC9
+		public bool ContainsTag(ItemTag tag)
+		{
+			return tag == ItemTag.Any || Array.IndexOf<ItemTag>(this.tags, tag) != -1;
+		}
+
+		// Token: 0x060016D4 RID: 5844 RVA: 0x00061DE2 File Offset: 0x0005FFE2
+		public bool DoesNotContainTag(ItemTag tag)
+		{
+			return Array.IndexOf<ItemTag>(this.tags, tag) == -1;
+		}
+
+		// Token: 0x170002A9 RID: 681
+		// (get) Token: 0x060016D5 RID: 5845 RVA: 0x00061DF4 File Offset: 0x0005FFF4
 		public ColorCatalog.ColorIndex colorIndex
 		{
 			get
@@ -79,13 +96,13 @@ namespace RoR2
 				case ItemTier.Boss:
 					return ColorCatalog.ColorIndex.BossItem;
 				default:
-					return ColorCatalog.ColorIndex.None;
+					return ColorCatalog.ColorIndex.Unaffordable;
 				}
 			}
 		}
 
-		// Token: 0x1700023A RID: 570
-		// (get) Token: 0x06001867 RID: 6247 RVA: 0x0007427C File Offset: 0x0007247C
+		// Token: 0x170002AA RID: 682
+		// (get) Token: 0x060016D6 RID: 5846 RVA: 0x00061E34 File Offset: 0x00060034
 		public ColorCatalog.ColorIndex darkColorIndex
 		{
 			get
@@ -101,50 +118,57 @@ namespace RoR2
 				case ItemTier.Lunar:
 					return ColorCatalog.ColorIndex.LunarItemDark;
 				case ItemTier.Boss:
-					return ColorCatalog.ColorIndex.BossItem;
+					return ColorCatalog.ColorIndex.BossItemDark;
 				default:
-					return ColorCatalog.ColorIndex.None;
+					return ColorCatalog.ColorIndex.Unaffordable;
 				}
 			}
 		}
 
-		// Token: 0x04001BFA RID: 7162
-		public ItemIndex itemIndex;
+		// Token: 0x170002AB RID: 683
+		// (get) Token: 0x060016D7 RID: 5847 RVA: 0x00061E75 File Offset: 0x00060075
+		public GameObject pickupModelPrefab
+		{
+			get
+			{
+				return Resources.Load<GameObject>(this.pickupModelPath);
+			}
+		}
 
-		// Token: 0x04001BFB RID: 7163
+		// Token: 0x040015CA RID: 5578
+		public string name;
+
+		// Token: 0x040015CB RID: 5579
 		public ItemTier tier;
 
-		// Token: 0x04001BFC RID: 7164
+		// Token: 0x040015CC RID: 5580
 		public string pickupModelPath;
 
-		// Token: 0x04001BFD RID: 7165
+		// Token: 0x040015CD RID: 5581
 		public string nameToken;
 
-		// Token: 0x04001BFE RID: 7166
+		// Token: 0x040015CE RID: 5582
 		public string pickupToken;
 
-		// Token: 0x04001BFF RID: 7167
+		// Token: 0x040015CF RID: 5583
 		public string descriptionToken;
 
-		// Token: 0x04001C00 RID: 7168
+		// Token: 0x040015D0 RID: 5584
 		public string loreToken;
 
-		// Token: 0x04001C01 RID: 7169
-		public string addressToken;
-
-		// Token: 0x04001C02 RID: 7170
+		// Token: 0x040015D1 RID: 5585
 		public string pickupIconPath;
 
-		// Token: 0x04001C03 RID: 7171
+		// Token: 0x040015D2 RID: 5586
 		public string unlockableName = "";
 
-		// Token: 0x04001C04 RID: 7172
+		// Token: 0x040015D3 RID: 5587
 		public bool hidden;
 
-		// Token: 0x04001C05 RID: 7173
+		// Token: 0x040015D4 RID: 5588
 		public bool canRemove = true;
 
-		// Token: 0x04001C06 RID: 7174
-		public MageElement mageElement;
+		// Token: 0x040015D5 RID: 5589
+		public ItemTag[] tags = Array.Empty<ItemTag>();
 	}
 }

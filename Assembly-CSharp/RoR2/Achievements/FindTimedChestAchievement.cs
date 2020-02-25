@@ -4,27 +4,27 @@ using UnityEngine;
 
 namespace RoR2.Achievements
 {
-	// Token: 0x0200069E RID: 1694
+	// Token: 0x020006A6 RID: 1702
 	[RegisterAchievement("FindTimedChest", "Items.BFG", null, typeof(FindTimedChestAchievement.FindTimedChestServerAchievement))]
 	public class FindTimedChestAchievement : BaseAchievement
 	{
-		// Token: 0x060025BC RID: 9660 RVA: 0x000AF2C0 File Offset: 0x000AD4C0
+		// Token: 0x060027C7 RID: 10183 RVA: 0x000AA636 File Offset: 0x000A8836
 		public override void OnInstall()
 		{
 			base.OnInstall();
 			base.SetServerTracked(true);
 		}
 
-		// Token: 0x060025BD RID: 9661 RVA: 0x000AF2CF File Offset: 0x000AD4CF
+		// Token: 0x060027C8 RID: 10184 RVA: 0x000AA645 File Offset: 0x000A8845
 		public override void OnUninstall()
 		{
 			base.OnUninstall();
 		}
 
-		// Token: 0x0200069F RID: 1695
+		// Token: 0x020006A7 RID: 1703
 		private class FindTimedChestServerAchievement : BaseServerAchievement
 		{
-			// Token: 0x060025BF RID: 9663 RVA: 0x000AFA72 File Offset: 0x000ADC72
+			// Token: 0x060027CA RID: 10186 RVA: 0x000AB2BE File Offset: 0x000A94BE
 			public override void OnInstall()
 			{
 				base.OnInstall();
@@ -32,14 +32,14 @@ namespace RoR2.Achievements
 				Opening.onOpened += this.OnOpened;
 			}
 
-			// Token: 0x060025C0 RID: 9664 RVA: 0x000AFA95 File Offset: 0x000ADC95
+			// Token: 0x060027CB RID: 10187 RVA: 0x000AB2E1 File Offset: 0x000A94E1
 			public override void OnUninstall()
 			{
 				base.OnInstall();
 				Opening.onOpened -= this.OnOpened;
 			}
 
-			// Token: 0x060025C1 RID: 9665 RVA: 0x000AFAAE File Offset: 0x000ADCAE
+			// Token: 0x060027CC RID: 10188 RVA: 0x000AB2FA File Offset: 0x000A94FA
 			private void OnOpened()
 			{
 				Debug.Log("grant");

@@ -6,18 +6,21 @@ using UnityEngine.Rendering.PostProcessing;
 
 namespace RoR2
 {
-	// Token: 0x02000487 RID: 1159
+	// Token: 0x02000413 RID: 1043
 	public static class SettingsConVars
 	{
-		// Token: 0x02000488 RID: 1160
+		// Token: 0x0400178B RID: 6027
+		public static readonly BoolConVar cvExpAndMoneyEffects = new BoolConVar("exp_and_money_effects", ConVarFlags.Archive, "1", "Whether or not to create effects for experience and money from defeating monsters.");
+
+		// Token: 0x02000414 RID: 1044
 		private class VSyncCountConVar : BaseConVar
 		{
-			// Token: 0x060019F8 RID: 6648 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x06001934 RID: 6452 RVA: 0x0000972B File Offset: 0x0000792B
 			private VSyncCountConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x060019F9 RID: 6649 RVA: 0x0007BE3C File Offset: 0x0007A03C
+			// Token: 0x06001935 RID: 6453 RVA: 0x0006CE68 File Offset: 0x0006B068
 			public override void SetString(string newValue)
 			{
 				int vSyncCount;
@@ -27,38 +30,43 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x060019FA RID: 6650 RVA: 0x0007BE59 File Offset: 0x0007A059
+			// Token: 0x06001936 RID: 6454 RVA: 0x0006CE85 File Offset: 0x0006B085
 			public override string GetString()
 			{
 				return TextSerialization.ToStringInvariant(QualitySettings.vSyncCount);
 			}
 
-			// Token: 0x04001D44 RID: 7492
+			// Token: 0x0400178C RID: 6028
 			private static SettingsConVars.VSyncCountConVar instance = new SettingsConVars.VSyncCountConVar("vsync_count", ConVarFlags.Archive | ConVarFlags.Engine, null, "Vsync count.");
 		}
 
-		// Token: 0x02000489 RID: 1161
+		// Token: 0x02000415 RID: 1045
 		private class WindowModeConVar : BaseConVar
 		{
-			// Token: 0x060019FC RID: 6652 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x06001938 RID: 6456 RVA: 0x0000972B File Offset: 0x0000792B
 			private WindowModeConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x060019FD RID: 6653 RVA: 0x0007BE80 File Offset: 0x0007A080
+			// Token: 0x06001939 RID: 6457 RVA: 0x0006CEAC File Offset: 0x0006B0AC
 			public override void SetString(string newValue)
 			{
 				try
 				{
+					FullScreenMode fullScreenMode = FullScreenMode.ExclusiveFullScreen;
 					switch ((SettingsConVars.WindowModeConVar.WindowMode)Enum.Parse(typeof(SettingsConVars.WindowModeConVar.WindowMode), newValue, true))
 					{
 					case SettingsConVars.WindowModeConVar.WindowMode.Fullscreen:
-						Screen.fullScreen = true;
+						fullScreenMode = FullScreenMode.FullScreenWindow;
 						break;
 					case SettingsConVars.WindowModeConVar.WindowMode.Window:
-						Screen.fullScreen = false;
+						fullScreenMode = FullScreenMode.Windowed;
+						break;
+					case SettingsConVars.WindowModeConVar.WindowMode.FullscreenExclusive:
+						fullScreenMode = FullScreenMode.ExclusiveFullScreen;
 						break;
 					}
+					Screen.fullScreenMode = fullScreenMode;
 				}
 				catch (ArgumentException)
 				{
@@ -66,40 +74,55 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x060019FE RID: 6654 RVA: 0x0007BEE8 File Offset: 0x0007A0E8
+			// Token: 0x0600193A RID: 6458 RVA: 0x0006CF18 File Offset: 0x0006B118
 			public override string GetString()
 			{
-				if (!Screen.fullScreen)
+				SettingsConVars.WindowModeConVar.WindowMode windowMode;
+				switch (Screen.fullScreenMode)
 				{
-					return "Window";
+				case FullScreenMode.ExclusiveFullScreen:
+					windowMode = SettingsConVars.WindowModeConVar.WindowMode.FullscreenExclusive;
+					break;
+				case FullScreenMode.FullScreenWindow:
+					windowMode = SettingsConVars.WindowModeConVar.WindowMode.Fullscreen;
+					break;
+				case FullScreenMode.MaximizedWindow:
+					windowMode = SettingsConVars.WindowModeConVar.WindowMode.Window;
+					break;
+				case FullScreenMode.Windowed:
+					windowMode = SettingsConVars.WindowModeConVar.WindowMode.Window;
+					break;
+				default:
+					windowMode = SettingsConVars.WindowModeConVar.WindowMode.Fullscreen;
+					break;
 				}
-				return "Fullscreen";
+				return windowMode.ToString();
 			}
 
-			// Token: 0x04001D45 RID: 7493
+			// Token: 0x0400178D RID: 6029
 			private static SettingsConVars.WindowModeConVar instance = new SettingsConVars.WindowModeConVar("window_mode", ConVarFlags.Archive | ConVarFlags.Engine, null, "The window mode. Choices are Fullscreen and Window.");
 
-			// Token: 0x0200048A RID: 1162
+			// Token: 0x02000416 RID: 1046
 			private enum WindowMode
 			{
-				// Token: 0x04001D47 RID: 7495
+				// Token: 0x0400178F RID: 6031
 				Fullscreen,
-				// Token: 0x04001D48 RID: 7496
+				// Token: 0x04001790 RID: 6032
 				Window,
-				// Token: 0x04001D49 RID: 7497
-				WindowNoBorder
+				// Token: 0x04001791 RID: 6033
+				FullscreenExclusive
 			}
 		}
 
-		// Token: 0x0200048B RID: 1163
+		// Token: 0x02000417 RID: 1047
 		private class ResolutionConVar : BaseConVar
 		{
-			// Token: 0x06001A00 RID: 6656 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x0600193C RID: 6460 RVA: 0x0000972B File Offset: 0x0000792B
 			private ResolutionConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06001A01 RID: 6657 RVA: 0x0007BF18 File Offset: 0x0007A118
+			// Token: 0x0600193D RID: 6461 RVA: 0x0006CF7C File Offset: 0x0006B17C
 			public override void SetString(string newValue)
 			{
 				string[] array = newValue.Split(new char[]
@@ -121,17 +144,17 @@ namespace RoR2
 				{
 					throw new ConCommandException("Invalid resolution format. No refresh rate integer. Example: \"1920x1080x60\".");
 				}
-				Screen.SetResolution(width, height, Screen.fullScreen, preferredRefreshRate);
+				Screen.SetResolution(width, height, Screen.fullScreenMode, preferredRefreshRate);
 			}
 
-			// Token: 0x06001A02 RID: 6658 RVA: 0x0007BF9C File Offset: 0x0007A19C
+			// Token: 0x0600193E RID: 6462 RVA: 0x0006D000 File Offset: 0x0006B200
 			public override string GetString()
 			{
 				Resolution currentResolution = Screen.currentResolution;
-				return string.Format(CultureInfo.InvariantCulture, "{0}x{1}x{2}", currentResolution.width, currentResolution.height, currentResolution.refreshRate);
+				return string.Format(CultureInfo.InvariantCulture, "{0}x{1}x{2}", Screen.width, Screen.height, currentResolution.refreshRate);
 			}
 
-			// Token: 0x06001A03 RID: 6659 RVA: 0x0007BFE4 File Offset: 0x0007A1E4
+			// Token: 0x0600193F RID: 6463 RVA: 0x0006D044 File Offset: 0x0006B244
 			[ConCommand(commandName = "resolution_list", flags = ConVarFlags.None, helpText = "Prints a list of all possible resolutions for the current display.")]
 			private static void CCResolutionList(ConCommandArgs args)
 			{
@@ -145,19 +168,19 @@ namespace RoR2
 				Debug.Log(string.Join("\n", array));
 			}
 
-			// Token: 0x04001D4A RID: 7498
+			// Token: 0x04001792 RID: 6034
 			private static SettingsConVars.ResolutionConVar instance = new SettingsConVars.ResolutionConVar("resolution", ConVarFlags.Archive | ConVarFlags.Engine, null, "The resolution of the game window. Format example: 1920x1080x60");
 		}
 
-		// Token: 0x0200048C RID: 1164
+		// Token: 0x02000418 RID: 1048
 		private class FpsMaxConVar : BaseConVar
 		{
-			// Token: 0x06001A05 RID: 6661 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x06001941 RID: 6465 RVA: 0x0000972B File Offset: 0x0000792B
 			private FpsMaxConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06001A06 RID: 6662 RVA: 0x0007C070 File Offset: 0x0007A270
+			// Token: 0x06001942 RID: 6466 RVA: 0x0006D0D0 File Offset: 0x0006B2D0
 			public override void SetString(string newValue)
 			{
 				int targetFrameRate;
@@ -167,25 +190,25 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001A07 RID: 6663 RVA: 0x0007C08D File Offset: 0x0007A28D
+			// Token: 0x06001943 RID: 6467 RVA: 0x0006D0ED File Offset: 0x0006B2ED
 			public override string GetString()
 			{
 				return TextSerialization.ToStringInvariant(Application.targetFrameRate);
 			}
 
-			// Token: 0x04001D4B RID: 7499
-			private static SettingsConVars.FpsMaxConVar instance = new SettingsConVars.FpsMaxConVar("fps_max", ConVarFlags.Archive | ConVarFlags.Engine, null, "Maximum FPS. -1 is unlimited.");
+			// Token: 0x04001793 RID: 6035
+			private static SettingsConVars.FpsMaxConVar instance = new SettingsConVars.FpsMaxConVar("fps_max", ConVarFlags.Archive, "60", "Maximum FPS. -1 is unlimited.");
 		}
 
-		// Token: 0x0200048D RID: 1165
+		// Token: 0x02000419 RID: 1049
 		private class ShadowsConVar : BaseConVar
 		{
-			// Token: 0x06001A09 RID: 6665 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x06001945 RID: 6469 RVA: 0x0000972B File Offset: 0x0000792B
 			private ShadowsConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06001A0A RID: 6666 RVA: 0x0007C0B4 File Offset: 0x0007A2B4
+			// Token: 0x06001946 RID: 6470 RVA: 0x0006D118 File Offset: 0x0006B318
 			public override void SetString(string newValue)
 			{
 				try
@@ -198,25 +221,25 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001A0B RID: 6667 RVA: 0x0007C0FC File Offset: 0x0007A2FC
+			// Token: 0x06001947 RID: 6471 RVA: 0x0006D160 File Offset: 0x0006B360
 			public override string GetString()
 			{
 				return QualitySettings.shadows.ToString();
 			}
 
-			// Token: 0x04001D4C RID: 7500
+			// Token: 0x04001794 RID: 6036
 			private static SettingsConVars.ShadowsConVar instance = new SettingsConVars.ShadowsConVar("r_shadows", ConVarFlags.Archive | ConVarFlags.Engine, null, "Shadow quality. Can be \"All\" \"HardOnly\" or \"Disable\"");
 		}
 
-		// Token: 0x0200048E RID: 1166
+		// Token: 0x0200041A RID: 1050
 		private class SoftParticlesConVar : BaseConVar
 		{
-			// Token: 0x06001A0D RID: 6669 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x06001949 RID: 6473 RVA: 0x0000972B File Offset: 0x0000792B
 			private SoftParticlesConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06001A0E RID: 6670 RVA: 0x0007C138 File Offset: 0x0007A338
+			// Token: 0x0600194A RID: 6474 RVA: 0x0006D19C File Offset: 0x0006B39C
 			public override void SetString(string newValue)
 			{
 				int num;
@@ -226,7 +249,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001A0F RID: 6671 RVA: 0x0007C158 File Offset: 0x0007A358
+			// Token: 0x0600194B RID: 6475 RVA: 0x0006D1BC File Offset: 0x0006B3BC
 			public override string GetString()
 			{
 				if (!QualitySettings.softParticles)
@@ -236,19 +259,19 @@ namespace RoR2
 				return "1";
 			}
 
-			// Token: 0x04001D4D RID: 7501
+			// Token: 0x04001795 RID: 6037
 			private static SettingsConVars.SoftParticlesConVar instance = new SettingsConVars.SoftParticlesConVar("r_softparticles", ConVarFlags.Archive | ConVarFlags.Engine, null, "Whether or not soft particles are enabled.");
 		}
 
-		// Token: 0x0200048F RID: 1167
+		// Token: 0x0200041B RID: 1051
 		private class FoliageWindConVar : BaseConVar
 		{
-			// Token: 0x06001A11 RID: 6673 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x0600194D RID: 6477 RVA: 0x0000972B File Offset: 0x0000792B
 			private FoliageWindConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06001A12 RID: 6674 RVA: 0x0007C188 File Offset: 0x0007A388
+			// Token: 0x0600194E RID: 6478 RVA: 0x0006D1EC File Offset: 0x0006B3EC
 			public override void SetString(string newValue)
 			{
 				int num;
@@ -263,7 +286,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001A13 RID: 6675 RVA: 0x0007C1B8 File Offset: 0x0007A3B8
+			// Token: 0x0600194F RID: 6479 RVA: 0x0006D21C File Offset: 0x0006B41C
 			public override string GetString()
 			{
 				if (!Shader.IsKeywordEnabled("ENABLE_WIND"))
@@ -273,19 +296,19 @@ namespace RoR2
 				return "1";
 			}
 
-			// Token: 0x04001D4E RID: 7502
+			// Token: 0x04001796 RID: 6038
 			private static SettingsConVars.FoliageWindConVar instance = new SettingsConVars.FoliageWindConVar("r_foliagewind", ConVarFlags.Archive, "1", "Whether or not foliage has wind.");
 		}
 
-		// Token: 0x02000490 RID: 1168
+		// Token: 0x0200041C RID: 1052
 		private class LodBiasConVar : BaseConVar
 		{
-			// Token: 0x06001A15 RID: 6677 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x06001951 RID: 6481 RVA: 0x0000972B File Offset: 0x0000792B
 			private LodBiasConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06001A16 RID: 6678 RVA: 0x0007C1F0 File Offset: 0x0007A3F0
+			// Token: 0x06001952 RID: 6482 RVA: 0x0006D254 File Offset: 0x0006B454
 			public override void SetString(string newValue)
 			{
 				float lodBias;
@@ -295,25 +318,25 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001A17 RID: 6679 RVA: 0x0007C20D File Offset: 0x0007A40D
+			// Token: 0x06001953 RID: 6483 RVA: 0x0006D271 File Offset: 0x0006B471
 			public override string GetString()
 			{
 				return TextSerialization.ToStringInvariant(QualitySettings.lodBias);
 			}
 
-			// Token: 0x04001D4F RID: 7503
+			// Token: 0x04001797 RID: 6039
 			private static SettingsConVars.LodBiasConVar instance = new SettingsConVars.LodBiasConVar("r_lod_bias", ConVarFlags.Archive | ConVarFlags.Engine, null, "LOD bias.");
 		}
 
-		// Token: 0x02000491 RID: 1169
+		// Token: 0x0200041D RID: 1053
 		private class MaximumLodConVar : BaseConVar
 		{
-			// Token: 0x06001A19 RID: 6681 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x06001955 RID: 6485 RVA: 0x0000972B File Offset: 0x0000792B
 			private MaximumLodConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06001A1A RID: 6682 RVA: 0x0007C234 File Offset: 0x0007A434
+			// Token: 0x06001956 RID: 6486 RVA: 0x0006D298 File Offset: 0x0006B498
 			public override void SetString(string newValue)
 			{
 				int maximumLODLevel;
@@ -323,25 +346,25 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001A1B RID: 6683 RVA: 0x0007C251 File Offset: 0x0007A451
+			// Token: 0x06001957 RID: 6487 RVA: 0x0006D2B5 File Offset: 0x0006B4B5
 			public override string GetString()
 			{
 				return TextSerialization.ToStringInvariant(QualitySettings.maximumLODLevel);
 			}
 
-			// Token: 0x04001D50 RID: 7504
+			// Token: 0x04001798 RID: 6040
 			private static SettingsConVars.MaximumLodConVar instance = new SettingsConVars.MaximumLodConVar("r_lod_max", ConVarFlags.Archive | ConVarFlags.Engine, null, "The maximum allowed LOD level.");
 		}
 
-		// Token: 0x02000492 RID: 1170
+		// Token: 0x0200041E RID: 1054
 		private class MasterTextureLimitConVar : BaseConVar
 		{
-			// Token: 0x06001A1D RID: 6685 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x06001959 RID: 6489 RVA: 0x0000972B File Offset: 0x0000792B
 			private MasterTextureLimitConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06001A1E RID: 6686 RVA: 0x0007C278 File Offset: 0x0007A478
+			// Token: 0x0600195A RID: 6490 RVA: 0x0006D2DC File Offset: 0x0006B4DC
 			public override void SetString(string newValue)
 			{
 				int masterTextureLimit;
@@ -351,25 +374,25 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001A1F RID: 6687 RVA: 0x0007C295 File Offset: 0x0007A495
+			// Token: 0x0600195B RID: 6491 RVA: 0x0006D2F9 File Offset: 0x0006B4F9
 			public override string GetString()
 			{
 				return TextSerialization.ToStringInvariant(QualitySettings.masterTextureLimit);
 			}
 
-			// Token: 0x04001D51 RID: 7505
+			// Token: 0x04001799 RID: 6041
 			private static SettingsConVars.MasterTextureLimitConVar instance = new SettingsConVars.MasterTextureLimitConVar("master_texture_limit", ConVarFlags.Archive | ConVarFlags.Engine, null, "Reduction in texture quality. 0 is highest quality textures, 1 is half, 2 is quarter, etc.");
 		}
 
-		// Token: 0x02000493 RID: 1171
+		// Token: 0x0200041F RID: 1055
 		private class AnisotropicFilteringConVar : BaseConVar
 		{
-			// Token: 0x06001A21 RID: 6689 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x0600195D RID: 6493 RVA: 0x0000972B File Offset: 0x0000792B
 			private AnisotropicFilteringConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06001A22 RID: 6690 RVA: 0x0007C2BC File Offset: 0x0007A4BC
+			// Token: 0x0600195E RID: 6494 RVA: 0x0006D320 File Offset: 0x0006B520
 			public override void SetString(string newValue)
 			{
 				try
@@ -382,25 +405,25 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001A23 RID: 6691 RVA: 0x0007C304 File Offset: 0x0007A504
+			// Token: 0x0600195F RID: 6495 RVA: 0x0006D368 File Offset: 0x0006B568
 			public override string GetString()
 			{
 				return QualitySettings.anisotropicFiltering.ToString();
 			}
 
-			// Token: 0x04001D52 RID: 7506
+			// Token: 0x0400179A RID: 6042
 			private static SettingsConVars.AnisotropicFilteringConVar instance = new SettingsConVars.AnisotropicFilteringConVar("anisotropic_filtering", ConVarFlags.Archive, "Disable", "The anisotropic filtering mode. Can be \"Disable\", \"Enable\" or \"ForceEnable\".");
 		}
 
-		// Token: 0x02000494 RID: 1172
+		// Token: 0x02000420 RID: 1056
 		private class ShadowResolutionConVar : BaseConVar
 		{
-			// Token: 0x06001A25 RID: 6693 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x06001961 RID: 6497 RVA: 0x0000972B File Offset: 0x0000792B
 			private ShadowResolutionConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06001A26 RID: 6694 RVA: 0x0007C340 File Offset: 0x0007A540
+			// Token: 0x06001962 RID: 6498 RVA: 0x0006D3A4 File Offset: 0x0006B5A4
 			public override void SetString(string newValue)
 			{
 				try
@@ -413,25 +436,25 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001A27 RID: 6695 RVA: 0x0007C388 File Offset: 0x0007A588
+			// Token: 0x06001963 RID: 6499 RVA: 0x0006D3EC File Offset: 0x0006B5EC
 			public override string GetString()
 			{
 				return QualitySettings.shadowResolution.ToString();
 			}
 
-			// Token: 0x04001D53 RID: 7507
+			// Token: 0x0400179B RID: 6043
 			private static SettingsConVars.ShadowResolutionConVar instance = new SettingsConVars.ShadowResolutionConVar("shadow_resolution", ConVarFlags.Archive | ConVarFlags.Engine, "Medium", "Default shadow resolution. Can be \"Low\", \"Medium\", \"High\" or \"VeryHigh\".");
 		}
 
-		// Token: 0x02000495 RID: 1173
+		// Token: 0x02000421 RID: 1057
 		private class ShadowCascadesConVar : BaseConVar
 		{
-			// Token: 0x06001A29 RID: 6697 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x06001965 RID: 6501 RVA: 0x0000972B File Offset: 0x0000792B
 			private ShadowCascadesConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06001A2A RID: 6698 RVA: 0x0007C3C8 File Offset: 0x0007A5C8
+			// Token: 0x06001966 RID: 6502 RVA: 0x0006D42C File Offset: 0x0006B62C
 			public override void SetString(string newValue)
 			{
 				int shadowCascades;
@@ -441,25 +464,25 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001A2B RID: 6699 RVA: 0x0007C3E5 File Offset: 0x0007A5E5
+			// Token: 0x06001967 RID: 6503 RVA: 0x0006D449 File Offset: 0x0006B649
 			public override string GetString()
 			{
 				return TextSerialization.ToStringInvariant(QualitySettings.shadowCascades);
 			}
 
-			// Token: 0x04001D54 RID: 7508
+			// Token: 0x0400179C RID: 6044
 			private static SettingsConVars.ShadowCascadesConVar instance = new SettingsConVars.ShadowCascadesConVar("shadow_cascades", ConVarFlags.Archive | ConVarFlags.Engine, null, "The number of cascades to use for directional light shadows. low=0 high=4");
 		}
 
-		// Token: 0x02000496 RID: 1174
+		// Token: 0x02000422 RID: 1058
 		private class ShadowDistanceConvar : BaseConVar
 		{
-			// Token: 0x06001A2D RID: 6701 RVA: 0x00037E38 File Offset: 0x00036038
+			// Token: 0x06001969 RID: 6505 RVA: 0x0000972B File Offset: 0x0000792B
 			private ShadowDistanceConvar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 			}
 
-			// Token: 0x06001A2E RID: 6702 RVA: 0x0007C40C File Offset: 0x0007A60C
+			// Token: 0x0600196A RID: 6506 RVA: 0x0006D470 File Offset: 0x0006B670
 			public override void SetString(string newValue)
 			{
 				float shadowDistance;
@@ -469,26 +492,26 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001A2F RID: 6703 RVA: 0x0007C429 File Offset: 0x0007A629
+			// Token: 0x0600196B RID: 6507 RVA: 0x0006D48D File Offset: 0x0006B68D
 			public override string GetString()
 			{
 				return TextSerialization.ToStringInvariant(QualitySettings.shadowDistance);
 			}
 
-			// Token: 0x04001D55 RID: 7509
+			// Token: 0x0400179D RID: 6045
 			private static SettingsConVars.ShadowDistanceConvar instance = new SettingsConVars.ShadowDistanceConvar("shadow_distance", ConVarFlags.Archive, "200", "The distance in meters to draw shadows.");
 		}
 
-		// Token: 0x02000497 RID: 1175
+		// Token: 0x02000423 RID: 1059
 		private class PpMotionBlurConVar : BaseConVar
 		{
-			// Token: 0x06001A31 RID: 6705 RVA: 0x0007C451 File Offset: 0x0007A651
+			// Token: 0x0600196D RID: 6509 RVA: 0x0006D4B5 File Offset: 0x0006B6B5
 			private PpMotionBlurConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 				RoR2Application.instance.postProcessSettingsController.sharedProfile.TryGetSettings<MotionBlur>(out SettingsConVars.PpMotionBlurConVar.settings);
 			}
 
-			// Token: 0x06001A32 RID: 6706 RVA: 0x0007C478 File Offset: 0x0007A678
+			// Token: 0x0600196E RID: 6510 RVA: 0x0006D4DC File Offset: 0x0006B6DC
 			public override void SetString(string newValue)
 			{
 				int num;
@@ -498,7 +521,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001A33 RID: 6707 RVA: 0x0007C4A9 File Offset: 0x0007A6A9
+			// Token: 0x0600196F RID: 6511 RVA: 0x0006D50D File Offset: 0x0006B70D
 			public override string GetString()
 			{
 				if (!SettingsConVars.PpMotionBlurConVar.settings)
@@ -512,23 +535,23 @@ namespace RoR2
 				return "0";
 			}
 
-			// Token: 0x04001D56 RID: 7510
+			// Token: 0x0400179E RID: 6046
 			private static MotionBlur settings;
 
-			// Token: 0x04001D57 RID: 7511
+			// Token: 0x0400179F RID: 6047
 			private static SettingsConVars.PpMotionBlurConVar instance = new SettingsConVars.PpMotionBlurConVar("pp_motionblur", ConVarFlags.Archive, "0", "Motion blur. 0 = disabled 1 = enabled");
 		}
 
-		// Token: 0x02000498 RID: 1176
+		// Token: 0x02000424 RID: 1060
 		private class PpSobelOutlineConVar : BaseConVar
 		{
-			// Token: 0x06001A35 RID: 6709 RVA: 0x0007C4F0 File Offset: 0x0007A6F0
+			// Token: 0x06001971 RID: 6513 RVA: 0x0006D554 File Offset: 0x0006B754
 			private PpSobelOutlineConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 				RoR2Application.instance.postProcessSettingsController.sharedProfile.TryGetSettings<SobelOutline>(out SettingsConVars.PpSobelOutlineConVar.sobelOutlineSettings);
 			}
 
-			// Token: 0x06001A36 RID: 6710 RVA: 0x0007C518 File Offset: 0x0007A718
+			// Token: 0x06001972 RID: 6514 RVA: 0x0006D57C File Offset: 0x0006B77C
 			public override void SetString(string newValue)
 			{
 				int num;
@@ -538,7 +561,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001A37 RID: 6711 RVA: 0x0007C549 File Offset: 0x0007A749
+			// Token: 0x06001973 RID: 6515 RVA: 0x0006D5AD File Offset: 0x0006B7AD
 			public override string GetString()
 			{
 				if (!SettingsConVars.PpSobelOutlineConVar.sobelOutlineSettings)
@@ -552,33 +575,37 @@ namespace RoR2
 				return "0";
 			}
 
-			// Token: 0x04001D58 RID: 7512
+			// Token: 0x040017A0 RID: 6048
 			private static SobelOutline sobelOutlineSettings;
 
-			// Token: 0x04001D59 RID: 7513
+			// Token: 0x040017A1 RID: 6049
 			private static SettingsConVars.PpSobelOutlineConVar instance = new SettingsConVars.PpSobelOutlineConVar("pp_sobel_outline", ConVarFlags.Archive, "1", "Whether or not to use the sobel rim light effect.");
 		}
 
-		// Token: 0x02000499 RID: 1177
+		// Token: 0x02000425 RID: 1061
 		private class PpBloomConVar : BaseConVar
 		{
-			// Token: 0x06001A39 RID: 6713 RVA: 0x0007C590 File Offset: 0x0007A790
+			// Token: 0x06001975 RID: 6517 RVA: 0x0006D5F4 File Offset: 0x0006B7F4
 			private PpBloomConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
-				RoR2Application.instance.postProcessSettingsController.sharedProfile.TryGetSettings<Bloom>(out SettingsConVars.PpBloomConVar.settings);
+				bool flag = RoR2Application.instance.postProcessSettingsController.sharedProfile.TryGetSettings<Bloom>(out SettingsConVars.PpBloomConVar.settings);
+				Debug.LogFormat("Bloom: {0}", new object[]
+				{
+					flag
+				});
 			}
 
-			// Token: 0x06001A3A RID: 6714 RVA: 0x0007C5B8 File Offset: 0x0007A7B8
+			// Token: 0x06001976 RID: 6518 RVA: 0x0006D640 File Offset: 0x0006B840
 			public override void SetString(string newValue)
 			{
 				int num;
-				if (!TextSerialization.TryParseInvariant(newValue, out num) && SettingsConVars.PpBloomConVar.settings)
+				if (TextSerialization.TryParseInvariant(newValue, out num) && SettingsConVars.PpBloomConVar.settings)
 				{
 					SettingsConVars.PpBloomConVar.settings.active = (num == 0);
 				}
 			}
 
-			// Token: 0x06001A3B RID: 6715 RVA: 0x0007C5E9 File Offset: 0x0007A7E9
+			// Token: 0x06001977 RID: 6519 RVA: 0x0006D671 File Offset: 0x0006B871
 			public override string GetString()
 			{
 				if (!SettingsConVars.PpBloomConVar.settings)
@@ -592,23 +619,23 @@ namespace RoR2
 				return "0";
 			}
 
-			// Token: 0x04001D5A RID: 7514
+			// Token: 0x040017A2 RID: 6050
 			private static Bloom settings;
 
-			// Token: 0x04001D5B RID: 7515
+			// Token: 0x040017A3 RID: 6051
 			private static SettingsConVars.PpBloomConVar instance = new SettingsConVars.PpBloomConVar("pp_bloom", ConVarFlags.Archive | ConVarFlags.Engine, null, "Bloom postprocessing. 0 = disabled 1 = enabled");
 		}
 
-		// Token: 0x0200049A RID: 1178
+		// Token: 0x02000426 RID: 1062
 		private class PpAOConVar : BaseConVar
 		{
-			// Token: 0x06001A3D RID: 6717 RVA: 0x0007C62D File Offset: 0x0007A82D
+			// Token: 0x06001979 RID: 6521 RVA: 0x0006D6B5 File Offset: 0x0006B8B5
 			private PpAOConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 				RoR2Application.instance.postProcessSettingsController.sharedProfile.TryGetSettings<AmbientOcclusion>(out SettingsConVars.PpAOConVar.settings);
 			}
 
-			// Token: 0x06001A3E RID: 6718 RVA: 0x0007C654 File Offset: 0x0007A854
+			// Token: 0x0600197A RID: 6522 RVA: 0x0006D6DC File Offset: 0x0006B8DC
 			public override void SetString(string newValue)
 			{
 				int num;
@@ -618,7 +645,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001A3F RID: 6719 RVA: 0x0007C685 File Offset: 0x0007A885
+			// Token: 0x0600197B RID: 6523 RVA: 0x0006D70D File Offset: 0x0006B90D
 			public override string GetString()
 			{
 				if (!SettingsConVars.PpAOConVar.settings)
@@ -632,23 +659,23 @@ namespace RoR2
 				return "0";
 			}
 
-			// Token: 0x04001D5C RID: 7516
+			// Token: 0x040017A4 RID: 6052
 			private static AmbientOcclusion settings;
 
-			// Token: 0x04001D5D RID: 7517
+			// Token: 0x040017A5 RID: 6053
 			private static SettingsConVars.PpAOConVar instance = new SettingsConVars.PpAOConVar("pp_ao", ConVarFlags.Archive | ConVarFlags.Engine, null, "SSAO postprocessing. 0 = disabled 1 = enabled");
 		}
 
-		// Token: 0x0200049B RID: 1179
+		// Token: 0x02000427 RID: 1063
 		private class PpGammaConVar : BaseConVar
 		{
-			// Token: 0x06001A41 RID: 6721 RVA: 0x0007C6C9 File Offset: 0x0007A8C9
+			// Token: 0x0600197D RID: 6525 RVA: 0x0006D751 File Offset: 0x0006B951
 			private PpGammaConVar(string name, ConVarFlags flags, string defaultValue, string helpText) : base(name, flags, defaultValue, helpText)
 			{
 				RoR2Application.instance.postProcessSettingsController.sharedProfile.TryGetSettings<ColorGrading>(out SettingsConVars.PpGammaConVar.colorGradingSettings);
 			}
 
-			// Token: 0x06001A42 RID: 6722 RVA: 0x0007C6F0 File Offset: 0x0007A8F0
+			// Token: 0x0600197E RID: 6526 RVA: 0x0006D778 File Offset: 0x0006B978
 			public override void SetString(string newValue)
 			{
 				float w;
@@ -658,7 +685,7 @@ namespace RoR2
 				}
 			}
 
-			// Token: 0x06001A43 RID: 6723 RVA: 0x0007C728 File Offset: 0x0007A928
+			// Token: 0x0600197F RID: 6527 RVA: 0x0006D7B0 File Offset: 0x0006B9B0
 			public override string GetString()
 			{
 				if (!SettingsConVars.PpGammaConVar.colorGradingSettings)
@@ -668,10 +695,10 @@ namespace RoR2
 				return TextSerialization.ToStringInvariant(SettingsConVars.PpGammaConVar.colorGradingSettings.gamma.value.w);
 			}
 
-			// Token: 0x04001D5E RID: 7518
+			// Token: 0x040017A6 RID: 6054
 			private static ColorGrading colorGradingSettings;
 
-			// Token: 0x04001D5F RID: 7519
+			// Token: 0x040017A7 RID: 6055
 			private static SettingsConVars.PpGammaConVar instance = new SettingsConVars.PpGammaConVar("gamma", ConVarFlags.Archive, "0", "Gamma boost, from -inf to inf.");
 		}
 	}

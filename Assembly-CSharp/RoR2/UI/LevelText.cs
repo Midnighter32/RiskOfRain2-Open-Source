@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace RoR2.UI
 {
-	// Token: 0x020005FB RID: 1531
+	// Token: 0x020005E0 RID: 1504
 	[RequireComponent(typeof(RectTransform))]
 	public class LevelText : MonoBehaviour
 	{
-		// Token: 0x0600224A RID: 8778 RVA: 0x000A20B8 File Offset: 0x000A02B8
+		// Token: 0x0600238F RID: 9103 RVA: 0x0009B4CC File Offset: 0x000996CC
 		private void SetDisplayData(uint newDisplayData)
 		{
 			if (this.displayData == newDisplayData)
@@ -19,11 +19,11 @@ namespace RoR2.UI
 			this.displayData = newDisplayData;
 			uint value = this.displayData;
 			LevelText.sharedStringBuilder.Clear();
-			LevelText.sharedStringBuilder.AppendUint(value, 0u, uint.MaxValue);
+			LevelText.sharedStringBuilder.AppendUint(value, 0U, uint.MaxValue);
 			this.targetText.SetText(LevelText.sharedStringBuilder);
 		}
 
-		// Token: 0x0600224B RID: 8779 RVA: 0x000A2105 File Offset: 0x000A0305
+		// Token: 0x06002390 RID: 9104 RVA: 0x0009B51A File Offset: 0x0009971A
 		private void Update()
 		{
 			if (this.source && TeamManager.instance)
@@ -32,7 +32,7 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x0600224C RID: 8780 RVA: 0x000A213B File Offset: 0x000A033B
+		// Token: 0x06002391 RID: 9105 RVA: 0x0009B550 File Offset: 0x00099750
 		private void OnValidate()
 		{
 			if (!this.targetText)
@@ -41,16 +41,16 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x04002565 RID: 9573
+		// Token: 0x04002184 RID: 8580
 		public CharacterMaster source;
 
-		// Token: 0x04002566 RID: 9574
+		// Token: 0x04002185 RID: 8581
 		public TextMeshProUGUI targetText;
 
-		// Token: 0x04002567 RID: 9575
+		// Token: 0x04002186 RID: 8582
 		private uint displayData;
 
-		// Token: 0x04002568 RID: 9576
+		// Token: 0x04002187 RID: 8583
 		private static readonly StringBuilder sharedStringBuilder = new StringBuilder();
 	}
 }

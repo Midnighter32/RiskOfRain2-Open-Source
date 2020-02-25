@@ -3,22 +3,22 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x0200024A RID: 586
+	// Token: 0x0200013B RID: 315
 	[RequireComponent(typeof(Animator))]
 	public class AimAnimator : MonoBehaviour, ILifeBehavior
 	{
-		// Token: 0x170000C5 RID: 197
-		// (get) Token: 0x06000B01 RID: 2817 RVA: 0x00036A96 File Offset: 0x00034C96
-		// (set) Token: 0x06000B00 RID: 2816 RVA: 0x00036A8D File Offset: 0x00034C8D
+		// Token: 0x170000AF RID: 175
+		// (get) Token: 0x060005A9 RID: 1449 RVA: 0x000175C2 File Offset: 0x000157C2
+		// (set) Token: 0x060005A8 RID: 1448 RVA: 0x000175B9 File Offset: 0x000157B9
 		public bool isOutsideOfRange { get; private set; }
 
-		// Token: 0x06000B02 RID: 2818 RVA: 0x00036A9E File Offset: 0x00034C9E
+		// Token: 0x060005AA RID: 1450 RVA: 0x000175CA File Offset: 0x000157CA
 		private void Awake()
 		{
 			this.animatorComponent = base.GetComponent<Animator>();
 		}
 
-		// Token: 0x06000B03 RID: 2819 RVA: 0x00036AAC File Offset: 0x00034CAC
+		// Token: 0x060005AB RID: 1451 RVA: 0x000175D8 File Offset: 0x000157D8
 		private void Start()
 		{
 			int layerIndex = this.animatorComponent.GetLayerIndex("AimPitch");
@@ -42,7 +42,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000B04 RID: 2820 RVA: 0x00036B9C File Offset: 0x00034D9C
+		// Token: 0x060005AC RID: 1452 RVA: 0x000176C8 File Offset: 0x000158C8
 		private void Update()
 		{
 			if (Time.deltaTime <= 0f)
@@ -55,7 +55,7 @@ namespace RoR2
 			this.UpdateAnimatorParameters(this.animatorComponent, this.pitchRangeMin, this.pitchRangeMax, this.yawRangeMin, this.yawRangeMax);
 		}
 
-		// Token: 0x06000B05 RID: 2821 RVA: 0x00036BEC File Offset: 0x00034DEC
+		// Token: 0x060005AD RID: 1453 RVA: 0x00017718 File Offset: 0x00015918
 		public void OnDeathStart()
 		{
 			base.enabled = false;
@@ -67,19 +67,19 @@ namespace RoR2
 			this.UpdateAnimatorParameters(this.animatorComponent, this.pitchRangeMin, this.pitchRangeMax, this.yawRangeMin, this.yawRangeMax);
 		}
 
-		// Token: 0x06000B06 RID: 2822 RVA: 0x00036C4B File Offset: 0x00034E4B
+		// Token: 0x060005AE RID: 1454 RVA: 0x00017777 File Offset: 0x00015977
 		private static float Remap(float value, float inMin, float inMax, float outMin, float outMax)
 		{
 			return outMin + (value - inMin) / (inMax - inMin) * (outMax - outMin);
 		}
 
-		// Token: 0x06000B07 RID: 2823 RVA: 0x00036C5B File Offset: 0x00034E5B
+		// Token: 0x060005AF RID: 1455 RVA: 0x00017787 File Offset: 0x00015987
 		private static float NormalizeAngle(float angle)
 		{
 			return Mathf.Repeat(angle + 180f, 360f) - 180f;
 		}
 
-		// Token: 0x06000B08 RID: 2824 RVA: 0x00036C74 File Offset: 0x00034E74
+		// Token: 0x060005B0 RID: 1456 RVA: 0x000177A0 File Offset: 0x000159A0
 		private void UpdateLocalAnglesToAimVector()
 		{
 			Vector3 vector = this.inputBank ? this.inputBank.aimDirection : base.transform.forward;
@@ -105,7 +105,7 @@ namespace RoR2
 			};
 		}
 
-		// Token: 0x06000B09 RID: 2825 RVA: 0x00036E20 File Offset: 0x00035020
+		// Token: 0x060005B1 RID: 1457 RVA: 0x0001794C File Offset: 0x00015B4C
 		private void ApproachDesiredAngles()
 		{
 			AimAnimator.AimAngles aimAngles;
@@ -140,13 +140,13 @@ namespace RoR2
 			};
 		}
 
-		// Token: 0x06000B0A RID: 2826 RVA: 0x00036F24 File Offset: 0x00035124
+		// Token: 0x060005B2 RID: 1458 RVA: 0x00017A50 File Offset: 0x00015C50
 		private void ResetGiveup()
 		{
 			this.giveupTimer = this.giveupDuration;
 		}
 
-		// Token: 0x06000B0B RID: 2827 RVA: 0x00036F34 File Offset: 0x00035134
+		// Token: 0x060005B3 RID: 1459 RVA: 0x00017A60 File Offset: 0x00015C60
 		private void UpdateGiveup()
 		{
 			if (this.overshootAngles.pitch > this.pitchGiveupRange || (!this.fullYaw && this.overshootAngles.yaw > this.yawGiveupRange))
@@ -159,8 +159,8 @@ namespace RoR2
 			this.ResetGiveup();
 		}
 
-		// Token: 0x170000C6 RID: 198
-		// (get) Token: 0x06000B0C RID: 2828 RVA: 0x00036F96 File Offset: 0x00035196
+		// Token: 0x170000B0 RID: 176
+		// (get) Token: 0x060005B4 RID: 1460 RVA: 0x00017AC2 File Offset: 0x00015CC2
 		private bool shouldGiveup
 		{
 			get
@@ -169,7 +169,7 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x06000B0D RID: 2829 RVA: 0x00036FA8 File Offset: 0x000351A8
+		// Token: 0x060005B5 RID: 1461 RVA: 0x00017AD4 File Offset: 0x00015CD4
 		public void AimImmediate()
 		{
 			this.UpdateLocalAnglesToAimVector();
@@ -183,7 +183,7 @@ namespace RoR2
 			this.UpdateAnimatorParameters(this.animatorComponent, this.pitchRangeMin, this.pitchRangeMax, this.yawRangeMin, this.yawRangeMax);
 		}
 
-		// Token: 0x06000B0E RID: 2830 RVA: 0x00037018 File Offset: 0x00035218
+		// Token: 0x060005B6 RID: 1462 RVA: 0x00017B44 File Offset: 0x00015D44
 		public void UpdateAnimatorParameters(Animator animator, float pitchRangeMin, float pitchRangeMax, float yawRangeMin, float yawRangeMax)
 		{
 			float num = 1f;
@@ -195,118 +195,118 @@ namespace RoR2
 			animator.SetFloat(AimAnimator.aimYawCycleHash, AimAnimator.Remap(this.currentLocalAngles.yaw * num, yawRangeMin, yawRangeMax, 0f, this.yawClipCycleEnd));
 		}
 
-		// Token: 0x04000EEF RID: 3823
+		// Token: 0x0400060C RID: 1548
 		[Tooltip("The input bank component of the character.")]
 		public InputBankTest inputBank;
 
-		// Token: 0x04000EF0 RID: 3824
+		// Token: 0x0400060D RID: 1549
 		[Tooltip("The direction component of the character.")]
 		public CharacterDirection directionComponent;
 
-		// Token: 0x04000EF1 RID: 3825
+		// Token: 0x0400060E RID: 1550
 		[Tooltip("The minimum pitch supplied by the aiming animation.")]
 		public float pitchRangeMin;
 
-		// Token: 0x04000EF2 RID: 3826
+		// Token: 0x0400060F RID: 1551
 		[Tooltip("The maximum pitch supplied by the aiming animation.")]
 		public float pitchRangeMax;
 
-		// Token: 0x04000EF3 RID: 3827
+		// Token: 0x04000610 RID: 1552
 		[Tooltip("The minimum yaw supplied by the aiming animation.")]
 		public float yawRangeMin;
 
-		// Token: 0x04000EF4 RID: 3828
+		// Token: 0x04000611 RID: 1553
 		[Tooltip("The maximum yaw supplied by the aiming animation.")]
 		public float yawRangeMax;
 
-		// Token: 0x04000EF5 RID: 3829
+		// Token: 0x04000612 RID: 1554
 		[Tooltip("If the pitch is this many degrees beyond the range the aiming animations support, the character will return to neutral pose after waiting the giveup duration.")]
 		public float pitchGiveupRange;
 
-		// Token: 0x04000EF6 RID: 3830
+		// Token: 0x04000613 RID: 1555
 		[Tooltip("If the yaw is this many degrees beyond the range the aiming animations support, the character will return to neutral pose after waiting the giveup duration.")]
 		public float yawGiveupRange;
 
-		// Token: 0x04000EF7 RID: 3831
+		// Token: 0x04000614 RID: 1556
 		[Tooltip("If the pitch or yaw exceed the range supported by the aiming animations, the character will return to neutral pose after waiting this long.")]
 		public float giveupDuration;
 
-		// Token: 0x04000EF8 RID: 3832
+		// Token: 0x04000615 RID: 1557
 		[Tooltip("The speed in degrees/second to approach the desired pitch/yaw by while the weapon should be raised.")]
 		public float raisedApproachSpeed = 720f;
 
-		// Token: 0x04000EF9 RID: 3833
+		// Token: 0x04000616 RID: 1558
 		[Tooltip("The speed in degrees/second to approach the desired pitch/yaw by while the weapon should be lowered.")]
 		public float loweredApproachSpeed = 360f;
 
-		// Token: 0x04000EFA RID: 3834
+		// Token: 0x04000617 RID: 1559
 		[Tooltip("The smoothing time for the motion.")]
 		public float smoothTime = 0.1f;
 
-		// Token: 0x04000EFB RID: 3835
+		// Token: 0x04000618 RID: 1560
 		[Tooltip("Whether or not the character can do full 360 yaw turns.")]
 		public bool fullYaw;
 
-		// Token: 0x04000EFC RID: 3836
+		// Token: 0x04000619 RID: 1561
 		[Tooltip("Switches between Direct (point straight at target) or Smart (only turn when outside angle range).")]
 		public AimAnimator.AimType aimType;
 
-		// Token: 0x04000EFD RID: 3837
+		// Token: 0x0400061A RID: 1562
 		[Tooltip("Assigns the weight of the aim from the center as an animator value 'aimWeight' between 0-1.")]
 		public bool enableAimWeight;
 
-		// Token: 0x04000EFF RID: 3839
+		// Token: 0x0400061C RID: 1564
 		private Animator animatorComponent;
 
-		// Token: 0x04000F00 RID: 3840
+		// Token: 0x0400061D RID: 1565
 		private float pitchClipCycleEnd;
 
-		// Token: 0x04000F01 RID: 3841
+		// Token: 0x0400061E RID: 1566
 		private float yawClipCycleEnd;
 
-		// Token: 0x04000F02 RID: 3842
+		// Token: 0x0400061F RID: 1567
 		private float giveupTimer;
 
-		// Token: 0x04000F03 RID: 3843
+		// Token: 0x04000620 RID: 1568
 		private AimAnimator.AimAngles localAnglesToAimVector;
 
-		// Token: 0x04000F04 RID: 3844
+		// Token: 0x04000621 RID: 1569
 		private AimAnimator.AimAngles overshootAngles;
 
-		// Token: 0x04000F05 RID: 3845
+		// Token: 0x04000622 RID: 1570
 		private AimAnimator.AimAngles clampedLocalAnglesToAimVector;
 
-		// Token: 0x04000F06 RID: 3846
+		// Token: 0x04000623 RID: 1571
 		private AimAnimator.AimAngles currentLocalAngles;
 
-		// Token: 0x04000F07 RID: 3847
+		// Token: 0x04000624 RID: 1572
 		private AimAnimator.AimAngles smoothingVelocity;
 
-		// Token: 0x04000F08 RID: 3848
+		// Token: 0x04000625 RID: 1573
 		private static readonly int aimPitchCycleHash = Animator.StringToHash("aimPitchCycle");
 
-		// Token: 0x04000F09 RID: 3849
+		// Token: 0x04000626 RID: 1574
 		private static readonly int aimYawCycleHash = Animator.StringToHash("aimYawCycle");
 
-		// Token: 0x04000F0A RID: 3850
+		// Token: 0x04000627 RID: 1575
 		private static readonly int aimWeightHash = Animator.StringToHash("aimWeight");
 
-		// Token: 0x0200024B RID: 587
+		// Token: 0x0200013C RID: 316
 		public enum AimType
 		{
-			// Token: 0x04000F0C RID: 3852
+			// Token: 0x04000629 RID: 1577
 			Direct,
-			// Token: 0x04000F0D RID: 3853
+			// Token: 0x0400062A RID: 1578
 			Smart
 		}
 
-		// Token: 0x0200024C RID: 588
+		// Token: 0x0200013D RID: 317
 		private struct AimAngles
 		{
-			// Token: 0x04000F0E RID: 3854
+			// Token: 0x0400062B RID: 1579
 			public float pitch;
 
-			// Token: 0x04000F0F RID: 3855
+			// Token: 0x0400062C RID: 1580
 			public float yaw;
 		}
 	}

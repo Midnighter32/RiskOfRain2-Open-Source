@@ -4,10 +4,10 @@ using RoR2;
 
 namespace EntityStates.Interactables.MSObelisk
 {
-	// Token: 0x02000138 RID: 312
+	// Token: 0x0200080E RID: 2062
 	public class ReadyToEndGame : BaseState
 	{
-		// Token: 0x06000601 RID: 1537 RVA: 0x0001BA44 File Offset: 0x00019C44
+		// Token: 0x06002ED8 RID: 11992 RVA: 0x000C76F4 File Offset: 0x000C58F4
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -28,7 +28,7 @@ namespace EntityStates.Interactables.MSObelisk
 			}
 		}
 
-		// Token: 0x06000602 RID: 1538 RVA: 0x0001BB08 File Offset: 0x00019D08
+		// Token: 0x06002ED9 RID: 11993 RVA: 0x000C77B8 File Offset: 0x000C59B8
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -40,22 +40,22 @@ namespace EntityStates.Interactables.MSObelisk
 			}
 		}
 
-		// Token: 0x040006FB RID: 1787
+		// Token: 0x04002C1F RID: 11295
 		public static string chargeupChildString;
 
-		// Token: 0x040006FC RID: 1788
+		// Token: 0x04002C20 RID: 11296
 		public static string chargeupSoundString;
 
-		// Token: 0x040006FD RID: 1789
+		// Token: 0x04002C21 RID: 11297
 		public static float chargeupDuration;
 
-		// Token: 0x040006FE RID: 1790
+		// Token: 0x04002C22 RID: 11298
 		private ChildLocator childLocator;
 
-		// Token: 0x040006FF RID: 1791
+		// Token: 0x04002C23 RID: 11299
 		private PurchaseInteraction purchaseInteraction;
 
-		// Token: 0x04000700 RID: 1792
+		// Token: 0x04002C24 RID: 11300
 		private bool ready;
 	}
 }

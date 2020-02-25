@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.ClaymanMonster
 {
-	// Token: 0x020001B3 RID: 435
+	// Token: 0x020008CD RID: 2253
 	public class Leap : BaseState
 	{
-		// Token: 0x06000886 RID: 2182 RVA: 0x0002AB64 File Offset: 0x00028D64
+		// Token: 0x06003281 RID: 12929 RVA: 0x000DA698 File Offset: 0x000D8898
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -22,7 +22,7 @@ namespace EntityStates.ClaymanMonster
 			base.PlayCrossfade("Body", "LeapAirLoop", 0.15f);
 		}
 
-		// Token: 0x06000887 RID: 2183 RVA: 0x0002ABF8 File Offset: 0x00028DF8
+		// Token: 0x06003282 RID: 12930 RVA: 0x000DA72C File Offset: 0x000D892C
 		public override void FixedUpdate()
 		{
 			this.stopwatch += Time.fixedDeltaTime;
@@ -48,35 +48,35 @@ namespace EntityStates.ClaymanMonster
 			}
 		}
 
-		// Token: 0x06000888 RID: 2184 RVA: 0x0002AD19 File Offset: 0x00028F19
+		// Token: 0x06003283 RID: 12931 RVA: 0x000DA84D File Offset: 0x000D8A4D
 		public override void OnExit()
 		{
 			base.PlayAnimation("Body", "Idle");
 			base.OnExit();
 		}
 
-		// Token: 0x04000B60 RID: 2912
+		// Token: 0x04003181 RID: 12673
 		public static string leapSoundString;
 
-		// Token: 0x04000B61 RID: 2913
+		// Token: 0x04003182 RID: 12674
 		public static float minimumDuration;
 
-		// Token: 0x04000B62 RID: 2914
+		// Token: 0x04003183 RID: 12675
 		public static float verticalJumpSpeed;
 
-		// Token: 0x04000B63 RID: 2915
+		// Token: 0x04003184 RID: 12676
 		public static float horizontalJumpSpeedCoefficient;
 
-		// Token: 0x04000B64 RID: 2916
+		// Token: 0x04003185 RID: 12677
 		private Vector3 forwardDirection;
 
-		// Token: 0x04000B65 RID: 2917
+		// Token: 0x04003186 RID: 12678
 		private Animator animator;
 
-		// Token: 0x04000B66 RID: 2918
+		// Token: 0x04003187 RID: 12679
 		private float stopwatch;
 
-		// Token: 0x04000B67 RID: 2919
+		// Token: 0x04003188 RID: 12680
 		private bool playedImpact;
 	}
 }

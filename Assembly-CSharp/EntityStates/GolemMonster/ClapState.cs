@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.GolemMonster
 {
-	// Token: 0x02000177 RID: 375
+	// Token: 0x0200085D RID: 2141
 	public class ClapState : BaseState
 	{
-		// Token: 0x0600073D RID: 1853 RVA: 0x0002342C File Offset: 0x0002162C
+		// Token: 0x06003058 RID: 12376 RVA: 0x000D022C File Offset: 0x000CE42C
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -35,7 +35,7 @@ namespace EntityStates.GolemMonster
 			}
 		}
 
-		// Token: 0x0600073E RID: 1854 RVA: 0x000234FB File Offset: 0x000216FB
+		// Token: 0x06003059 RID: 12377 RVA: 0x000D02FB File Offset: 0x000CE4FB
 		public override void OnExit()
 		{
 			EntityState.Destroy(this.leftHandChargeEffect);
@@ -43,7 +43,7 @@ namespace EntityStates.GolemMonster
 			base.OnExit();
 		}
 
-		// Token: 0x0600073F RID: 1855 RVA: 0x0002351C File Offset: 0x0002171C
+		// Token: 0x0600305A RID: 12378 RVA: 0x000D031C File Offset: 0x000CE51C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -80,43 +80,43 @@ namespace EntityStates.GolemMonster
 			}
 		}
 
-		// Token: 0x06000740 RID: 1856 RVA: 0x0000B306 File Offset: 0x00009506
+		// Token: 0x0600305B RID: 12379 RVA: 0x0000BDAE File Offset: 0x00009FAE
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.PrioritySkill;
 		}
 
-		// Token: 0x0400091A RID: 2330
+		// Token: 0x04002E87 RID: 11911
 		public static float duration = 3.5f;
 
-		// Token: 0x0400091B RID: 2331
+		// Token: 0x04002E88 RID: 11912
 		public static float damageCoefficient = 4f;
 
-		// Token: 0x0400091C RID: 2332
+		// Token: 0x04002E89 RID: 11913
 		public static float forceMagnitude = 16f;
 
-		// Token: 0x0400091D RID: 2333
+		// Token: 0x04002E8A RID: 11914
 		public static float radius = 3f;
 
-		// Token: 0x0400091E RID: 2334
+		// Token: 0x04002E8B RID: 11915
 		private BlastAttack attack;
 
-		// Token: 0x0400091F RID: 2335
+		// Token: 0x04002E8C RID: 11916
 		public static string attackSoundString;
 
-		// Token: 0x04000920 RID: 2336
+		// Token: 0x04002E8D RID: 11917
 		private Animator modelAnimator;
 
-		// Token: 0x04000921 RID: 2337
+		// Token: 0x04002E8E RID: 11918
 		private Transform modelTransform;
 
-		// Token: 0x04000922 RID: 2338
+		// Token: 0x04002E8F RID: 11919
 		private bool hasAttacked;
 
-		// Token: 0x04000923 RID: 2339
+		// Token: 0x04002E90 RID: 11920
 		private GameObject leftHandChargeEffect;
 
-		// Token: 0x04000924 RID: 2340
+		// Token: 0x04002E91 RID: 11921
 		private GameObject rightHandChargeEffect;
 	}
 }

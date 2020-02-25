@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.SurvivorPod
 {
-	// Token: 0x020000ED RID: 237
-	internal class Descent : SurvivorPodBaseState
+	// Token: 0x0200077A RID: 1914
+	public class Descent : SurvivorPodBaseState
 	{
-		// Token: 0x06000490 RID: 1168 RVA: 0x000130D4 File Offset: 0x000112D4
+		// Token: 0x06002C09 RID: 11273 RVA: 0x000BA124 File Offset: 0x000B8324
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -36,29 +36,44 @@ namespace EntityStates.SurvivorPod
 			}
 		}
 
-		// Token: 0x06000491 RID: 1169 RVA: 0x000131A4 File Offset: 0x000113A4
+		// Token: 0x06002C0A RID: 11274 RVA: 0x000BA1F4 File Offset: 0x000B83F4
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
+			if (base.isAuthority)
+			{
+				this.AuthorityFixedUpdate();
+			}
+		}
+
+		// Token: 0x06002C0B RID: 11275 RVA: 0x000BA20C File Offset: 0x000B840C
+		protected void AuthorityFixedUpdate()
+		{
 			Animator modelAnimator = base.GetModelAnimator();
 			if (modelAnimator)
 			{
 				int layerIndex = modelAnimator.GetLayerIndex("Base");
 				if (layerIndex != -1 && modelAnimator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Idle"))
 				{
-					this.outer.SetNextState(new Landed());
+					this.TransitionIntoNextState();
 				}
 			}
 		}
 
-		// Token: 0x06000492 RID: 1170 RVA: 0x000131FC File Offset: 0x000113FC
+		// Token: 0x06002C0C RID: 11276 RVA: 0x000BA254 File Offset: 0x000B8454
+		protected virtual void TransitionIntoNextState()
+		{
+			this.outer.SetNextState(new Landed());
+		}
+
+		// Token: 0x06002C0D RID: 11277 RVA: 0x000BA266 File Offset: 0x000B8466
 		public override void OnExit()
 		{
 			EntityState.Destroy(this.shakeEmitter);
 			base.OnExit();
 		}
 
-		// Token: 0x04000458 RID: 1112
+		// Token: 0x04002825 RID: 10277
 		private ShakeEmitter shakeEmitter;
 	}
 }

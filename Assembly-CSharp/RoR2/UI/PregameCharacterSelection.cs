@@ -5,18 +5,18 @@ using UnityEngine.UI;
 
 namespace RoR2.UI
 {
-	// Token: 0x02000623 RID: 1571
-	[RequireComponent(typeof(RectTransform))]
+	// Token: 0x02000612 RID: 1554
 	[RequireComponent(typeof(Image))]
+	[RequireComponent(typeof(RectTransform))]
 	public class PregameCharacterSelection : MonoBehaviour
 	{
-		// Token: 0x0600234A RID: 9034 RVA: 0x000A64B7 File Offset: 0x000A46B7
+		// Token: 0x060024C9 RID: 9417 RVA: 0x000A0897 File Offset: 0x0009EA97
 		private void Awake()
 		{
 			this.image = base.GetComponent<Image>();
 		}
 
-		// Token: 0x0600234B RID: 9035 RVA: 0x000A64C8 File Offset: 0x000A46C8
+		// Token: 0x060024CA RID: 9418 RVA: 0x000A08A8 File Offset: 0x0009EAA8
 		private void LateUpdate()
 		{
 			this.image.sprite = this.disabledSprite;
@@ -31,16 +31,16 @@ namespace RoR2.UI
 			}
 		}
 
-		// Token: 0x04002646 RID: 9798
+		// Token: 0x0400228F RID: 8847
 		private Image image;
 
-		// Token: 0x04002647 RID: 9799
+		// Token: 0x04002290 RID: 8848
 		public GameObject characterBodyPrefab;
 
-		// Token: 0x04002648 RID: 9800
+		// Token: 0x04002291 RID: 8849
 		public Sprite enabledSprite;
 
-		// Token: 0x04002649 RID: 9801
+		// Token: 0x04002292 RID: 8850
 		public Sprite disabledSprite;
 	}
 }

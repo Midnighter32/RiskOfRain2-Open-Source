@@ -3,23 +3,23 @@ using UnityEngine;
 
 namespace RoR2.Projectile
 {
-	// Token: 0x0200055E RID: 1374
+	// Token: 0x02000524 RID: 1316
 	public class ProjectileSimple : MonoBehaviour
 	{
-		// Token: 0x06001EAA RID: 7850 RVA: 0x00090BF2 File Offset: 0x0008EDF2
+		// Token: 0x06001F1B RID: 7963 RVA: 0x00087045 File Offset: 0x00085245
 		private void Awake()
 		{
 			this.transform = base.transform;
 			this.rigidbody = base.GetComponent<Rigidbody>();
 		}
 
-		// Token: 0x06001EAB RID: 7851 RVA: 0x00090C0C File Offset: 0x0008EE0C
+		// Token: 0x06001F1C RID: 7964 RVA: 0x0008705F File Offset: 0x0008525F
 		private void Start()
 		{
 			this.UpdateVelocity();
 		}
 
-		// Token: 0x06001EAC RID: 7852 RVA: 0x00090C14 File Offset: 0x0008EE14
+		// Token: 0x06001F1D RID: 7965 RVA: 0x00087068 File Offset: 0x00085268
 		private void UpdateVelocity()
 		{
 			if (this.rigidbody)
@@ -33,7 +33,7 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x06001EAD RID: 7853 RVA: 0x00090C94 File Offset: 0x0008EE94
+		// Token: 0x06001F1E RID: 7966 RVA: 0x000870E8 File Offset: 0x000852E8
 		private void Update()
 		{
 			if (this.updateAfterFiring || this.enableVelocityOverLifetime)
@@ -47,28 +47,28 @@ namespace RoR2.Projectile
 			}
 		}
 
-		// Token: 0x04002155 RID: 8533
+		// Token: 0x04001CBE RID: 7358
 		public float velocity;
 
-		// Token: 0x04002156 RID: 8534
+		// Token: 0x04001CBF RID: 7359
 		public float lifetime = 5f;
 
-		// Token: 0x04002157 RID: 8535
+		// Token: 0x04001CC0 RID: 7360
 		public bool updateAfterFiring;
 
-		// Token: 0x04002158 RID: 8536
+		// Token: 0x04001CC1 RID: 7361
 		public bool enableVelocityOverLifetime;
 
-		// Token: 0x04002159 RID: 8537
+		// Token: 0x04001CC2 RID: 7362
 		public AnimationCurve velocityOverLifetime;
 
-		// Token: 0x0400215A RID: 8538
+		// Token: 0x04001CC3 RID: 7363
 		private float stopwatch;
 
-		// Token: 0x0400215B RID: 8539
+		// Token: 0x04001CC4 RID: 7364
 		private Rigidbody rigidbody;
 
-		// Token: 0x0400215C RID: 8540
+		// Token: 0x04001CC5 RID: 7365
 		private new Transform transform;
 	}
 }

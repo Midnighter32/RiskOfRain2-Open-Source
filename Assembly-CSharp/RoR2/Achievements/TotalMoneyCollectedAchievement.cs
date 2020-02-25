@@ -3,41 +3,41 @@ using RoR2.Stats;
 
 namespace RoR2.Achievements
 {
-	// Token: 0x020006BC RID: 1724
+	// Token: 0x020006CD RID: 1741
 	[RegisterAchievement("TotalMoneyCollected", "Items.GoldGat", null, null)]
 	public class TotalMoneyCollectedAchievement : BaseAchievement
 	{
-		// Token: 0x0600263A RID: 9786 RVA: 0x000B074F File Offset: 0x000AE94F
+		// Token: 0x0600286F RID: 10351 RVA: 0x000AC35A File Offset: 0x000AA55A
 		public override void OnInstall()
 		{
 			base.OnInstall();
-			this.userProfile.onStatsReceived += this.Check;
+			base.userProfile.onStatsReceived += this.Check;
 			this.Check();
 		}
 
-		// Token: 0x0600263B RID: 9787 RVA: 0x000B0774 File Offset: 0x000AE974
+		// Token: 0x06002870 RID: 10352 RVA: 0x000AC37F File Offset: 0x000AA57F
 		public override void OnUninstall()
 		{
-			this.userProfile.onStatsReceived -= this.Check;
+			base.userProfile.onStatsReceived -= this.Check;
 			base.OnUninstall();
 		}
 
-		// Token: 0x0600263C RID: 9788 RVA: 0x000B0793 File Offset: 0x000AE993
+		// Token: 0x06002871 RID: 10353 RVA: 0x000AC39E File Offset: 0x000AA59E
 		public override float ProgressForAchievement()
 		{
-			return this.userProfile.statSheet.GetStatValueULong(StatDef.goldCollected) / 30480f;
+			return base.userProfile.statSheet.GetStatValueULong(StatDef.goldCollected) / 30480f;
 		}
 
-		// Token: 0x0600263D RID: 9789 RVA: 0x000B07B2 File Offset: 0x000AE9B2
+		// Token: 0x06002872 RID: 10354 RVA: 0x000AC3BD File Offset: 0x000AA5BD
 		private void Check()
 		{
-			if (this.userProfile.statSheet.GetStatValueULong(StatDef.goldCollected) >= 30480UL)
+			if (base.userProfile.statSheet.GetStatValueULong(StatDef.goldCollected) >= 30480UL)
 			{
 				base.Grant();
 			}
 		}
 
-		// Token: 0x04002880 RID: 10368
+		// Token: 0x04002516 RID: 9494
 		private const int requirement = 30480;
 	}
 }

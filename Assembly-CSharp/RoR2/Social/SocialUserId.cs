@@ -2,16 +2,16 @@
 
 namespace RoR2.Social
 {
-	// Token: 0x0200050A RID: 1290
+	// Token: 0x020004AF RID: 1199
 	public struct SocialUserId
 	{
-		// Token: 0x06001D2D RID: 7469 RVA: 0x00087E6A File Offset: 0x0008606A
+		// Token: 0x06001D0C RID: 7436 RVA: 0x0007C652 File Offset: 0x0007A852
 		public SocialUserId(CSteamID steamId)
 		{
 			this.steamId = steamId;
 		}
 
-		// Token: 0x04001F4E RID: 8014
+		// Token: 0x04001A20 RID: 6688
 		public readonly CSteamID steamId;
 	}
 }

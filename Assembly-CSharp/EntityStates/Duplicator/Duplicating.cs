@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.Duplicator
 {
-	// Token: 0x02000191 RID: 401
+	// Token: 0x02000894 RID: 2196
 	public class Duplicating : BaseState
 	{
-		// Token: 0x060007B6 RID: 1974 RVA: 0x0002640C File Offset: 0x0002460C
+		// Token: 0x06003147 RID: 12615 RVA: 0x000D42B4 File Offset: 0x000D24B4
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -18,7 +18,7 @@ namespace EntityStates.Duplicator
 			}
 		}
 
-		// Token: 0x060007B7 RID: 1975 RVA: 0x00026444 File Offset: 0x00024644
+		// Token: 0x06003148 RID: 12616 RVA: 0x000D42EC File Offset: 0x000D24EC
 		private void BeginCooking()
 		{
 			if (this.hasStartedCooking)
@@ -37,7 +37,7 @@ namespace EntityStates.Duplicator
 			}
 		}
 
-		// Token: 0x060007B8 RID: 1976 RVA: 0x000264C8 File Offset: 0x000246C8
+		// Token: 0x06003149 RID: 12617 RVA: 0x000D4370 File Offset: 0x000D2570
 		private void DropDroplet()
 		{
 			if (this.hasDroppedDroplet)
@@ -54,12 +54,12 @@ namespace EntityStates.Duplicator
 				}
 				if (Duplicating.releaseEffectPrefab)
 				{
-					EffectManager.instance.SimpleMuzzleFlash(Duplicating.releaseEffectPrefab, base.gameObject, Duplicating.muzzleString, false);
+					EffectManager.SimpleMuzzleFlash(Duplicating.releaseEffectPrefab, base.gameObject, Duplicating.muzzleString, false);
 				}
 			}
 		}
 
-		// Token: 0x060007B9 RID: 1977 RVA: 0x0002653C File Offset: 0x0002473C
+		// Token: 0x0600314A RID: 12618 RVA: 0x000D43DF File Offset: 0x000D25DF
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -73,31 +73,31 @@ namespace EntityStates.Duplicator
 			}
 		}
 
-		// Token: 0x04000A00 RID: 2560
+		// Token: 0x04002F9C RID: 12188
 		public static float initialDelayDuration = 1f;
 
-		// Token: 0x04000A01 RID: 2561
+		// Token: 0x04002F9D RID: 12189
 		public static float timeBetweenStartAndDropDroplet = 3f;
 
-		// Token: 0x04000A02 RID: 2562
+		// Token: 0x04002F9E RID: 12190
 		public static string muzzleString;
 
-		// Token: 0x04000A03 RID: 2563
+		// Token: 0x04002F9F RID: 12191
 		public static GameObject bakeEffectPrefab;
 
-		// Token: 0x04000A04 RID: 2564
+		// Token: 0x04002FA0 RID: 12192
 		public static GameObject releaseEffectPrefab;
 
-		// Token: 0x04000A05 RID: 2565
+		// Token: 0x04002FA1 RID: 12193
 		private GameObject bakeEffectInstance;
 
-		// Token: 0x04000A06 RID: 2566
+		// Token: 0x04002FA2 RID: 12194
 		private bool hasStartedCooking;
 
-		// Token: 0x04000A07 RID: 2567
+		// Token: 0x04002FA3 RID: 12195
 		private bool hasDroppedDroplet;
 
-		// Token: 0x04000A08 RID: 2568
+		// Token: 0x04002FA4 RID: 12196
 		private Transform muzzleTransform;
 	}
 }

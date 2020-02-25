@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace EntityStates.AI.Walker
 {
-	// Token: 0x020001E5 RID: 485
+	// Token: 0x02000900 RID: 2304
 	public class LookBusy : BaseAIState
 	{
-		// Token: 0x06000976 RID: 2422 RVA: 0x0002F954 File Offset: 0x0002DB54
-		private void PickNewTargetLookDirection()
+		// Token: 0x06003376 RID: 13174 RVA: 0x000DF558 File Offset: 0x000DD758
+		protected virtual void PickNewTargetLookDirection()
 		{
 			if (base.bodyInputBank)
 			{
@@ -33,21 +33,23 @@ namespace EntityStates.AI.Walker
 			this.lookTimer = UnityEngine.Random.Range(0.5f, 4f);
 		}
 
-		// Token: 0x06000977 RID: 2423 RVA: 0x0002F9F7 File Offset: 0x0002DBF7
+		// Token: 0x06003377 RID: 13175 RVA: 0x000DF5FC File Offset: 0x000DD7FC
 		public override void OnEnter()
 		{
 			base.OnEnter();
 			this.duration = UnityEngine.Random.Range(2f, 7f);
+			base.bodyInputBank.moveVector = Vector3.zero;
+			base.bodyInputBank.jump.PushState(false);
 			this.PickNewTargetLookDirection();
 		}
 
-		// Token: 0x06000978 RID: 2424 RVA: 0x0002F301 File Offset: 0x0002D501
+		// Token: 0x06003378 RID: 13176 RVA: 0x000DEF05 File Offset: 0x000DD105
 		public override void OnExit()
 		{
 			base.OnExit();
 		}
 
-		// Token: 0x06000979 RID: 2425 RVA: 0x0002FA1C File Offset: 0x0002DC1C
+		// Token: 0x06003379 RID: 13177 RVA: 0x000DF64C File Offset: 0x000DD84C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -73,31 +75,31 @@ namespace EntityStates.AI.Walker
 			}
 		}
 
-		// Token: 0x04000CCB RID: 3275
+		// Token: 0x040032F4 RID: 13044
 		private const float minDuration = 2f;
 
-		// Token: 0x04000CCC RID: 3276
+		// Token: 0x040032F5 RID: 13045
 		private const float maxDuration = 7f;
 
-		// Token: 0x04000CCD RID: 3277
+		// Token: 0x040032F6 RID: 13046
 		private Vector3 targetPosition;
 
-		// Token: 0x04000CCE RID: 3278
+		// Token: 0x040032F7 RID: 13047
 		private float duration;
 
-		// Token: 0x04000CCF RID: 3279
+		// Token: 0x040032F8 RID: 13048
 		private float lookTimer;
 
-		// Token: 0x04000CD0 RID: 3280
+		// Token: 0x040032F9 RID: 13049
 		private const float minLookDuration = 0.5f;
 
-		// Token: 0x04000CD1 RID: 3281
+		// Token: 0x040032FA RID: 13050
 		private const float maxLookDuration = 4f;
 
-		// Token: 0x04000CD2 RID: 3282
+		// Token: 0x040032FB RID: 13051
 		private const int lookTries = 4;
 
-		// Token: 0x04000CD3 RID: 3283
+		// Token: 0x040032FC RID: 13052
 		private const float lookRaycastLength = 25f;
 	}
 }

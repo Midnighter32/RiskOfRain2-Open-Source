@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace EntityStates.VagrantMonster
 {
-	// Token: 0x0200012A RID: 298
-	internal class ChargeTrackingBomb : BaseState
+	// Token: 0x02000800 RID: 2048
+	public class ChargeTrackingBomb : BaseState
 	{
-		// Token: 0x060005BD RID: 1469 RVA: 0x0001A3E0 File Offset: 0x000185E0
+		// Token: 0x06002E94 RID: 11924 RVA: 0x000C6124 File Offset: 0x000C4324
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -32,7 +32,7 @@ namespace EntityStates.VagrantMonster
 			}
 		}
 
-		// Token: 0x060005BE RID: 1470 RVA: 0x0001A4CD File Offset: 0x000186CD
+		// Token: 0x06002E95 RID: 11925 RVA: 0x000C6211 File Offset: 0x000C4411
 		public override void OnExit()
 		{
 			base.OnExit();
@@ -43,7 +43,7 @@ namespace EntityStates.VagrantMonster
 			}
 		}
 
-		// Token: 0x060005BF RID: 1471 RVA: 0x0001A4F8 File Offset: 0x000186F8
+		// Token: 0x06002E96 RID: 11926 RVA: 0x000C623C File Offset: 0x000C443C
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -55,31 +55,31 @@ namespace EntityStates.VagrantMonster
 			}
 		}
 
-		// Token: 0x060005C0 RID: 1472 RVA: 0x0000BB2B File Offset: 0x00009D2B
+		// Token: 0x06002E97 RID: 11927 RVA: 0x0000C5D3 File Offset: 0x0000A7D3
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Pain;
 		}
 
-		// Token: 0x0400068E RID: 1678
+		// Token: 0x04002BB2 RID: 11186
 		public static float baseDuration = 3f;
 
-		// Token: 0x0400068F RID: 1679
+		// Token: 0x04002BB3 RID: 11187
 		public static GameObject chargingEffectPrefab;
 
-		// Token: 0x04000690 RID: 1680
+		// Token: 0x04002BB4 RID: 11188
 		public static string chargingSoundString;
 
-		// Token: 0x04000691 RID: 1681
+		// Token: 0x04002BB5 RID: 11189
 		private float duration;
 
-		// Token: 0x04000692 RID: 1682
+		// Token: 0x04002BB6 RID: 11190
 		private float stopwatch;
 
-		// Token: 0x04000693 RID: 1683
+		// Token: 0x04002BB7 RID: 11191
 		private GameObject chargeEffectInstance;
 
-		// Token: 0x04000694 RID: 1684
+		// Token: 0x04002BB8 RID: 11192
 		private uint soundID;
 	}
 }

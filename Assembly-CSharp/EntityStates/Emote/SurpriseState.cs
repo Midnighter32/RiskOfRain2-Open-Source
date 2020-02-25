@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace EntityStates.Emote
 {
-	// Token: 0x020000F3 RID: 243
+	// Token: 0x02000784 RID: 1924
 	public class SurpriseState : EntityState
 	{
-		// Token: 0x060004A5 RID: 1189 RVA: 0x00013550 File Offset: 0x00011750
+		// Token: 0x06002C2F RID: 11311 RVA: 0x000BA788 File Offset: 0x000B8988
 		public override void OnEnter()
 		{
 			base.OnEnter();
@@ -20,7 +20,7 @@ namespace EntityStates.Emote
 			}
 		}
 
-		// Token: 0x060004A6 RID: 1190 RVA: 0x000135AF File Offset: 0x000117AF
+		// Token: 0x06002C30 RID: 11312 RVA: 0x000BA7E7 File Offset: 0x000B89E7
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -30,13 +30,13 @@ namespace EntityStates.Emote
 			}
 		}
 
-		// Token: 0x060004A7 RID: 1191 RVA: 0x0000BBE7 File Offset: 0x00009DE7
+		// Token: 0x06002C31 RID: 11313 RVA: 0x0000C7DD File Offset: 0x0000A9DD
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Death;
 		}
 
-		// Token: 0x0400045C RID: 1116
+		// Token: 0x0400282E RID: 10286
 		private float duration;
 	}
 }

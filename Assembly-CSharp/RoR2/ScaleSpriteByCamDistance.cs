@@ -4,34 +4,34 @@ using UnityEngine;
 
 namespace RoR2
 {
-	// Token: 0x020003C4 RID: 964
+	// Token: 0x0200030E RID: 782
 	public class ScaleSpriteByCamDistance : MonoBehaviour
 	{
-		// Token: 0x060014F1 RID: 5361 RVA: 0x00064AF0 File Offset: 0x00062CF0
+		// Token: 0x0600125C RID: 4700 RVA: 0x0004F2B0 File Offset: 0x0004D4B0
 		static ScaleSpriteByCamDistance()
 		{
 			SceneCamera.onSceneCameraPreCull += ScaleSpriteByCamDistance.OnSceneCameraPreCull;
 		}
 
-		// Token: 0x060014F2 RID: 5362 RVA: 0x00064B0D File Offset: 0x00062D0D
+		// Token: 0x0600125D RID: 4701 RVA: 0x0004F2CD File Offset: 0x0004D4CD
 		private void Awake()
 		{
 			this.transform = base.transform;
 		}
 
-		// Token: 0x060014F3 RID: 5363 RVA: 0x00064B1B File Offset: 0x00062D1B
+		// Token: 0x0600125E RID: 4702 RVA: 0x0004F2DB File Offset: 0x0004D4DB
 		private void OnEnable()
 		{
 			ScaleSpriteByCamDistance.instancesList.Add(this);
 		}
 
-		// Token: 0x060014F4 RID: 5364 RVA: 0x00064B28 File Offset: 0x00062D28
+		// Token: 0x0600125F RID: 4703 RVA: 0x0004F2E8 File Offset: 0x0004D4E8
 		private void OnDisable()
 		{
 			ScaleSpriteByCamDistance.instancesList.Remove(this);
 		}
 
-		// Token: 0x060014F5 RID: 5365 RVA: 0x00064B38 File Offset: 0x00062D38
+		// Token: 0x06001260 RID: 4704 RVA: 0x0004F2F8 File Offset: 0x0004D4F8
 		private static void OnSceneCameraPreCull(SceneCamera sceneCamera)
 		{
 			Vector3 position = sceneCamera.transform.position;
@@ -64,31 +64,31 @@ namespace RoR2
 			}
 		}
 
-		// Token: 0x04001847 RID: 6215
+		// Token: 0x0400114F RID: 4431
 		private static List<ScaleSpriteByCamDistance> instancesList = new List<ScaleSpriteByCamDistance>();
 
-		// Token: 0x04001848 RID: 6216
+		// Token: 0x04001150 RID: 4432
 		private new Transform transform;
 
-		// Token: 0x04001849 RID: 6217
+		// Token: 0x04001151 RID: 4433
 		[Tooltip("The amount by which to scale.")]
 		public float scaleFactor = 1f;
 
-		// Token: 0x0400184A RID: 6218
+		// Token: 0x04001152 RID: 4434
 		public ScaleSpriteByCamDistance.ScalingMode scalingMode;
 
-		// Token: 0x020003C5 RID: 965
+		// Token: 0x0200030F RID: 783
 		public enum ScalingMode
 		{
-			// Token: 0x0400184C RID: 6220
+			// Token: 0x04001154 RID: 4436
 			Direct,
-			// Token: 0x0400184D RID: 6221
+			// Token: 0x04001155 RID: 4437
 			Square,
-			// Token: 0x0400184E RID: 6222
+			// Token: 0x04001156 RID: 4438
 			Sqrt,
-			// Token: 0x0400184F RID: 6223
+			// Token: 0x04001157 RID: 4439
 			Cube,
-			// Token: 0x04001850 RID: 6224
+			// Token: 0x04001158 RID: 4440
 			CubeRoot
 		}
 	}
